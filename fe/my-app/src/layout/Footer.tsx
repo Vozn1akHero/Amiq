@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 
-class ProfilePageComponent extends Component {
+class Footer extends Component {
     render() {
         return (
             <div>
-                
+                footer
             </div>
         );
     }
 }
 
-export default ProfilePageComponent;
+export default Footer;
