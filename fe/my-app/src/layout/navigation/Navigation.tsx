@@ -1,10 +1,11 @@
 import {Link} from "react-router-dom";
 import {INavigationLink} from "./INavigationLink";
-
+import {memo} from "react";
+import "./logo.scss"
 type Props = {
 
 };
-export const Navigation = (props: Props) => {
+export function Navigation (props: Props) {
     const navigationLinks : Array<INavigationLink> = [
         {
             title: "Profil",
@@ -17,7 +18,8 @@ export const Navigation = (props: Props) => {
     ];
 
     return (
-        <nav className="uk-navbar-container" uk-navbar>
+        <nav className="navigation uk-navbar-container uk-padding-small" uk-navbar>
+            <div className="logo"></div>
             <div className="uk-navbar-left">
                 <ul className="uk-navbar-nav">
                     {/*<li className="uk-active"><a href=""></a></li>*/}
@@ -31,3 +33,4 @@ export const Navigation = (props: Props) => {
     );
 };
 
+export const MemoizedNavigation = memo(Navigation)

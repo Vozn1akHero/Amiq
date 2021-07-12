@@ -1,6 +1,8 @@
 import React from 'react';
 import BasePageComponent from "core/BasePageComponent";
 import {ItemsFrameL} from "../../common/components/ItemsFrameL";
+import Post from "../../features/post/Post";
+import PostCreationForm from "../../features/post/PostCreationForm";
 
 
 class ProfilePage extends BasePageComponent {
@@ -9,18 +11,16 @@ class ProfilePage extends BasePageComponent {
     render() {
         return (
             <div className='profile-page'>
-                <div className="uk-child-width-expand uk-padding uk-grid uk-child-width-1-2" uk-grid>
+                <div className="uk-padding uk-grid uk-child-width-1-2" uk-grid>
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
                         <div className="uk-card uk-card-default uk-card-body">
-                            <img style={{borderRadius: '50%'}}
+                            <h3 className="uk-card-title">Dima Vozniachuk</h3>
+                            <img style={{borderRadius: '10%'}}
                                     src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg"
                                  sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" uk-img />
-                            <p>
-                                Dima Vozniachuk
-                            </p>
                         </div>
                     </div>
-                    <div>
+                    <div className="uk-preserve-width uk-margin-left">
                         <h3>O mnie</h3>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
@@ -44,8 +44,12 @@ class ProfilePage extends BasePageComponent {
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
                         <ItemsFrameL title="Znajomi" items={this.friends} />
+                    </div>
+                    <div className="uk-margin-left uk-margin-large-top">
+                        <PostCreationForm />
+                        <Post />
                     </div>
                 </div>
             </div>

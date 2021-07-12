@@ -8,8 +8,8 @@ class Post extends Component {
                     <li>
                         <article className="uk-comment uk-visible-toggle" >
                             <header className="uk-comment-header uk-position-relative">
-                                <div className="uk-grid-medium uk-flex-middle" uk-grid>
-                                    <div className="uk-width-auto">
+                                <div className="uk-grid uk-grid-medium uk-flex-middle >" uk-grid>
+                                    <div className="uk-width-auto uk-flex-first">
                                         <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                              height="80" alt=""/>
                                     </div>
@@ -36,7 +36,7 @@ class Post extends Component {
                             <li>
                                 <article className="uk-comment uk-comment-primary uk-visible-toggle">
                                     <header className="uk-comment-header uk-position-relative">
-                                        <div className="uk-grid-medium uk-flex-middle" uk-grid>
+                                        <div className="uk-grid uk-grid-medium uk-flex-middle" uk-grid>
                                             <div className="uk-width-auto">
                                                 <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                                      height="80" alt=""/>

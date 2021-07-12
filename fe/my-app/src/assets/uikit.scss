@@ -1,0 +1,10 @@
+.uk-input, .uk-select, .uk-textarea {
+  max-width: 100%;
+  width: 100%;
+  padding: 0 10px;
+  background: #fff;
+  color: #666;
+  border: 1px solid #e5e5e5;
+  transition: .2s ease-in-out;
+  transition-property: color, background-color, border;
+}

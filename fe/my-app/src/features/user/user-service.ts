@@ -1,11 +1,12 @@
 import { Singleton } from "core/singleton";
-import HttpClient, {HttpParams} from "core/http-client";
+import {HttpParams} from "core/http-client";
+import {BaseService} from "core/base-service";
 
 @Singleton
-export default class UserService extends HttpClient {
+export default class UserService extends BaseService{
     public getById(userId: string){
         let params = new HttpParams()
             .append("userId", userId);
-        return this.get(params)
+        return this.httpClient.get(params)
     }
 }
