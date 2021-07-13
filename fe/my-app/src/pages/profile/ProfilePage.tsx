@@ -1,24 +1,22 @@
 import React from 'react';
 import BasePageComponent from "core/BasePageComponent";
-import {ItemsFrameL} from "../../common/components/ItemsFrameL";
-import Post from "../../features/post/Post";
-import PostCreationForm from "../../features/post/PostCreationForm";
+import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
+import Post from "features/post/Post";
+import PostCreationForm from "features/post/PostCreationForm";
+import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 
 
 class ProfilePage extends BasePageComponent {
     friends = []
+
+
 
     render() {
         return (
             <div className='profile-page'>
                 <div className="uk-padding uk-grid uk-child-width-1-2" uk-grid>
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                        <div className="uk-card uk-card-default uk-card-body">
-                            <h3 className="uk-card-title">Dima Vozniachuk</h3>
-                            <img style={{borderRadius: '10%'}}
-                                    src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg"
-                                 sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" uk-img />
-                        </div>
+                       <PageAvatar />
                     </div>
                     <div className="uk-preserve-width uk-margin-left">
                         <h3>O mnie</h3>
@@ -45,7 +43,7 @@ class ProfilePage extends BasePageComponent {
                         </ul>
                     </div>
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Znajomi" items={this.friends} />
+                        <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Nothing to show" />
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <PostCreationForm />

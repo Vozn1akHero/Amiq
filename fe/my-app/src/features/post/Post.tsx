@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import "./post.scss"
 
 class Post extends Component {
     render() {
         return (
             <>
-                <ul className="uk-comment-list">
+                <ul className="post uk-comment-list">
                     <li>
                         <article className="uk-comment uk-visible-toggle" >
                             <header className="uk-comment-header uk-position-relative">
@@ -21,6 +22,7 @@ class Post extends Component {
                                         </p>
                                     </div>
                                 </div>
+
                                 <div className="uk-position-top-right uk-position-small uk-hidden-hover">
                                     <a className="uk-link-muted" href="#">Reply</a>
                                 </div>

@@ -12,7 +12,7 @@ class PostCreationForm extends Component {
                     </div>
 
                     <div className="uk-margin">
-                        <textarea className="uk-textarea" rows={5} placeholder="" ></textarea>
+                        <textarea className="uk-textarea" rows={5} placeholder="Treść" ></textarea>
                     </div>
 
                 </fieldset>
