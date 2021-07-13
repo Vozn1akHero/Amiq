@@ -14,7 +14,7 @@ class ProfilePage extends BasePageComponent {
     render() {
         return (
             <div className='profile-page'>
-                <div className="uk-padding uk-grid uk-child-width-1-2" uk-grid>
+                <div className="uk-padding uk-grid uk-child-width-1-2">
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
                        <PageAvatar />
                     </div>

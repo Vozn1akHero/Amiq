@@ -9,7 +9,7 @@ class Post extends Component {
                     <li>
                         <article className="uk-comment uk-visible-toggle" >
                             <header className="uk-comment-header uk-position-relative">
-                                <div className="uk-grid uk-grid-medium uk-flex-middle >" uk-grid>
+                                <div className="uk-grid uk-grid-medium uk-flex-middle >" >
                                     <div className="uk-width-auto uk-flex-first">
                                         <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                              height="80" alt=""/>
@@ -38,14 +38,15 @@ class Post extends Component {
                             <li>
                                 <article className="uk-comment uk-comment-primary uk-visible-toggle">
                                     <header className="uk-comment-header uk-position-relative">
-                                        <div className="uk-grid uk-grid-medium uk-flex-middle" uk-grid>
+                                        <div className="uk-grid uk-grid-medium uk-flex-middle">
                                             <div className="uk-width-auto">
                                                 <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                                      height="80" alt=""/>
                                             </div>
                                             <div className="uk-width-expand">
-                                                <h4 className="uk-comment-title uk-margin-remove"><a
-                                                    className="uk-link-reset" href="#">Author</a></h4>
+                                                <h4 className="uk-comment-title uk-margin-remove">
+                                                    <a className="uk-link-reset" href="#">Author</a>
+                                                </h4>
                                                 <p className="uk-comment-meta uk-margin-remove-top"><a
                                                     className="uk-link-reset" href="#">12 days ago</a></p>
                                             </div>

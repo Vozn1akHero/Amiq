@@ -38,7 +38,7 @@ class PageAvatar extends Component {
 
                 <img style={{borderRadius: '50%', border: "3px solid white"}}
                      src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg"
-                     sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" uk-img />
+                     sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" />
 
                 <div className="uk-margin-medium-top name-wrap" style={this.nameWrapStyles}>
                     <h3 className="uk-card-title" style={this.nameStyles}>Dima Vozniachuk</h3>

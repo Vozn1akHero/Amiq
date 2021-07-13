@@ -22,6 +22,8 @@ export default class Routes {
         return output;
     }
 
+    public static getNavRoute = (route: IRoute) => route.link;
+
     public static get myProfilePageRoutes() : IRoute{
         return {
             link: "profile",

@@ -1,8 +1,8 @@
-import { Singleton } from "core/singleton";
 import {HttpParams} from "core/http-client";
 import {BaseService} from "core/base-service";
+import {injectable} from "tsyringe";
 
-@Singleton
+@injectable()
 export default class UserService extends BaseService{
     public getById(userId: string){
         let params = new HttpParams()
