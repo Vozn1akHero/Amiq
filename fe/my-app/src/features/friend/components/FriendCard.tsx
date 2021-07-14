@@ -36,7 +36,7 @@ const FriendCard = (props: FriendCardProps) => {
 
     return (
         <div className="uk-card uk-card-default uk-card-body" style={{zIndex: 1, overflow: "hidden"}}>
-            <div className="avatarBg" style={avatarBgStyles}></div>
+            <div className="avatar-bg" style={avatarBgStyles}></div>
 
             <img style={{borderRadius: '50%', border: "3px solid white", marginBottom: "3rem"}}
                  src={props.avatarSrc}

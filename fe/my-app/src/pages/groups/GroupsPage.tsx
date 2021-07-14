@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import FriendCard from "features/friend/components/FriendCard";
+import MemoizedGroupCard from "features/group/components/GroupCard";
 
 type Props = {
-    friendList: Array<any>;
+    groupList: Array<any>;
     onSearchInputChange: (e:InputEvent) => void;
 };
 
@@ -10,22 +10,22 @@ type State = {
 
 };
 
-class FriendListPage extends Component<Props, State> {
+class GroupsPage extends Component<Props, State> {
     render() {
         return (
             <div className="friend-list-page">
-                <legend className="uk-legend uk-margin-medium-top">Moi znajomi</legend>
+                <legend className="uk-legend uk-margin-medium-top">Moje grupy</legend>
                 <div className="input-search">
                     <div className="uk-margin-medium-top uk-margin-medium-bottom">
-                        <input className="uk-input" type="text" placeholder="Szukaj znajomych"/>
+                        <input className="uk-input" type="text" placeholder="Szukaj grup"/>
                     </div>
                 </div>
                 <div className="uk-grid uk-child-width-1-3">
                     {
-                        this.props.friendList.map((value, i) =>
+                        this.props.groupList.map((value, i) =>
                             {
                                 return <div key={i} className="uk-margin-top">
-                                    <FriendCard avatarSrc={value.avatarSrc} viewName={value.viewName} />
+                                    <MemoizedGroupCard id={value.id} avatarSrc={value.avatarSrc} viewName={value.viewName} />
                                 </div>
                             }
                         )
@@ -36,4 +36,4 @@ class FriendListPage extends Component<Props, State> {
     }
 }
 
-export default FriendListPage;
+export default GroupsPage;

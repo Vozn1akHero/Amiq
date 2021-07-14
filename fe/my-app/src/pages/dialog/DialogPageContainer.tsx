@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Group extends Component {
+class DialogPageContainer extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class Group extends Component {
     }
 }
 
-export default Group;
+export default DialogPageContainer;

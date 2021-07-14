@@ -1,23 +1,23 @@
-import React from 'react';
-import BasePageComponent from "core/BasePageComponent";
+import React, {Component} from 'react';
+import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
-import Post from "features/post/Post";
 import PostCreationForm from "features/post/PostCreationForm";
-import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
+import Post from "features/post/Post";
 
+type Props = {
+    participants: Array<any>
+}
 
-class ProfilePage extends BasePageComponent {
-    friends = []
-
+class GroupPage extends Component<Props, any>  {
     render() {
         return (
             <div className='profile-page'>
                 <div className="uk-padding uk-grid uk-child-width-1-2">
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                       <PageAvatar />
+                        <PageAvatar />
                     </div>
                     <div className="uk-preserve-width uk-margin-left">
-                        <h3>O mnie</h3>
+                        <h3>O nas</h3>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -41,7 +41,7 @@ class ProfilePage extends BasePageComponent {
                         </ul>
                     </div>
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Nothing to show" />
+                        <ItemsFrameL title="Uczestnicy" items={this.props.participants} callbackText="Nothing to show" />
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <PostCreationForm />
@@ -53,4 +53,4 @@ class ProfilePage extends BasePageComponent {
     }
 }
 
-export default ProfilePage;
+export default GroupPage;

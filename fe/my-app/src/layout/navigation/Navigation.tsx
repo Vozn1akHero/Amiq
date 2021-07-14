@@ -18,11 +18,11 @@ export function Navigation (props: Props) {
         },
         {
             title: "Czat",
-            anchor: Routes.getNavRoute(Routes.profilePageRoutes)
+            anchor: Routes.getNavRoute(Routes.chatPageRoutes)
         },
         {
             title: "Grupy",
-            anchor: Routes.getNavRoute(Routes.profilePageRoutes)
+            anchor: Routes.getNavRoute(Routes.groupsPageRoutes)
         }
     ];
 

@@ -50,4 +50,31 @@ export default class Routes {
             queryParams: ""
         };
     }
+
+    public static get chatPageRoutes() : IRoute{
+        return {
+            link: "chat",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        };
+    }
+
+    public static get groupsPageRoutes() : IRoute{
+        return {
+            link: "groups",
+            subroutes: [],
+            params: ["/:userId?"],
+            queryParams: ""
+        };
+    }
+
+    public static get groupPageRoutes() : IRoute{
+        return {
+            link: "group",
+            subroutes: [],
+            params: ["/:groupId"],
+            queryParams: ""
+        };
+    }
 }
