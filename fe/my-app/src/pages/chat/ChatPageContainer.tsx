@@ -8,7 +8,7 @@ import { IChat } from 'features/chat/chat-models';
 type State = {
     selectedChatId: string;
     isChatSelected: boolean;
-    selectedChat: IChat | null;
+    selectedChat: IChat;
 }
 
 type Props = {}
@@ -21,7 +21,7 @@ class ChatPageContainer extends Component<Props, State> {
     constructor(props:Props) {
         super(props);
         this.state = {
-            selectedChatId: "",
+            selectedChatId: null,
             isChatSelected: false,
             selectedChat: null
         }
