@@ -24,7 +24,8 @@ function App() {
                   <Route component={FriendsPageContainer} path={Routes.getRouteAsString(Routes.friendListPageRoutes)} />
                   <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
                   <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />
-                  <GuardedRoute component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} authenticated={true} />
+                  {/*<GuardedRoute component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} authenticated={true} />*/}
+                  <Route component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} />
               </Switch>
           </main>
       </BrowserRouter>

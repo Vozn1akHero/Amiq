@@ -1,25 +1,26 @@
-// @flow
-import * as React from 'react';
+import "./chat-preview-card.scss"
 import moment from 'moment'
+import {MouseEvent} from "react";
+import { getViewDate } from "assets/utils/date-utils";
 
 type Props = {
+    chatId: string;
     viewName: string;
     avatarSrc: string;
     text: string;
     hasMedia: boolean;
     date: Date;
+    onChatClick(chatId: string) : void;
 };
 export const ChatPreviewCard = (props: Props) => {
-    const getViewDate = (date: Date) => moment(date).fromNow()
-
     return (
-        <ul className="post uk-comment-list">
+        <ul className="chat-preview-card uk-comment-list" onClick={() => props.onChatClick(props.chatId)}>
             <li>
                 <article className="uk-comment uk-visible-toggle" >
                     <header className="uk-comment-header uk-position-relative">
                         <div className="uk-grid uk-grid-medium uk-flex-middle >" >
                             <div className="uk-width-auto uk-flex-first">
-                                <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
+                                <img className="border-radius-50" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                      height="80" alt=""/>
                             </div>
                             <div className="uk-width-expand">

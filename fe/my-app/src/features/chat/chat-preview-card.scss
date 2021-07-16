@@ -1,0 +1,14 @@
+.chat-preview-card{
+  transition: all 200ms ease-in-out;
+  transition-property: box-shadow, height, width, background, font-size, padding;
+  padding-top: 1.45rem !important;
+  padding-bottom: 1.45rem !important;
+
+  &:hover{
+    border-radius: .3rem;
+    background: rgba(gray, .1);
+    padding-left: 1.45rem;
+
+    cursor: pointer;
+  }
+}

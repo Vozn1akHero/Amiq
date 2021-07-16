@@ -11,7 +11,7 @@ class Post extends Component {
                             <header className="uk-comment-header uk-position-relative">
                                 <div className="uk-grid uk-grid-medium uk-flex-middle >" >
                                     <div className="uk-width-auto uk-flex-first">
-                                        <img className="uk-comment-avatar" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
+                                        <img className="border-radius-50" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                              height="80" alt=""/>
                                     </div>
                                     <div className="uk-width-expand">
