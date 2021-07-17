@@ -30,3 +30,7 @@ export interface IChat {
     interlocutor: IInterlocutor;
     messages: Array<IMessage>;
 }
+
+export interface IGroupedMessages {
+
+}

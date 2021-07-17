@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {IChat, IInterlocutor, IMessage} from "./chat-models";
 import {getViewDate} from "assets/utils/date-utils";
+import "./chat.scss"
 
 class Chat extends Component<{chat: IChat}, any> {
-    static Message = class extends Component<{message: IMessage}, any> {
+    static Message = class extends Component<{message: IMessage, previousMessage: IMessage, viewerId: string}, any> {
         render() {
             return (
                 <div className="chat__message">
@@ -15,11 +16,13 @@ class Chat extends Component<{chat: IChat}, any> {
         }
     }
 
+    userId = "1234"
+
     render() {
         return (
             <div className="chat">
-                <header className="selected-chat__interlocutor-data">
-                    <div className="uk-grid uk-grid-medium uk-flex-middle >" >
+                <header className="chat__interlocutor-data">
+                    <div className="uk-grid uk-grid-medium" >
                         <div className="uk-width-auto uk-flex-first">
                             <img className="border-radius-50" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
                                  height="80" alt=""/>
@@ -33,11 +36,14 @@ class Chat extends Component<{chat: IChat}, any> {
                         </div>
                     </div>
                 </header>
+                <hr className="max-width uk-margin-small-left"/>
                 <div className="uk-grid uk-width-1-1">
                     {
-                        this.props.chat.messages.map(value => {
-                            return <div className="uk-margin-top">
-                                <Chat.Message message={value} />
+                        this.props.chat.messages.map((value,i) => {
+                            return <div key={i} className="uk-margin-top">
+                                <Chat.Message message={value}
+                                              previousMessage={i > 0 ? this.props.chat.messages[i-1] : null}
+                                              viewerId={this.userId} />
                             </div>
                         })
                     }

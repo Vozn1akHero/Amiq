@@ -23,7 +23,8 @@
     "jsx": "react-jsx",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "noImplicitAny": false
   },
   "include": [
     "src"

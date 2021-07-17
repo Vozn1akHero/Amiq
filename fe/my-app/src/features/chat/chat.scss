@@ -1,0 +1,10 @@
+.chat{
+  &__interlocutor-data{
+    display: flex;
+    justify-content: center;
+  }
+
+  &__message {
+    width: 50%;
+  }
+}

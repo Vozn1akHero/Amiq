@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {GroupService} from "../../features/group/group-service";
 import {container} from "tsyringe";
 import {ChatService} from "features/chat/chat-service";
 import ChatPage from './ChatPage';
@@ -34,16 +33,17 @@ class ChatPageContainer extends Component<Props, State> {
             isChatSelected: true
         },() => {
             this.setState({
-                selectedChat: this.chatService.getMessagesByChatId(this.state.selectedChatId as string)
+                selectedChat: this.chatService.getMessagesByChatId(this.state.selectedChatId)
             })
         })
+        console.log(this.state.selectedChat)
     }
 
     render() {
         return (
             <ChatPage chats={this.chatsMock}
                       onChatSelection={this.onChatSelection}
-                      selectedChat={this.state.selectedChat as IChat} />
+                      selectedChat={this.state.selectedChat} />
         );
     }
 }
