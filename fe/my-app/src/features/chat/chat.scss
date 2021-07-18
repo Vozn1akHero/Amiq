@@ -4,7 +4,22 @@
     justify-content: center;
   }
 
+  &__message-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
   &__message {
+    position: absolute;
+    top: 0;
     width: 50%;
+
+    &--created-by-viewer{
+      right: 0;
+    }
+
+    &--received-by-viewer{
+      left: 0;
+    }
   }
 }

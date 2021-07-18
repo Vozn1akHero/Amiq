@@ -7,7 +7,8 @@ class Chat extends Component<{chat: IChat}, any> {
     static Message = class extends Component<{message: IMessage, previousMessage: IMessage, viewerId: string}, any> {
         render() {
             return (
-                <div className="chat__message">
+                <div className={`chat__message 
+                    ${this.props.message.author.userId === this.props.viewerId ? `chat__message--created-by-viewer` : `chat__message--received-by-viewer`}`}>
                     {
                         this.props.message.textContent
                     }
@@ -40,7 +41,7 @@ class Chat extends Component<{chat: IChat}, any> {
                 <div className="uk-grid uk-width-1-1">
                     {
                         this.props.chat.messages.map((value,i) => {
-                            return <div key={i} className="uk-margin-top">
+                            return <div key={i} className="uk-margin-top chat__message-wrapper">
                                 <Chat.Message message={value}
                                               previousMessage={i > 0 ? this.props.chat.messages[i-1] : null}
                                               viewerId={this.userId} />

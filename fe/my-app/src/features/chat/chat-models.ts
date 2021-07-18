@@ -6,6 +6,7 @@ export interface IInterlocutor {
 }
 
 export interface IMessage {
+    //messageId: string;
     author: IInterlocutor;
     textContent: string;
     files: Array<IMedia>;
