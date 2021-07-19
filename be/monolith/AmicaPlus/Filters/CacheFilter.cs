@@ -9,44 +9,23 @@ using System.Threading.Tasks;
 namespace AmicaPlus.Filters
 {
 
-    public class CacheFilter : TypeFilterAttribute
+    public class CacheFilter : Attribute, IResourceFilter
     {
-        /// <summary>
-        /// params: storedDto
-        /// </summary>
-        /// <param name="params"></param>
-        public CacheFilter(params object[] @params) : base(typeof(CacheFilterImp))
+        public void OnResourceExecuted(ResourceExecutedContext context)
         {
-            Arguments = @params;
+            string key = context.HttpContext.Request.Path;
+            SynchronizedCache cache = CacheFacade.GetCacheByKey(key);
+            cache.Add(key, context.Result);
         }
 
-        public class CacheFilterImp : IResourceFilter
+        public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            private Type _objectType;
-
-            public CacheFilterImp(params object[] @params)
+            string key = context.HttpContext.Request.Path;
+            SynchronizedCache cache = CacheFacade.GetCacheByKey(key);
+            IActionResult cachedValue = cache.Read(key);
+            if (cachedValue != null)
             {
-                if(!(@params[0] is Type))
-                {
-                    throw new Exception("Typ != Type");
-                }
-                _objectType = (Type)@params[0];
-            }
-
-            public void OnResourceExecuted(ResourceExecutedContext context)
-            {
-
-            }
-
-            public void OnResourceExecuting(ResourceExecutingContext context)
-            {
-                string key = context.HttpContext.Request.Path;
-                SynchronizedCache cache = CacheFacade.GetCacheByKey(key);
-                IActionResult cachedValue = cache.Read(key);
-                if (cachedValue != null)
-                {
-                    context.Result = cachedValue;
-                }
+                context.Result = cachedValue;
             }
         }
     }
