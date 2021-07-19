@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AmicaPlus.Utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace AmicaPlus.Base
     public class AmicaPlusBaseController : ControllerBase
     {
         private ILogger<AmicaPlusBaseController> _logger;
+        private static SynchronizedCache _synchronizedCache = new SynchronizedCache();
+
+        public static SynchronizedCache Cache { get => _synchronizedCache; }
 
         public AmicaPlusBaseController()
         {
-            //_logger = logger;
         }
     }
 }

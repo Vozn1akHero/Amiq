@@ -1,5 +1,6 @@
 ﻿using AmicaPlus.Base;
 using AmicaPlus.Contracts;
+using AmicaPlus.Contracts.Auth;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,16 @@ namespace AmicaPlus.Controllers
     public class AuthController : AmicaPlusBaseController
     {
         [HttpPost("authorize")]
-        public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userAuthenticationDto)
+        public async Task<IActionResult> Authorize([FromBody] DtoUserAuthentication dtoUserAuthentication)
         {
             return Ok();
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] DtoUserRegistration dtoUserRegistration)
+        {
+            return Ok();
+        }
+
     }
 }
