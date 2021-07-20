@@ -1,4 +1,4 @@
-﻿using AmicaPlus.Utils;
+﻿using AmicaPlus.Core.Cache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AmicaPlus.Filters
 {
-
+    [AttributeUsage(AttributeTargets.Method)]
     public class CacheFilter : Attribute, IResourceFilter
     {
         public void OnResourceExecuted(ResourceExecutedContext context)

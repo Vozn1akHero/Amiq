@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AmicaPlus.Controllers
 {
-    public class PostController : AmicaPlusBaseController
+    public class FriendshipController : AmicaPlusBaseController
     {
         [HttpGet]
         public async Task<IActionResult> GetPostsByUserId(Guid userId)

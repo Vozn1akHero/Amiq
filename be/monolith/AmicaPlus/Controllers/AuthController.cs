@@ -11,8 +11,8 @@ namespace AmicaPlus.Controllers
 {
     public class AuthController : AmicaPlusBaseController
     {
-        [HttpPost("authorize")]
-        public async Task<IActionResult> Authorize([FromBody] DtoUserAuthentication dtoUserAuthentication)
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] DtoUserAuthentication dtoUserAuthentication)
         {
             return Ok();
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Utils
+namespace AmicaPlus.Core.Cache
 {
     public abstract class CacheFacade
     {

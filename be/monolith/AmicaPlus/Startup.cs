@@ -75,6 +75,8 @@ namespace AmicaPlus
 
             app.ConfigureMiddlewares();
 
+            app.UseResponseWrapper();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

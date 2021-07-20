@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AmicaPlus.Utils
+namespace AmicaPlus.Core.Cache
 {
     public class SynchronizedCache
     {
