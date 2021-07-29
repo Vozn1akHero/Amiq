@@ -21,6 +21,7 @@ namespace AmicaPlus.DataAccess.Models
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CommentToComment> CommentToComments { get; set; }
+        public virtual DbSet<Eftest> Eftests { get; set; }
         public virtual DbSet<Friendship> Friendships { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
@@ -122,6 +123,15 @@ namespace AmicaPlus.DataAccess.Models
                     .HasForeignKey(d => d.ParentCommentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CommentToComment_Comment");
+            });
+
+            modelBuilder.Entity<Eftest>(entity =>
+            {
+                entity.ToTable("EFTest");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Friendship>(entity =>
