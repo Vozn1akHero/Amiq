@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus
+namespace AmicaPlus.WebApi
 {
     public class Program
     {

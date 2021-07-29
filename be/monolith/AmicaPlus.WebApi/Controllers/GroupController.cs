@@ -1,16 +1,16 @@
-﻿using AmicaPlus.Base;
+﻿using AmicaPlus.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Controllers
+namespace AmicaPlus.WebApi.Controllers
 {
     public class GroupController : AmicaPlusBaseController
     {
-        [HttpGet]
-        public async Task<IActionResult> GetPostsByUserId(Guid userId)
+        [HttpGet("user")]
+        public async Task<IActionResult> GetGroupsByUserId([FromQuery] Guid participantId)
         {
             return await Task.FromResult(Ok());
         }

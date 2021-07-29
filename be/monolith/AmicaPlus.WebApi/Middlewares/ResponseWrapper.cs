@@ -8,7 +8,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Middlewares
+namespace AmicaPlus.WebApi.Middlewares
 {
     public class ResponseWrapper
     {

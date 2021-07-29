@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Middlewares
+namespace AmicaPlus.WebApi.Middlewares
 {
     public class WorkContextMiddleware 
     {

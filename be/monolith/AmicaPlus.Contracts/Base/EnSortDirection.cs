@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.WebApi.Base
+namespace AmicaPlus.Contracts.Base
 {
-    public class WorkContext
+    public enum EnSortDirection
     {
-        public Guid UserId { set; get;  }
+        ASC, DESC
     }
 }

@@ -1,4 +1,4 @@
-﻿using AmicaPlus.Base;
+﻿using AmicaPlus.WebApi.Base;
 using AmicaPlus.Contracts;
 using AmicaPlus.Contracts.Auth;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Controllers
+namespace AmicaPlus.WebApi.Controllers
 {
     public class AuthController : AmicaPlusBaseController
     {

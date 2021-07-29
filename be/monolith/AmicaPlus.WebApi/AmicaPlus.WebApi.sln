@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmicaPlus.Business", "..\Am
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmicaPlus.Contracts", "..\AmicaPlus.Contracts\AmicaPlus.Contracts.csproj", "{C75E2563-E7A8-48B0-8B14-A9C3C7C2E0F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmicaPlus.ResultSets", "..\AmicaPlus.Business.Model\AmicaPlus.ResultSets.csproj", "{3BCC87B6-5506-4E32-9EC0-D5ED6F75F04D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmicaPlus.ResultSets", "..\AmicaPlus.Business.Model\AmicaPlus.ResultSets.csproj", "{3BCC87B6-5506-4E32-9EC0-D5ED6F75F04D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmicaPlus.Modules", "..\AmicaPlus.Modules\AmicaPlus.Modules.csproj", "{B838A571-09B5-4DEA-96A6-AF5BDC26F4AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmicaPlus.Mapping", "..\AmicaPlus.Modules\AmicaPlus.Mapping.csproj", "{B838A571-09B5-4DEA-96A6-AF5BDC26F4AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

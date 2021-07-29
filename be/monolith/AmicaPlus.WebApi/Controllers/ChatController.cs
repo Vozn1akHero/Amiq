@@ -1,28 +1,31 @@
-﻿using AmicaPlus.Base;
+﻿using AmicaPlus.WebApi.Base;
 using AmicaPlus.Contracts.Chat;
+using AmicaPlus.Modules.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Controllers
+namespace AmicaPlus.WebApi.Controllers
 {
     public class ChatController : AmicaPlusBaseController
     {
-        [HttpGet]
-        public async Task<IActionResult> GetMessagesByUserId(int userId)
+
+        [HttpGet("message")]
+        public async Task<IActionResult> GetMessagesByUserId([FromQuery] int userId)
         {
             return await Task.FromResult(Ok());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateMessage(DtoChatMessage message)
+        [HttpPost("message")]
+        public async Task<IActionResult> CreateMessage(DtoChatMessage dtoMessage)
         {
+            var rsMessage = APAutoMapper.Instance.Map<RsChatMessage>(dtoMessage);
             return await Task.FromResult(Ok());
         }
 
-        [HttpDelete]
+        [HttpDelete("message/{messageId}")]
         public async Task<IActionResult> DeleteMessageById(Guid messageId)
         {
             return await Task.FromResult(Ok());

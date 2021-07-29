@@ -1,18 +1,13 @@
-﻿using AmicaPlus.Base;
+﻿using AmicaPlus.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Controllers
+namespace AmicaPlus.WebApi.Controllers
 {
     public class UserController : AmicaPlusBaseController
     {
-        [HttpGet]
-        public async Task<IActionResult> GetPostsByUserId(Guid userId)
-        {
-            return await Task.FromResult(Ok());
-        }
     }
 }
