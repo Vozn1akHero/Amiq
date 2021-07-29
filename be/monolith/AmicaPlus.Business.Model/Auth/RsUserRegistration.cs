@@ -1,6 +1,12 @@
-﻿namespace AmicaPlus.Contracts.Auth
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AmicaPlus.ResultSets.Auth
 {
-    public class DtoUserRegistration
+    public class RsUserRegistration
     {
         public string Login { get; set; }
         public string Name { get; set; }

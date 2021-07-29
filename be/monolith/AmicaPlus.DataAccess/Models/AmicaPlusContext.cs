@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace temp.Models
+namespace AmicaPlus.DataAccess.Models
 {
     public partial class AmicaPlusContext : DbContext
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AmicaPlus.Contracts
+﻿namespace AmicaPlus.Contracts
 {
     public class DtoUserAuthentication
     {

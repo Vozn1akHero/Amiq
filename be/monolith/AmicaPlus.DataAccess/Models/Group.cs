@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace temp.Models
+namespace AmicaPlus.DataAccess.Models
 {
     public partial class Group
     {
