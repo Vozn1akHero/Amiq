@@ -10,8 +10,14 @@ namespace AmicaPlus.WebApi.Controllers
     [Route("api/post")]
     public class PostController : AmicaPlusBaseController
     {
-        [HttpGet("user/all")]
-        public async Task<IActionResult> GetPostsByUserId([FromQuery] Guid userId)
+        [HttpGet("user/all/{userId}")]
+        public async Task<IActionResult> GetPostsByUserId([FromRoute] int userId)
+        {
+            return await Task.FromResult(Ok());
+        }
+
+        [HttpGet("group/all/{groupId}")]
+        public async Task<IActionResult> GetPostsByGroupId([FromRoute] int groupId)
         {
             return await Task.FromResult(Ok());
         }

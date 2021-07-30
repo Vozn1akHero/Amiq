@@ -42,9 +42,21 @@ namespace AmicaPlus.DataAccess.Auth
             return rsUserRegistartionResult;
         }
 
-        public List<Eftest> GetEftests()
+        public RsUserInfo GetUserByLogin(string login)
         {
-            return _amicaPlusContext.Eftests.ToList();
+            var user = _amicaPlusContext.Users.SingleOrDefault(e => e.Login.Equals(login));
+            if (user == null) return null;
+            var userInfo = new RsUserInfo {
+                Name = user.Name
+            };
+            return userInfo;
         }
+
+        public string GetUserHashedPasswordByLogin(string login)
+        {
+            var user = _amicaPlusContext.Users.SingleOrDefault(e => e.Login.Equals(login));
+            return user?.Password;
+        }
+
     }
 }

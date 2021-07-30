@@ -9,8 +9,7 @@ namespace AmicaPlus.DataAccess.Models
     {
         public Comment()
         {
-            CommentToCommentChildComments = new HashSet<CommentToComment>();
-            CommentToCommentParentComments = new HashSet<CommentToComment>();
+            CommentToComments = new HashSet<CommentToComment>();
         }
 
         public Guid CommentId { get; set; }
@@ -20,7 +19,6 @@ namespace AmicaPlus.DataAccess.Models
 
         public virtual User Author { get; set; }
         public virtual Post Post { get; set; }
-        public virtual ICollection<CommentToComment> CommentToCommentChildComments { get; set; }
-        public virtual ICollection<CommentToComment> CommentToCommentParentComments { get; set; }
+        public virtual ICollection<CommentToComment> CommentToComments { get; set; }
     }
 }

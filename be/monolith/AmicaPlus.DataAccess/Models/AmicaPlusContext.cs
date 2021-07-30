@@ -26,9 +26,11 @@ namespace AmicaPlus.DataAccess.Models
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
+        public virtual DbSet<GroupPost> GroupPosts { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserPost> UserPosts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -113,16 +115,16 @@ namespace AmicaPlus.DataAccess.Models
                 entity.Property(e => e.CommentToCommentId).HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.ChildComment)
-                    .WithMany(p => p.CommentToCommentChildComments)
+                    .WithMany(p => p.CommentToComments)
                     .HasForeignKey(d => d.ChildCommentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CommentToComment_Comment1");
+                    .HasConstraintName("FK_CommentToComment_ChildComment");
 
                 entity.HasOne(d => d.ParentComment)
-                    .WithMany(p => p.CommentToCommentParentComments)
+                    .WithMany(p => p.InverseParentComment)
                     .HasForeignKey(d => d.ParentCommentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CommentToComment_Comment");
+                    .HasConstraintName("FK_CommentToComment_ParentComment");
             });
 
             modelBuilder.Entity<Eftest>(entity =>
@@ -191,6 +193,19 @@ namespace AmicaPlus.DataAccess.Models
                     .HasConstraintName("FK_GroupParticipant_User");
             });
 
+            modelBuilder.Entity<GroupPost>(entity =>
+            {
+                entity.ToTable("GroupPost", "Post");
+
+                entity.Property(e => e.GroupPostId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.GroupPosts)
+                    .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPost_Post");
+            });
+
             modelBuilder.Entity<Message>(entity =>
             {
                 entity.ToTable("Message", "Chat");
@@ -223,7 +238,7 @@ namespace AmicaPlus.DataAccess.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("User", "Core");
+                entity.ToTable("User", "User");
 
                 entity.Property(e => e.Birthdate).HasColumnType("date");
 
@@ -242,10 +257,31 @@ namespace AmicaPlus.DataAccess.Models
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Sex)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.Surname)
                     .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UserPost>(entity =>
+            {
+                entity.ToTable("UserPost", "Post");
+
+                entity.Property(e => e.UserPostId).ValueGeneratedNever();
+
+                entity.Property(e => e.PostId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.UserPostNavigation)
+                    .WithOne(p => p.UserPost)
+                    .HasForeignKey<UserPost>(d => d.UserPostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserPost_Post");
             });
 
             OnModelCreatingPartial(modelBuilder);
