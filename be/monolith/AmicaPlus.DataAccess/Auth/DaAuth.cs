@@ -1,5 +1,6 @@
 ﻿using AmicaPlus.Contracts.Auth;
 using AmicaPlus.DataAccess.Models;
+using AmicaPlus.DataAccess.Models.Models;
 using AmicaPlus.ResultSets.Auth;
 using Microsoft.EntityFrameworkCore;
 using System;

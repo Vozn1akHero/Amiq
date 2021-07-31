@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace AmicaPlus.DataAccess.Models
+namespace AmicaPlus.DataAccess.Models.Models
 {
     public partial class User
     {
@@ -15,6 +15,7 @@ namespace AmicaPlus.DataAccess.Models
             ChatSecondUsers = new HashSet<Chat>();
             Comments = new HashSet<Comment>();
             GroupParticipants = new HashSet<GroupParticipant>();
+            UserPosts = new HashSet<UserPost>();
         }
 
         public int UserId { get; set; }
@@ -31,5 +32,6 @@ namespace AmicaPlus.DataAccess.Models
         public virtual ICollection<Chat> ChatSecondUsers { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
+        public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

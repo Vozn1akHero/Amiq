@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace AmicaPlus.DataAccess.Models
+namespace AmicaPlus.DataAccess.Models.Models
 {
     public partial class AmicaPlusContext : DbContext
     {
@@ -25,10 +25,12 @@ namespace AmicaPlus.DataAccess.Models
         public virtual DbSet<Friendship> Friendships { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
+        public virtual DbSet<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<TextBlock> TextBlocks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserPost> UserPosts { get; set; }
 
@@ -37,7 +39,7 @@ namespace AmicaPlus.DataAccess.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("data source=.\\SQLEXPRESS;Database=AmicaPlus;MultipleActiveResultSets=True;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("data source=localhost;Database=AmicaPlus;MultipleActiveResultSets=True;Trusted_Connection=True;");
             }
         }
 
@@ -172,6 +174,25 @@ namespace AmicaPlus.DataAccess.Models
                     .IsFixedLength(true);
             });
 
+            modelBuilder.Entity<GroupDescriptionBlock>(entity =>
+            {
+                entity.ToTable("GroupDescriptionBlock", "Group");
+
+                entity.Property(e => e.GroupDescriptionBlockId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupDescriptionBlocks)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupDescriptionBlock_Group");
+
+                entity.HasOne(d => d.TextBlock)
+                    .WithMany(p => p.GroupDescriptionBlocks)
+                    .HasForeignKey(d => d.TextBlockId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupDescriptionBlock_TextBlock");
+            });
+
             modelBuilder.Entity<GroupParticipant>(entity =>
             {
                 entity.ToTable("GroupParticipant", "Group");
@@ -197,7 +218,13 @@ namespace AmicaPlus.DataAccess.Models
             {
                 entity.ToTable("GroupPost", "Post");
 
-                entity.Property(e => e.GroupPostId).ValueGeneratedNever();
+                entity.Property(e => e.GroupPostId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupPosts)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPost_Group");
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.GroupPosts)
@@ -236,9 +263,25 @@ namespace AmicaPlus.DataAccess.Models
                 entity.Property(e => e.TextContent).HasMaxLength(500);
             });
 
+            modelBuilder.Entity<TextBlock>(entity =>
+            {
+                entity.ToTable("TextBlock", "Core");
+
+                entity.Property(e => e.TextBlockId).ValueGeneratedNever();
+
+                entity.Property(e => e.Content).HasMaxLength(350);
+
+                entity.Property(e => e.Header)
+                    .IsRequired()
+                    .HasMaxLength(150);
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User", "User");
+
+                entity.HasIndex(e => e.Login, "UC_UserLogin")
+                    .IsUnique();
 
                 entity.Property(e => e.Birthdate).HasColumnType("date");
 
@@ -273,9 +316,15 @@ namespace AmicaPlus.DataAccess.Models
             {
                 entity.ToTable("UserPost", "Post");
 
-                entity.Property(e => e.UserPostId).ValueGeneratedNever();
+                entity.Property(e => e.UserPostId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.PostId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserPosts)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserPost_User");
 
                 entity.HasOne(d => d.UserPostNavigation)
                     .WithOne(p => p.UserPost)

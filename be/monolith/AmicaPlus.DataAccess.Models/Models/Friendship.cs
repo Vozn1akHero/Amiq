@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace AmicaPlus.DataAccess.Models
+namespace AmicaPlus.DataAccess.Models.Models
 {
     public partial class Friendship
     {
