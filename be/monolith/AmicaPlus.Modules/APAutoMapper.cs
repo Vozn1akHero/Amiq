@@ -3,37 +3,43 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Modules.Mapping
+namespace AmicaPlus.Mapping
 {
-    public sealed class APAutoMapper
+    public static class APAutoMapper
     {
         private static IMapper _mapper;
+        private static bool _isInitialized;
 
-        public static IMapper Instance => _mapper;
-
-        static APAutoMapper()
+        public static IMapper Instance
         {
-            ConfigureMapper();
+            get => _mapper;
+        }
+
+        public static void Initialize()
+        {
+            if (!_isInitialized)
+            {
+                ConfigureMapper();
+                _isInitialized = true;
+            }
         }
 
         private static void ConfigureMapper()
         {
-            IEnumerable<Profile> exporters = typeof(Profile).Assembly.GetTypes()
+            var profiles = Assembly.GetCallingAssembly().GetTypes()
                                             .Where(t => t.IsSubclassOf(typeof(Profile)))
                                             .Select(t => (Profile)Activator.CreateInstance(t));
 
-            var config = new MapperConfiguration(cfg => {
-                foreach (var exporter in exporters)
-                {
-                    cfg.AddProfile(exporter);
-                }                
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfiles(profiles);
             });
 
             _mapper = config.CreateMapper();
         }
-
     }
 }

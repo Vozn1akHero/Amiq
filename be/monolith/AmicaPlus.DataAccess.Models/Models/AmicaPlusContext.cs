@@ -21,7 +21,6 @@ namespace AmicaPlus.DataAccess.Models.Models
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CommentToComment> CommentToComments { get; set; }
-        public virtual DbSet<Eftest> Eftests { get; set; }
         public virtual DbSet<Friendship> Friendships { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
@@ -32,6 +31,7 @@ namespace AmicaPlus.DataAccess.Models.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<TextBlock> TextBlocks { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
         public virtual DbSet<UserPost> UserPosts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -129,15 +129,6 @@ namespace AmicaPlus.DataAccess.Models.Models
                     .HasConstraintName("FK_CommentToComment_ParentComment");
             });
 
-            modelBuilder.Entity<Eftest>(entity =>
-            {
-                entity.ToTable("EFTest");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Friendship>(entity =>
             {
                 entity.HasNoKey();
@@ -151,11 +142,17 @@ namespace AmicaPlus.DataAccess.Models.Models
             {
                 entity.ToTable("Group", "Group");
 
+                entity.Property(e => e.AvatarSrc).IsUnicode(false);
+
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name).HasMaxLength(150);
+                entity.Property(e => e.Description).HasMaxLength(500);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(150);
             });
 
             modelBuilder.Entity<GroupBlockedUser>(entity =>
@@ -183,7 +180,6 @@ namespace AmicaPlus.DataAccess.Models.Models
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupDescriptionBlocks)
                     .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupDescriptionBlock_Group");
 
                 entity.HasOne(d => d.TextBlock)
@@ -199,12 +195,13 @@ namespace AmicaPlus.DataAccess.Models.Models
 
                 entity.Property(e => e.GroupParticipantId).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.Joined).HasColumnType("datetime");
+                entity.Property(e => e.Joined)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupParticipants)
                     .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupParticipant_Group");
 
                 entity.HasOne(d => d.User)
@@ -223,7 +220,6 @@ namespace AmicaPlus.DataAccess.Models.Models
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupPost_Group");
 
                 entity.HasOne(d => d.Post)
@@ -312,25 +308,42 @@ namespace AmicaPlus.DataAccess.Models.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<UserDescriptionBlock>(entity =>
+            {
+                entity.ToTable("UserDescriptionBlock", "User");
+
+                entity.Property(e => e.UserDescriptionBlockId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.TextBlock)
+                    .WithMany(p => p.UserDescriptionBlocks)
+                    .HasForeignKey(d => d.TextBlockId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserDescriptionBlock_TextBlock");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserDescriptionBlocks)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserDescriptionBlock_User");
+            });
+
             modelBuilder.Entity<UserPost>(entity =>
             {
                 entity.ToTable("UserPost", "Post");
 
                 entity.Property(e => e.UserPostId).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.PostId).HasDefaultValueSql("(newid())");
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.UserPosts)
+                    .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserPost_Post");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserPosts)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserPost_User");
-
-                entity.HasOne(d => d.UserPostNavigation)
-                    .WithOne(p => p.UserPost)
-                    .HasForeignKey<UserPost>(d => d.UserPostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserPost_Post");
             });
 
             OnModelCreatingPartial(modelBuilder);

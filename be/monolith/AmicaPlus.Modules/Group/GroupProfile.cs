@@ -2,6 +2,7 @@
 using System;
 using AmicaPlus.Contracts.Chat;
 using AmicaPlus.ResultSets.Group;
+using AmicaPlus.DataAccess.Models.Models;
 
 namespace AmicaPlus.Mapping
 {
@@ -9,6 +10,7 @@ namespace AmicaPlus.Mapping
     {
         public GroupProfile()
         {
+            CreateMap<GroupParticipant, RsGroupParticipant>();
             
         }
     }

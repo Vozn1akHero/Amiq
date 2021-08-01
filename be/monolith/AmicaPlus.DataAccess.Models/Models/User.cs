@@ -15,6 +15,7 @@ namespace AmicaPlus.DataAccess.Models.Models
             ChatSecondUsers = new HashSet<Chat>();
             Comments = new HashSet<Comment>();
             GroupParticipants = new HashSet<GroupParticipant>();
+            UserDescriptionBlocks = new HashSet<UserDescriptionBlock>();
             UserPosts = new HashSet<UserPost>();
         }
 
@@ -32,6 +33,7 @@ namespace AmicaPlus.DataAccess.Models.Models
         public virtual ICollection<Chat> ChatSecondUsers { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
+        public virtual ICollection<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

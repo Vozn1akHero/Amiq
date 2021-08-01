@@ -1,3 +1,4 @@
+using AmicaPlus.Mapping;
 using AmicaPlus.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,8 @@ namespace AmicaPlus.WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            APAutoMapper.Initialize();
         }
 
         public IConfiguration Configuration { get; }

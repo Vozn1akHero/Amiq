@@ -12,5 +12,8 @@ namespace AmicaPlus.ResultSets.Group
         public string Name { get; set; }
         public string AvatarSrc { get; set; }
         public string Description { get; set; }
+        public List<RsGroupParticipant> Participants { get; set; }
     }
+
+    //public record RsGroup(int GroupId, string Name, string AvatarSrc, string Description);
 }

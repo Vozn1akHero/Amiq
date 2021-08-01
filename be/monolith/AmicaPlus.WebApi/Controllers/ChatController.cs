@@ -1,11 +1,11 @@
 ﻿using AmicaPlus.WebApi.Base;
 using AmicaPlus.Contracts.Chat;
-using AmicaPlus.Modules.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AmicaPlus.Mapping;
 
 namespace AmicaPlus.WebApi.Controllers
 {

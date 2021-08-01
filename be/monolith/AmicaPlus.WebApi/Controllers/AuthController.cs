@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AmicaPlus.Business.Auth;
-using AmicaPlus.Modules.Mapping;
 using AmicaPlus.ResultSets.Auth;
 using Microsoft.AspNetCore.Http;
+using AmicaPlus.Mapping;
 
 namespace AmicaPlus.WebApi.Controllers
 {

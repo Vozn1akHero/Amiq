@@ -10,6 +10,7 @@ namespace AmicaPlus.DataAccess.Models.Models
         public TextBlock()
         {
             GroupDescriptionBlocks = new HashSet<GroupDescriptionBlock>();
+            UserDescriptionBlocks = new HashSet<UserDescriptionBlock>();
         }
 
         public Guid TextBlockId { get; set; }
@@ -17,5 +18,6 @@ namespace AmicaPlus.DataAccess.Models.Models
         public string Content { get; set; }
 
         public virtual ICollection<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
+        public virtual ICollection<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
     }
 }

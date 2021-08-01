@@ -11,13 +11,14 @@ namespace AmicaPlus.DataAccess.Models.Models
         {
             Comments = new HashSet<Comment>();
             GroupPosts = new HashSet<GroupPost>();
+            UserPosts = new HashSet<UserPost>();
         }
 
         public Guid PostId { get; set; }
         public string TextContent { get; set; }
 
-        public virtual UserPost UserPost { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<GroupPost> GroupPosts { get; set; }
+        public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

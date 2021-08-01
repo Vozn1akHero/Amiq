@@ -16,6 +16,8 @@ namespace AmicaPlus.DataAccess.Models.Models
 
         public int GroupId { get; set; }
         public string Name { get; set; }
+        public string AvatarSrc { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public virtual ICollection<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }

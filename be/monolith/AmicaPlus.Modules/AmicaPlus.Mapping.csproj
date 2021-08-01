@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AmicaPlus.Business.Model\AmicaPlus.ResultSets.csproj" />
     <ProjectReference Include="..\AmicaPlus.Contracts\AmicaPlus.Contracts.csproj" />
+    <ProjectReference Include="..\AmicaPlus.DataAccess.Models\AmicaPlus.DataAccess.Models.csproj" />
   </ItemGroup>
 
 </Project>
