@@ -1,34 +1,28 @@
 ﻿using AmicaPlus.Contracts.Auth;
+using AmicaPlus.Contracts.User;
 using AmicaPlus.DataAccess.Models;
 using AmicaPlus.DataAccess.Models.Models;
-using AmicaPlus.ResultSets.Auth;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace AmicaPlus.DataAccess.Auth
 {
-    public class DaAuth
+    public class DaAuth : IDaAuth
     {
-        private readonly AmicaPlusContext _amicaPlusContext;
+        private readonly AmicaPlusContext _amicaPlusContext = new AmicaPlusContext();
 
-        public DaAuth()
+        public DtoUserRegistartionResult Register(DtoUserRegistration dtoUserRegistration)
         {
-            _amicaPlusContext = new AmicaPlusContext();
-        }
-
-        public RsUserRegistartionResult Register(RsUserRegistration rsUserRegistration)
-        {
-            var rsUserRegistartionResult = new RsUserRegistartionResult();
+            var rsUserRegistartionResult = new DtoUserRegistartionResult();
             var user = new User {
-                Name = rsUserRegistration.Name,
-                Surname = rsUserRegistration.Surname,
-                Birthdate = rsUserRegistration.Birthdate,
-                Login = rsUserRegistration.Login,
-                Password = rsUserRegistration.Password
+                Name = dtoUserRegistration.Name,
+                Surname = dtoUserRegistration.Surname,
+                Birthdate = dtoUserRegistration.Birthdate,
+                Login = dtoUserRegistration.Login,
+                Password = dtoUserRegistration.Password
             };
             try
             {
@@ -43,12 +37,16 @@ namespace AmicaPlus.DataAccess.Auth
             return rsUserRegistartionResult;
         }
 
-        public RsUserInfo GetUserByLogin(string login)
+        public DtoUserInfo GetUserByLogin(string login)
         {
             var user = _amicaPlusContext.Users.SingleOrDefault(e => e.Login.Equals(login));
             if (user == null) return null;
-            var userInfo = new RsUserInfo {
-                Name = user.Name
+            var userInfo = new DtoUserInfo {
+                Name = user.Name,
+                Surname = user.Surname,
+                Birthdate = user.Birthdate,
+                Email = user.Email,
+                UserId = user.UserId
             };
             return userInfo;
         }
@@ -59,5 +57,9 @@ namespace AmicaPlus.DataAccess.Auth
             return user?.Password;
         }
 
+        public bool EmailExists(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

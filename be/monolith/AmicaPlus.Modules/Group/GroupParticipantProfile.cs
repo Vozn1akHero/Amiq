@@ -1,6 +1,5 @@
 ﻿using AmicaPlus.Contracts.Group;
 using AmicaPlus.DataAccess.Models.Models;
-using AmicaPlus.ResultSets.Group;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -14,9 +13,9 @@ namespace AmicaPlus.Mapping.Group
     {
         public GroupParticipantProfile()
         {
-            CreateTwoWayMap<RsMinifiedGroupParticipant, DtoMinifiedGroupParticipant>();
-            CreateMap<GroupParticipant, RsGroupParticipant>().ForMember(s => s.UserInfo, d => d.MapFrom(s=>s.User));
-            CreateMap<RsGroupParticipant, DtoGroupParticipant>();
+            CreateTwoWayMap<DtoMinifiedGroupParticipant, DtoMinifiedGroupParticipant>();
+            CreateMap<GroupParticipant, DtoGroupParticipant>().ForMember(s => s.UserInfo, d => d.MapFrom(s=>s.User));
+            CreateMap<DtoGroupParticipant, DtoGroupParticipant>();
         }
     }
 }

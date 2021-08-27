@@ -1,4 +1,5 @@
 ﻿using AmicaPlus.WebApi.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AmicaPlus.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/post")]
     public class PostController : AmicaPlusBaseController
     {

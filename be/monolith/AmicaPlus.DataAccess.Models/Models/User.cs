@@ -26,6 +26,8 @@ namespace AmicaPlus.DataAccess.Models.Models
         public string Password { get; set; }
         public DateTime Birthdate { get; set; }
         public string Sex { get; set; }
+        public string Email { get; set; }
+        public string AvatarPath { get; set; }
 
         public virtual ICollection<BlockedUser> BlockedUserDestUsers { get; set; }
         public virtual ICollection<BlockedUser> BlockedUserIssuers { get; set; }

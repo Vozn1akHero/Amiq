@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AmicaPlus.Business.Auth;
-using AmicaPlus.ResultSets.Auth;
 using Microsoft.AspNetCore.Http;
 using AmicaPlus.Mapping;
+using AmicaPlus.Core.Auth;
 
 namespace AmicaPlus.WebApi.Controllers
 {
@@ -19,15 +19,19 @@ namespace AmicaPlus.WebApi.Controllers
 
 
         [HttpPost("authenticate")]
-        public ActionResult<RsUserAuthenticationResult> Authenticate([FromBody] DtoUserAuthentication dtoUserAuthentication)
+        public ActionResult<DtoUserAuthenticationResult> Authenticate([FromBody] DtoUserAuthentication dtoUserAuthentication)
         {
             try
             {
-                RsUserAuthenticationResult result = new();
-                var rsUserAuthentication = APAutoMapper.Instance.Map<RsUserAuthentication>(dtoUserAuthentication);
-                result = _bsAuth.Authenticate(rsUserAuthentication);
-                var rsUserAuthenticationResult = APAutoMapper.Instance.Map<DtoUserAuthenticationResult>(result);
-                return result.Success ? Ok(rsUserAuthenticationResult) : new ForbidResult();
+                DtoUserAuthenticationResult result = _bsAuth.Authenticate(dtoUserAuthentication);
+                if (result.Success)
+                {
+                    string jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase.UserId, result.JwtBase.UserEmail);
+                    HttpContext.Response.Cookies.Append("token",
+                        jwt, 
+                        new CookieOptions { HttpOnly = true });
+                }
+                return result.Success ? Ok(result) : new ForbidResult();
             } catch (Exception ex) {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
@@ -38,8 +42,8 @@ namespace AmicaPlus.WebApi.Controllers
         {
             try
             {
-                RsUserRegistartionResult rsUserRegistartionResult = new();
-                var rsUserRegistration = APAutoMapper.Instance.Map<RsUserRegistration>(dtoUserRegistration);
+                DtoUserRegistartionResult rsUserRegistartionResult = new();
+                var rsUserRegistration = APAutoMapper.Instance.Map<DtoUserRegistration>(dtoUserRegistration);
                 rsUserRegistartionResult = _bsAuth.Register(rsUserRegistration);
                 var dto = APAutoMapper.Instance.Map<DtoUserRegistartionResult>(rsUserRegistartionResult);
                 return Ok(dto);

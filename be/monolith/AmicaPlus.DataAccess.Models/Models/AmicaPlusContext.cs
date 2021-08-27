@@ -263,7 +263,7 @@ namespace AmicaPlus.DataAccess.Models.Models
             {
                 entity.ToTable("TextBlock", "Core");
 
-                entity.Property(e => e.TextBlockId).ValueGeneratedNever();
+                entity.Property(e => e.TextBlockId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Content).HasMaxLength(350);
 
@@ -279,7 +279,14 @@ namespace AmicaPlus.DataAccess.Models.Models
                 entity.HasIndex(e => e.Login, "UC_UserLogin")
                     .IsUnique();
 
+                entity.Property(e => e.AvatarPath).IsUnicode(false);
+
                 entity.Property(e => e.Birthdate).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Login)
                     .IsRequired()

@@ -1,3 +1,4 @@
+using AmicaPlus.Core.Auth;
 using AmicaPlus.Mapping;
 using AmicaPlus.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,16 +45,7 @@ namespace AmicaPlus.WebApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
+                options.TokenValidationParameters = JwtExtensions.JwtValidationParameters;
             });
             services.Configure<JsonOptions>(opts => {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
@@ -88,6 +80,10 @@ namespace AmicaPlus.WebApi
             app.UseAuthorization();
 
             app.ConfigureMiddlewares();
+
+            app.UseStaticFiles(new StaticFileOptions {
+                HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress
+            });
 
             //app.UseResponseWrapper();
 

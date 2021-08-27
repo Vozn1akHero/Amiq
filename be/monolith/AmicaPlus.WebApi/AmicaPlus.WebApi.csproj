@@ -28,4 +28,8 @@
     <ProjectReference Include="..\AmicaPlus.Modules\AmicaPlus.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,6 @@
 ﻿using AmicaPlus.Business;
 using AmicaPlus.Contracts.Group;
 using AmicaPlus.Mapping;
-using AmicaPlus.ResultSets.Group;
 using AmicaPlus.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +25,7 @@ namespace AmicaPlus.WebApi.Controllers
         [HttpDelete("leave")]
         public async Task<IActionResult> LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)
         {
-            var rsLeaveGroup = APAutoMapper.Instance.Map<RsLeaveGroup>(dtoLeaveGroup);
+            var rsLeaveGroup = APAutoMapper.Instance.Map<DtoLeaveGroup>(dtoLeaveGroup);
             await _bsGroupParticipant.LeaveGroupAsync(rsLeaveGroup);
             return Ok();
         }
@@ -34,7 +33,7 @@ namespace AmicaPlus.WebApi.Controllers
         [HttpPost("join")]
         public async Task<IActionResult> JoinGroupAsync([FromBody] DtoJoinGroup dtoJoinGroup)
         {
-            var rsJoinGroup = APAutoMapper.Instance.Map<RsJoinGroup>(dtoJoinGroup);
+            var rsJoinGroup = APAutoMapper.Instance.Map<DtoJoinGroup>(dtoJoinGroup);
             await _bsGroupParticipant.JoinGroupAsync(rsJoinGroup);
             return Ok();
         }
@@ -42,9 +41,9 @@ namespace AmicaPlus.WebApi.Controllers
         [HttpPost("is-participant")]
         public async Task<IActionResult> GetGroupParticipantAsync([FromQuery] DtoMinifiedGroupParticipant dtoMinifiedGroupParticipant)
         {
-            var rsMinifiedGroupParticipant = APAutoMapper.Instance.Map<RsMinifiedGroupParticipant>(dtoMinifiedGroupParticipant);
+            var rsMinifiedGroupParticipant = APAutoMapper.Instance.Map<DtoMinifiedGroupParticipant>(dtoMinifiedGroupParticipant);
             var groupParticipants = await _bsGroupParticipant.GetGroupParticipantAsync(rsMinifiedGroupParticipant);
-            var rsGroupParticipants = APAutoMapper.Instance.Map<List<RsGroupParticipant>>(groupParticipants);
+            var rsGroupParticipants = APAutoMapper.Instance.Map<List<DtoGroupParticipant>>(groupParticipants);
             return Ok(rsGroupParticipants);
         }
     }

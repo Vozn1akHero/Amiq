@@ -1,6 +1,6 @@
-﻿using AmicaPlus.DataAccess.Models.Models;
+﻿using AmicaPlus.Contracts.Group;
+using AmicaPlus.DataAccess.Models.Models;
 using AmicaPlus.Mapping;
-using AmicaPlus.ResultSets.Group;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +26,7 @@ namespace AmicaPlus.DataAccess.Group
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>
-        public async Task<List<RsGroup>> GetUserGroupsByUserIdAsync(int userId)
+        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId)
         {
             IQueryable dbGroups = (from g in _amicaPlusContext.Groups.AsNoTracking()
                                    join gp in _amicaPlusContext.GroupParticipants.AsNoTracking()
@@ -34,14 +34,14 @@ namespace AmicaPlus.DataAccess.Group
                                    join u in _amicaPlusContext.Users.AsNoTracking()
                                    on gp.UserId equals u.UserId
                                    where u.UserId == userId
-                                   //select new RsGroup { }
+                                   //select new DtoGroup { }
                                    select g
                                 );
-            List<RsGroup> groups = await APAutoMapper.Instance.ProjectTo<RsGroup>(dbGroups).ToListAsync();
+            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
             return groups;
         }
 
-        public async Task LeaveGroupAsync(RsLeaveGroup rsLeaveGroup)
+        public async Task LeaveGroupAsync(DtoLeaveGroup rsLeaveGroup)
         {
             var participant = _amicaPlusContext
                 .GroupParticipants
@@ -53,7 +53,7 @@ namespace AmicaPlus.DataAccess.Group
             }
         }
 
-        public async Task JoinGroupAsync(RsJoinGroup rsJoinGroup)
+        public async Task JoinGroupAsync(DtoJoinGroup rsJoinGroup)
         {
             var participant = new GroupParticipant { 
                 GroupId = rsJoinGroup.GroupId,
@@ -64,14 +64,14 @@ namespace AmicaPlus.DataAccess.Group
             await _amicaPlusContext.SaveChangesAsync();
         }
 
-        public async Task<RsGroupParticipant> GetGroupParticipantAsync(RsMinifiedGroupParticipant rsSimplifiedGroupParticipant)
+        public async Task<DtoGroupParticipant> GetGroupParticipantAsync(DtoMinifiedGroupParticipant rsSimplifiedGroupParticipant)
         {
             var res = await _amicaPlusContext
                 .GroupParticipants
                 .Where(e => e.GroupId == rsSimplifiedGroupParticipant.GroupId
                 && e.UserId == rsSimplifiedGroupParticipant.UserId)
                 .Include(e=>e.User)
-                .ProjectTo<RsGroupParticipant>(APAutoMapper.Instance.ConfigurationProvider)
+                .ProjectTo<DtoGroupParticipant>(APAutoMapper.Instance.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
             return res;
@@ -80,7 +80,7 @@ namespace AmicaPlus.DataAccess.Group
         /*private IConfigurationProvider MapperConfiguration()
         {
             var configuration = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<GroupParticipant, RsGroupParticipant>()
+                        cfg.CreateMap<GroupParticipant, DtoGroupParticipant>()
                         );
 
             return configuration;

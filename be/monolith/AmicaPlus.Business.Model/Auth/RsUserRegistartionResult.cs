@@ -1,4 +1,5 @@
-﻿using AmicaPlus.Common.DbOperation;
+﻿using AmicaPlus.Common;
+using AmicaPlus.Common.DbOperation;
 
 namespace AmicaPlus.Contracts.Auth
 {

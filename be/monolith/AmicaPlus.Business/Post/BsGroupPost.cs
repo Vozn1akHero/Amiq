@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.Business
+namespace AmicaPlus.Business.Post
 {
-    public class BsGroup
+    class BsGroupPost
     {
-
     }
 }

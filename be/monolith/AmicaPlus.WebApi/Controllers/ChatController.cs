@@ -21,7 +21,7 @@ namespace AmicaPlus.WebApi.Controllers
         [HttpPost("message")]
         public async Task<IActionResult> CreateMessage(DtoChatMessage dtoMessage)
         {
-            var rsMessage = APAutoMapper.Instance.Map<RsChatMessage>(dtoMessage);
+            var rsMessage = APAutoMapper.Instance.Map<DtoChatMessage>(dtoMessage);
             return await Task.FromResult(Ok());
         }
 

@@ -8,7 +8,7 @@ namespace AmicaPlus.Mapping
     {
         public ChatProfile()
         {
-            CreateMap<DtoChatMessage, RsChatMessage>();
+            CreateMap<DtoChatMessage, DtoChatMessage>();
         }
     }
 }

@@ -1,3 +1,5 @@
+Set-ExecutionPolicy -ExecutionPolicy Bypass
+
 $workingDir = $PSScriptRoot;
 
 Write-Host "Project dir= $workingDir";

@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "jzfhpDLbz23eAn2l+NXwDTWw9McFvOVPIJh7PSUl0JMSH5q15wekbDUcvd3hD6Z1/tlapeI8fzWZ2pnJM/fNSw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\chlenix\\Documents\\thesis\\be\\microservices\\Amico.Services\\Amico.Services.Chat\\Amico.Services.Chat.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chlenix\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.11.1\\microsoft.visualstudio.azure.containers.tools.targets.1.11.1.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\chlenix\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
