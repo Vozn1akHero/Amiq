@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace Amiq.DataAccess.Auth
 {
     public class DaAuth : IDaAuth
@@ -17,12 +18,15 @@ namespace Amiq.DataAccess.Auth
         public DtoUserRegistartionResult Register(DtoUserRegistration dtoUserRegistration)
         {
             var rsUserRegistartionResult = new DtoUserRegistartionResult();
-            var user = new User {
+            var user = new Models.Models.User
+            {
                 Name = dtoUserRegistration.Name,
                 Surname = dtoUserRegistration.Surname,
                 Birthdate = dtoUserRegistration.Birthdate,
                 Login = dtoUserRegistration.Login,
-                Password = dtoUserRegistration.Password
+                Password = dtoUserRegistration.Password,
+                Email = dtoUserRegistration.Email,
+                Sex = dtoUserRegistration.Sex
             };
             try
             {
@@ -59,7 +63,7 @@ namespace Amiq.DataAccess.Auth
 
         public bool EmailExists(string email)
         {
-            throw new NotImplementedException();
+            return _amiqContext.Users.Any(e=> e.Email.Equals(email));
         }
     }
 }

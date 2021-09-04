@@ -9,6 +9,10 @@ import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 class ProfilePage extends BasePageComponent {
     friends = []
 
+    componentDidMount() {
+
+    }
+
     render() {
         return (
             <div className='profile-page'>

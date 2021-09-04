@@ -1,4 +1,6 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.Contracts.Chat;
+using Amiq.DataAccess.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,8 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.Chat;
+using Amiq.DataAccess.Chat;
+using Amiq.DataAccess.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +13,9 @@ namespace Amiq.Business.Chat
 {
     public class BsChat : BsServiceBase
     {
-        public async Task<List<DtoChatMessage>> GetChatPreviewList()
-        {
-            throw new NotImplementedException();
-        }
+        private DaChat _daChat = new DaChat();
+
+        public bool IsUserChatParticipant(int userId, Guid chatId) => _daChat.IsUserChatParticipant(userId, chatId);
+
     }
 }

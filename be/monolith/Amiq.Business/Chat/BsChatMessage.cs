@@ -23,5 +23,8 @@ namespace Amiq.Business.Chat
         {
             return await _daChatMessage.GetChatMessagesAsync(dtoPaginatedRequest);
         }
+
+        public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(DtoChatPreviewListRequest dtoChatPreviewListRequest)
+        => await _daChatMessage.GetChatPreviewListAsync(dtoChatPreviewListRequest);
     }
 }

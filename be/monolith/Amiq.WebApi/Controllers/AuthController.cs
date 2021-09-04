@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Amiq.Business.Auth;
 using Microsoft.AspNetCore.Http;
 using Amiq.Core.Auth;
+using Amiq.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Amiq.WebApi.Controllers
 {
@@ -24,8 +27,8 @@ namespace Amiq.WebApi.Controllers
                 DtoUserAuthenticationResult result = _bsAuth.Authenticate(dtoUserAuthentication);
                 if (result.Success)
                 {
-                    string jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase.UserId, result.JwtBase.UserEmail);
-                    HttpContext.Response.Cookies.Append("token",jwt, new CookieOptions { HttpOnly = true });
+                    var jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase);
+                    HttpContext.Response.Cookies.Append("token", jwt.Token, new CookieOptions { HttpOnly = true });
                 }
                 return result.Success ? Ok(result) : new ForbidResult();
             } catch (Exception ex) {
@@ -38,6 +41,7 @@ namespace Amiq.WebApi.Controllers
         {
             try
             {
+                dtoUserRegistration.Sex = EnumExtensions.TryMapStrValueToAltValue(typeof(EnSex), dtoUserRegistration.Sex);
                 var userRegistartionResult = _bsAuth.Register(dtoUserRegistration);
                 return Ok(userRegistartionResult);
             } catch {
@@ -45,5 +49,11 @@ namespace Amiq.WebApi.Controllers
             }
         }
 
+        [HttpGet("validate-credentials")]
+        [Authorize]
+        public IActionResult ValidateCredentials()
+        {
+            return Ok();
+        }
     }
 }

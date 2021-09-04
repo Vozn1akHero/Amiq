@@ -1,5 +1,6 @@
 using Amiq.Core.Auth;
 using Amiq.Mapping;
+using Amiq.WebApi.Core;
 using Amiq.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -43,10 +44,20 @@ namespace Amiq.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Amiq", Version = "v1" });
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = JwtExtensions.JwtValidationParameters;
-            });
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = JwtExtensions.JwtValidationParameters;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["token"];
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
             services.Configure<JsonOptions>(opts => {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
                 opts.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
@@ -58,7 +69,10 @@ namespace Amiq.WebApi
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
             });
+
             //services.ConfigureMapper();
+
+            services.ConfigureCustomServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +86,10 @@ namespace Amiq.WebApi
             }
 
             //app.UseHttpsRedirection();
+            app.UseCors(e => e
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin());
 
             app.UseRouting();
 
@@ -86,6 +104,8 @@ namespace Amiq.WebApi
             });
 
             //app.UseResponseWrapper();
+
+            
 
             app.Use(async (http, next) =>
             {
@@ -124,14 +144,6 @@ namespace Amiq.WebApi
             {
                 endpoints.MapControllers();
             });
-        }
-    }
-
-    static class StartupExtensions
-    {
-        public static void ConfigureMiddlewares(this IApplicationBuilder app)
-        {
-            app.UseMiddleware<WorkContextMiddleware>();
         }
     }
 }

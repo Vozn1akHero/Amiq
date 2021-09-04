@@ -18,7 +18,6 @@ export default class Routes {
 
         //todo
         //query params
-        console.log(output)
         return output;
     }
 
@@ -74,6 +73,15 @@ export default class Routes {
             link: "group",
             subroutes: [],
             params: ["/:groupId"],
+            queryParams: ""
+        };
+    }
+
+    public static get authPageRoutes(): IRoute{
+        return {
+            link: "login",
+            subroutes: [],
+            params: [],
             queryParams: ""
         };
     }

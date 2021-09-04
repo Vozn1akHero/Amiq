@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Amiq.Enums;
+using System;
 
 namespace Amiq.Contracts.Auth
 {
@@ -10,5 +11,6 @@ namespace Amiq.Contracts.Auth
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime Birthdate { get; set; }
+        public string Sex { get; set; }
     }
 }

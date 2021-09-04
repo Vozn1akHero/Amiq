@@ -12,19 +12,14 @@ namespace Amiq.DataAccess.Post
 {
     public class DaPost
     {
-        private AmiqContext _AmiqContext;
-
-        public DaPost()
-        {
-            _AmiqContext = new AmiqContext();
-        }
+        private AmiqContext _amiqContext = new AmiqContext();
 
         public async Task<List<DtoGroupPost>> GetGroupPostsAsync(int groupId)
         {
-            return await (from p in _AmiqContext.Posts.AsNoTracking()
-                          join gp in _AmiqContext.GroupPosts.AsNoTracking()
+            return await (from p in _amiqContext.Posts.AsNoTracking()
+                          join gp in _amiqContext.GroupPosts.AsNoTracking()
                           on p.PostId equals gp.PostId
-                          select new DtoGroupPost { }).ToListAsync();
+                          select new DtoGroupPost {  }).ToListAsync();
         }
     }
 }

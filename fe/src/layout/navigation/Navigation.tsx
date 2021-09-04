@@ -1,13 +1,25 @@
 import {Link} from "react-router-dom";
 import {INavigationLink} from "./INavigationLink";
-import {memo} from "react";
+import {Component, memo, useState} from "react";
 import "./logo.scss"
 import {Routes} from "core/routing";
-type Props = {
+import {Observable, take} from "rxjs";
+import {AuthStore} from "../../store/auth/auth-store";
 
-};
-export function Navigation (props: Props) {
-    const navigationLinks : Array<INavigationLink> = [
+type State = {
+    isAuthenticated: boolean;
+}
+
+export class Navigation extends Component<any, State> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAuthenticated: true
+        }
+    }
+
+
+    navigationLinks : Array<INavigationLink> = [
         {
             title: "Profil",
             anchor: Routes.getNavRoute(Routes.profilePageRoutes)
@@ -26,18 +38,30 @@ export function Navigation (props: Props) {
         }
     ];
 
-    return (
-        <nav className="navigation uk-navbar-container uk-padding-small">
-            <div className="logo uk-margin-large-left "></div>
-            <div className="uk-margin-large-left uk-navbar-left">
-                <ul className="uk-navbar-nav">
-                    {
-                        navigationLinks.map(((value,i) => <li key={i}><Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link></li>))
-                    }
-                </ul>
-            </div>
-        </nav>
-    );
+    componentDidMount() {
+        AuthStore.isAuthenticated$.subscribe(value => {
+            this.setState({
+                isAuthenticated: value
+            })
+        });
+    }
+
+    render() {
+        return (
+            <nav className="navigation uk-navbar-container uk-padding-small">
+                <div className="logo uk-margin-large-left "></div>
+                {
+                    this.state.isAuthenticated && <div className="uk-margin-large-left uk-navbar-left">
+                        <ul className="uk-navbar-nav">
+                            {
+                                this.navigationLinks.map(((value,i) => <li key={i}><Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link></li>))
+                            }
+                        </ul>
+                    </div>
+                }
+            </nav>
+        );
+    }
 };
 
 export const MemoizedNavigation = memo(Navigation)

@@ -4,6 +4,7 @@ using Amiq.Contracts;
 using Amiq.Contracts.Auth;
 using Amiq.DataAccess.Auth;
 using Amiq.DataAccess.Models;
+using Amiq.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,9 @@ namespace Amiq.Business.Auth
                 Success = true, 
                 JwtBase = new DtoJwtBase { 
                     UserId = user.UserId,
-                    UserEmail = user.Email
+                    UserEmail = user.Email,
+                    UserName = user.Name,
+                    UserSurname = user.Surname
                 } 
             };
             else return new DtoUserAuthenticationResult { Success = false };

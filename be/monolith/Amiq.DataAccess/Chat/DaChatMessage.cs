@@ -37,5 +37,21 @@ namespace Amiq.DataAccess.Chat
                               }).ToListAsync();
             return previews;
         }
+
+        public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(DtoChatPreviewListRequest dtoChatPreviewListRequest)
+        {
+            return await _amiqContext.Messages
+                .FromSqlRaw("Chat.GetChatPreviews @userId, @length, @skip", dtoChatPreviewListRequest.IssuerId, dtoChatPreviewListRequest.Count, dtoChatPreviewListRequest.Skip)
+                .Select(e => new DtoChatPreview
+                {
+                    ChatId = e.ChatId,
+                    MessageAuthorId = e.AuthorId,
+                    AuthorAvatarPath = e.Author.AvatarPath,
+                    AuthorName = e.Author.Name,
+                    AuthorSurname = e.Author.Surname,
+                    Message = e.TextContent
+                })
+                .ToListAsync();
+        }
     }
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {container} from "tsyringe";
-import {ChatService} from "features/chat/chat-service";
+import ChatService from "features/chat/chat-service";
 import ChatPage from './ChatPage';
 import { IChat } from 'features/chat/chat-models';
 
@@ -14,7 +14,8 @@ type Props = {}
 
 class ChatPageContainer extends Component<Props, State> {
 
-    readonly chatService : ChatService = container.resolve(ChatService);
+    //readonly chatService : ChatService = container.resolve(ChatService);
+    readonly chatService : ChatService = new ChatService();
     chatsMock: Array<any> = [];
 
     constructor(props:Props) {

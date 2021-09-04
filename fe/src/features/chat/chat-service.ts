@@ -263,8 +263,10 @@ const chatsMock : Array<IChat> = [
     }
 ]
 
-@injectable()
-export class ChatService extends BaseService{
+
+export default class ChatService extends BaseService{
+    apiModule = "chat";
+
     getChatsByUserId(userId: string){
         return chatPreviewsMock;
     }
