@@ -70,11 +70,16 @@ namespace Amiq.Core.Auth
             tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            int userId = int.Parse(jwtToken.Claims.First(x => x.Type == "Sub").Value);
-            string name = jwtToken.Claims.First(x => x.Type == "Name").Value;
-            string surname = jwtToken.Claims.First(x => x.Type == "Surname").Value;
-            string email = jwtToken.Claims.First(x => x.Type == "Email").Value;
+            int userId = int.Parse(jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value);
+            string name = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNamesEx.UserName).Value;
+            string surname = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNamesEx.UserSurname).Value;
+            string email = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
             
+            result.UserId = userId;
+            result.Email = email;
+            result.UserName = name;
+            result.UserSurname = surname;   
+
             return result;
         }
     }

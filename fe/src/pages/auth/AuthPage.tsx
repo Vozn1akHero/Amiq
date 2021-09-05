@@ -22,12 +22,12 @@ class AuthPage extends BasePage<Props, any> {
                 >
                     {({ isSubmitting }) => (
                         <Form>
-                            <Field name="login" />
+                            <Field name="login" className="uk-input" />
                             <ErrorMessage name="login" component="div" />
-                            <Field type="password" name="password" />
+                            <Field type="password" name="password" className="uk-input uk-margin-small-top"  />
                             <ErrorMessage name="password" component="div" />
-                            <button type="submit" disabled={isSubmitting}>
-                                Submit
+                            <button type="submit" className="uk-button-primary uk-button uk-margin-small-top" disabled={isSubmitting}>
+                                Zaloguj
                             </button>
                         </Form>
                     )}

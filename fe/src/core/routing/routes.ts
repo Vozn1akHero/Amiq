@@ -21,6 +21,12 @@ export default class Routes {
         return output;
     }
 
+    public static getLink(route: IRoute):string{
+        let output: string = "/";
+        output += route.link;
+        return output;
+    }
+
     public static getNavRoute = (route: IRoute) => route.link;
 
     public static get myProfilePageRoutes() : IRoute{
@@ -84,5 +90,23 @@ export default class Routes {
             params: [],
             queryParams: ""
         };
+    }
+
+    public static get registrationPageRoutes(): IRoute{
+        return {
+            link: "joinup",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        };
+    }
+
+    public static get logoutPageRoutes() : IRoute {
+        return {
+            link: "logout",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        }
     }
 }

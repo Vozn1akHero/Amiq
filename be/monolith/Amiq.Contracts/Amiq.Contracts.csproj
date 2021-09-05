@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Amiq.Common\Amiq.Common.csproj" />
-    <ProjectReference Include="..\Amiq.Enums\Amiq.Enums.csproj" />
   </ItemGroup>
 
 </Project>

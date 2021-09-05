@@ -38,6 +38,7 @@ namespace Amiq.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -85,13 +86,16 @@ namespace Amiq.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Amiq v1"));
             }
 
+            
             //app.UseHttpsRedirection();
-            app.UseCors(e => e
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin());
 
             app.UseRouting();
+
+            app.UseCors(x => x
+                .WithOrigins("http://localhost:3000", "http://localhost:8080")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
 
             app.UseAuthentication();
 
@@ -100,45 +104,12 @@ namespace Amiq.WebApi
             app.ConfigureMiddlewares();
 
             app.UseStaticFiles(new StaticFileOptions {
-                HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress
+                //HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress
             });
 
             //app.UseResponseWrapper();
 
-            
-
-            app.Use(async (http, next) =>
-            {
-                //remember previous body
-                var currentBody = http.Response.Body;
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    //set the current response to the memorystream.
-                    http.Response.Body = memoryStream;
-
-                    await next();
-
-                    string requestId = Guid.NewGuid().ToString();
-
-                    //reset the body as it gets replace due to https://github.com/aspnet/KestrelHttpServer/issues/940
-                    http.Response.Body = currentBody;
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    //build our content wrappter.
-                    var content = new StringBuilder();
-                    content.AppendLine("{");
-                    content.AppendLine("  \"RequestId\":\"" + requestId + "\",");
-                    content.AppendLine("  \"StatusCode\":" + http.Response.StatusCode + ",");
-                    content.AppendLine("  \"Result\":");
-                    //add the original content.
-                    content.AppendLine(new StreamReader(memoryStream).ReadToEnd());
-                    content.AppendLine("}");
-
-                    await http.Response.WriteAsync(content.ToString());
-
-                }
-            });
+          
 
             app.UseEndpoints(endpoints =>
             {

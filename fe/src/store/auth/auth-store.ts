@@ -1,8 +1,8 @@
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {IdentityModel} from "./identity-model";
 
 export class AuthStore {
-    private static _isAuthenticated = new BehaviorSubject(false);
+    private static _isAuthenticated = new Subject<boolean>();
 
     public static get isAuthenticated$(){
         return this._isAuthenticated.asObservable();

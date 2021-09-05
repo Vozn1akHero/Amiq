@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Amiq.Business.Auth;
 using Microsoft.AspNetCore.Http;
 using Amiq.Core.Auth;
-using Amiq.Enums;
+using Amiq.Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -28,7 +28,12 @@ namespace Amiq.WebApi.Controllers
                 if (result.Success)
                 {
                     var jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase);
-                    HttpContext.Response.Cookies.Append("token", jwt.Token, new CookieOptions { HttpOnly = true });
+                    Response.Cookies.Append("token", jwt.Token, new CookieOptions { 
+                        HttpOnly = true,
+                        //IsEssential = true,
+                        //SameSite = SameSiteMode.None,
+                        //Secure = true,
+                    });
                 }
                 return result.Success ? Ok(result) : new ForbidResult();
             } catch (Exception ex) {

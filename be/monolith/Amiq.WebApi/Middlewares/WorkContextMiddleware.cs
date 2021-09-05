@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Amiq.Core.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,11 @@ namespace Amiq.WebApi.Middlewares
         {
             _logger.LogInformation($"Request URL: {Microsoft.AspNetCore.Http.Extensions.UriHelper.GetDisplayUrl(context.Request)}");
 
-            //context.User.
+            string token = context.Request.Cookies["token"];
+            if (!string.IsNullOrEmpty(token)) {
+                var dataFromToken = JwtExtensions.GetJwtStoredUserInfo(token);
+                context.Items.Add(new KeyValuePair<object, object>("user", dataFromToken));
+            }
 
             await this._next(context);
         }

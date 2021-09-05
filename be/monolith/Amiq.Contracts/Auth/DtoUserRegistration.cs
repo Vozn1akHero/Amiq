@@ -1,5 +1,4 @@
-﻿using Amiq.Enums;
-using System;
+﻿using System;
 
 namespace Amiq.Contracts.Auth
 {
