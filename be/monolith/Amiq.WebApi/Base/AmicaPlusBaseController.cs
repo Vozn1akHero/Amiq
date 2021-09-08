@@ -1,4 +1,5 @@
-﻿using Amiq.Mapping;
+﻿using Amiq.Contracts.Auth;
+using Amiq.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -32,5 +33,9 @@ namespace Amiq.WebApi.Base
             routeTemplateBuilder.Append(string.IsNullOrEmpty(rest) ? string.Empty : rest);
             return routeTemplateBuilder.ToString();
         }
+
+        protected DtoJwtStoredUserInfo JwtStoredUserInfo => (DtoJwtStoredUserInfo)HttpContext.Items["user"];
+
+
     }
 }

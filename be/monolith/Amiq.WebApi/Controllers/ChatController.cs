@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Amiq.Business.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Amiq.WebApi.Core.Auth;
+using Amiq.WebApi.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Amiq.WebApi.Controllers
 {
@@ -16,6 +18,12 @@ namespace Amiq.WebApi.Controllers
     {
         private BsChat _bsChat = new BsChat();
         private BsChatMessage _bsChatMessage = new BsChatMessage();
+        private ISignalRChatService _signalRChatService;
+
+        public ChatController(ISignalRChatService signalRChatService)
+        {
+            _signalRChatService = signalRChatService;
+        }
 
         [HttpGet("message")]
         public async Task<IActionResult> GetMessagesByUserId([FromQuery] int userId)
@@ -24,8 +32,10 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpPost("message")]
-        public async Task<IActionResult> CreateMessage(DtoChatMessage dtoMessage)
+        public async Task<IActionResult> CreateMessage([FromBody] DtoChatMessage dtoMessage)
         {
+            await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), dtoMessage);
+
             return await Task.FromResult(Ok());
         }
 

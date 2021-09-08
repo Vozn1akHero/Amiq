@@ -28,5 +28,25 @@ namespace Amiq.DataAccess.Friendship
                           .Take(request.Count)
                           .ToListAsync();
         }
+
+        public DtoFriendRequest CreateFriendRequest(int issuerId, int receiverId)
+        {
+            var record = new FriendRequest { IssuerId = issuerId, ReceiverId = receiverId };
+            _amiqContext.FriendRequests.Add(record);
+            _amiqContext.SaveChanges();
+            return new DtoFriendRequest { FriendRequestId = record.FriendRequestId,
+                IssuerId = issuerId, 
+                ReceiverId = receiverId };
+        }
+
+        public async Task DeleteFriendRequestAsync(int issuerId, int receiverId)
+        {
+            var friendRequest = _amiqContext.FriendRequests.SingleOrDefault(e => e.IssuerId == issuerId && e.ReceiverId == receiverId);
+            if (friendRequest != null)
+            {
+                _amiqContext.FriendRequests.Remove(friendRequest);
+                await _amiqContext.SaveChangesAsync();
+            }
+        }
     }
 }

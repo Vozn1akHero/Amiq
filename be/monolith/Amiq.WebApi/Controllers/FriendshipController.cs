@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
     {
         private BsFriendship _bsFriend = new BsFriendship();
 
-        [HttpGet("list")]
+        [HttpGet("friend-list")]
         [Produces(typeof(IEnumerable<DtoFriend>))]
         [ProducesResponseType(((int)HttpStatusCode.OK))]
         [ProducesResponseType(499)]
@@ -28,16 +28,31 @@ namespace Amiq.WebApi.Controllers
             {
                 return new StatusCodeResult(499);
             }
-            DtoJwtStoredUserInfo dtoJwtStoredUserInfo = (DtoJwtStoredUserInfo)HttpContext.Items["user"];
-            dtoFriendListRequest.IssuerId = dtoJwtStoredUserInfo.UserId;
+            dtoFriendListRequest.IssuerId = JwtStoredUserInfo.UserId;
             var data = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
             return Ok(data);
         }
 
-        [HttpPost("post-request")]
-        public async Task<IActionResult> PostFriendRequestAsync()
+        [HttpPost("create-friend-request")]
+        public IActionResult CreateFriendRequest([FromQuery] int receiverId)
         {
+            var userId = JwtStoredUserInfo.UserId;
+            var friendRequest = _bsFriend.CreateFriendRequest(userId, receiverId);
+            return CreatedAtAction(nameof(CreateFriendRequest), friendRequest);
+        }
+
+        [HttpPost("remove-friend-request")]
+        public async Task<IActionResult> RemoveFriendRequestAsync([FromQuery] int receiverId)
+        {
+            await _bsFriend.CancelFriendRequestAsync(JwtStoredUserInfo.UserId, receiverId);
             return Ok();
+        }
+
+        [HttpGet("friend-requests")]
+        public async Task<IActionResult> GetFriendRequest([FromQuery] DtoFriendListRequest dtoFriendListRequest)
+        {
+            var data = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
+            return Ok(data);
         }
     }
 }

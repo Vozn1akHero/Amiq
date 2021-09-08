@@ -21,5 +21,26 @@ namespace Amiq.DataAccess.Post
                           on p.PostId equals gp.PostId
                           select new DtoGroupPost {  }).ToListAsync();
         }
+
+        public async Task DeleteAsync(Guid postId)
+        {
+            var record = _amiqContext.Posts.Where(e=>e.PostId == postId).FirstOrDefault();
+            if(record != null)
+            {
+                _amiqContext.Posts.Remove(record);
+                await _amiqContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditAsync(DtoEditPostRequest dtoEditPostRequest)
+        {
+            var record = _amiqContext.Posts.Where(e => e.PostId == dtoEditPostRequest.PostId).FirstOrDefault();
+            if(record != null)
+            {
+                record.TextContent = dtoEditPostRequest.Text;
+                //record.
+                await _amiqContext.SaveChangesAsync();
+            }
+        }
     }
 }

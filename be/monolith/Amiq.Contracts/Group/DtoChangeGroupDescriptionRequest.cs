@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Contracts.Post
+namespace Amiq.Contracts.Group
 {
-    public class DtoGroupPost : DtoPost
+    public class DtoChangeGroupDescriptionRequest
     {
         public int GroupId { get; set; }
+        public string Description { get; set; }
     }
 }

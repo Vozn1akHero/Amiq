@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Contracts.Post
 {
-    public class DtoGroupPost : DtoPost
+    public class DtoUserPost : DtoPost
     {
-        public int GroupId { get; set; }
     }
 }

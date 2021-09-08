@@ -1,4 +1,5 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.Business.Friend.BsRules;
+using Amiq.Business.Utils;
 using Amiq.Contracts.Friendship;
 using Amiq.DataAccess.Friendship;
 using System;
@@ -16,6 +17,20 @@ namespace Amiq.Business.Friend
         public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoFriendListRequest dtoFriendListRequest)
         {
             return await _daFriendship.GetUserFriendListAsync(dtoFriendListRequest);
+        }
+
+        public DtoFriendRequest CreateFriendRequest(int issuerId, int receiverId)
+        {
+            CheckBsRule(new BsRuleFriendRequestAlreadyExists());
+            CheckBsRule(new BsRuleRequestIssuerCannotBeBlockedByReceiver());
+            CheckBsRule(new BsRuleFriendRequestAlreadyExists());
+
+            return _daFriendship.CreateFriendRequest(issuerId, receiverId);
+        }
+
+        public async Task CancelFriendRequestAsync(int issuerId, int receiverId)
+        {
+
         }
     }
 }

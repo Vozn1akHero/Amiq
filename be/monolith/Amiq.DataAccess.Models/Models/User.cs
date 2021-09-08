@@ -14,6 +14,8 @@ namespace Amiq.DataAccess.Models.Models
             ChatFirstUsers = new HashSet<Chat>();
             ChatSecondUsers = new HashSet<Chat>();
             Comments = new HashSet<Comment>();
+            FriendRequestIssuers = new HashSet<FriendRequest>();
+            FriendRequestReceivers = new HashSet<FriendRequest>();
             GroupParticipants = new HashSet<GroupParticipant>();
             Messages = new HashSet<Message>();
             UserDescriptionBlocks = new HashSet<UserDescriptionBlock>();
@@ -35,6 +37,8 @@ namespace Amiq.DataAccess.Models.Models
         public virtual ICollection<Chat> ChatFirstUsers { get; set; }
         public virtual ICollection<Chat> ChatSecondUsers { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<FriendRequest> FriendRequestIssuers { get; set; }
+        public virtual ICollection<FriendRequest> FriendRequestReceivers { get; set; }
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<UserDescriptionBlock> UserDescriptionBlocks { get; set; }

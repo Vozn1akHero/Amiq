@@ -21,6 +21,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CommentToComment> CommentToComments { get; set; }
+        public virtual DbSet<FriendRequest> FriendRequests { get; set; }
         public virtual DbSet<Friendship> Friendships { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
@@ -127,6 +128,29 @@ namespace Amiq.DataAccess.Models.Models
                     .HasForeignKey(d => d.ParentCommentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CommentToComment_ParentComment");
+            });
+
+            modelBuilder.Entity<FriendRequest>(entity =>
+            {
+                entity.ToTable("FriendRequest", "Friendship");
+
+                entity.Property(e => e.FriendRequestId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Issuer)
+                    .WithMany(p => p.FriendRequestIssuers)
+                    .HasForeignKey(d => d.IssuerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FriendRequest_UserIssuer");
+
+                entity.HasOne(d => d.Receiver)
+                    .WithMany(p => p.FriendRequestReceivers)
+                    .HasForeignKey(d => d.ReceiverId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FriendRequest_UserReceiver");
             });
 
             modelBuilder.Entity<Friendship>(entity =>
