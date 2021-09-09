@@ -1,6 +1,7 @@
 ﻿using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
+using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +20,14 @@ namespace Amiq.DataAccess.Group
 
         public async Task<List<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId)
         {
-            return await _AmiqContext.GroupParticipants
+            IQueryable query = _AmiqContext.GroupParticipants
                 .Where(e => e.GroupId == groupId)
                 .Join(_AmiqContext.Users,
-                participant => participant.UserId,
-                user => user.UserId, (participant, user) => new DtoGroupParticipant { 
-                    UserInfo = new DtoUserInfo { },
-                    GroupId = participant.GroupId
-                })
-                .ToListAsync();
+                    participant => participant.UserId,
+                    user => user.UserId,
+                    (participant, user) => new { Participant = participant, User = user });
+            var data = await APAutoMapper.Instance.ProjectTo<DtoGroupParticipant>(query).ToListAsync();
+            return data;
         }
     }
 }

@@ -19,11 +19,9 @@ import ProfilePageContainer from "pages/profile/ProfilePageContainer";
 import {MemoizedNavigation, Navigation} from "../../layout/navigation/Navigation";
 import Breadcrumb from "../../common/components/Breadcrumb/Breadcrumb";
 import {Observable} from "rxjs";
-import NotFoundPage from "pages/not-found/NotFoundPage";
-import {AuthStore} from "../../store/auth/auth-store";
-import JoinupPage from "../joinup/JoinupPage";
 import JoinupPageContainer from "../joinup/JoinupPageContainer";
 import Footer from "layout/footer/Footer";
+import "./identity-wrapper-page.scss"
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -46,12 +44,14 @@ const IdentityWrapperPage = (props: Props) => {
     }, []);
 
     return (
+        <div className="identity-wrapper">
             <Switch>
                 <Redirect from="/" to={Routes.getRouteAsString(Routes.profilePageRoutes)} exact={true} />
                 <Route path="/" render={() => <>
                     <Navigation navRef={navigationRef} />
-                    <div className="main-content-wrap-1  uk-margin-medium-top">
-                        <main className="main-content" ref={mainContentRef} >
+
+                    <div className="main-content" ref={mainContentRef}>
+                        <div className="uk-margin-medium-top">
                             <Breadcrumb />
                             <Route component={AuthPageContainer} path={Routes.getRouteAsString(Routes.authPageRoutes)} />
                             <Route component={JoinupPageContainer} path={Routes.getRouteAsString(Routes.registrationPageRoutes)} />
@@ -60,13 +60,17 @@ const IdentityWrapperPage = (props: Props) => {
                             <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
                             <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />
                             <Route component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} />
-                        </main>
+                        </div>
+                    </div>
+
+                    <div className="uk-margin-medium-top">
                         <Footer footerHeight={footerAvailableHeight}
                                 footerShouldHaveAbsolutePosition={footerShouldHaveAbsolutePosition} />
                     </div>
                 </>} />
                 {/*<Route path="*" component={NotFoundPage} />*/}
             </Switch>
+        </div>
     );
 }
 

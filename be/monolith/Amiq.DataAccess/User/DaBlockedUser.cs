@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.DataAccess.User
 {
-    public class DaBlockedUsers
+    public class DaBlockedUser
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
@@ -56,6 +56,11 @@ namespace Amiq.DataAccess.User
                     Surname = e.DestUser.Surname
                 })
                 .SingleOrDefault();
+        }
+
+        public bool IsUserBlockedByAnotherUser(int issuerId, int userId)
+        {
+            return _amiqContext.BlockedUsers.Any(e => e.IssuerId == issuerId && e.DestUserId == userId);
         }
     }
 }

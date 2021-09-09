@@ -241,15 +241,21 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.GroupPostId).HasDefaultValueSql("(newid())");
 
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.GroupPosts)
+                    .HasForeignKey(d => d.AuthorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPost_User");
+
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupPost_Group");
 
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupPost_Post");
             });
 
@@ -286,7 +292,20 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.PostId).HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EditedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.TextContent).HasMaxLength(500);
+
+                entity.HasOne(d => d.EditedByNavigation)
+                    .WithMany(p => p.Posts)
+                    .HasForeignKey(d => d.EditedBy)
+                    .HasConstraintName("FK_Post_User");
             });
 
             modelBuilder.Entity<TextBlock>(entity =>
@@ -373,7 +392,6 @@ namespace Amiq.DataAccess.Models.Models
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.UserPosts)
                     .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserPost_Post");
 
                 entity.HasOne(d => d.User)

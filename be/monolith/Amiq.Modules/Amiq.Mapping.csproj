@@ -8,4 +8,9 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Amiq.Contracts\Amiq.Contracts.csproj" />
+    <ProjectReference Include="..\Amiq.DataAccess.Models\Amiq.DataAccess.Models.csproj" />
+  </ItemGroup>
+
 </Project>

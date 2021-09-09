@@ -1,6 +1,8 @@
 ﻿using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,40 +10,48 @@ namespace Amiq.DataAccess.Post
 {
     public class DaGroupPost
     {
-        private AmiqContext amiqContext = new AmiqContext();
+        private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<GroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
         {
-            amiqContext.GroupPosts.Add(new GroupPost
+            var entity = new GroupPost
             {
                 GroupId = dtoGroupPost.GroupId,
                 Post = new DataAccess.Models.Models.Post
                 {
-                    TextContent = dtoGroupPost.Text
+                    TextContent = dtoGroupPost.TextContent
                 }
-            });
-            await amiqContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Guid groupPostId)
-        {
-            var post = amiqContext.GroupPosts.SingleOrDefault(e => e.GroupPostId == groupPostId);
-            if (post != null)
-            {
-                amiqContext.GroupPosts.Remove(post);
-                await amiqContext.SaveChangesAsync();
-            }
+            };
+            _amiqContext.GroupPosts.Add(entity);
+            await _amiqContext.SaveChangesAsync();
+            return entity;
         }
 
         public async Task EditAsync(DtoEditGroupPostRequest dtoEditGroupPostRequest)
         {
-            var post = amiqContext.GroupPosts.SingleOrDefault(e => e.GroupPostId == dtoEditGroupPostRequest.GroupPostId);
+            var post = _amiqContext.GroupPosts.SingleOrDefault(e => e.GroupPostId == dtoEditGroupPostRequest.GroupPostId);
             if (post != null)
             {
                 post.Post.TextContent = dtoEditGroupPostRequest.Text;
                 //TODO
-                await amiqContext.SaveChangesAsync();
+                await _amiqContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
+        {
+            return await (from p in _amiqContext.Posts.AsNoTracking()
+                          join gp in _amiqContext.GroupPosts.AsNoTracking()
+                          on p.PostId equals gp.PostId
+                          where gp.GroupId == dtoGroupPostRequest.GroupId
+                          select new DtoGroupPost {
+                            GroupId = gp.GroupId,
+                            TextContent = p.TextContent,
+                            AuthorId = p.
+                          })
+                          .Skip(dtoGroupPostRequest.Skip)
+                          .Take(dtoGroupPostRequest.Count)
+                          .ToListAsync();
         }
     }
 }

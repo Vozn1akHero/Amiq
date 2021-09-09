@@ -28,8 +28,8 @@ const IdentityWrapperPageContainer = () => {
     }, []);
 
     const recheckIdentity = (pathname) => {
+        const identityModel = new IdentityModel();
         authService.validateCredentials().then((res:AxiosResponse) => {
-            const identityModel = new IdentityModel();
             identityModel.isAuthenticated = res.status === StatusCodes.OK;
             AuthStore.configureIdentity(identityModel);
             if (!identityModel.isAuthenticated) {
@@ -43,10 +43,21 @@ const IdentityWrapperPageContainer = () => {
                     history.push(Routes.getLink(Routes.profilePageRoutes));
                 }
             }
-        }).catch(() => {
-            if(pathname !== Routes.getLink(Routes.authPageRoutes)
-                && pathname !== Routes.getLink(Routes.registrationPageRoutes)) {
-                history.push(Routes.getLink(Routes.authPageRoutes));
+        }).catch((error : any) => {
+            if(error.response)
+            {
+                if(error.response.status === StatusCodes.UNAUTHORIZED){
+                    identityModel.isAuthenticated = false;
+                    AuthStore.configureIdentity(identityModel);
+                    if(pathname !== Routes.getLink(Routes.authPageRoutes)
+                        && pathname !== Routes.getLink(Routes.registrationPageRoutes)) {
+                        history.push(Routes.getLink(Routes.authPageRoutes));
+                    }
+                }
+                else {
+                    alert("AUTH SERVICE IS NOT AVAILABLE");
+                    document.location.reload();
+                }
             }
         })
     }

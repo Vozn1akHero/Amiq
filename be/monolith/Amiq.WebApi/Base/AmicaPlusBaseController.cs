@@ -14,8 +14,9 @@ namespace Amiq.WebApi.Base
     [Route("api/[controller]")]
     public class AmiqBaseController : ControllerBase
     {
-        private ILogger<AmiqBaseController> _logger;
+        protected const int CLIENT_CLOSED_REQUEST_STATUS_CODE = 499;
 
+        private ILogger<AmiqBaseController> _logger;
 
         public AmiqBaseController()
         {

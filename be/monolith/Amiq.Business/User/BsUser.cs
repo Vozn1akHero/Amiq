@@ -17,5 +17,16 @@ namespace Amiq.Business.User
         {
             return await _daUser.GetUserDescriptionAsync(userId);
         }
+
+        public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestIssuerId, int userId)
+        {
+            //DtoExtendedUserInfo result = new();
+            var user = await _daUser.GetUserByIdAsync(userId);
+            if(user != null)
+            {
+                var description = await GetUserDescriptionAsync(userId);
+                var result 
+            }
+        }
     }
 }

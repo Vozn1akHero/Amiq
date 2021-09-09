@@ -4,7 +4,7 @@ export  class HttpQueryParams{
         return this._params
     }
 
-    append(name: string, value: string) : HttpQueryParams{
+    append(name: string, value: string | number) : HttpQueryParams{
         this._params = {...this._params, [name]: value}
         return this;
     }

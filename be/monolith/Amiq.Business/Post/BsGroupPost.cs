@@ -14,19 +14,19 @@ namespace Amiq.Business.Post
     {
         private DaGroupPost _daGroupPost = new DaGroupPost();
 
-        public async Task CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<GroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
         {
-            await _daGroupPost.CreateAsync(dtoGroupPost);
-        }
-
-        public async Task DeleteAsync(Guid groupPostId)
-        {
-            await _daGroupPost.DeleteAsync(groupPostId);
+            return await _daGroupPost.CreateAsync(dtoGroupPost);
         }
 
         public async Task EditAsync(DtoEditGroupPostRequest dtoEditGroupPostRequest)
         {
             await _daGroupPost.EditAsync(dtoEditGroupPostRequest);
+        }
+
+        public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
+        {
+            return await _daGroupPost.GetGroupPostsAsync(dtoGroupPostRequest);
         }
     }
 }

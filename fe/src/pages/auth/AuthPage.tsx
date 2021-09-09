@@ -1,6 +1,7 @@
 import React from 'react';
 import BasePage from "../base-page";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import Footer from "../../layout/footer/Footer";
 
 type Props = {
     authenticate(login: string, password: string): void

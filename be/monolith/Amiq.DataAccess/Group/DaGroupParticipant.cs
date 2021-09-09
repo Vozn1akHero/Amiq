@@ -1,4 +1,6 @@
 ﻿using Amiq.Contracts.Group;
+using Amiq.Contracts.Utils;
+using Amiq.DataAccess.Models;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
 using AutoMapper;
@@ -15,41 +17,34 @@ namespace Amiq.DataAccess.Group
 {
     public class DaGroupParticipant
     {
-        private AmiqContext _AmiqContext;
-
-        public DaGroupParticipant()
-        {
-            _AmiqContext = new AmiqContext();
-        }
-
+        private AmiqContext _amiqContext = new AmiqContext();
+        private AmiqContextWithDebugLogging _amiqContextWithDebug = new AmiqContextWithDebugLogging();
 
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId)
+        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            IQueryable dbGroups = (from g in _AmiqContext.Groups.AsNoTracking()
-                                   join gp in _AmiqContext.GroupParticipants.AsNoTracking()
+            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
                                    on g.GroupId equals gp.GroupId
-                                   join u in _AmiqContext.Users.AsNoTracking()
+                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
                                    on gp.UserId equals u.UserId
                                    where u.UserId == userId
-                                   //select new DtoGroup { }
-                                   select g
-                                );
+                                   select g);
             List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
             return groups;
         }
 
         public async Task LeaveGroupAsync(DtoLeaveGroup rsLeaveGroup)
         {
-            var participant = _AmiqContext
+            var participant = _amiqContext
                 .GroupParticipants
                 .SingleOrDefault(e=>e.UserId==rsLeaveGroup.UserId && e.GroupId == rsLeaveGroup.GroupId);
             if (participant != null)
             {
-                _AmiqContext.GroupParticipants.Remove(participant);
-                await _AmiqContext.SaveChangesAsync();
+                _amiqContext.GroupParticipants.Remove(participant);
+                await _amiqContext.SaveChangesAsync();
             }
         }
 
@@ -59,14 +54,14 @@ namespace Amiq.DataAccess.Group
                 GroupId = rsJoinGroup.GroupId,
                 UserId = rsJoinGroup.UserId
             };
-            await _AmiqContext
+            await _amiqContext
                 .GroupParticipants.AddAsync(participant);
-            await _AmiqContext.SaveChangesAsync();
+            await _amiqContext.SaveChangesAsync();
         }
 
         public async Task<DtoGroupParticipant> GetGroupParticipantAsync(DtoMinifiedGroupParticipant rsSimplifiedGroupParticipant)
         {
-            var res = await _AmiqContext
+            var res = await _amiqContext
                 .GroupParticipants
                 .Where(e => e.GroupId == rsSimplifiedGroupParticipant.GroupId
                 && e.UserId == rsSimplifiedGroupParticipant.UserId)
@@ -76,14 +71,5 @@ namespace Amiq.DataAccess.Group
 
             return res;
         }
-
-        /*private IConfigurationProvider MapperConfiguration()
-        {
-            var configuration = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<GroupParticipant, DtoGroupParticipant>()
-                        );
-
-            return configuration;
-        }*/
     }
 }

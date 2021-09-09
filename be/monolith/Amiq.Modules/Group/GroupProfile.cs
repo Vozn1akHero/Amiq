@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Amiq.Contracts.Group;
+using Amiq.DataAccess.Models.Models;
+using AutoMapper;
 
 namespace Amiq.Mapping
 {
@@ -6,6 +8,7 @@ namespace Amiq.Mapping
     {
         public GroupProfile()
         {
+            CreateMap<DataAccess.Models.Models.Group, DtoGroup>();
         }
     }
 }

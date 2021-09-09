@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {Component} from 'react';
 import BasePageComponent from "core/BasePageComponent";
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import Post from "features/post/Post";
 import PostCreationForm from "features/post/PostCreationForm";
-import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
+import PageAvatar from "common/components/PageAvatar/PageAvatar";
+import {IUserPost} from "features/post/models/user-post";
 
+type Props = {
+    posts: Array<IUserPost>;
+}
 
-class ProfilePage extends BasePageComponent {
+type State = {
+
+}
+
+class ProfilePage extends Component<Props, State> {
     friends = []
 
     componentDidMount() {
@@ -49,7 +57,11 @@ class ProfilePage extends BasePageComponent {
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <PostCreationForm />
-                        <Post />
+                        {
+                            this.props.posts.map((post, index) => {
+                                return <Post key={index} />
+                            })
+                        }
                     </div>
                 </div>
             </div>

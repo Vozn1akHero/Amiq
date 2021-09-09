@@ -1,4 +1,5 @@
 ﻿using Amiq.Contracts.Group;
+using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Group;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Amiq.Business
             _daGroupParticipant = new DaGroupParticipant();
         }
 
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId)
+        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId);
         }

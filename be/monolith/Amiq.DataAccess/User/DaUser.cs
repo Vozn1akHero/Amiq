@@ -1,5 +1,7 @@
 ﻿using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
+using Amiq.Mapping;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,13 @@ namespace Amiq.DataAccess.User
             output.UserDescriptionBlocks = output2;
 
             return output;
+        }
+
+        public async Task<DtoUserInfo> GetUserByIdAsync(int userId)
+        {
+            var query = _amiqContext.Users.Where(e => e.UserId == userId);
+            var result = await APAutoMapper.Instance.ProjectTo<DtoUserInfo>(query).SingleOrDefaultAsync();
+            return result;
         }
     }
 }

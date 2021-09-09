@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.Chat;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,9 @@ namespace Amiq.DataAccess.Chat
         public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(DtoChatPreviewListRequest dtoChatPreviewListRequest)
         {
             return await _amiqContext.Messages
-                .FromSqlRaw("Chat.GetChatPreviews @userId, @length, @skip", dtoChatPreviewListRequest.IssuerId, dtoChatPreviewListRequest.Count, dtoChatPreviewListRequest.Skip)
+                .FromSqlRaw("Chat.GetChatPreviews @userId, @length, @skip", dtoChatPreviewListRequest.IssuerId, 
+                    dtoChatPreviewListRequest.Count,
+                    dtoChatPreviewListRequest.Skip)
                 .Select(e => new DtoChatPreview
                 {
                     ChatId = e.ChatId,
@@ -52,6 +55,25 @@ namespace Amiq.DataAccess.Chat
                     Message = e.TextContent
                 })
                 .ToListAsync();
+        }
+
+        public async Task<DtoDeleteEntityResponse> DeleteMessageAsync(DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
+        {
+            DtoDeleteEntityResponse dtoDeleteEntityResponse = new();
+            var message = _amiqContext.Messages.SingleOrDefault(e=>e.ChatId==dtoDeleteChatMessageRequest.ChatId
+                && e.MessageId == dtoDeleteChatMessageRequest.MessageId);
+            if(message != null)
+            {
+                dtoDeleteEntityResponse.Result = true;
+                dtoDeleteEntityResponse.Entity = DaResults.EntityIsNotFound;
+                _amiqContext.Remove(message);
+                await _amiqContext.SaveChangesAsync();
+            }
+            else
+            {
+                dtoDeleteEntityResponse.Result = false;
+            }
+            return dtoDeleteEntityResponse;
         }
     }
 }

@@ -39,9 +39,11 @@ namespace Amiq.WebApi.Controllers
             return await Task.FromResult(Ok());
         }
 
-        [HttpDelete("message/{messageId}")]
-        public async Task<IActionResult> DeleteMessageById(Guid messageId)
+        [HttpDelete("message")]
+        public async Task<IActionResult> DeleteMessageById([FromQuery] DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
         {
+            dtoDeleteChatMessageRequest.IssuerId = JwtStoredUserInfo.UserId;
+            var result = _bsChatMessage.DeleteMessageAsync(dtoDeleteChatMessageRequest);
             return await Task.FromResult(Ok());
         }
 

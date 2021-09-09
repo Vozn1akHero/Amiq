@@ -15,7 +15,7 @@ class App extends Component {
     render() {
         return (
             <BrowserRouter>
-                <div className="App">
+                <div className="amiq-app">
                     <IdentityWrapperPageContainer />
                 </div>
             </BrowserRouter>
