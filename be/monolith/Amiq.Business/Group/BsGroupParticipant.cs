@@ -20,7 +20,7 @@ namespace Amiq.Business
 
         public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId);
+            return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
         }
 
         public async Task LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)

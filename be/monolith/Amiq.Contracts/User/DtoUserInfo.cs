@@ -9,5 +9,6 @@ namespace Amiq.Contracts.User
         public string Surname { get; set; }
         public string Email { get; set; }
         public DateTime Birthdate { get; set; }
+        public string ShortDescription { get; set; }
     }
 }

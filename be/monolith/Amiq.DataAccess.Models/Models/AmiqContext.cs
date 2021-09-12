@@ -296,9 +296,7 @@ namespace Amiq.DataAccess.Models.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.EditedAt)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.EditedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.TextContent).HasMaxLength(500);
 
@@ -357,6 +355,8 @@ namespace Amiq.DataAccess.Models.Models
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .IsFixedLength(true);
+
+                entity.Property(e => e.ShortDescription).HasMaxLength(200);
 
                 entity.Property(e => e.Surname)
                     .IsRequired()

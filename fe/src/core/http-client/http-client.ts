@@ -1,18 +1,15 @@
 import {HttpParams} from "./HttpParams";
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
-import {from, Observable} from 'rxjs';
 import {HttpQueryParams} from "./HttpQueryParams";
 
 export class HttpClient {
-    //private readonly URL : string = "http://localhost:10709/api/";
-
     instance = axios.create({
         baseURL: "http://localhost:10709/api/",
         withCredentials: true,
     });
 
     constructor() {
-        this.instance.interceptors.request.use((config) => {
+        /*this.instance.interceptors.request.use((config) => {
             config.headers['request-startTime'] = process.hrtime()
             return config
         })
@@ -23,17 +20,18 @@ export class HttpClient {
             const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
             response.headers['request-duration'] = milliseconds
             return response
-        })
+        })*/
     }
 
     public get<T>(path: string, params?: HttpParams, queryParams?: HttpQueryParams) : Promise<AxiosResponse<T>>{
         let axiosRequestConfig : AxiosRequestConfig = {};
         axiosRequestConfig.url = path;
+        axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "get";
 
-        axiosRequestConfig.params = "";
-        axiosRequestConfig.params += params != null ? params.toStrParams() : "";
-        axiosRequestConfig.params += queryParams != null ? queryParams.toStringQuery() : "";
+        if(queryParams)
+            axiosRequestConfig.params = queryParams.toObject();
+
         axiosRequestConfig.withCredentials = true;
 
         const res = this.instance.request<any, AxiosResponse<T>>(axiosRequestConfig);
@@ -44,11 +42,11 @@ export class HttpClient {
     public post(path: string, data?: any, params?: HttpParams, queryParams?: HttpQueryParams) :  Promise<AxiosResponse>{
         let axiosRequestConfig : AxiosRequestConfig = {};
         axiosRequestConfig.url = path;
+        axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "post";
 
-        axiosRequestConfig.params = "";
-        axiosRequestConfig.params += params != null ? params.toStrParams() : "";
-        axiosRequestConfig.params += queryParams != null ? queryParams.toStringQuery() : "";
+        if(queryParams)
+            axiosRequestConfig.params = queryParams.toObject();
 
         if(data !== null) axiosRequestConfig.data = data;
 
@@ -59,11 +57,11 @@ export class HttpClient {
     public delete(path: string, data?: any, params?: HttpParams, queryParams?: HttpQueryParams) :  Promise<AxiosResponse>{
         let axiosRequestConfig : AxiosRequestConfig = {};
         axiosRequestConfig.url = path;
+        axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "delete";
 
-        axiosRequestConfig.params = "";
-        axiosRequestConfig.params += params != null ? params.toStrParams() : "";
-        axiosRequestConfig.params += queryParams != null ? queryParams.toStringQuery() : "";
+        if(queryParams)
+            axiosRequestConfig.params = queryParams.toObject();
 
         if(data !== null) axiosRequestConfig.data = data;
 
@@ -73,11 +71,11 @@ export class HttpClient {
     public put(path: string, data?: any, params?: HttpParams, queryParams?: HttpQueryParams) :  Promise<AxiosResponse>{
         let axiosRequestConfig : AxiosRequestConfig = {};
         axiosRequestConfig.url = path;
+        axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "put";
 
-        axiosRequestConfig.params = "";
-        axiosRequestConfig.params += params != null ? params.toStrParams() : "";
-        axiosRequestConfig.params += queryParams != null ? queryParams.toStringQuery() : "";
+        if(queryParams)
+            axiosRequestConfig.params = queryParams.toObject();
 
         if(data !== null) axiosRequestConfig.data = data;
 

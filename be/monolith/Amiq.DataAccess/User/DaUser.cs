@@ -15,16 +15,18 @@ namespace Amiq.DataAccess.User
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<DtoUserDescription> GetUserDescriptionAsync(int userId)
+        public async Task<IEnumerable<DtoUserDescriptionBlock>> GetUserDescriptionAsync(int userId)
         {
-            var output = new DtoUserDescription();
-            var output2 = await _amiqContext.UserDescriptionBlocks
+            //var output = new DtoUserDescription();
+            var output = await _amiqContext.UserDescriptionBlocks
                 .Where(e => e.UserId == userId)
                 .Select(e => new DtoUserDescriptionBlock {
-                    //Title = e.
+                    TextBlockId = e.TextBlockId,
+                    Header = e.TextBlock.Header,
+                    Content = e.TextBlock.Content
                 })
                 .ToListAsync();
-            output.UserDescriptionBlocks = output2;
+            //output.UserDescriptionBlocks = output2;
 
             return output;
         }

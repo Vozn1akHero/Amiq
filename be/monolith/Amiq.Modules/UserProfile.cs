@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.User;
+﻿using Amiq.Contracts.Core;
+using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
 
 namespace Amiq.Mapping
@@ -9,6 +10,8 @@ namespace Amiq.Mapping
             CreateTwoWayMap<User, DtoUserInfo>();
             CreateMap<User, DtoExtendedUserInfo>();
             CreateMap<TextBlock, DtoUserDescriptionBlock>();
+            CreateMap<TextBlock, DtoDescriptionBlock>();
+            CreateMap<DtoUserInfo, DtoExtendedUserInfo>();
         }
     }
 }

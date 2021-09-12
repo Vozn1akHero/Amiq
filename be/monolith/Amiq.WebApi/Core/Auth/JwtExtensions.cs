@@ -62,6 +62,21 @@ namespace Amiq.Core.Auth
             return accessToken;
         }
 
+        public static bool ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key"));
+            try
+            {
+                tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
+                return validatedToken != null;
+            } catch (SecurityTokenExpiredException ex)
+            {
+                return false;
+            }
+            return false;
+        }
+
         public static DtoJwtStoredUserInfo GetJwtStoredUserInfo(string token)
         {
             DtoJwtStoredUserInfo result = new();

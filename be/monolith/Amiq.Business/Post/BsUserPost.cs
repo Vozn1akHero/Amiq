@@ -15,7 +15,12 @@ namespace Amiq.Business.Post
 
         public async Task<IEnumerable<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            return await daUserPost.
+            return await daUserPost.GetUserPostsAsync(userId, dtoPaginatedRequest);
+        }
+
+        public async Task EditAsync(DtoEditUserPostRequest dtoEditUserPostRequest)
+        {
+            await daUserPost.EditAsync(dtoEditUserPostRequest);
         }
     }
 }

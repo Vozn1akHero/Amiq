@@ -47,9 +47,9 @@ namespace Amiq.DataAccess.Post
                           select new DtoGroupPost {
                             GroupId = gp.GroupId,
                             TextContent = p.TextContent,
-                            AuthorId = p.
+                            UserId = gp.AuthorId
                           })
-                          .Skip(dtoGroupPostRequest.Skip)
+                          .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
                           .Take(dtoGroupPostRequest.Count)
                           .ToListAsync();
         }

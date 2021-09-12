@@ -18,9 +18,22 @@ namespace Amiq.DataAccess.Post
         public async Task<IEnumerable<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             var query = _amiqContext.UserPosts.Where(e=>e.UserId == userId)
-                .Skip(dtoPaginatedRequest.Skip).Take(dtoPaginatedRequest.Count);
+                .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                .Take(dtoPaginatedRequest.Count);
             var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
             return data;
+        }
+
+        public async Task EditAsync(DtoEditUserPostRequest dtoEditUserPostRequest)
+        {
+            var post = _amiqContext.UserPosts.Include(e=>e.Post).SingleOrDefault(e=>e.PostId == dtoEditUserPostRequest.PostId);
+            if(post != null)
+            {
+                post.Post.TextContent = dtoEditUserPostRequest.TextContent;
+                post.Post.EditedAt = DateTime.Now;
+                post.Post.EditedBy = dtoEditUserPostRequest.UserId;
+                await _amiqContext.SaveChangesAsync();
+            }
         }
     }
 }

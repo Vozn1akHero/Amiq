@@ -1,4 +1,5 @@
 ﻿using Amiq.Contracts;
+using Amiq.Contracts.Post;
 using Amiq.DataAccess.Post;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace Amiq.Business.Post
         {
             return await _daPost.DeleteAsync(postId);
         }
+
+        
     }
 }

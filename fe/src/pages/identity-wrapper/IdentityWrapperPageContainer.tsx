@@ -17,6 +17,8 @@ const IdentityWrapperPageContainer = () => {
 
     let isAuthenticated$: Observable<boolean> = AuthStore.isAuthenticated$;
 
+    const [authLoaded, setAuthLoaded] = useState(false);
+
     //const [route, setRoute] = useState("");
 
     useEffect(() => history.listen( (listener:any) => {
@@ -30,6 +32,9 @@ const IdentityWrapperPageContainer = () => {
     const recheckIdentity = (pathname) => {
         const identityModel = new IdentityModel();
         authService.validateCredentials().then((res:AxiosResponse) => {
+            identityModel.userId = res.data.userId;
+            identityModel.name = res.data.userName;
+            identityModel.surname = res.data.userSurname;
             identityModel.isAuthenticated = res.status === StatusCodes.OK;
             AuthStore.configureIdentity(identityModel);
             if (!identityModel.isAuthenticated) {
@@ -43,7 +48,7 @@ const IdentityWrapperPageContainer = () => {
                     history.push(Routes.getLink(Routes.profilePageRoutes));
                 }
             }
-        }).catch((error : any) => {
+        }).catch((error) => {
             if(error.response)
             {
                 if(error.response.status === StatusCodes.UNAUTHORIZED){
@@ -59,11 +64,13 @@ const IdentityWrapperPageContainer = () => {
                     document.location.reload();
                 }
             }
+        }).finally(() => {
+            setAuthLoaded(true);
         })
     }
 
     return (
-        <IdentityWrapperPage isAuthenticated$={isAuthenticated$} />
+        authLoaded && <IdentityWrapperPage isAuthenticated$={isAuthenticated$} />
     )
 }
 

@@ -12,6 +12,7 @@ using Amiq.Core.Auth;
 using Amiq.Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Amiq.Contracts.User;
 
 namespace Amiq.WebApi.Controllers
 {
@@ -58,7 +59,7 @@ namespace Amiq.WebApi.Controllers
         [Authorize]
         public IActionResult ValidateCredentials()
         {
-            return Ok();
+            return Ok(JwtStoredUserInfo);
         }
     }
 }

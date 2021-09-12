@@ -44,7 +44,7 @@ namespace Amiq.DataAccess.Chat
             return await _amiqContext.Messages
                 .FromSqlRaw("Chat.GetChatPreviews @userId, @length, @skip", dtoChatPreviewListRequest.IssuerId, 
                     dtoChatPreviewListRequest.Count,
-                    dtoChatPreviewListRequest.Skip)
+                    ((dtoChatPreviewListRequest.Page-1) * dtoChatPreviewListRequest.Count))
                 .Select(e => new DtoChatPreview
                 {
                     ChatId = e.ChatId,

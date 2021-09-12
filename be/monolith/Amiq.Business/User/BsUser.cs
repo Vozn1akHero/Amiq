@@ -1,6 +1,7 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.User;
 using Amiq.DataAccess.User;
+using Amiq.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +14,20 @@ namespace Amiq.Business.User
     {
         private DaUser _daUser = new DaUser();
 
-        public async Task<DtoUserDescription> GetUserDescriptionAsync(int userId)
+        public async Task<IEnumerable<DtoUserDescriptionBlock>> GetUserDescriptionAsync(int userId)
         {
             return await _daUser.GetUserDescriptionAsync(userId);
         }
 
         public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestIssuerId, int userId)
         {
-            //DtoExtendedUserInfo result = new();
+            DtoExtendedUserInfo result = new();
             var user = await _daUser.GetUserByIdAsync(userId);
-            if(user != null)
-            {
-                var description = await GetUserDescriptionAsync(userId);
-                var result 
-            }
+            if (user == null) return null;
+            result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
+            result.UserDescriptionBlocks = await GetUserDescriptionAsync(userId);
+            return result;
         }
+
     }
 }

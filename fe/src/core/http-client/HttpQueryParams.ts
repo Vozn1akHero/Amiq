@@ -1,8 +1,5 @@
 export  class HttpQueryParams{
     private _params : object = {};
-    public get params(){
-        return this._params
-    }
 
     append(name: string, value: string | number) : HttpQueryParams{
         this._params = {...this._params, [name]: value}
@@ -19,5 +16,9 @@ export  class HttpQueryParams{
             }
         }
         return output;
+    }
+
+    toObject(){
+        return this._params
     }
 }

@@ -33,6 +33,7 @@ namespace Amiq.DataAccess.Models.Models
         public string Sex { get; set; }
         public string Email { get; set; }
         public string AvatarPath { get; set; }
+        public string ShortDescription { get; set; }
 
         public virtual ICollection<BlockedUser> BlockedUserDestUsers { get; set; }
         public virtual ICollection<BlockedUser> BlockedUserIssuers { get; set; }

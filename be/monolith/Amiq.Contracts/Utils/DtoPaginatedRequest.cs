@@ -10,6 +10,5 @@ namespace Amiq.Contracts.Utils
     {
         public int Page { get; set; }
         public int Count { get; set; }
-        public int Skip { get => Page * Count; }
     }
 }

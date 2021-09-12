@@ -6,5 +6,6 @@ export interface IUser {
     surname: string;
     status: string;
     birthdate?: Date;
-    descriptionBlocks: Array<IDescriptionBlock>;
+    shortDescription: string;
+    userDescriptionBlocks: Array<IDescriptionBlock>;
 }

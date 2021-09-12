@@ -12,7 +12,6 @@ class AuthPageContainer extends Component<any,any> {
     authService: AuthService = new AuthService();
 
     authenticate = (login:string, password: string) => {
-
         this.authService.authenticate(login, password).then(res => {
             if(res.status === StatusCodes.OK){
                 let identityModel = new IdentityModel();

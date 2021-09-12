@@ -22,6 +22,7 @@ import {Observable} from "rxjs";
 import JoinupPageContainer from "../joinup/JoinupPageContainer";
 import Footer from "layout/footer/Footer";
 import "./identity-wrapper-page.scss"
+import GuardedRoute from "../../core/routing/GuardedRoute";
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -33,14 +34,14 @@ const IdentityWrapperPage = (props: Props) => {
     const [footerShouldHaveAbsolutePosition, setFooterShouldHaveAbsolutePosition] = useState(false);
 
     let mainContentRef = useCallback(node=> {
-        if(node !== null && navigationRef !== null)
+        /*if(node !== null && navigationRef !== null)
         {
             let navAndMainContentHeight = node.clientHeight + navigationRef.current.clientHeight;
             let nextFooterAvailableHeight = window.innerHeight - navAndMainContentHeight;
             if(nextFooterAvailableHeight >= footerAvailableHeight){
                 setFooterShouldHaveAbsolutePosition(true);
             }
-        }
+        }*/
     }, []);
 
     return (
@@ -55,7 +56,7 @@ const IdentityWrapperPage = (props: Props) => {
                             <Breadcrumb />
                             <Route component={AuthPageContainer} path={Routes.getRouteAsString(Routes.authPageRoutes)} />
                             <Route component={JoinupPageContainer} path={Routes.getRouteAsString(Routes.registrationPageRoutes)} />
-                            <Route component={ProfilePageContainer} path={Routes.getRouteAsString(Routes.profilePageRoutes)} />
+                            <GuardedRoute component={ProfilePageContainer} path={Routes.getRouteAsString(Routes.profilePageRoutes)} />
                             <Route component={FriendsPageContainer} path={Routes.getRouteAsString(Routes.friendListPageRoutes)} />
                             <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
                             <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />

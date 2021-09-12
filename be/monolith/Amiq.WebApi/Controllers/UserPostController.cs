@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Post;
+using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/user-post")]
     public class UserPostController : AmiqBaseController
     {
@@ -23,6 +24,11 @@ namespace Amiq.WebApi.Controllers
             return Ok(data);
         }
 
-        
+        [HttpPatch]
+        public async Task<IActionResult> EditAsync([FromBody] DtoEditUserPostRequest dtoEditUserPostRequest)
+        {
+            await bsUserPost.EditAsync(dtoEditUserPostRequest);
+            return Ok();
+        }
     }
 }

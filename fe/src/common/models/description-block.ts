@@ -1,5 +1,5 @@
 export interface IDescriptionBlock {
     descriptionBlockId: number;
-    title: string;
-    text: string;
+    header: string;
+    content: string;
 }

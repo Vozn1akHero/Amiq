@@ -22,9 +22,18 @@ namespace Amiq.WebApi.Middlewares
             _logger.LogInformation($"Request URL: {Microsoft.AspNetCore.Http.Extensions.UriHelper.GetDisplayUrl(context.Request)}");
 
             string token = context.Request.Cookies["token"];
+
             if (!string.IsNullOrEmpty(token)) {
-                var dataFromToken = JwtExtensions.GetJwtStoredUserInfo(token);
-                context.Items.Add(new KeyValuePair<object, object>("user", dataFromToken));
+                if (!JwtExtensions.ValidateToken(token))
+                {
+                    context.Response.Cookies.Delete("token");
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                }
+                else
+                {
+                    var dataFromToken = JwtExtensions.GetJwtStoredUserInfo(token);
+                    context.Items.Add(new KeyValuePair<object, object>("user", dataFromToken));
+                }
             }
 
             await this._next(context);
