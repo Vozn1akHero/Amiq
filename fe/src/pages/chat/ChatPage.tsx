@@ -8,6 +8,8 @@ import {ChatPreviewMode} from "../../features/chat/chat-enums";
 type Props = {
     chats: Array<IChatPreview>;
     selectedChat: IChat;
+    chatPreviewsLoaded: boolean;
+    chatMessagesLoaded: boolean;
     onChatSelection(selectedChatId: string):void;
 }
 
@@ -76,10 +78,10 @@ class ChatPage extends Component<Props, State> {
                 {
                     this.props.selectedChat && <div className="selected-chat uk-flex chat-width-when-selected">
                         <hr className="uk-divider-vertical max-height uk-margin-large-left uk-margin-large-right"/>
-                        <Chat chat={this.props.selectedChat} />
+                        <Chat chat={this.props.selectedChat}
+                              chatMessagesLoaded={this.props.chatMessagesLoaded} />
                     </div>
                 }
-
             </div>
         );
     }

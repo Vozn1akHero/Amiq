@@ -8,6 +8,7 @@ namespace Amiq.Contracts.Post
         public Guid PostId { get; set; }
         public int AuthorId { get; set; }
         public string Text { get; set; }
-        public List<DtoPostComment> Children { get; set; }
+        public bool IsChild { get; set; }
+        //public List<DtoPostComment> Children { get; set; }
     }
 }

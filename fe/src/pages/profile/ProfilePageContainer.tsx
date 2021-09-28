@@ -71,7 +71,6 @@ const ProfilePageContainer : React.FC = () => {
     const deletePost = (postId: number) => {
         //userPostService.
         //setUserPosts(userPosts.filter(value => value.postId !== data.postId));
-
     }
 
     return (
@@ -79,6 +78,7 @@ const ProfilePageContainer : React.FC = () => {
                      postsLoaded={postsLoaded}
                      userData={userData}
                      userDataLoaded={userDataLoaded}
+                     createPost={createPost}
         />
     );
 

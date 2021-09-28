@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Amiq.Contracts.Chat;
+using Amiq.DataAccess.Models.Models;
+using AutoMapper;
 using System;
 
 namespace Amiq.Mapping
@@ -7,6 +9,9 @@ namespace Amiq.Mapping
     {
         public ChatProfile()
         {
+            CreateMap<User, DtoChatInterlocutor>();
+            CreateMap<Message, DtoChatMessage>();
+            CreateMap<DtoChatMessage, Message>();
         }
     }
 }

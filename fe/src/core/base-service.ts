@@ -9,7 +9,11 @@ export class BaseService {
         this.httpClient = new HttpClient();
     }
 
-    protected buildApiPath(method: string): string{
-        return this.apiModule.concat("/", method);
+    protected buildApiPath(method: string = null): string{
+        if(method) {
+            return this.apiModule.concat("/", method);
+        } else {
+            return this.apiModule;
+        }
     }
 }

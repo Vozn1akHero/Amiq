@@ -10,50 +10,24 @@ using Microsoft.AspNetCore.Authorization;
 using Amiq.WebApi.Core.Auth;
 using Amiq.WebApi.SignalR;
 using Microsoft.Extensions.DependencyInjection;
+using Amiq.Contracts.Utils;
 
 namespace Amiq.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ChatController : AmiqBaseController
     {
         private BsChat _bsChat = new BsChat();
         private BsChatMessage _bsChatMessage = new BsChatMessage();
-        private ISignalRChatService _signalRChatService;
 
-        public ChatController(ISignalRChatService signalRChatService)
-        {
-            _signalRChatService = signalRChatService;
-        }
-
-        [HttpGet("message")]
-        public async Task<IActionResult> GetMessagesByUserId([FromQuery] int userId)
-        {
-            return await Task.FromResult(Ok());
-        }
-
-        [HttpPost("message")]
-        public async Task<IActionResult> CreateMessage([FromBody] DtoChatMessage dtoMessage)
-        {
-            await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), dtoMessage);
-
-            return await Task.FromResult(Ok());
-        }
-
-        [HttpDelete("message")]
-        public async Task<IActionResult> DeleteMessageById([FromQuery] DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
-        {
-            dtoDeleteChatMessageRequest.IssuerId = JwtStoredUserInfo.UserId;
-            var result = _bsChatMessage.DeleteMessageAsync(dtoDeleteChatMessageRequest);
-            return await Task.FromResult(Ok());
-        }
 
         [HttpGet("previews")]
-        [AuthorizeChatInterlocutor]
-        public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] DtoChatPreviewListRequest dtoChatPreviewListRequest)
+        //[AuthorizeChatInterlocutor]
+        public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] int userId,
+            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var previews = await _bsChatMessage.GetChatPreviewListAsync(dtoChatPreviewListRequest);
-            return previews != null ? Ok(previews) : NotFound();
+            var previews = await _bsChatMessage.GetChatPreviewListAsync(userId, dtoPaginatedRequest);
+            return Ok(previews);
         }
-
     }
 }

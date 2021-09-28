@@ -12,6 +12,7 @@ type Props = {
     postsLoaded: boolean;
     userData: IUser;
     userDataLoaded: boolean;
+    createPost(text: string);
 }
 
 type State = {
@@ -38,7 +39,7 @@ class ProfilePage extends Component<Props, State> {
                                 </p>
                                 {this.props.userData.userDescriptionBlocks && <ul uk-accordion="collapsible: false">
                                     {
-                                        this.props.userData.userDescriptionBlocks?.map(((value, index) => {
+                                        this.props.userData.userDescriptionBlocks.map(((value, index) => {
                                             return <li>
                                                 <a className="uk-accordion-title" href="#">{value.header}</a>
                                                 <div className="uk-accordion-content">

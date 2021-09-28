@@ -21,6 +21,7 @@ export interface IMedia {
 export interface IChatPreview {
     chatId: string,
     author: IInterlocutor;
+    interlocutor: IInterlocutor;
     textContent: string;
     hasMedia: boolean;
     date: Date;

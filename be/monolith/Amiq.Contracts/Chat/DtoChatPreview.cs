@@ -14,6 +14,6 @@ namespace Amiq.Contracts.Chat
         public string AuthorName { get; set; }
         public string AuthorSurname { get; set; }
         public string Message { get; set; }
-        public bool HasMedia { get; set; }
+        //public bool HasMedia { get; set; }
     }
 }

@@ -8,7 +8,12 @@ type State = {
 
 }
 
-class Chat extends Component<{chat: IChat}, State> {
+type Props = {
+    chat: IChat;
+    chatMessagesLoaded: boolean;
+}
+
+class Chat extends Component<Props, State> {
     static Message = class extends Component<{message: IMessage, previousMessage: IMessage, viewerId: string}, any> {
         render() {
             return (

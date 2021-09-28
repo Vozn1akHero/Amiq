@@ -20,7 +20,6 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<BlockedUser> BlockedUsers { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<CommentToComment> CommentToComments { get; set; }
         public virtual DbSet<FriendRequest> FriendRequests { get; set; }
         public virtual DbSet<Friendship> Friendships { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
@@ -92,7 +91,13 @@ namespace Amiq.DataAccess.Models.Models
             {
                 entity.ToTable("Comment", "Post");
 
-                entity.Property(e => e.CommentId).HasDefaultValueSql("(newid())");
+                entity.Property(e => e.CommentId).HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EditedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.TextContent)
                     .IsRequired()
@@ -104,30 +109,16 @@ namespace Amiq.DataAccess.Models.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_User");
 
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_Comment_ParentComment");
+
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.PostId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_Post");
-            });
-
-            modelBuilder.Entity<CommentToComment>(entity =>
-            {
-                entity.ToTable("CommentToComment", "Post");
-
-                entity.Property(e => e.CommentToCommentId).HasDefaultValueSql("(newid())");
-
-                entity.HasOne(d => d.ChildComment)
-                    .WithMany(p => p.CommentToComments)
-                    .HasForeignKey(d => d.ChildCommentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CommentToComment_ChildComment");
-
-                entity.HasOne(d => d.ParentComment)
-                    .WithMany(p => p.InverseParentComment)
-                    .HasForeignKey(d => d.ParentCommentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CommentToComment_ParentComment");
             });
 
             modelBuilder.Entity<FriendRequest>(entity =>
@@ -263,7 +254,7 @@ namespace Amiq.DataAccess.Models.Models
             {
                 entity.ToTable("Message", "Chat");
 
-                entity.Property(e => e.MessageId).HasDefaultValueSql("(newid())");
+                entity.Property(e => e.MessageId).HasDefaultValueSql("(newsequentialid())");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -323,6 +314,8 @@ namespace Amiq.DataAccess.Models.Models
             {
                 entity.ToTable("User", "User");
 
+                entity.HasIndex(e => new { e.Name, e.Surname }, "IX_User");
+
                 entity.HasIndex(e => e.Login, "UC_UserLogin")
                     .IsUnique();
 
@@ -356,7 +349,7 @@ namespace Amiq.DataAccess.Models.Models
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.ShortDescription).HasMaxLength(200);
+                entity.Property(e => e.ShortDescription).HasMaxLength(400);
 
                 entity.Property(e => e.Surname)
                     .IsRequired()

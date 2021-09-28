@@ -9,4 +9,6 @@ export class PostService extends BaseService {
             .append("postId", postId);
         return this.httpClient.delete("post", params);
     }
+
+
 }

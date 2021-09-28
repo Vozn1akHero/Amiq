@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "d1d3788f-7809-4fe8-9362-ec25a55237b6": {
+      "ProjectGuid": "d1d3788f-7809-4fe8-9362-ec25a55237b6",
+      "DisplayName": "Amiq.Services.Notification",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
