@@ -1,5 +1,6 @@
 ﻿using Amiq.WebApi.Core;
 using Amiq.WebApi.Middlewares;
+using Amiq.WebApi.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +19,7 @@ namespace Amiq.WebApi
 
         public static void ConfigureCustomServices(this IServiceCollection services)
         {
-            
+            services.AddScoped<ISignalRChatService, SignalRChatService>();
         }
     }
 }

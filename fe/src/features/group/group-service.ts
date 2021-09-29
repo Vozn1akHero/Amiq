@@ -57,7 +57,10 @@ const groupsMock : Array<any> = [
 
 @injectable()
 export class GroupService extends BaseService{
+    apiModule = "group";
+
     getGroupsByUserId(userId: string){
         return groupsMock;
+
     }
 }

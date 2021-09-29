@@ -51,46 +51,24 @@ namespace Amiq.DataAccess.Chat
 
         public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(int userId, DtoPaginatedRequest dtoChatPreviewListRequest)
         {
-            var param = new SqlParameter[] {
-                    new SqlParameter() {
-                        ParameterName = "@userId",
-                        SqlDbType =  System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = userId
-                    },
-                    new SqlParameter() {
-                        ParameterName = "@length",
-                        SqlDbType =  System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = dtoChatPreviewListRequest.Count
-                    },
-                    new SqlParameter() {
-                        ParameterName = "@skip",
-                        SqlDbType =  System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = (dtoChatPreviewListRequest.Page - 1) * dtoChatPreviewListRequest.Count
-                    }
-            };
+            var data = await _amiqContext.Chats
+                        .Where(e => e.FirstUserId == userId || e.SecondUserId == userId)
+                        .Select(g => g.Messages.OrderByDescending(p => p.CreatedAt).First())
+                        /*.Select(e => new DtoChatPreview
+                        {
+                            ChatId = e.ChatId,
+                            MessageAuthorId = e.AuthorId,
+                            AuthorAvatarPath = e.Author.AvatarPath,
+                            AuthorName = e.Author.Name,
+                            AuthorSurname = e.Author.Surname,
+                            Message = e.TextContent
+                        })*/
+                        .ToListAsync();
 
-            /*var data =  _amiqContext.Messages
-                .FromSqlRaw("Chat.GetChatPreviews @userId, @length, @skip", param)
-                .ToList();*/
-            var data = _amiqContext.SqlQuery<DtoChatPreview>("EXECUTE Chat.GetChatPreviews @userId, @length, @skip", param);
-            var dataC = data.Select(e => new DtoChatPreview
+            return data.Select(e => new DtoChatPreview
             {
                 
             }).ToList();
-            //var data = _amiqContext.Database.ExecuteSqlRaw
-
-            return dataC/*.Select(e => new DtoChatPreview
-            {
-                ChatId = e.ChatId,
-                MessageAuthorId = e.AuthorId,
-                AuthorAvatarPath = e.Author.AvatarPath,
-                AuthorName = e.Author.Name,
-                AuthorSurname = e.Author.Surname,
-                Message = e.TextContent
-            }).ToList()*/;
         }
 
         public async Task<DtoDeleteEntityResponse> DeleteMessageAsync(DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)

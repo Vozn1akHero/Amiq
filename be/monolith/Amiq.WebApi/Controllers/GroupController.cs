@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.Group;
+﻿using Amiq.Business;
+using Amiq.Contracts.Group;
 using Amiq.WebApi.Base;
 using Amiq.WebApi.Core.Auth;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,8 @@ namespace Amiq.WebApi.Controllers
 {
     public class GroupController : AmiqBaseController
     {
-        [HttpGet("user")]
-        public async Task<IActionResult> GetGroupsByUserId([FromQuery] Guid participantId)
-        {
-            return await Task.FromResult(Ok());
-        }
+        private BsGroup bsGroup = new BsGroup();
+
 
         [HttpPost("drop")]
         [AuthorizeMainGroupAdmin]

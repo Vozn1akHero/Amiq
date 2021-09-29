@@ -1,5 +1,6 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.Group;
+using Amiq.DataAccess.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Amiq.Business
 {
     public class BsGroup : BsServiceBase
     {
+        private DaGroup _daGroup = new DaGroup();
+
         public DtoGroup GetGroupDataById(int groupId)
         {
             var group = new DtoGroup();

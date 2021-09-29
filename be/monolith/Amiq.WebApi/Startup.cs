@@ -2,6 +2,7 @@ using Amiq.Core.Auth;
 using Amiq.Mapping;
 using Amiq.WebApi.Core;
 using Amiq.WebApi.Middlewares;
+using Amiq.WebApi.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,7 @@ namespace Amiq.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -72,8 +74,10 @@ namespace Amiq.WebApi
             });
 
             //services.ConfigureMapper();
-
+            services.AddSignalR();
             services.ConfigureCustomServices();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,6 +118,7 @@ namespace Amiq.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

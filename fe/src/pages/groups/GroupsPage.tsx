@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import MemoizedGroupCard from "features/group/components/GroupCard";
+import {IGroupCard} from "../../features/group/group-models";
+import {GroupParticipantService} from "../../features/group/group-participant-service";
+import {AuthStore} from "../../store/auth/auth-store";
 
 type Props = {
-    groupList: Array<any>;
+    groupList: Array<IGroupCard>;
     onSearchInputChange: (e:InputEvent) => void;
+    leaveGroup(groupId: number):void;
 };
 
 type State = {
@@ -25,7 +29,8 @@ class GroupsPage extends Component<Props, State> {
                         this.props.groupList.map((value, i) =>
                             {
                                 return <div key={i} className="uk-margin-top">
-                                    <MemoizedGroupCard id={value.id} avatarSrc={value.avatarSrc} viewName={value.viewName} />
+                                    <MemoizedGroupCard leaveGroup={this.props.leaveGroup}
+                                                       groupCard={value} />
                                 </div>
                             }
                         )

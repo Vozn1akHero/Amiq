@@ -18,6 +18,9 @@ namespace Amiq.Business.Chat.BsRules
             _chatId = chatId;
         }
 
-        public bool CheckBsRule() => _daChat.IsUserChatParticipant(_issuerId, _chatId);
+        public bool CheckBsRule()
+        {
+            return _daChat.IsUserChatParticipant(_issuerId, _chatId);
+        }
     }
 }

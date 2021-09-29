@@ -9,7 +9,7 @@ namespace Amiq.Business.Utils
     public class BsServiceBase : IDomainService
     {
         protected void CheckBsRule(IBsRule businessRule){
-            if (businessRule.CheckBsRule()) {
+            if (!businessRule.CheckBsRule()) {
                 throw new BsIsBrokenException(businessRule.ErrorContent);
             }
         }

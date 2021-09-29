@@ -13,8 +13,11 @@ namespace Amiq.DataAccess.Chat
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public bool IsUserChatParticipant(int userId, Guid chatId) 
-            => _amiqContext.Chats.Any(e => (e.FirstUserId == userId || e.SecondUserId == userId) && e.ChatId == chatId);
+        public bool IsUserChatParticipant(int userId, Guid chatId)
+        {
+            bool res = _amiqContext.Chats.Any(e => (e.FirstUserId == userId || e.SecondUserId == userId) && e.ChatId == chatId);
+            return res;
+        }
 
         
     }

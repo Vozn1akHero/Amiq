@@ -8,7 +8,8 @@ namespace Amiq.Mapping
     {
         public GroupProfile()
         {
-            CreateMap<DataAccess.Models.Models.Group, DtoGroup>();
+            CreateMap<DataAccess.Models.Models.Group, DtoGroup>()
+                .ForMember(e=>e.Participants, d => d.MapFrom(g=>g.GroupParticipants));
         }
     }
 }

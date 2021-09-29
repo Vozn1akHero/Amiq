@@ -29,5 +29,6 @@ namespace Amiq.DataAccess.Group
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroupParticipant>(query).ToListAsync();
             return data;
         }
+
     }
 }
