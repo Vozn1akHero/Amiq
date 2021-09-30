@@ -1,5 +1,5 @@
 export class HttpParams{
-    private _params : object = [];
+    private _params : object = {};
     public get params(){
         return this._params
     }
@@ -9,4 +9,18 @@ export class HttpParams{
 
         return this;
     }
+
+    toStrParams(): string {
+        let output = "";
+        const count = Object.entries(this._params).length;
+        for(let i = 0; i < count; i++){
+            output += Object.values(this._params)[i];
+            if(count - i > 1){
+                output+="/";
+            }
+        }
+        return output;
+    }
+
+
 }

@@ -14,7 +14,7 @@ class GroupPage extends Component<Props, any>  {
             <div className='profile-page'>
                 <div className="uk-padding uk-grid uk-child-width-1-2">
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                        <PageAvatar />
+                        {/*<PageAvatar />*/}
                     </div>
                     <div className="uk-preserve-width uk-margin-left">
                         <h3>O nas</h3>

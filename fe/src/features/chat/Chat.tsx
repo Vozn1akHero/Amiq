@@ -1,9 +1,19 @@
 import React, {Component} from 'react';
-import {IChat, IInterlocutor, IMessage} from "./chat-models";
+import {IChat, IMessage} from "./chat-models";
 import {getViewDate} from "assets/utils/date-utils";
 import "./chat.scss"
+import {ChatPreviewMode} from "./chat-enums";
 
-class Chat extends Component<{chat: IChat}, any> {
+type State = {
+
+}
+
+type Props = {
+    chat: IChat;
+    chatMessagesLoaded: boolean;
+}
+
+class Chat extends Component<Props, State> {
     static Message = class extends Component<{message: IMessage, previousMessage: IMessage, viewerId: string}, any> {
         render() {
             return (

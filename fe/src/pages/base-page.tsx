@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class BasePage extends Component {
+class BasePage<P,S> extends Component<P,S> {
 
 }
 

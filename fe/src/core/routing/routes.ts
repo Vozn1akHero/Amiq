@@ -18,7 +18,12 @@ export default class Routes {
 
         //todo
         //query params
-        console.log(output)
+        return output;
+    }
+
+    public static getLink(route: IRoute):string{
+        let output: string = "/";
+        output += route.link;
         return output;
     }
 
@@ -76,5 +81,32 @@ export default class Routes {
             params: ["/:groupId"],
             queryParams: ""
         };
+    }
+
+    public static get authPageRoutes(): IRoute{
+        return {
+            link: "login",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        };
+    }
+
+    public static get registrationPageRoutes(): IRoute{
+        return {
+            link: "joinup",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        };
+    }
+
+    public static get logoutPageRoutes() : IRoute {
+        return {
+            link: "logout",
+            subroutes: [],
+            params: [],
+            queryParams: ""
+        }
     }
 }

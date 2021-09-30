@@ -1,16 +1,16 @@
 import "./group-card.scss"
 import {memo} from "react";
 import { Link } from "react-router-dom";
+import {IGroupCard} from "../group-models";
 
 type GroupCardProps = {
-    id: number,
-    avatarSrc: string;
-    viewName: string;
+    groupCard: IGroupCard;
+    leaveGroup(groupId: number):void;
 }
 
 const GroupCard = (props: GroupCardProps) => {
     const avatarBgStyles : any = {
-        backgroundImage: "url(" + props.avatarSrc + ")"
+        backgroundImage: "url(" + props.groupCard.avatarSrc + ")"
     }
 
     return (
@@ -19,20 +19,25 @@ const GroupCard = (props: GroupCardProps) => {
 
             <img
                  className="avatar"
-                 src={props.avatarSrc}
+                 src={props.groupCard.avatarSrc}
                  sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
 
             <div className="group-info-wrapper uk-padding">
-                <Link to={"/group/" + props.id}>
-                    <h3 className="uk-card-title name">{props.viewName}</h3>
+                <Link to={"/group/" + props.groupCard.groupId}>
+                    <h3 className="uk-card-title name">{props.groupCard.name}</h3>
                 </Link>
-                <span className="group-add-info">15 uczestników</span>
-                <span className="group-add-info">Nauka, Sport</span>
-                <span className="group-add-info">3 nowych uczestników</span>
-                <span className="group-add-info">13 nowych wpisów</span>
+                <span className="group-add-info">{props.groupCard.participants.length} uczestników</span>
+                {
+                    props.groupCard.subjects &&
+                        <span className="group-add-info">{props.groupCard.subjects.join(", ")}</span>
+                }
+
+                {/*<span className="group-add-info">3 nowych uczestników</span>
+                <span className="group-add-info">13 nowych wpisów</span>*/}
 
                 <div className="controls uk-margin-medium-top">
-                    <button className="uk-button uk-button-secondary">Wyjdź</button>
+                    <button className="uk-button uk-button-secondary"
+                            onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
                     <div className="uk-inline uk-margin-small-left">
                         <button className="uk-button uk-button-default" type="button">więcej</button>
                         {/*<div uk-dropdown>*/}

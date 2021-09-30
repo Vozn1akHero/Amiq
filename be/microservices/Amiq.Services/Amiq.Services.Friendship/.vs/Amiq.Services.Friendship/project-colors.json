@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "dc486fd4-7e19-4c04-9243-8f4425813ab0": {
+      "ProjectGuid": "dc486fd4-7e19-4c04-9243-8f4425813ab0",
+      "DisplayName": "Amiq.Services.Friendship",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

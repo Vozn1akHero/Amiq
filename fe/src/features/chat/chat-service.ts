@@ -77,7 +77,7 @@ import {IMessage, IChatPreview, IChat} from "./chat-models";
     }
 ]*/
 
-const chatPreviewsMock : Array<IChatPreview> = [
+/*const chatPreviewsMock : Array<IChatPreview> = [
     {
         chatId: "1",
         author: {
@@ -188,9 +188,9 @@ const chatPreviewsMock : Array<IChatPreview> = [
         hasMedia: false,
         date: moment().subtract(2, "days").toDate()
     }
-]
+]*/
 
-const chatsMock : Array<IChat> = [
+/*const chatsMock : Array<IChat> = [
     {
         chatId: "1",
         interlocutor: {
@@ -261,15 +261,22 @@ const chatsMock : Array<IChat> = [
             }
         ]
     }
-]
+]*/
 
-@injectable()
-export class ChatService extends BaseService{
-    getChatsByUserId(userId: string){
+
+export default class ChatService extends BaseService{
+    apiModule = "chat";
+
+    /*getChatsByUserId(userId: string){
         return chatPreviewsMock;
+    }*/
+
+    getChatPreviews() {
+        return this.httpClient.get(this.buildApiPath("previews"))
     }
 
-    getMessagesByChatId(chatId: string) : IChat {
-        return chatsMock.find(value => value.chatId === chatId) as IChat;
-    }
+    /*getMessagesByChatId(chatId: string) : IChat {
+        //return chatsMock.find(value => value.chatId === chatId) as IChat;
+        return this.httpClient.get(this.buildApiPath(this.apiModule, ""))
+    }*/
 }

@@ -1,19 +1,14 @@
 import React, {Component} from 'react';
+import "./page-avatar.scss"
 
-class PageAvatar extends Component {
+type Props = {
+    userName: string;
+    userSurname: string;
+}
+
+class PageAvatar extends Component<Props, any> {
     avatarBgStyles : any = {
         backgroundImage: "url(\"https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg\")",
-        backgroundPosition: "top center",
-        backgroundSize: "cover",
-        filter: "blur(15px)",
-        opacity: "0.6",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100%",
-        width: "100%",
-        zIndex: -1,
-        transform: "scale(1.2)"
     }
 
     nameStyles: any = {
@@ -21,27 +16,17 @@ class PageAvatar extends Component {
         marginTop: "15px"
     }
 
-    nameWrapStyles: any = {
-        width: "100%",
-        height: "24%",
-        position: "absolute",
-        left: 0,
-        bottom: 0,
-        paddingLeft: "42px",
-        background: "white"
-    }
-
     render() {
         return (
-            <div className="uk-card uk-card-default uk-card-body" style={{zIndex: 1, overflow: "hidden"}}>
-                <div className="avatarBg" style={this.avatarBgStyles}></div>
+            <div className="page-avatar uk-card uk-card-default uk-card-body">
+                <div className="page-avatar__avatarBg" style={this.avatarBgStyles}></div>
 
-                <img style={{borderRadius: '50%', border: "3px solid white"}}
+                <img className="page-avatar__img"
                      src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg"
                      sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" />
 
-                <div className="uk-margin-medium-top name-wrap" style={this.nameWrapStyles}>
-                    <h3 className="uk-card-title" style={this.nameStyles}>Dima Vozniachuk</h3>
+                <div className="uk-margin-medium-top page-avatar__name-wrap">
+                    <h3 className="uk-card-title" style={this.nameStyles}>{this.props.userName} {this.props.userSurname}</h3>
                 </div>
             </div>
         );
