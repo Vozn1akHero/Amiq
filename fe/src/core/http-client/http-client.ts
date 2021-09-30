@@ -1,10 +1,11 @@
 import {HttpParams} from "./HttpParams";
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {HttpQueryParams} from "./HttpQueryParams";
+import devConfig from "dev-config.json"
 
 export class HttpClient {
     instance = axios.create({
-        baseURL: "http://localhost:10709/api/",
+        baseURL: devConfig.monolithUrl + "/api/",
         withCredentials: true,
     });
 

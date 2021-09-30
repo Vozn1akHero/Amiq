@@ -45,9 +45,13 @@ namespace Amiq.DataAccess.Post
                           on p.PostId equals gp.PostId
                           where gp.GroupId == dtoGroupPostRequest.GroupId
                           select new DtoGroupPost {
+                            PostId = p.PostId,
                             GroupId = gp.GroupId,
                             TextContent = p.TextContent,
-                            UserId = gp.AuthorId
+                            UserId = gp.AuthorId,
+                            EditedAt = p.EditedAt,
+                            EditedBy = p.EditedBy,
+                            CreatedAt = p.CreatedAt
                           })
                           .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
                           .Take(dtoGroupPostRequest.Count)

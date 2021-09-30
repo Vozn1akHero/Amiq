@@ -21,5 +21,21 @@ namespace Amiq.WebApi.Controllers
         {
             return await Task.FromResult(Ok());
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetByName([FromQuery] string name)
+        {
+            var data = await bsGroup.GetByName(name);
+            return Ok(data);
+        }
+
+        [HttpGet("{groupId}")]
+        public async Task<IActionResult> GetGroupById(int groupId)
+        {
+            var data = await bsGroup.GetGroupById(groupId);
+            if(data == null) return NotFound();
+            return Ok(data);
+        }
+
     }
 }

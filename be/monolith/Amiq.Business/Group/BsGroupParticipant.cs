@@ -23,9 +23,9 @@ namespace Amiq.Business
             return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
         }
 
-        public async Task LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)
+        public async Task LeaveGroupAsync(int userId, int groupId)
         {
-            await _daGroupParticipant.LeaveGroupAsync(dtoLeaveGroup);
+            await _daGroupParticipant.LeaveGroupAsync(userId, groupId);
         }
 
         public async Task JoinGroupAsync(DtoJoinGroup dtoJoinGroup)
@@ -36,6 +36,12 @@ namespace Amiq.Business
         public async Task<DtoGroupParticipant> GetGroupParticipantAsync(DtoMinifiedGroupParticipant dtoSimplifiedGroupParticipant)
         {
             return await _daGroupParticipant.GetGroupParticipantAsync(dtoSimplifiedGroupParticipant);
+        }
+
+        public async Task<DtoGroupViewer> GetGroupViewerByUserIdAsync(int userId, int groupId)
+        {
+            var result = await _daGroupParticipant.GetGroupViewerByUserIdAsync(userId, groupId);
+            return result;
         }
     }
 }

@@ -2,8 +2,8 @@ export interface IGroupCard {
     groupId: number;
     name: string;
     avatarSrc: string;
-    //participantsCount: number;
-    participants: Array<IGroupParticipant>;
+    participantsCount: number;
+    //participants: Array<IGroupParticipant>;
     subjects: Array<string>;
 }
 
@@ -13,4 +13,27 @@ export interface IGroupParticipant {
     name: string;
     surname: string;
     avatarPath: string;
+}
+
+export interface IGroupData {
+    groupId: number;
+    name: string;
+    avatarSrc: string;
+    participantsCount: number;
+    //participants: Array<IGroupParticipant>;
+    subjects: Array<string>;
+}
+
+export interface IGroupViewer {
+    groupId: number;
+    userId: number;
+    groupViewerRole: EnGroupViewerRole;
+}
+
+export enum EnGroupViewerRole {
+    Creator,
+    Admin,
+    Participant,
+    Guest,
+    Blocked
 }

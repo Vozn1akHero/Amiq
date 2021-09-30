@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
-import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
+import {IGroupData} from "../../features/group/group-models";
+import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
+import {IGroupPost} from "../../features/post/models/group-post";
 
 type Props = {
-    participants: Array<any>
+    participants: Array<any>;
+    groupData: IGroupData;
+    groupDataLoaded: boolean;
+    groupPosts: Array<IGroupPost>;
 }
 
 class GroupPage extends Component<Props, any>  {
@@ -14,7 +19,7 @@ class GroupPage extends Component<Props, any>  {
             <div className='profile-page'>
                 <div className="uk-padding uk-grid uk-child-width-1-2">
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                        {/*<PageAvatar />*/}
+                        { this.props.groupDataLoaded && <PageAvatar viewTitle={this.props.groupData.name}/> }
                     </div>
                     <div className="uk-preserve-width uk-margin-left">
                         <h3>O nas</h3>
@@ -45,7 +50,11 @@ class GroupPage extends Component<Props, any>  {
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <PostCreationForm />
-                        <Post />
+                        {
+                            this.props.groupPosts != null && this.props.groupPosts.map((value, index) => {
+                                return <Post key={index} />
+                            })
+                        }
                     </div>
                 </div>
             </div>

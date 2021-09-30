@@ -1,7 +1,9 @@
 export interface IGroupPost {
     postId: number;
-    authorId: number;
-    text: string;
+    userId: number;
+    textContent: string;
     groupId: string;
     editedBy?: number;
+    editedAt?: Date;
+    createdAt: Date;
 }

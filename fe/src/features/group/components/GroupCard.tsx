@@ -2,6 +2,7 @@ import "./group-card.scss"
 import {memo} from "react";
 import { Link } from "react-router-dom";
 import {IGroupCard} from "../group-models";
+import devConfig from "dev-config.json"
 
 type GroupCardProps = {
     groupCard: IGroupCard;
@@ -9,24 +10,28 @@ type GroupCardProps = {
 }
 
 const GroupCard = (props: GroupCardProps) => {
+    const avatarSrc = devConfig.monolithUrl + "/" + props.groupCard.avatarSrc;
+
     const avatarBgStyles : any = {
-        backgroundImage: "url(" + props.groupCard.avatarSrc + ")"
+        backgroundImage: "url(" + avatarSrc + ")"
     }
 
     return (
         <div className="uk-card uk-card-default uk-card-body group-card">
             <div className="avatar-bg" style={avatarBgStyles}></div>
 
-            <img
-                 className="avatar"
-                 src={props.groupCard.avatarSrc}
-                 sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
+            <div className="avatar-wrap">
+                <img
+                    className="avatar-img"
+                    src={avatarSrc}
+                    sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
+            </div>
 
             <div className="group-info-wrapper uk-padding">
                 <Link to={"/group/" + props.groupCard.groupId}>
                     <h3 className="uk-card-title name">{props.groupCard.name}</h3>
                 </Link>
-                <span className="group-add-info">{props.groupCard.participants.length} uczestników</span>
+                <span className="group-add-info">{props.groupCard.participantsCount} uczestników</span>
                 {
                     props.groupCard.subjects &&
                         <span className="group-add-info">{props.groupCard.subjects.join(", ")}</span>

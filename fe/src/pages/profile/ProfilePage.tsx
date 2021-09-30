@@ -29,8 +29,8 @@ class ProfilePage extends Component<Props, State> {
                 {this.props.userDataLoaded &&
                         <>
                             <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                                <PageAvatar userName={this.props.userData.name}
-                                            userSurname={this.props.userData.surname} />
+                                <PageAvatar viewTitle={this.props.userData.name + " " + this.props.userData.surname}
+                                            />
                             </div>
                             <div className="uk-preserve-width uk-margin-left">
                                 <h3>O mnie</h3>

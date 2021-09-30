@@ -3,6 +3,7 @@ using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.Mapping;
 using Amiq.WebApi.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,18 +16,18 @@ namespace Amiq.WebApi.Controllers
     {
         private BsGroupParticipant _bsGroupParticipant = new BsGroupParticipant();
 
-        [HttpGet("user-groups/{userId}")]
-        public async Task<ActionResult<List<DtoGroup>>> GetUserGroupsByUserIdAsync(int userId, 
-            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
+        [HttpGet("user-groups")]
+        public async Task<ActionResult<List<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
             return Ok(groups);
         }
 
         [HttpDelete("leave")]
-        public async Task<IActionResult> LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)
+        //public async Task<IActionResult> LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)
+        public async Task<IActionResult> LeaveGroupAsync([FromQuery] int groupId)
         {
-            await _bsGroupParticipant.LeaveGroupAsync(dtoLeaveGroup);
+            await _bsGroupParticipant.LeaveGroupAsync(JwtStoredUserInfo.UserId, groupId);
             return Ok();
         }
 
@@ -42,6 +43,14 @@ namespace Amiq.WebApi.Controllers
         {
             var groupParticipants = await _bsGroupParticipant.GetGroupParticipantAsync(dtoMinifiedGroupParticipant);
             return Ok(groupParticipants);
+        }
+
+        [HttpGet("viewer-role")]
+        [Authorize]
+        public async Task<IActionResult> GetGroupRoleAsync([FromQuery] int userId, [FromQuery] int groupId)
+        {
+            var res = await _bsGroupParticipant.GetGroupViewerByUserIdAsync(userId, groupId);
+            return Ok(res);
         }
     }
 }

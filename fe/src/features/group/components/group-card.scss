@@ -17,10 +17,18 @@
     transform: scale(1.2);
   }
 
-  .avatar{
-    border-radius: 50%;
-    border: 3px solid white;
+  .avatar-wrap{
     margin-bottom: 3rem;
+    height: 9rem;
+    width: 9rem;
+
+
+    .avatar-img{
+      border-radius: 50%;
+      border: 3px solid white;
+      height: 100%;
+      width: 100%;
+    }
   }
 
   .name{

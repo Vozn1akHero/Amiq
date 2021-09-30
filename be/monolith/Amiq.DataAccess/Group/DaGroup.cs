@@ -30,5 +30,19 @@ namespace Amiq.DataAccess.Group
             return data;
         }
 
+        public async Task<IEnumerable<DtoGroup>> GetByNameAsync(string name)
+        {
+            var query = _AmiqContext.Groups.Where(e => e.Name.StartsWith(name));
+            var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).ToListAsync();
+            return data;
+        }
+
+        public async Task<DtoGroup> GetGroupById(int groupId)
+        {
+            var query = _AmiqContext.Groups.Where(e => e.GroupId == groupId);
+            var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).SingleOrDefaultAsync();
+            return data;
+        }
+
     }
 }

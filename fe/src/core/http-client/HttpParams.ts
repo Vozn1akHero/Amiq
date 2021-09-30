@@ -4,7 +4,7 @@ export class HttpParams{
         return this._params
     }
 
-    append(name: string, value: string) : HttpParams{
+    append(name: string, value: string | number) : HttpParams{
         this._params = {...this._params, [name]: value}
 
         return this;

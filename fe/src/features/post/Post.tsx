@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import "./post.scss"
 
+type Props  = {
+    /*creationDate: Date;
+    authorViewName: string;
+    authorAvatarPath: string;*/
+
+}
+
 class Post extends Component {
     render() {
         return (
@@ -34,7 +41,7 @@ class Post extends Component {
                                     takimata sanctus est Lorem ipsum dolor sit amet.</p>
                             </div>
                         </article>
-                        <ul>
+                        {/*<ul>
                             <li>
                                 <article className="uk-comment uk-comment-primary uk-visible-toggle">
                                     <header className="uk-comment-header uk-position-relative">
@@ -63,7 +70,7 @@ class Post extends Component {
                                     </div>
                                 </article>
                             </li>
-                        </ul>
+                        </ul>*/}
                     </li>
                 </ul>
             </>

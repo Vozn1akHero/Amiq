@@ -19,6 +19,7 @@ namespace Amiq.DataAccess.Group
     {
         private AmiqContext _amiqContext = new AmiqContext();
         private AmiqContextWithDebugLogging _amiqContextWithDebug = new AmiqContextWithDebugLogging();
+        private DaGroupViewer _daGroupViewer = new DaGroupViewer();
 
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
@@ -36,11 +37,11 @@ namespace Amiq.DataAccess.Group
             return groups;
         }
 
-        public async Task LeaveGroupAsync(DtoLeaveGroup rsLeaveGroup)
+        public async Task LeaveGroupAsync(int userId, int groupId)
         {
             var participant = _amiqContext
                 .GroupParticipants
-                .SingleOrDefault(e=>e.UserId==rsLeaveGroup.UserId && e.GroupId == rsLeaveGroup.GroupId);
+                .SingleOrDefault(e=>e.UserId == userId && e.GroupId == groupId);
             if (participant != null)
             {
                 _amiqContext.GroupParticipants.Remove(participant);
@@ -71,5 +72,53 @@ namespace Amiq.DataAccess.Group
 
             return res;
         }
+
+        public async Task<DtoGroupViewer> GetGroupViewerByUserIdAsync(int userId, int groupId)
+        {
+            return new DtoGroupViewer
+            {
+                UserId = userId,
+                GroupId = groupId,
+                GroupViewerRole = await _daGroupViewer.GetRoleAsync(userId, groupId)
+            };
+        }
+    }
+
+    // TODO CACHE
+    class DaGroupViewer
+    {
+        private AmiqContext _amiqContext = new AmiqContext();
+
+        public async Task<EnGroupViewerRole> GetRoleAsync(int userId, int groupId)
+        {
+            return await Task.Run(() =>
+            {
+                if (IsBanned(userId, groupId))
+                    return EnGroupViewerRole.Blocked;
+                else if (IsGuest(userId, groupId))
+                    return EnGroupViewerRole.Guest;
+                else if (IsParticipant(userId, groupId))
+                    return EnGroupViewerRole.Participant;
+                else if (IsCreator(userId, groupId))
+                    return EnGroupViewerRole.Creator;
+                else if (IsAdmin(userId, groupId))
+                    return EnGroupViewerRole.Admin;
+                return EnGroupViewerRole.Guest;
+            });
+        }
+
+        bool IsParticipant(int userId, int groupId) => _amiqContext.GroupParticipants.AsNoTracking()
+            .Any(e=>e.GroupId==groupId && e.UserId == userId && !e.IsAdmin);
+
+        bool IsCreator(int userId, int groupId) => _amiqContext.Groups.AsNoTracking().Any(e => e.GroupId == groupId && e.CreatedBy == userId);
+
+        bool IsAdmin(int userId, int groupId) => _amiqContext.GroupParticipants.AsNoTracking().Any(e => e.UserId == userId && 
+            e.IsAdmin && e.GroupId == groupId);
+
+        bool IsGuest(int userId, int groupId) => !_amiqContext.GroupParticipants.AsNoTracking().Any(e => e.GroupId == groupId 
+            && e.UserId == userId);
+
+        bool IsBanned(int userId, int groupId) => _amiqContext.GroupBlockedUsers.AsNoTracking()
+            .Any(e=>e.GroupId == groupId && e.UserId==userId);
     }
 }

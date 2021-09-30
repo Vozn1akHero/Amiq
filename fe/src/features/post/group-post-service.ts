@@ -11,7 +11,7 @@ export class GroupPostService extends BaseService {
         queryParams.append("groupId", groupId.toString());
         queryParams.append("count", postsCount);
         queryParams.append("page", page.toString());
-        return this.httpClient.get(this.buildApiPath("list"), null);
+        return this.httpClient.get(this.buildApiPath("list"), null, queryParams);
     }
 
     create(groupPost: IGroupPost){

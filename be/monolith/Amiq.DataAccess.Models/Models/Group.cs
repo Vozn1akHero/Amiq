@@ -9,6 +9,7 @@ namespace Amiq.DataAccess.Models.Models
     {
         public Group()
         {
+            GroupBlockedUsers = new HashSet<GroupBlockedUser>();
             GroupDescriptionBlocks = new HashSet<GroupDescriptionBlock>();
             GroupParticipants = new HashSet<GroupParticipant>();
             GroupPosts = new HashSet<GroupPost>();
@@ -19,7 +20,10 @@ namespace Amiq.DataAccess.Models.Models
         public string AvatarSrc { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int CreatedBy { get; set; }
 
+        public virtual User CreatedByNavigation { get; set; }
+        public virtual ICollection<GroupBlockedUser> GroupBlockedUsers { get; set; }
         public virtual ICollection<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
         public virtual ICollection<GroupPost> GroupPosts { get; set; }

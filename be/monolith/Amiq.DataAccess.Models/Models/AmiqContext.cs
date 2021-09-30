@@ -157,6 +157,8 @@ namespace Amiq.DataAccess.Models.Models
             {
                 entity.ToTable("Group", "Group");
 
+                entity.HasIndex(e => e.Name, "IX_Group_Name");
+
                 entity.Property(e => e.AvatarSrc).IsUnicode(false);
 
                 entity.Property(e => e.CreatedAt)
@@ -168,6 +170,12 @@ namespace Amiq.DataAccess.Models.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(150);
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.Groups)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupCreator_User");
             });
 
             modelBuilder.Entity<GroupBlockedUser>(entity =>
@@ -176,14 +184,23 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.GroupBlockedUserId).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.BanDate)
+                entity.Property(e => e.BannedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.UserInt)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.BannedUntil).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupBlockedUsers)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupBlockedUsers_Group");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.GroupBlockedUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupBlockedUsers_User");
             });
 
             modelBuilder.Entity<GroupDescriptionBlock>(entity =>

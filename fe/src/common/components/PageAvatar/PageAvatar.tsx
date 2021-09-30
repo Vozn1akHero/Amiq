@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import "./page-avatar.scss"
 
 type Props = {
-    userName: string;
-    userSurname: string;
+    //userName: string;
+    //userSurname: string;
+    viewTitle: string;
 }
 
 class PageAvatar extends Component<Props, any> {
@@ -26,7 +27,7 @@ class PageAvatar extends Component<Props, any> {
                      sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" />
 
                 <div className="uk-margin-medium-top page-avatar__name-wrap">
-                    <h3 className="uk-card-title" style={this.nameStyles}>{this.props.userName} {this.props.userSurname}</h3>
+                    <h3 className="uk-card-title" style={this.nameStyles}>{this.props.viewTitle}</h3>
                 </div>
             </div>
         );

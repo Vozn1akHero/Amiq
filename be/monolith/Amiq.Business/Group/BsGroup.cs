@@ -25,5 +25,15 @@ namespace Amiq.Business
 
             return output;
         }
+
+        public async Task<IEnumerable<DtoGroup>> GetByName(string name)
+        {
+            return await _daGroup.GetByNameAsync(name);
+        }
+
+        public async Task<DtoGroup> GetGroupById(int groupId)
+        {
+            return await _daGroup.GetGroupById(groupId);
+        }
     }
 }
