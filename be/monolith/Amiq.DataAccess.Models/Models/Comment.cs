@@ -9,6 +9,7 @@ namespace Amiq.DataAccess.Models.Models
     {
         public Comment()
         {
+            InverseMainParent = new HashSet<Comment>();
             InverseParent = new HashSet<Comment>();
         }
 
@@ -20,10 +21,15 @@ namespace Amiq.DataAccess.Models.Models
         public DateTime CreatedAt { get; set; }
         public int? EditedBy { get; set; }
         public DateTime? EditedAt { get; set; }
+        public Guid? MainParentId { get; set; }
+        public int? GroupId { get; set; }
 
         public virtual User Author { get; set; }
+        public virtual Group Group { get; set; }
+        public virtual Comment MainParent { get; set; }
         public virtual Comment Parent { get; set; }
         public virtual Post Post { get; set; }
+        public virtual ICollection<Comment> InverseMainParent { get; set; }
         public virtual ICollection<Comment> InverseParent { get; set; }
     }
 }

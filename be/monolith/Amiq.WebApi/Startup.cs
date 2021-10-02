@@ -16,11 +16,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Amiq.WebApi
@@ -41,7 +43,10 @@ namespace Amiq.WebApi
         {
             services.AddCors();
             
-            services.AddControllers();
+            services.AddControllers(opts =>
+            {
+                opts.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Amiq", Version = "v1" });
@@ -64,7 +69,11 @@ namespace Amiq.WebApi
             services.Configure<JsonOptions>(opts => {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
                 opts.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                //opts.JsonSerializerOptions.MaxDepth = 0;
+                //opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler;
+                //opts.JsonSerializerOptions.ReferenceHandler = PreserveReferencesHandling.Objects;
             });
+            
             services.AddRouting(options => {
                 options.LowercaseUrls = true;
             });
@@ -76,8 +85,6 @@ namespace Amiq.WebApi
             //services.ConfigureMapper();
             services.AddSignalR();
             services.ConfigureCustomServices();
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

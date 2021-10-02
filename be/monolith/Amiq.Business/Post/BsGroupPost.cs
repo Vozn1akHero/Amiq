@@ -14,7 +14,7 @@ namespace Amiq.Business.Post
     {
         private DaGroupPost _daGroupPost = new DaGroupPost();
 
-        public async Task<GroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<DtoGroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
         {
             return await _daGroupPost.CreateAsync(dtoGroupPost);
         }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
+    [Authorize]
     public class GroupParticipantController : AmiqBaseController
     {
         private BsGroupParticipant _bsGroupParticipant = new BsGroupParticipant();

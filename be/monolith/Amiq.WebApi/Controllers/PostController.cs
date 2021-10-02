@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
         private BsPost bsPost = new BsPost();
 
         [HttpDelete("{postId}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid postId)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid postId)
         {
             await bsPost.DeleteAsync(postId);
             return Ok();

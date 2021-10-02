@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/user-post")]
     public class UserPostController : AmiqBaseController
     {

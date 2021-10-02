@@ -2,24 +2,49 @@ import React, {Component} from 'react';
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
-import {IGroupData} from "../../features/group/group-models";
+import {EnGroupViewerRole, IGroupData} from "../../features/group/group-models";
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
+import {Utils} from "../../core/utils";
+import {IPostComment} from "../../features/post/models/post-comment";
+import {AuthStore} from "../../store/auth/auth-store";
 
 type Props = {
     participants: Array<any>;
     groupData: IGroupData;
     groupDataLoaded: boolean;
     groupPosts: Array<IGroupPost>;
+    basicAdminPermissionsAvailable: boolean;
+    onCommentCreated(data: Partial<IPostComment>);
+    onPostCreated(data: Partial<IGroupPost>);
+    onDeletePost(postId: string);
+    //groupViewerRole: EnGroupViewerRole;
 }
 
 class GroupPage extends Component<Props, any>  {
+    onPostCreated = (text: string) => {
+        const {groupData} = this.props;
+        const post : Partial<IGroupPost> = {
+            textContent: text,
+            groupId: groupData.groupId,
+            author: {
+                userId: AuthStore.identity.userId
+            }
+        };
+        this.props.onPostCreated(post);
+    }
+
+    onDeletePost = (postId: string) => {
+        this.props.onDeletePost(postId);
+    }
+
     render() {
         return (
-            <div className='profile-page'>
-                <div className="uk-padding uk-grid uk-child-width-1-2">
+            <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
+
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
-                        { this.props.groupDataLoaded && <PageAvatar viewTitle={this.props.groupData.name}/> }
+                        { this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
+                                                                    viewTitle={this.props.groupData.name}/> }
                     </div>
                     <div className="uk-preserve-width uk-margin-left">
                         <h3>O nas</h3>
@@ -49,14 +74,29 @@ class GroupPage extends Component<Props, any>  {
                         <ItemsFrameL title="Uczestnicy" items={this.props.participants} callbackText="Nothing to show" />
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
-                        <PostCreationForm />
+                        <div className="uk-margin-medium-bottom">
+                            <PostCreationForm handleSubmit={this.onPostCreated}
+                                              publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable} />
+                        </div>
                         {
-                            this.props.groupPosts != null && this.props.groupPosts.map((value, index) => {
-                                return <Post key={index} />
+                            this.props.groupPosts != null && this.props.groupPosts.map((post, index) => {
+                                return <Post postId={post.postId}
+                                             onDeletePost={this.onDeletePost}
+                                             onCommentCreated={this.props.onCommentCreated}
+                                             hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
+                                             comments={post.recentComments}
+                                             avatarPath={Utils.getImageSrc(post.avatarPath)}
+                                             text={post.textContent}
+                                             authorLink={"/group/"+post.groupId}
+                                             createdAt={post.createdAt}
+                                             viewName={post.groupName}
+                                             publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
+                                             deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
+                                             key={index} />
                             })
                         }
                     </div>
-                </div>
+
             </div>
         );
     }

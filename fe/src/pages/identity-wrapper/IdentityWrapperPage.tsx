@@ -54,13 +54,15 @@ const IdentityWrapperPage = (props: Props) => {
                     <div className="main-content" ref={mainContentRef}>
                         <div className="uk-margin-medium-top">
                             <Breadcrumb />
-                            <Route component={AuthPageContainer} path={Routes.getRouteAsString(Routes.authPageRoutes)} />
-                            <Route component={JoinupPageContainer} path={Routes.getRouteAsString(Routes.registrationPageRoutes)} />
-                            <GuardedRoute component={ProfilePageContainer} path={Routes.getRouteAsString(Routes.profilePageRoutes)} />
-                            <Route component={FriendsPageContainer} path={Routes.getRouteAsString(Routes.friendListPageRoutes)} />
-                            <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
-                            <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />
-                            <Route component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} />
+                            <div className="page-wrapper uk-margin-medium-top">
+                                <Route component={AuthPageContainer} path={Routes.getRouteAsString(Routes.authPageRoutes)} />
+                                <Route component={JoinupPageContainer} path={Routes.getRouteAsString(Routes.registrationPageRoutes)} />
+                                <GuardedRoute component={ProfilePageContainer} path={Routes.getRouteAsString(Routes.profilePageRoutes)} />
+                                <Route component={FriendsPageContainer} path={Routes.getRouteAsString(Routes.friendListPageRoutes)} />
+                                <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
+                                <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />
+                                <Route component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} />
+                            </div>
                         </div>
                     </div>
 

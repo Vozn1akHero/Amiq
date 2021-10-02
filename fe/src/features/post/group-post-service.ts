@@ -14,7 +14,7 @@ export class GroupPostService extends BaseService {
         return this.httpClient.get(this.buildApiPath("list"), null, queryParams);
     }
 
-    create(groupPost: IGroupPost){
+    create(groupPost: Partial<IGroupPost>){
         return this.httpClient.post(this.apiModule, groupPost);
     }
 }

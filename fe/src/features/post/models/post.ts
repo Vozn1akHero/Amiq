@@ -1,5 +1,15 @@
+import {IPostComment} from "./post-comment";
+import {IUser} from "../../user/models/user";
+
 export interface IPost {
-    postId: number;
-    authorId: number;
-    text: string;
+    postId: string;
+    //userId: number;
+    author: Partial<IUser>,
+    textContent: string;
+    editedBy?: number;
+    editedAt: Date;
+    createdAt: Date;
+    avatarPath: string;
+    recentComments: Array<IPostComment>;
+    hasMoreCommentsThanRecent: boolean;
 }

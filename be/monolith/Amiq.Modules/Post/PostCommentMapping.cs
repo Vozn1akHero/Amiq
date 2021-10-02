@@ -1,11 +1,5 @@
 ﻿using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Mapping.Post
 {
@@ -13,15 +7,23 @@ namespace Amiq.Mapping.Post
     {
         public PostCommentMapping()
         {
-            CreateMap<Comment, DtoPostComment>().ForMember(dest => dest.IsChild, opt => opt.MapFrom<IsChildResolver>());
-        }
-    }
-
-    internal class IsChildResolver : IValueResolver<Comment, DtoPostComment, bool>
-    {
-        public bool Resolve(Comment source, DtoPostComment destination, bool destMember, ResolutionContext context)
-        {
-            return source.ParentId != null;
+            CreateMap<Comment, DtoPostComment>()
+                .PreserveReferences()
+                .ForMember(e => e.Author, dest => dest.MapFrom(i => i.Author))
+                .ForMember(e => e.Group, dest => dest.MapFrom(i => i.Group))
+                .ForMember(e => e.Children, dest => dest.MapFrom(i => i.InverseMainParent))
+                .ForMember(e => e.Parent, dest => dest.MapFrom(i => i.Parent))
+                .ForMember(e => e.ParentCommentId, dest => dest.MapFrom(i => i.ParentId))
+                //.ForMember(e=>e.HasMoreChildrenThanPassed, dest=> dest.MapFrom(i => i.InverseMainParent.))
+                //.PreserveReferences()
+                //.MaxDepth(300)
+                //.ForMember(dest => dest.IsChild, opt => opt.MapFrom(i => i.ParentId.HasValue))
+                /*.AfterMap((src, dest) => {
+                    if (dest.IsChild)
+                    {
+                        dest.Parent = APAutoMapper.Instance.Map<DtoPostComment>(src).Parent;
+                    }
+                })*/;
         }
     }
 }

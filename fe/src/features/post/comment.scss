@@ -1,0 +1,14 @@
+.comment {
+  &--list {
+    list-style: none;
+  }
+
+  .children{
+    margin-left: 2rem;
+  }
+
+  .user-avatar-common{
+    height: 6rem;
+    width: 6rem;
+  }
+}

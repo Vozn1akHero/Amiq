@@ -1,5 +1,6 @@
 ﻿using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
+using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,27 @@ namespace Amiq.DataAccess.Post
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<GroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<DtoGroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
         {
             var entity = new GroupPost
             {
                 GroupId = dtoGroupPost.GroupId,
-                Post = new DataAccess.Models.Models.Post
+                AuthorId = dtoGroupPost.Author.UserId,
+                Post = new Models.Models.Post
                 {
                     TextContent = dtoGroupPost.TextContent
                 }
             };
             _amiqContext.GroupPosts.Add(entity);
             await _amiqContext.SaveChangesAsync();
-            return entity;
+            //var query = _amiqContext.GroupPosts.Where(e => e.PostId == entity.PostId);
+            var query = (from p in _amiqContext.Posts.AsNoTracking()
+                         join gp in _amiqContext.GroupPosts.AsNoTracking()
+                         on p.PostId equals gp.PostId
+                         where gp.PostId == entity.PostId
+                         select gp);
+            var mappedDto = APAutoMapper.Instance.ProjectTo<DtoGroupPost>(query).Single();
+            return mappedDto;
         }
 
         public async Task EditAsync(DtoEditGroupPostRequest dtoEditGroupPostRequest)
@@ -40,22 +49,15 @@ namespace Amiq.DataAccess.Post
 
         public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
         {
-            return await (from p in _amiqContext.Posts.AsNoTracking()
-                          join gp in _amiqContext.GroupPosts.AsNoTracking()
-                          on p.PostId equals gp.PostId
-                          where gp.GroupId == dtoGroupPostRequest.GroupId
-                          select new DtoGroupPost {
-                            PostId = p.PostId,
-                            GroupId = gp.GroupId,
-                            TextContent = p.TextContent,
-                            UserId = gp.AuthorId,
-                            EditedAt = p.EditedAt,
-                            EditedBy = p.EditedBy,
-                            CreatedAt = p.CreatedAt
-                          })
-                          .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
-                          .Take(dtoGroupPostRequest.Count)
-                          .ToListAsync();
+            var query = (from p in _amiqContext.Posts.AsNoTracking()
+                         join gp in _amiqContext.GroupPosts.AsNoTracking()
+                         on p.PostId equals gp.PostId
+                         where gp.GroupId == dtoGroupPostRequest.GroupId
+                         select gp)
+                         .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
+                         .Take(dtoGroupPostRequest.Count);
+            var data = await APAutoMapper.Instance.ProjectTo<DtoGroupPost>(query).ToListAsync();
+            return data;
         }
     }
 }

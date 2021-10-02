@@ -19,7 +19,7 @@ namespace Amiq.DataAccess.Post
         {
             var query = _amiqContext.UserPosts.Where(e=>e.UserId == userId)
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                .Take(dtoPaginatedRequest.Count);
+                .Take(dtoPaginatedRequest.Count).Include(e=>e.Post).Include(e=>e.Post.Comments);
             var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
             return data;
         }

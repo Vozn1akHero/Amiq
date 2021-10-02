@@ -1,5 +1,7 @@
 ﻿using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
+using AutoMapper;
+using System.Linq;
 
 namespace Amiq.Mapping.Post
 {
@@ -8,16 +10,27 @@ namespace Amiq.Mapping.Post
         public PostMapping()
         {
             CreateMap<UserPost, DtoUserPost>()
-                .ForMember(e=>e.TextContent, dest => dest.MapFrom(i => i.Post.TextContent))
-                .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Post.CreatedAt))
-                .ForMember(e => e.EditedAt, dest => dest.MapFrom(i => i.Post.EditedAt))
-                .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy));
-
-            CreateMap<GroupPost, DtoGroupPost>()
+                .ForMember(e => e.Author, dest => dest.MapFrom(i => i.User))
+                .ForMember(e => e.Name, dest => dest.MapFrom(i => i.User.Name))
+                .ForMember(e => e.Surname, dest => dest.MapFrom(i => i.User.Surname))
+                .ForMember(e => e.AvatarPath, dest => dest.MapFrom(i => i.User.AvatarPath))
                 .ForMember(e => e.TextContent, dest => dest.MapFrom(i => i.Post.TextContent))
                 .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Post.CreatedAt))
                 .ForMember(e => e.EditedAt, dest => dest.MapFrom(i => i.Post.EditedAt))
-                .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy));
+                .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy))
+                .ForMember(e => e.HasMoreCommentsThanRecent, dest => dest.MapFrom(i=>i.Post.Comments.Where(e=>!e.ParentId.HasValue).Count() > 5))
+                .ForMember(e => e.RecentComments, dest => dest.MapFrom(i => i.Post.Comments.Where(e=>!e.ParentId.HasValue).OrderByDescending(e=>e.CreatedAt).Take(5)));
+
+            CreateMap<GroupPost, DtoGroupPost>()
+                .ForMember(e => e.Author, dest => dest.MapFrom(i => i.Author))
+                .ForMember(e => e.GroupName, dest => dest.MapFrom(i => i.Group.Name))
+                .ForMember(e => e.AvatarPath, dest => dest.MapFrom(i => i.Group.AvatarSrc))
+                .ForMember(e => e.TextContent, dest => dest.MapFrom(i => i.Post.TextContent))
+                .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Post.CreatedAt))
+                .ForMember(e => e.EditedAt, dest => dest.MapFrom(i => i.Post.EditedAt))
+                .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy))
+                .ForMember(e => e.HasMoreCommentsThanRecent, dest => dest.MapFrom(i => i.Post.Comments.Where(e => !e.ParentId.HasValue).Count() > 5))
+                .ForMember(e => e.RecentComments, dest => dest.MapFrom(i => i.Post.Comments.Where(e => !e.ParentId.HasValue).OrderByDescending(e => e.CreatedAt).Take(5)));
         }
     }
 }

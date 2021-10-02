@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class PostCommentController : AmiqBaseController
     {
         private BsPostComment bsPostComment = new BsPostComment();

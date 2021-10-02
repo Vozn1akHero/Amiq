@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import "./page-avatar.scss"
+import devConfig from "../../../dev-config.json";
+import {Utils} from "../../../core/utils";
 
 type Props = {
     //userName: string;
     //userSurname: string;
     viewTitle: string;
+    avatarSrc: string;
 }
 
 class PageAvatar extends Component<Props, any> {
     avatarBgStyles : any = {
-        backgroundImage: "url(\"https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg\")",
+        backgroundImage: "url("+Utils.getImageSrc(this.props.avatarSrc)+")",
     }
 
     nameStyles: any = {
@@ -23,8 +26,8 @@ class PageAvatar extends Component<Props, any> {
                 <div className="page-avatar__avatarBg" style={this.avatarBgStyles}></div>
 
                 <img className="page-avatar__img"
-                     src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg"
-                     sizes="(min-width: 150px) 150px, 100vw" width="150" height="150" alt="" />
+                     src={Utils.getImageSrc(this.props.avatarSrc)}
+                     alt="" />
 
                 <div className="uk-margin-medium-top page-avatar__name-wrap">
                     <h3 className="uk-card-title" style={this.nameStyles}>{this.props.viewTitle}</h3>

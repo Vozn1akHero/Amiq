@@ -21,10 +21,9 @@ namespace Amiq.Business.User
 
         public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestIssuerId, int userId)
         {
-            DtoExtendedUserInfo result = new();
             var user = await _daUser.GetUserByIdAsync(userId);
             if (user == null) return null;
-            result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
+            var result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
             result.UserDescriptionBlocks = await GetUserDescriptionAsync(userId);
             return result;
         }

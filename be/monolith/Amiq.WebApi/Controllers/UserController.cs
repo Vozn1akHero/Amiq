@@ -14,10 +14,11 @@ namespace Amiq.WebApi.Controllers
         private BsUser _bsUser = new BsUser();
 
         [HttpGet("{userId}")]
+        [Authorize]
         public async Task<IActionResult> GetUserByIdAsync(int userId)
         {
-            //var user = await _bsUser.GetExtendedUserInfoAsync(JwtStoredUserInfo.UserId, userId);
-            var user = await _bsUser.GetUserByIdAsync(1, userId);
+            var user = await _bsUser.GetUserByIdAsync(JwtStoredUserInfo.UserId, userId);
+            //var user = await _bsUser.GetUserByIdAsync(1, userId);
             if(user == null) return NotFound();
             return Ok(user);
         }

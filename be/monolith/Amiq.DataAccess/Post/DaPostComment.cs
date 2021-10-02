@@ -21,13 +21,15 @@ namespace Amiq.DataAccess.Post
 
             var comments = _amiqContext
                 .Comments
-                .Where(e => e.PostId == postId && e.ParentId == null);
-                //.Select(e=>new );
-
-            //todo: procedura
-            //throw new NotImplementedException();
+                .Where(e => e.PostId == postId && !e.ParentId.HasValue)
+                .OrderByDescending(e=>e.CreatedAt);
 
             var commentsDto = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(comments).ToListAsync();
+            
+            /*foreach (var comment in commentsDto)
+            {
+                comment.Children = comment.Children.OrderByDescending(e => e.CreatedAt).ToList();
+            }*/
 
             return commentsDto;
         }

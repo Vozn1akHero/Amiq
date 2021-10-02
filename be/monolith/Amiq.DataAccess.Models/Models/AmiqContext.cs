@@ -19,6 +19,7 @@ namespace Amiq.DataAccess.Models.Models
 
         public virtual DbSet<BlockedUser> BlockedUsers { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<ChildToParrentComment> ChildToParrentComments { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<FriendRequest> FriendRequests { get; set; }
         public virtual DbSet<Friendship> Friendships { get; set; }
@@ -87,9 +88,20 @@ namespace Amiq.DataAccess.Models.Models
                     .HasConstraintName("FK_Chat_User1");
             });
 
+            modelBuilder.Entity<ChildToParrentComment>(entity =>
+            {
+                entity.HasKey(e => e.ChildToParentCommentId);
+
+                entity.ToTable("ChildToParrentComment", "Post");
+
+                entity.Property(e => e.ChildToParentCommentId).HasDefaultValueSql("(newsequentialid())");
+            });
+
             modelBuilder.Entity<Comment>(entity =>
             {
                 entity.ToTable("Comment", "Post");
+
+                entity.HasComment("Id grupy, jeśli komentarz został stworzony przez administratora grupy");
 
                 entity.Property(e => e.CommentId).HasDefaultValueSql("(newsequentialid())");
 
@@ -108,6 +120,17 @@ namespace Amiq.DataAccess.Models.Models
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_User");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Comment_Group");
+
+                entity.HasOne(d => d.MainParent)
+                    .WithMany(p => p.InverseMainParent)
+                    .HasForeignKey(d => d.MainParentId)
+                    .HasConstraintName("FK_Comment_MainParentComment");
 
                 entity.HasOne(d => d.Parent)
                     .WithMany(p => p.InverseParent)

@@ -7,8 +7,6 @@ export class PostService extends BaseService {
     removePostById(postId: string){
         const params = new HttpParams()
             .append("postId", postId);
-        return this.httpClient.delete("post", params);
+        return this.httpClient.delete(this.apiModule, null, params);
     }
-
-
 }
