@@ -43,5 +43,10 @@ namespace Amiq.Business
             var result = await _daGroupParticipant.GetGroupViewerByUserIdAsync(userId, groupId);
             return result;
         }
+
+        public async Task<IEnumerable<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
+        {
+            return await _daGroupParticipant.GetGroupParticipantsAsync(groupId, paginatedRequest);
+        }
     }
 }

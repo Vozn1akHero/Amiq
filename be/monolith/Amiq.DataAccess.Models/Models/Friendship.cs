@@ -10,5 +10,8 @@ namespace Amiq.DataAccess.Models.Models
         public Guid FriendshipId { get; set; }
         public int FirstUserId { get; set; }
         public int SecondUserId { get; set; }
+
+        public virtual User FirstUser { get; set; }
+        public virtual User SecondUser { get; set; }
     }
 }

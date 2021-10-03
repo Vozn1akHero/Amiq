@@ -1,7 +1,9 @@
-﻿using Amiq.Contracts.Group;
+﻿using Amiq.Contracts.Core;
+using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
+using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,5 +46,9 @@ namespace Amiq.DataAccess.Group
             return data;
         }
 
+        /*public async Task<DtoDescriptionBlock> GetGroupDescriptionByGroupId(int groupId)
+        {
+
+        }*/
     }
 }

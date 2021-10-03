@@ -82,6 +82,20 @@ namespace Amiq.DataAccess.Group
                 GroupViewerRole = await _daGroupViewer.GetRoleAsync(userId, groupId)
             };
         }
+
+        public async Task<IEnumerable<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
+        {
+            IQueryable query = (from gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
+                                   join g in _amiqContextWithDebug.Groups.AsNoTracking()
+                                   on gp.GroupId equals g.GroupId
+                                   join u in _amiqContextWithDebug.Users.AsNoTracking() on gp.UserId equals u.UserId
+                                   where g.GroupId == groupId
+                                   select gp)
+                                   .Skip((paginatedRequest.Page-1)*paginatedRequest.Count)
+                                   .Take(paginatedRequest.Count);
+            var participants = await APAutoMapper.Instance.ProjectTo<DtoGroupParticipant>(query).ToListAsync();
+            return participants;
+        }
     }
 
     // TODO CACHE

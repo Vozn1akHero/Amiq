@@ -1,11 +1,15 @@
+import {IFriendship} from "../friendship-models";
+import {Utils} from "../../../core/utils";
+
 type FriendCardProps = {
-    avatarSrc: string;
-    viewName: string;
+    /*avatarSrc: string;
+    viewName: string;*/
+    friendship: IFriendship;
 }
 
 const FriendCard = (props: FriendCardProps) => {
     const avatarBgStyles : any = {
-        backgroundImage: "url(" + props.avatarSrc + ")",
+        backgroundImage: "url(" + Utils.getImageSrc(props.friendship.avatarPath) + ")",
         backgroundPosition: "top center",
         backgroundSize: "cover",
         filter: "blur(15px)",
@@ -39,11 +43,11 @@ const FriendCard = (props: FriendCardProps) => {
             <div className="avatar-bg" style={avatarBgStyles}></div>
 
             <img style={{borderRadius: '50%', border: "3px solid white", marginBottom: "3rem"}}
-                 src={props.avatarSrc}
+                 src={Utils.getImageSrc(props.friendship.avatarPath)}
                  sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
 
             <div className="uk-margin-medium-top name-wrap" style={nameWrapStyles}>
-                <h3 className="uk-card-title" style={nameStyles}>{props.viewName}</h3>
+                <h3 className="uk-card-title" style={nameStyles}>{props.friendship.name} {props.friendship.surname}</h3>
             </div>
         </div>
     );

@@ -53,5 +53,14 @@ namespace Amiq.WebApi.Controllers
             var res = await _bsGroupParticipant.GetGroupViewerByUserIdAsync(userId, groupId);
             return Ok(res);
         }
+
+        [HttpGet("list/{groupId}")]
+        [Authorize]
+        public async Task<IActionResult> GetParticipantsAsync([FromRoute] int groupId, [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
+        {
+            var res = await _bsGroupParticipant.GetGroupParticipantsAsync(groupId, dtoPaginatedRequest);
+            return Ok(res);
+        }
+
     }
 }

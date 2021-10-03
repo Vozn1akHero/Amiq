@@ -1,53 +1,25 @@
 import {BaseService} from "core/base-service";
 import "reflect-metadata";
 import {injectable} from "tsyringe";
-
-const friendsMock : Array<any> = [
-    {
-        avatarSrc: "https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg",
-        viewName: "Tomasz Krzaczyk"
-    },
-    {
-        avatarSrc: "https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg",
-        viewName: "John Cena"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    },
-    {
-        avatarSrc: "https://i.etsystatic.com/14449774/r/il/51f082/1814091683/il_570xN.1814091683_i9j2.jpg",
-        viewName: "Vitalii Denysov"
-    }
-]
+import {HttpParams, HttpQueryParams} from "../../core/http-client";
 
 @injectable()
 export class FriendService extends BaseService{
-    getFriendsByUserId(userId: string){
-        return friendsMock;
+    apiModule = "friendship"
+
+    getFriendsByUserId(userId: number, page: number, count: number){
+        let params = new HttpParams().append("userId", userId);
+        let query = new HttpQueryParams()
+            .append("page", page)
+            .append("count", count);
+        return this.httpClient.get(this.buildApiPath("friend-list"), params, query )
+    }
+
+    search(text: string){
+        let query = new HttpQueryParams()
+            .append("text", text)
+            .append("page", 1)
+            .append("count", 10);
+        return this.httpClient.get(this.buildApiPath("search"), null, query)
     }
 }

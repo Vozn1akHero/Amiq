@@ -1,3 +1,5 @@
+import {IDescriptionBlock} from "../../common/models/description-block";
+
 export interface IGroupCard {
     groupId: number;
     name: string;
@@ -20,8 +22,10 @@ export interface IGroupData {
     name: string;
     avatarSrc: string;
     participantsCount: number;
+    description: string;
     //participants: Array<IGroupParticipant>;
     subjects: Array<string>;
+    descriptionBlocks: Array<IDescriptionBlock>;
 }
 
 export interface IGroupViewer {

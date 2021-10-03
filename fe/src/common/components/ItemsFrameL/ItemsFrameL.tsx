@@ -1,8 +1,12 @@
 import './items-frame-l.scss'
+import {IUserInFrame} from "./IUserInFrame";
+import {Utils} from "../../../core/utils";
+import {Link} from "react-router-dom";
 
 type Props = {
     title: string;
-    items: {imageSrc: string, title: string}[];
+    //items: {imageSrc: string, title: string}[];
+    items: Array<IUserInFrame>;
     callbackText: string;
 };
 export const ItemsFrameL = (props: Props) => {
@@ -11,13 +15,20 @@ export const ItemsFrameL = (props: Props) => {
             <span className="uk-card-header">
                 {props.title}
             </span>
-            <div className="items-wrapper uk-margin-small-top">
+            <div className="uk-margin-small-top">
                 {
-                    props.items.length > 0 ?
-                        props.items.map(value => <div className="frame-item">
-                            <img src={value.imageSrc}/>
-                            <span>{value.title}</span>
-                        </div>) : <span>{props.callbackText}</span>
+                    props.items.length > 0 ? <div className="items-wrapper">
+                        {
+                            props.items.map(value => <Link to={value.link}>
+                                <div className="frame-item">
+                                    <img className="avatar border-radius-50"
+                                         src={Utils.getImageSrc(value.imagePath)} />
+                                    {/* <span>{value.viewName}</span>*/}
+                                </div>
+                            </Link>)
+                        }
+                        </div>
+                        : <span>{props.callbackText}</span>
                 }
             </div>
         </div>

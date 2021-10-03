@@ -1,5 +1,6 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.User;
+using Amiq.Contracts.Utils;
 using Amiq.DataAccess.User;
 using Amiq.Mapping;
 using System;
@@ -28,5 +29,9 @@ namespace Amiq.Business.User
             return result;
         }
 
+        public async Task<IEnumerable<DtoUserSearchResult>> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
+        {
+            return await _daUser.SearchAsync(issuerId, text, paginatedRequest);
+        }
     }
 }

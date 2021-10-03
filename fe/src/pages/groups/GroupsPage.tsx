@@ -52,7 +52,8 @@ class GroupsPage extends Component<Props, State> {
                 <div className="input-search">
                     <div className="uk-margin-medium-top uk-margin-medium-bottom">
                         {/*<input className="uk-input" ref={this.inputRef} type="text" placeholder="Szukaj grup"/>*/}
-                        <DebounceInput debounceTime={600} onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
+                        <DebounceInput debounceTime={600}
+                                       onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
                     </div>
                 </div>
                 <div className="uk-grid uk-child-width-1-3">

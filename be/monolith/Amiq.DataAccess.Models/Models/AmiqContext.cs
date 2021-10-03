@@ -140,7 +140,6 @@ namespace Amiq.DataAccess.Models.Models
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_Post");
             });
 
@@ -169,11 +168,21 @@ namespace Amiq.DataAccess.Models.Models
 
             modelBuilder.Entity<Friendship>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Friendship", "Friendship");
 
                 entity.Property(e => e.FriendshipId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.FirstUser)
+                    .WithMany(p => p.FriendshipFirstUsers)
+                    .HasForeignKey(d => d.FirstUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_FirstUser");
+
+                entity.HasOne(d => d.SecondUser)
+                    .WithMany(p => p.FriendshipSecondUsers)
+                    .HasForeignKey(d => d.SecondUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_SecondUser");
             });
 
             modelBuilder.Entity<Group>(entity =>

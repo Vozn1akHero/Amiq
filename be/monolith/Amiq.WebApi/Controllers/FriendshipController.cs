@@ -1,6 +1,7 @@
 ﻿using Amiq.Business.Friend;
 using Amiq.Contracts.Auth;
 using Amiq.Contracts.Friendship;
+using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +19,18 @@ namespace Amiq.WebApi.Controllers
     {
         private BsFriendship _bsFriend = new BsFriendship();
 
-        [HttpGet("friend-list")]
+        [HttpGet("friend-list/{userId}")]
         [Produces(typeof(IEnumerable<DtoFriend>))]
         [ProducesResponseType(((int)HttpStatusCode.OK))]
         [ProducesResponseType(499)]
-        public async Task<IActionResult> GetUserFriendListAsync([FromQuery]DtoFriendListRequest dtoFriendListRequest, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetUserFriendListAsync(int userId, [FromQuery]DtoFriendListRequest dtoFriendListRequest, CancellationToken cancellationToken = default)
         {
             if (cancellationToken.IsCancellationRequested)
             {
                 return new StatusCodeResult(499);
             }
-            dtoFriendListRequest.IssuerId = JwtStoredUserInfo.UserId;
+            //dtoFriendListRequest.IssuerId = JwtStoredUserInfo.UserId;
+            dtoFriendListRequest.IssuerId = userId;
             var data = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
             return Ok(data);
         }
@@ -52,6 +54,19 @@ namespace Amiq.WebApi.Controllers
         public async Task<IActionResult> GetFriendRequest([FromQuery] DtoFriendListRequest dtoFriendListRequest)
         {
             var data = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
+            return Ok(data);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchAmongFriendsAsync([FromQuery] string text,
+            [FromQuery] DtoPaginatedRequest paginatedRequest, 
+            CancellationToken cancellationToken = default)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(499);
+            }
+            var data = await _bsFriend.SearchAsync(JwtStoredUserInfo.UserId, paginatedRequest, text);
             return Ok(data);
         }
     }

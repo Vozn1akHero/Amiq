@@ -66,7 +66,7 @@ class ProfilePage extends Component<Props> {
                         </>
                     }
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Nothing to show" />
+                        <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Brak znajomych" />
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <div className="uk-margin-medium-bottom">

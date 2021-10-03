@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import GroupPage from "./GroupPage";
-import {EnGroupViewerRole, IGroupData, IGroupViewer} from "../../features/group/group-models";
+import {EnGroupViewerRole, IGroupData, IGroupParticipant, IGroupViewer} from "../../features/group/group-models";
 import {GroupService} from "../../features/group/group-service";
 import {StatusCodes} from "http-status-codes";
 import {GroupPostService} from "../../features/post/group-post-service";
@@ -24,10 +24,10 @@ type State = {
     //deletePostBtnVisible: boolean;
     basicAdminPermissionsAvailable: boolean;
     //groupPostsLoaded: boolean;
+    groupParticipants: Array<IGroupParticipant>;
 }
 
 class GroupPageContainer extends Component<Props, State>{
-    participants = []
     groupService: GroupService = new GroupService();
     groupPostService: GroupPostService = new GroupPostService();
     groupParticipantService: GroupParticipantService = new GroupParticipantService();
@@ -40,7 +40,8 @@ class GroupPageContainer extends Component<Props, State>{
             groupData: null,
             groupPosts: null,
             groupViewerRole: null,
-            basicAdminPermissionsAvailable: false
+            basicAdminPermissionsAvailable: false,
+            groupParticipants: null
             //groupPostsLoaded: false
         }
     }
@@ -50,6 +51,7 @@ class GroupPageContainer extends Component<Props, State>{
             .then(() => {
                 this.getGroupData();
                 this.getGroupPosts(1);
+                this.getParticipants();
             })
     }
 
@@ -85,6 +87,16 @@ class GroupPageContainer extends Component<Props, State>{
         })
     }
 
+    getParticipants = () => {
+        this.groupParticipantService.getGroupParticipantsByGroupId(this.props.match.params.groupId, 1).then(res => {
+            if(res.status === StatusCodes.OK){
+                this.setState({
+                    groupParticipants: res.data as Array<IGroupParticipant>
+                })
+            }
+        })
+    }
+
     onCommentCreated = (data: Partial<IPostComment>) => {
         console.log(data)
     }
@@ -114,7 +126,7 @@ class GroupPageContainer extends Component<Props, State>{
 
     render() {
         return (
-            <GroupPage participants={this.participants}
+            <GroupPage groupParticipants={this.state.groupParticipants}
                        onDeletePost={this.onDeletePost}
                        onPostCreated={this.onPostCreated}
                        onCommentCreated={this.onCommentCreated}

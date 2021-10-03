@@ -1,5 +1,5 @@
 import {BaseService} from "../../core/base-service";
-import {HttpQueryParams} from "../../core/http-client";
+import {HttpParams, HttpQueryParams} from "../../core/http-client";
 
 export class GroupParticipantService extends BaseService {
     apiModule = "group-participant"
@@ -21,11 +21,11 @@ export class GroupParticipantService extends BaseService {
 
     getGroupParticipantsByGroupId(groupId: number, page: number) {
         const count: number = 4;
+        const params = new HttpParams().append("groupId", groupId.toString());
         const queryParams = new HttpQueryParams();
-        queryParams.append("groupId", groupId.toString());
         queryParams.append("count", count);
         queryParams.append("page", page.toString());
-        return this.httpClient.get(this.buildApiPath("list"), null);
+        return this.httpClient.get(this.buildApiPath("list"), params, queryParams);
     }
 
     getViewerRole(userId: number, groupId: number) {

@@ -2,19 +2,20 @@ import React, {Component} from 'react';
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
-import {EnGroupViewerRole, IGroupData} from "../../features/group/group-models";
+import {EnGroupViewerRole, IGroupData, IGroupParticipant} from "../../features/group/group-models";
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IPostComment} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/auth/auth-store";
+import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
 
 type Props = {
-    participants: Array<any>;
     groupData: IGroupData;
     groupDataLoaded: boolean;
     groupPosts: Array<IGroupPost>;
     basicAdminPermissionsAvailable: boolean;
+    groupParticipants: Array<IGroupParticipant>;
     onCommentCreated(data: Partial<IPostComment>);
     onPostCreated(data: Partial<IGroupPost>);
     onDeletePost(postId: string);
@@ -38,6 +39,21 @@ class GroupPage extends Component<Props, any>  {
         this.props.onDeletePost(postId);
     }
 
+    getConvertedParticipantsToFrameItem = () => {
+        if(this.props.groupParticipants){
+            let arr : Array<IUserInFrame> = [];
+            this.props.groupParticipants.map(e=>{
+                arr.push({
+                    userId: e.userId,
+                    viewName: e.name + " " + e.surname,
+                    imagePath: e.avatarPath,
+                    link: "/profile/" + e.userId
+                })
+            })
+            return arr;
+        }
+    }
+
     render() {
         return (
             <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
@@ -49,29 +65,27 @@ class GroupPage extends Component<Props, any>  {
                     <div className="uk-preserve-width uk-margin-left">
                         <h3>O nas</h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.
+                            {this.props.groupData?.description}
                         </p>
-                        <ul uk-accordion="collapsible: false">
-                            <li>
-                                <a className="uk-accordion-title" href="#">Item 1</a>
-                                <div className="uk-accordion-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <a className="uk-accordion-title" href="#">Item 2</a>
-                                <div className="uk-accordion-content">
-                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                        aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
-                                </div>
-                            </li>
-                        </ul>
+                        {this.props.groupData?.descriptionBlocks && <ul uk-accordion="collapsible: false">
+                            {
+                                this.props.groupData.descriptionBlocks.map(((value, index) => {
+                                    return <li key={index}>
+                                        <a className="uk-accordion-title" href="#">{value.header}</a>
+                                        <div className="uk-accordion-content">
+                                            <p>{value.content}</p>
+                                        </div>
+                                    </li>
+                                }))
+                            }
+                        </ul>}
                     </div>
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Uczestnicy" items={this.props.participants} callbackText="Nothing to show" />
+                        {
+                            this.props.groupParticipants && <ItemsFrameL title="Uczestnicy"
+                                                                         items={this.getConvertedParticipantsToFrameItem()}
+                                                                         callbackText="Brak uczestników" />
+                        }
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <div className="uk-margin-medium-bottom">

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Amiq.Contracts.Core;
+using System.Collections.Generic;
 
 namespace Amiq.Contracts.Group
 {
@@ -10,5 +11,6 @@ namespace Amiq.Contracts.Group
         public string Description { get; set; }
         //public List<DtoGroupParticipant> Participants { get; set; }
         public int ParticipantsCount { get; set; }
+        public List<DtoDescriptionBlock> DescriptionBlocks { get; set; }
     }
 }
