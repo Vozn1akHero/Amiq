@@ -9,9 +9,10 @@ namespace Amiq.Mapping
     {
         public ChatProfile()
         {
-            CreateMap<User, DtoChatInterlocutor>();
+            CreateMap<Chat, DtoChatPreview>();
             CreateMap<Message, DtoChatMessage>();
             CreateMap<DtoChatMessage, Message>();
+            CreateMap<Message, DtoChatPreview>();
         }
     }
 }

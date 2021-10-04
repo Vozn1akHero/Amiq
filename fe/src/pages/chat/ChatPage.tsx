@@ -61,8 +61,9 @@ class ChatPage extends Component<Props, State> {
                             this.props.chats.map((value, i) =>
                                 {
                                     return <div key={i} className="uk-margin-top">
-                                        <ChatPreviewCard avatarSrc={value.author.avatarSrc.toString()}
-                                                         viewName={value.author.viewName}
+                                        <ChatPreviewCard avatarSrc={value.author.avatarPath}
+                                                         name={value.author.name}
+                                                         surname={value.author.surname}
                                                          date={value.date}
                                                          text={value.textContent}
                                                          hasMedia={value.hasMedia}

@@ -3,6 +3,8 @@ import {IChat, IMessage} from "./chat-models";
 import {getViewDate} from "assets/utils/date-utils";
 import "./chat.scss"
 import {ChatPreviewMode} from "./chat-enums";
+import ChatMessage from "./ChatMessage";
+import {AuthStore} from "../../store/auth/auth-store";
 
 type State = {
 
@@ -14,20 +16,7 @@ type Props = {
 }
 
 class Chat extends Component<Props, State> {
-    static Message = class extends Component<{message: IMessage, previousMessage: IMessage, viewerId: string}, any> {
-        render() {
-            return (
-                <div className={`chat__message 
-                    ${this.props.message.author.userId === this.props.viewerId ? `chat__message--created-by-viewer` : `chat__message--received-by-viewer`}`}>
-                    {
-                        this.props.message.textContent
-                    }
-                </div>
-            )
-        }
-    }
-
-    userId = "1234"
+    //userId = "1234"
 
     render() {
         return (
@@ -40,7 +29,7 @@ class Chat extends Component<Props, State> {
                         </div>
                         <div className="uk-width-expand">
                             <h4 className="uk-comment-title uk-margin-remove"><a className="uk-link-reset"
-                                                                                 href="#">{this.props.chat.interlocutor.viewName}</a></h4>
+                                                                                 href="#">{this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}</a></h4>
                             <p className="uk-comment-meta uk-margin-remove-top"><a className="uk-link-reset"
                                                                                    href="#">{getViewDate(this.props.chat.messages[0]?.date)}</a>
                             </p>
@@ -52,9 +41,9 @@ class Chat extends Component<Props, State> {
                     {
                         this.props.chat.messages.map((value,i) => {
                             return <div key={i} className="uk-margin-top chat__message-wrapper">
-                                <Chat.Message message={value}
+                                <ChatMessage message={value}
                                               previousMessage={i > 0 ? this.props.chat.messages[i-1] : null}
-                                              viewerId={this.userId} />
+                                              viewerId={AuthStore.identity.userId} />
                             </div>
                         })
                     }

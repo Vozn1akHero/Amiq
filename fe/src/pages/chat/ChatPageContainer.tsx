@@ -19,24 +19,28 @@ type State = {
 type Props = {}
 
 class ChatPageContainer extends Component<Props, State> {
-
-    //readonly chatService : ChatService = container.resolve(ChatService);
-    readonly chatService : ChatService = new ChatService();
+    readonly chatService = new ChatService();
     chatMessageService = new ChatMessageService();
-    //chatsMock: Array<any> = [];
     userId: number;
-    //chatPreviews: Array<IChatPreview>;
 
     constructor(props:Props) {
         super(props);
-        /*this.state = {
+
+        this.state = {
             selectedChatId: null,
             isChatSelected: false,
-            selectedChat: null
-        }*/
+            selectedChat: null,
+            chatPreviews: [],
+            chatMessagesLoaded: false,
+            chatPreviewsLoaded: false
+        }
+
         this.userId = AuthStore.identity.userId;
-        this.setChatPreviews();
         //this.chatsMock = this.chatService.getChatsByUserId("1234");
+    }
+
+    componentDidMount() {
+        this.setChatPreviews();
     }
 
     setChatPreviews = () => {

@@ -49,26 +49,37 @@ namespace Amiq.DataAccess.Chat
             return previews;
         }
 
+        /// <summary>
+        /// Zwraca listę ostatnich wiadomości w czatach
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="dtoChatPreviewListRequest"></param>
+        /// <returns></returns>
         public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(int userId, DtoPaginatedRequest dtoChatPreviewListRequest)
         {
-            var data = await _amiqContext.Chats
-                        .Where(e => e.FirstUserId == userId || e.SecondUserId == userId)
-                        .Select(g => g.Messages.OrderByDescending(p => p.CreatedAt).First())
-                        /*.Select(e => new DtoChatPreview
-                        {
-                            ChatId = e.ChatId,
-                            MessageAuthorId = e.AuthorId,
-                            AuthorAvatarPath = e.Author.AvatarPath,
-                            AuthorName = e.Author.Name,
-                            AuthorSurname = e.Author.Surname,
-                            Message = e.TextContent
-                        })*/
+            var data =  await _amiqContext.Chats
+                        .Where(e => (e.FirstUserId == userId || e.SecondUserId == userId) && e.Messages != null && e.Messages.Count > 0)
+                        .Select(g => new { Msg = g.Messages.OrderByDescending(p => p.CreatedAt).First(), Chat = g })
+                        .Select(e => new DtoChatPreview
+                         {
+                             ChatId = e.Msg.ChatId,
+                             MessageId = e.Msg.MessageId,
+                             Author = new Contracts.User.DtoShortUserInfo { 
+                                 UserId = e.Msg.Author.UserId, 
+                                 Name = e.Msg.Author.Name, 
+                                 Surname = e.Msg.Author.Surname, 
+                                 AvataPath = e.Msg.Author.AvatarPath },
+                            TextContent = e.Msg.TextContent,
+                            Interlocutor = new Contracts.User.DtoShortUserInfo
+                            {
+                                UserId = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.UserId : e.Chat.FirstUser.UserId,
+                                Name = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Name : e.Chat.FirstUser.Name,
+                                Surname = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Surname : e.Chat.FirstUser.Surname,
+                                AvataPath = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
+                            }
+                        })
                         .ToListAsync();
-
-            return data.Select(e => new DtoChatPreview
-            {
-                
-            }).ToList();
+            return data;
         }
 
         public async Task<DtoDeleteEntityResponse> DeleteMessageAsync(DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)

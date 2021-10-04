@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
 import {FriendService} from "features/friend/friend-service";
-import {container} from "tsyringe";
 import FriendListPage from "./FriendListPage";
 import {AuthStore} from "../../store/auth/auth-store";
 import {StatusCodes} from "http-status-codes";
 import {IFriendship} from "../../features/friend/friendship-models";
+import {IFoundUser} from "../../features/user/models/found-user";
 
 type State = {
     friends: Array<IFriendship>;
     friendsLoaded: boolean;
     allFriends: Array<IFriendship>;
+    foundUsers: Array<IFoundUser>;
 }
 
 class FriendsPageContainer extends Component<any, State> {
     //readonly friendService : FriendService = container.resolve(FriendService);
     friendService = new FriendService();
-    friendsMock: Array<any> = [];
 
     constructor(props:any) {
         super(props);
@@ -23,10 +23,9 @@ class FriendsPageContainer extends Component<any, State> {
         this.state = {
             friends: [],
             friendsLoaded: false,
-            allFriends: []
+            allFriends: [],
+            foundUsers: []
         }
-
-        //this.friendsMock = this.friendService.getFriendsByUserId("");
     }
 
     componentDidMount() {
@@ -37,6 +36,13 @@ class FriendsPageContainer extends Component<any, State> {
         console.log(text)
         this.friendService.search(text).then(res => {
             console.log(res.data)
+            const data : any = res.data;
+            if(res.status === StatusCodes.OK){
+                this.setState({
+                    friends: data.foundFriends as Array<IFriendship>,
+                    foundUsers: data.foundUsers as Array<IFoundUser>
+                })
+            }
         })
     }
 
@@ -57,6 +63,7 @@ class FriendsPageContainer extends Component<any, State> {
         return (
             <>
                 <FriendListPage friendList={this.state.friends}
+                                foundUsers={this.state.foundUsers}
                                 friendsLoaded={this.state.friendsLoaded}
                                 onSearchInputChange={this.onSearchInputChange} />
             </>

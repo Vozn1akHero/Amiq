@@ -2,10 +2,13 @@ import "./chat-preview-card.scss"
 import moment from 'moment'
 import {MouseEvent} from "react";
 import { getViewDate } from "assets/utils/date-utils";
+import {Utils} from "../../core/utils";
 
 type Props = {
     chatId: string;
-    viewName: string;
+    //viewName: string;
+    name: string;
+    surname: string;
     avatarSrc: string;
     text: string;
     hasMedia: boolean;
@@ -20,12 +23,12 @@ export const ChatPreviewCard = (props: Props) => {
                     <header className="uk-comment-header uk-position-relative">
                         <div className="uk-grid uk-grid-medium uk-flex-middle >" >
                             <div className="uk-width-auto uk-flex-first">
-                                <img className="border-radius-50" src="https://pbs.twimg.com/profile_images/1086075447224328192/AJkoXqMq_400x400.jpg" width="80"
+                                <img className="border-radius-50" src={Utils.getImageSrc(props.avatarSrc)} width="80"
                                      height="80" alt=""/>
                             </div>
                             <div className="uk-width-expand">
                                 <h4 className="uk-comment-title uk-margin-remove"><a className="uk-link-reset"
-                                                                                     href="#">{props.viewName}</a></h4>
+                                                                                     href="#">{props.name + " " + props.surname}</a></h4>
                                 <p className="uk-comment-meta uk-margin-remove-top"><a className="uk-link-reset"
                                                                                        href="#">{getViewDate(props.date)}</a>
                                 </p>

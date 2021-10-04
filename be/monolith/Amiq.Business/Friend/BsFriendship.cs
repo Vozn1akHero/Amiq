@@ -50,12 +50,12 @@ namespace Amiq.Business.Friend
         {
             DtoFriendSearchResult result = new();
             var foundFriends = await _daFriendship.SearchForUserFriendsAsync(issuerId, paginatedRequest, text);
-            result.FoundsFriends = foundFriends;
+            result.FoundFriends = foundFriends;
             if (foundFriends.Count() < paginatedRequest.Count)
             {
                 var bsUser = new BsUser();
                 var foundUsers = await bsUser.SearchAsync(issuerId, text, paginatedRequest);
-                result.FoundsUsers = foundUsers;
+                result.FoundUsers = foundUsers;
             }
             return result;
         }

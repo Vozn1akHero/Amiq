@@ -5,7 +5,7 @@ namespace Amiq.Contracts.Friendship
 {
     public class DtoFriendSearchResult
     {
-        public IEnumerable<DtoFriend> FoundsFriends { get; set; }
-        public IEnumerable<DtoUserSearchResult> FoundsUsers { get; set; }
+        public IEnumerable<DtoFriend> FoundFriends { get; set; }
+        public IEnumerable<DtoUserSearchResult> FoundUsers { get; set; }
     }
 }

@@ -14,7 +14,7 @@ using Amiq.Contracts.Utils;
 
 namespace Amiq.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ChatController : AmiqBaseController
     {
         private BsChat _bsChat = new BsChat();
@@ -23,10 +23,9 @@ namespace Amiq.WebApi.Controllers
 
         [HttpGet("previews")]
         //[AuthorizeChatInterlocutor]
-        public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] int userId,
-            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var previews = await _bsChatMessage.GetChatPreviewListAsync(userId, dtoPaginatedRequest);
+            var previews = await _bsChatMessage.GetChatPreviewListAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
             return Ok(previews);
         }
     }

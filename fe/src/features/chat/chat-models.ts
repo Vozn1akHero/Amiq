@@ -1,8 +1,9 @@
+import {IUser} from "../user/models/user";
 
 export interface IInterlocutor {
-    userId: string;
+    userId: number;
     viewName: string;
-    avatarSrc: URL;
+    avatarPath: string;
 }
 
 export interface IMessage {
@@ -20,8 +21,8 @@ export interface IMedia {
 
 export interface IChatPreview {
     chatId: string,
-    author: IInterlocutor;
-    interlocutor: IInterlocutor;
+    author: Partial<IUser>;
+    interlocutor: Partial<IUser>;
     textContent: string;
     hasMedia: boolean;
     date: Date;
@@ -29,7 +30,7 @@ export interface IChatPreview {
 
 export interface IChat {
     chatId: string;
-    interlocutor: IInterlocutor;
+    interlocutor: Partial<IUser>;
     messages: Array<IMessage>;
 }
 
