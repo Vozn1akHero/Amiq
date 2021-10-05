@@ -8,7 +8,7 @@ namespace Amiq.Mapping
     {
         public UserProfile(){
             CreateTwoWayMap<User, DtoUserInfo>();
-            CreateTwoWayMap<User, DtoShortUserInfo>();
+            CreateTwoWayMap<User, DtoBasicUserInfo>();
             CreateMap<User, DtoExtendedUserInfo>();
             CreateMap<TextBlock, DtoUserDescriptionBlock>();
             CreateMap<TextBlock, DtoDescriptionBlock>();

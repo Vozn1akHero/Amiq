@@ -8,8 +8,9 @@ namespace Amiq.Contracts.Chat
         public Guid MessageId { get; set; }
         public Guid ChatId { get; set; }
         public string TextContent { get; set; }
-        public DtoShortUserInfo Author { get; set; }
-        public DtoShortUserInfo Receiver { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DtoBasicUserInfo Author { get; set; }
+        public DtoBasicUserInfo Receiver { get; set; }
         //public int ReceiverId { get; set; }
     }
 }

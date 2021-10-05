@@ -1,10 +1,10 @@
 ﻿namespace Amiq.Contracts.User
 {
-    public class DtoShortUserInfo
+    public class DtoBasicUserInfo
     {
         public int UserId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string AvataPath { get; set; }
+        public string AvatarPath { get; set; }
     }
 }

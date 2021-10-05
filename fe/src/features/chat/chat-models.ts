@@ -7,11 +7,12 @@ export interface IInterlocutor {
 }
 
 export interface IMessage {
-    //messageId: string;
+    messageId: string;
+    chatId: string;
     author: IInterlocutor;
     textContent: string;
     files: Array<IMedia>;
-    date: Date;
+    createdAt: Date;
 }
 
 export interface IMedia {
@@ -26,6 +27,7 @@ export interface IChatPreview {
     textContent: string;
     hasMedia: boolean;
     date: Date;
+    writtenByIssuer: boolean;
 }
 
 export interface IChat {

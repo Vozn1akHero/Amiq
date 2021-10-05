@@ -64,19 +64,20 @@ namespace Amiq.DataAccess.Chat
                          {
                              ChatId = e.Msg.ChatId,
                              MessageId = e.Msg.MessageId,
-                             Author = new Contracts.User.DtoShortUserInfo { 
+                             Author = new Contracts.User.DtoBasicUserInfo { 
                                  UserId = e.Msg.Author.UserId, 
                                  Name = e.Msg.Author.Name, 
                                  Surname = e.Msg.Author.Surname, 
-                                 AvataPath = e.Msg.Author.AvatarPath },
+                                 AvatarPath = e.Msg.Author.AvatarPath },
                             TextContent = e.Msg.TextContent,
-                            Interlocutor = new Contracts.User.DtoShortUserInfo
+                            Interlocutor = new Contracts.User.DtoBasicUserInfo
                             {
                                 UserId = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.UserId : e.Chat.FirstUser.UserId,
                                 Name = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Name : e.Chat.FirstUser.Name,
                                 Surname = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Surname : e.Chat.FirstUser.Surname,
-                                AvataPath = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
-                            }
+                                AvatarPath = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
+                            },
+                            WrittenByIssuer = e.Msg.AuthorId == userId
                         })
                         .ToListAsync();
             return data;
@@ -100,9 +101,10 @@ namespace Amiq.DataAccess.Chat
             }
             return dtoDeleteEntityResponse;
         }
+
     }
 
-    public static class SqlQueryExtensions
+    /*public static class SqlQueryExtensions
     {
         public static IList<T> SqlQuery<T>(this DbContext db, string sql, params object[] parameters) where T : class
         {
@@ -135,7 +137,7 @@ namespace Amiq.DataAccess.Chat
                 base.OnModelCreating(modelBuilder);
             }
         }
-    }
+    }*/
 
 }
 

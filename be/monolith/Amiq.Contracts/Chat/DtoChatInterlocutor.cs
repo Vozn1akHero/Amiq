@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Contracts.Chat
 {
-    public class DtoChatInterlocutor : DtoShortUserInfo
+    public class DtoChatInterlocutor : DtoBasicUserInfo
     {
         /*public int UserId { get; set; }
         public string Name {  get; set; }

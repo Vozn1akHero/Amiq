@@ -61,7 +61,7 @@ class ChatPageContainer extends Component<Props, State> {
         },() => {
             const index = this.state.chatPreviews.findIndex(value => value.chatId === this.state.selectedChatId);
             const selectedChatPreview = this.state.chatPreviews[index];
-            this.chatMessageService.getMessagesByChatId(selectedChatPreview.chatId).then((res:AxiosResponse) => {
+            this.chatMessageService.getMessagesByChatId(selectedChatPreview.chatId, 1).then((res:AxiosResponse) => {
                 const messages = res.data as Array<IMessage>;
                 const selectedChat:IChat = {
                     chatId: selectedChatPreview.chatId,

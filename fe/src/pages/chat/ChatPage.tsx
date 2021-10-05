@@ -49,24 +49,25 @@ class ChatPage extends Component<Props, State> {
                             <input className="uk-input" type="text" placeholder="Szukaj"/>
                         </div>
                     </div>
-                    <div className="controls uk-align-right">
+                    <div className="controls">
                         <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataAndMessage)}
-                            className="uk-button-small controls__preview-mode-btn
-                             controls__preview-mode--data-message uk-margin-small-right">X</button>
-                        <button onClick={() => () => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataOnly)}
-                            className="uk-button-small controls__preview-mode-btn controls__preview-mode--data">Y</button>
+                            className="uk-button-small uk-button controls__preview-mode--data-message uk-margin-small-right">X</button>
+                        <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataOnly)}
+                            className="uk-button-small uk-button controls__preview-mode-btn controls__preview-mode--data">Y</button>
                     </div>
                     <div className={`uk-grid ${this.props.selectedChat ? `uk-child-width-1-1` : `uk-child-width-1-3`}`}>
                         {
                             this.props.chats.map((value, i) =>
                                 {
                                     return <div key={i} className="uk-margin-top">
-                                        <ChatPreviewCard avatarSrc={value.author.avatarPath}
-                                                         name={value.author.name}
-                                                         surname={value.author.surname}
+                                        <ChatPreviewCard avatarSrc={value.interlocutor.avatarPath}
+                                                         name={value.interlocutor.name}
+                                                         surname={value.interlocutor.surname}
+                                                         chatPreviewMode={this.state.chatPreviewMode}
                                                          date={value.date}
                                                          text={value.textContent}
                                                          hasMedia={value.hasMedia}
+                                                         writtenByIssuer={value.writtenByIssuer}
                                                          chatId={value.chatId}
                                                          onChatClick={this.onChatSelection}/>
                                     </div>

@@ -1,7 +1,19 @@
 .chat-message {
-  position: absolute;
-  top: 0;
-  width: 50%;
+  //position: absolute;
+  //top: 0;
+  //width: 50%;
+
+  padding: 1rem;
+
+  width: 100%;
+
+  &:hover{
+    cursor: pointer;
+  }
+
+  &__text-bg{
+    border-radius: 1rem;
+  }
 
   &--created-by-viewer {
     right: 0;
