@@ -24,6 +24,6 @@ namespace Amiq.Business.User.BsRule
 
         public string ErrorContent => throw new NotImplementedException();
 
-        public bool CheckBsRule() => _daBlockedUser.IsUserBlockedByAnotherUser(_userId, _requestIssuerId);
+        public bool CheckBsRule() => !_daBlockedUser.IsUserBlockedByAnotherUser(_userId, _requestIssuerId);
     }
 }

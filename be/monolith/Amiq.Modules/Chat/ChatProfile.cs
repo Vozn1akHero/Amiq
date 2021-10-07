@@ -13,6 +13,7 @@ namespace Amiq.Mapping
             CreateMap<Message, DtoChatMessage>();
             CreateMap<DtoChatMessage, Message>();
             CreateMap<Message, DtoChatPreview>();
+            CreateMap<DtoChatMessageCreation, Message>();
         }
     }
 }

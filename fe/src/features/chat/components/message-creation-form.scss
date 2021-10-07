@@ -2,4 +2,11 @@
   width: 100%;
   position: absolute;
   bottom: 0;
+  padding: 1.732312rem;
+  //border-radius: 30px;
+
+
+  &__textarea{
+    resize: none;
+  }
 }

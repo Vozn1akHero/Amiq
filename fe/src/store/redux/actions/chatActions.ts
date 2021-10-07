@@ -8,19 +8,19 @@ import {StatusCodes} from "http-status-codes";
 const chatService = new ChatService();
 const chatMessageService = new ChatMessageService();
 
-export const getChatPreviews = () => async (dispatch) => {
-    dispatch({
-        type: GET_CHAT_PREVIEWS
-    });
-
-    chatService.getChatPreviews().then((res:AxiosResponse) => {
-        const chatPreviews = res.data as Array<IChatPreview>;
-
+export const getChatPreviews = () => async (dispatch, useState) => {
         dispatch({
-            type: SET_CHAT_PREVIEWS,
-            payload: chatPreviews
+            type: GET_CHAT_PREVIEWS
+        });
+
+        chatService.getChatPreviews().then((res: AxiosResponse) => {
+            const chatPreviews = res.data as Array<IChatPreview>;
+
+            dispatch({
+                type: SET_CHAT_PREVIEWS,
+                payload: chatPreviews
+            })
         })
-    })
 }
 
 export const createMessage = (message: IChatMessageCreation) => (dispatch) => {
@@ -29,7 +29,7 @@ export const createMessage = (message: IChatMessageCreation) => (dispatch) => {
     })
 
     chatMessageService.create(message).then(res=>{
-        if(res.status == StatusCodes.CREATED){
+        if(res.status === StatusCodes.CREATED){
             const createdMessage = res.data as IMessage;
             dispatch({
                 type: MESSAGE_CREATED,

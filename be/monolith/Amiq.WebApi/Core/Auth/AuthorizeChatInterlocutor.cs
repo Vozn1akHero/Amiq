@@ -44,7 +44,7 @@ namespace Amiq.WebApi.Core.Auth
             }
         }
 
-        private Guid ExtractChatId(HttpRequest httpRequest)
+        /*private Guid ExtractChatId(HttpRequest httpRequest)
         {
             using (var reader = new StreamReader(httpRequest.Body))
             {
@@ -52,6 +52,6 @@ namespace Amiq.WebApi.Core.Auth
 
                 
             }
-        }
+        }*/
     }
 }

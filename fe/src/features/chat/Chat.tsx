@@ -7,6 +7,8 @@ import ChatMessage from "./ChatMessage";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {Utils} from "../../core/utils";
 import MessageCreationForm from "./components/MessageCreationForm";
+import { Link } from 'react-router-dom';
+import {Routes} from "../../core/routing";
 
 type State = {
     parsedChat: Array<Array<IMessage>>
@@ -79,14 +81,19 @@ class Chat extends Component<Props, State> {
                 <header className="chat__interlocutor-data">
                     <div className="uk-grid uk-grid-medium" >
                         <div className="uk-width-auto uk-flex-first">
-                            <img className="border-radius-50"
-                                 src={Utils.getImageSrc(this.props.chat.interlocutor.avatarPath)}
-                                 width="80"
-                                 height="80" alt=""/>
+                            <Link to={`${Routes.getLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                                <img className="border-radius-50"
+                                     src={Utils.getImageSrc(this.props.chat.interlocutor.avatarPath)}
+                                     width="80"
+                                     height="80" alt=""/>
+                            </Link>
                         </div>
                         <div className="uk-width-expand">
-                            <h4 className="uk-comment-title uk-margin-remove"><a className="uk-link-reset"
-                                                                                 href="#">{this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}</a></h4>
+                            <h4 className="uk-comment-title uk-margin-remove">
+                                <Link className="uk-link-text" to={`${Routes.getLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                                    {this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}
+                                </Link>
+                            </h4>
                             <p className="uk-comment-meta uk-margin-remove-top"><a className="uk-link-reset"
                                                                                    href="#">{getViewDate(this.props.chat.messages[0]?.createdAt)}</a>
                             </p>

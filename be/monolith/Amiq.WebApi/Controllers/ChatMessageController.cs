@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Chat;
+using Amiq.Business.Utils;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
@@ -46,9 +47,15 @@ namespace Amiq.WebApi.Controllers
         [AuthorizeChatInterlocutor]
         public async Task<IActionResult> CreateMessage([FromQuery] Guid chatId, [FromBody] DtoChatMessageCreation dtoMessage)
         {
-            var createdMsg = await _bsChatMessage.CreateChatMessageAsync(dtoMessage);
-            await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), createdMsg);
-            return CreatedAtAction(nameof(CreateMessage), createdMsg);
+            try
+            {
+                var createdMsg = await _bsChatMessage.CreateChatMessageAsync(dtoMessage);
+                await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), createdMsg);
+                return CreatedAtAction(nameof(CreateMessage), createdMsg);
+            } catch (BsIsBrokenException bsException)
+            {
+                return UnprocessableEntity(bsException);
+            }
         }
     }
 }

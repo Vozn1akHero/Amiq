@@ -33,16 +33,17 @@ const ChatPageContainer = () => {
         }
     )
 
-    const dispatch: Dispatch<any> = useDispatch()
+    const dispatch: Dispatch<any> = useDispatch();
 
     useEffect(() => {
-        dispatch(getChatPreviews());
+        if(!chatPreviewsLoaded){
+            dispatch(getChatPreviews());
+        }
     }, [])
 
     const onCreateMessage = (message: IChatMessageCreation) => {
         dispatch(createMessage(message));
     }
-
 
     //const [chatPreviews, setchatPreviews] = useState(null);
     const [selectedChatId, setSelectedChatId] = useState(null);

@@ -60,7 +60,8 @@ namespace Amiq.DataAccess.User
 
         public bool IsUserBlockedByAnotherUser(int issuerId, int userId)
         {
-            return _amiqContext.BlockedUsers.Any(e => e.IssuerId == issuerId && e.DestUserId == userId);
+            return _amiqContext.BlockedUsers.Any(e => (e.IssuerId == issuerId && e.DestUserId == userId) 
+            || e.IssuerId == userId && e.DestUserId == issuerId);
         }
     }
 }

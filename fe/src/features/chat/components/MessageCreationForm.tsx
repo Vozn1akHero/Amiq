@@ -23,13 +23,13 @@ class MessageCreationForm extends Component<Props, {isCreateButtonVisible: boole
 
     render() {
         return (
-            <form className="message-creation-form" onSubmit={this.handleSubmit}>
+            <form className="message-creation-form uk-background-muted" onSubmit={this.handleSubmit}>
                 <fieldset className="uk-fieldset">
                     <div className="uk-margin">
                         <textarea onBlur={e=>{this.props.onFormBlur(e.target.value)}}
                                   autoFocus={this.props.isFocused}
-                                  className="uk-textarea"
-                                  rows={5}
+                                  className="message-creation-form__textarea uk-textarea"
+                                  rows={3}
                                   onChange={(e) => {
                                       this.setState({
                                           value: e.target.value,
@@ -39,10 +39,7 @@ class MessageCreationForm extends Component<Props, {isCreateButtonVisible: boole
                                   placeholder="Napisz wiadomość"/>
                     </div>
                 </fieldset>
-                {
-                    this.state.isCreateButtonVisible && <button type="submit"
-                                                                className="uk-button uk-button-primary uk-margin-small-top">Wyślij</button>
-                }
+                <button type="submit" className="uk-button uk-button-primary uk-margin-small-top">Wyślij</button>
             </form>
         );
     }
