@@ -9,7 +9,7 @@ namespace Amiq.Business.Friend.BsRules
 {
     public class BsRuleUsersAreAlreadyFriends : IBsRuleAsync
     {
-        public string TextContent => throw new NotImplementedException();
+        public string ErrorContent => throw new NotImplementedException();
 
         public Task<bool> CheckBsRuleAsync()
         {

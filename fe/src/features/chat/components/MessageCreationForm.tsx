@@ -24,22 +24,20 @@ class MessageCreationForm extends Component<Props, {isCreateButtonVisible: boole
     render() {
         return (
             <form className="message-creation-form uk-background-muted" onSubmit={this.handleSubmit}>
-                <fieldset className="uk-fieldset">
-                    <div className="uk-margin">
-                        <textarea onBlur={e=>{this.props.onFormBlur(e.target.value)}}
-                                  autoFocus={this.props.isFocused}
-                                  className="message-creation-form__textarea uk-textarea"
-                                  rows={3}
-                                  onChange={(e) => {
-                                      this.setState({
-                                          value: e.target.value,
-                                          isCreateButtonVisible: e.target.value?.length > 0
-                                      })
-                                  }}
-                                  placeholder="Napisz wiadomość"/>
-                    </div>
+                <fieldset className="message-creation-form__fieldset uk-fieldset">
+                    <textarea onBlur={e=>{this.props.onFormBlur(e.target.value)}}
+                              autoFocus={this.props.isFocused}
+                              className="message-creation-form__textarea uk-textarea"
+                              rows={3}
+                              onChange={(e) => {
+                                  this.setState({
+                                      value: e.target.value,
+                                      isCreateButtonVisible: e.target.value?.length > 0
+                                  })
+                              }}
+                              placeholder="Napisz wiadomość"/>
                 </fieldset>
-                <button type="submit" className="uk-button uk-button-primary uk-margin-small-top">Wyślij</button>
+                <button type="submit" className="message-creation-form__submit-btn uk-button uk-button-primary uk-margin-small-top">Wyślij</button>
             </form>
         );
     }

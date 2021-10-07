@@ -4,7 +4,7 @@ namespace Amiq.Business.Utils
 {
     public interface IBsRuleAsync
     {
-        string TextContent { get; }
+        string ErrorContent { get; }
         /// <summary>
         /// Weryfikacja reguły biznesowej
         /// </summary>

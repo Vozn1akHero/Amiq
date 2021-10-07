@@ -13,5 +13,12 @@ namespace Amiq.Business.Utils
                 throw new BsIsBrokenException(businessRule.ErrorContent);
             }
         }
+
+        protected async Task CheckBsRuleAsync(IBsRuleAsync bsRuleAsync){
+            if (!await bsRuleAsync.CheckBsRuleAsync())
+            {
+                throw new BsIsBrokenException(bsRuleAsync.ErrorContent);
+            }
+        }
     }
 }

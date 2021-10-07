@@ -27,7 +27,6 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpGet("list-by-chat")]
-        [AuthorizeChatInterlocutor]
         public async Task<IActionResult> GetChatMessagesByChatId([FromQuery] Guid chatId, [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
             var res = await _bsChatMessage.GetChatMessagesAsync(JwtStoredUserInfo.UserId, chatId, dtoPaginatedRequest);
@@ -35,7 +34,6 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpDelete]
-        [AuthorizeChatInterlocutor]
         public async Task<IActionResult> DeleteMessageById([FromQuery] DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
         {
             dtoDeleteChatMessageRequest.IssuerId = JwtStoredUserInfo.UserId;
@@ -44,7 +42,6 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpPost]
-        [AuthorizeChatInterlocutor]
         public async Task<IActionResult> CreateMessage([FromQuery] Guid chatId, [FromBody] DtoChatMessageCreation dtoMessage)
         {
             try
@@ -54,7 +51,23 @@ namespace Amiq.WebApi.Controllers
                 return CreatedAtAction(nameof(CreateMessage), createdMsg);
             } catch (BsIsBrokenException bsException)
             {
-                return UnprocessableEntity(bsException);
+                return UnprocessableEntity(bsException.Message);
+            }
+        }
+
+        [HttpDelete("list")]
+        public async Task<IActionResult> DeleteMessages([FromBody] DtoDeleteChatMessagesRequest dtoDeleteChatMessagesRequest)
+        {
+            if (dtoDeleteChatMessagesRequest.MessageIds.Count > 5) {
+                return BadRequest();
+            }
+            try
+            {
+                var res = await _bsChatMessage.DeleteMessagesAsync(JwtStoredUserInfo.UserId, dtoDeleteChatMessagesRequest.MessageIds);
+                return Ok(res);
+            } catch (BsIsBrokenException bsException)
+            {
+                return UnprocessableEntity(bsException.Message);
             }
         }
     }

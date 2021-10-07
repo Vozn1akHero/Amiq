@@ -11,4 +11,10 @@
     position: relative;
     width: 100%;
   }
+
+  &__messages {
+    overflow-y: scroll;
+    height: 67%;
+    margin: 0 !important;
+  }
 }

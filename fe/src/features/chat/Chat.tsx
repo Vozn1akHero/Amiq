@@ -11,19 +11,31 @@ import { Link } from 'react-router-dom';
 import {Routes} from "../../core/routing";
 
 type State = {
-    parsedChat: Array<Array<IMessage>>
+    parsedChat: Array<Array<IMessage>>;
+    selectedMessageIds: Array<string>;
 }
 
 type Props = {
     chat: IChat;
+    messages: Array<IMessage>;
     chatMessagesLoaded: boolean;
+    onDeleteMessages(ids: Array<string>);
     onCreateMessage(message: IChatMessageCreation): void;
 }
 
 class Chat extends Component<Props, State> {
-    //userId = "1234"
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            parsedChat: [],
+            selectedMessageIds: []
+        }
+    }
+
+
     getDifferenceBetweenDates = (t1: Date, t2: Date) : number => {
-        //console.log(t1, t2)
+        console.log(t1, t2)
         let dif = new Date(t1).getTime() - new Date(t2).getTime();
         let Seconds_from_T1_to_T2 = dif / 1000;
         let seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
@@ -32,31 +44,43 @@ class Chat extends Component<Props, State> {
 
     getGroupedMessages = () => {
         let parsedChat: Array<Array<IMessage>> = []
-        let previousMessage: IMessage;
+        let previousMessage: IMessage = null;
         let localIndex: number = -1;
         const SECONDS_TO_BE_GROUPED = 10;
         let currentGroup: Array<IMessage> = [];
-        for(let message of this.props.chat.messages){
-            console.log(message)
+        const messages = this.props.messages;
+        console.log(messages)
+        for(let message of messages){
             localIndex++;
 
             if(localIndex === 0) {
                 currentGroup.push(message);
+                previousMessage = message;
             } else if(localIndex >= 1) {
                 if(message.author.userId === previousMessage.author.userId){
                     if(this.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED){
                         currentGroup.push(message)
+                    } else {
+                        parsedChat.push(currentGroup);
+                        currentGroup = [];
+                        currentGroup.push(message)
+                        localIndex = -1;
+                        previousMessage = message;
                     }
                 } else {
                     parsedChat.push(currentGroup);
                     currentGroup = [];
+                    currentGroup.push(message)
                     localIndex = -1;
-                    break;
+                    previousMessage = message;
                 }
             }
-
-            previousMessage = message;
         }
+
+        if(currentGroup.length > 0){
+            parsedChat.push(currentGroup);
+        }
+
         return parsedChat;
     }
 
@@ -73,6 +97,22 @@ class Chat extends Component<Props, State> {
             chatId: chat.chatId
         }
         this.props.onCreateMessage(data);
+    }
+
+    onMessageSelection = (messageId: string) => {
+        this.setState({
+            selectedMessageIds: [messageId, ...this.state.selectedMessageIds]
+        })
+    }
+
+    onMessageDeselection = (messageId: string) => {
+        this.setState({
+            selectedMessageIds: [...this.state.selectedMessageIds.filter(value => value === messageId)]
+        })
+    }
+
+    deleteSelectedMessages = () => {
+        this.props.onDeleteMessages(this.state.selectedMessageIds);
     }
 
     render() {
@@ -94,19 +134,24 @@ class Chat extends Component<Props, State> {
                                     {this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}
                                 </Link>
                             </h4>
-                            <p className="uk-comment-meta uk-margin-remove-top"><a className="uk-link-reset"
-                                                                                   href="#">{getViewDate(this.props.chat.messages[0]?.createdAt)}</a>
-                            </p>
                         </div>
                     </div>
                 </header>
-                <hr className="max-width uk-margin-small-left"/>
-                <div className="uk-grid uk-width-1-1">
+                <hr className="max-width"/>
+                <div className="chat__messages max-width uk-grid uk-width-1-1">
+                    {
+                        this.state.selectedMessageIds.length > 0 &&
+                            <div className="chat__controls">
+                                    <button onClick={this.deleteSelectedMessages} className="chat__remove-selected-messages-btn uk-icon-button uk-margin-small-right" uk-icon="trash"></button>
+                            </div>
+                    }
                     {
                         this.getGroupedMessages().map((group) => {
                             return group.map((value, index) => {
                                 return <ChatMessage message={value}
                                                     key={index}
+                                                    onMessageDeselection={this.onMessageDeselection}
+                                                    onMessageSelection={this.onMessageSelection}
                                                     isAuthorDataVisible={index === 0}
                                                     viewerId={AuthStore.identity.userId} />
                             })

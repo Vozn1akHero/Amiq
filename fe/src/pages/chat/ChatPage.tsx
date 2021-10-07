@@ -7,11 +7,13 @@ import {ChatPreviewMode} from "../../features/chat/chat-enums";
 
 type Props = {
     chats: Array<IChatPreview>;
+    messages: Array<IMessage>;
     selectedChat: IChat;
     chatPreviewsLoaded: boolean;
     chatMessagesLoaded: boolean;
     onChatSelection(selectedChatId: string):void;
     onCreateMessage(message: Partial<IMessage>): void;
+    onDeleteMessages(ids: Array<string>);
 }
 
 type State = {
@@ -43,6 +45,10 @@ class ChatPage extends Component<Props, State> {
         this.setState( {
             chatPreviewMode
         })
+    }
+
+    onDeleteMessages = (ids: Array<string>) => {
+        this.props.onDeleteMessages(ids);
     }
 
     render() {
@@ -87,6 +93,8 @@ class ChatPage extends Component<Props, State> {
                     this.props.selectedChat && <div className="selected-chat uk-flex chat-width-when-selected">
                         <hr className="uk-divider-vertical max-height uk-margin-large-left uk-margin-large-right"/>
                         <Chat chat={this.props.selectedChat}
+                              onDeleteMessages={this.props.onDeleteMessages}
+                              messages={this.props.messages}
                               onCreateMessage={this.props.onCreateMessage}
                               chatMessagesLoaded={this.props.chatMessagesLoaded} />
                     </div>

@@ -33,7 +33,7 @@ export interface IChatPreview {
 export interface IChat {
     chatId: string;
     interlocutor: Partial<IUser>;
-    messages: Array<IMessage>;
+    //messages: Array<IMessage>;
 }
 
 export interface IGroupedMessages {

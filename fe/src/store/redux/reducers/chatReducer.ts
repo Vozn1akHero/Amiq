@@ -1,19 +1,24 @@
 import {
-    GET_CHAT_PREVIEWS,
+    GET_CHAT_MESSAGES,
+    GET_CHAT_PREVIEWS, MESSAGE_CREATED, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
     SET_CHAT_PREVIEWS
 } from '../types/chatTypes';
-import {IChatPreview} from "features/chat/chat-models";
+import {IChatPreview, IMessage} from "features/chat/chat-models";
 
 type ChatState = {
     pending: boolean,
     chatPreviewsLoaded: boolean,
-    chatPreviews: Array<IChatPreview>
+    chatPreviews: Array<IChatPreview>,
+    chatMessages: Array<IMessage>,
+    initialChatMessagesLoaded: boolean
 }
 
 const initialState : ChatState = {
     pending: false,
     chatPreviewsLoaded: false,
-    chatPreviews: []
+    chatPreviews: [],
+    chatMessages: [],
+    initialChatMessagesLoaded: false
 };
 
 export default function(state = initialState, action) {
@@ -30,6 +35,29 @@ export default function(state = initialState, action) {
                 chatPreviewsLoaded: true,
                 chatPreviews: [...action.payload, ...state.chatPreviews]
             };
+        case MESSAGE_CREATED:
+            return {
+                ...state,
+                chatMessages: [action.payload, ...state.chatMessages]
+            }
+        case GET_CHAT_MESSAGES:{
+            return {
+                ...state,
+                chatMessages: []
+            }
+        }
+        case SET_CHAT_MESSAGES:
+            return {
+                ...state,
+                initialChatMessagesLoaded: true,
+                chatMessages: [...action.payload, ...state.chatMessages]
+            }
+        case REMOVE_MESSAGES: {
+            return {
+                ...state,
+                chatMessages: [...state.chatMessages.filter(value => (action.payload as Array<IMessage>).findIndex(e=>e.messageId === value.messageId) === -1)]
+            }
+        }
         default:
             return state;
     }

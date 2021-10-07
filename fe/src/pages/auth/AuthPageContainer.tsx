@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import AuthPage from "./AuthPage";
 import AuthService from "../../core/auth/auth-service";
-import {log} from "util";
-import {constants} from "http2";
 import {StatusCodes} from "http-status-codes";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IdentityModel} from "../../store/custom/auth/identity-model";

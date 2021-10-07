@@ -11,9 +11,9 @@ type State = {
 type Props = {
     message: IMessage;
     isAuthorDataVisible: boolean;
-    //previousMessage: IMessage,
     viewerId: number;
-    //onMessageSelection(messageId: string):void;
+    onMessageSelection(messageId: string):void;
+    onMessageDeselection(messageId: string):void;
 }
 
 class ChatMessage extends Component<Props, State> {
@@ -24,11 +24,19 @@ class ChatMessage extends Component<Props, State> {
         }
     }
 
+    onMessageSelection = () => {
+        this.setState({
+            isSelected: !this.state.isSelected
+        }, () => {
+            if(this.state.isSelected)
+                this.props.onMessageSelection(this.props.message.messageId)
+            else this.props.onMessageDeselection(this.props.message.messageId)
+        })
+    }
+
     render() {
         return (
-            <div onClick={() => this.setState({
-                    isSelected: !this.state.isSelected
-            })}
+            <div onClick={this.onMessageSelection}
                  className={`chat-message 
                     ${this.props.message.author.userId === this.props.viewerId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
                     ${this.state.isSelected && `uk-card-default`}

@@ -32,13 +32,18 @@ namespace Amiq.Business.Chat
         }
 
         public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(int userId, DtoPaginatedRequest dtoChatPreviewListRequest)
-        => await _daChatMessage.GetChatPreviewListAsync(userId, dtoChatPreviewListRequest);
+            => await _daChatMessage.GetChatPreviewListAsync(userId, dtoChatPreviewListRequest);
 
         public async Task<DtoDeleteEntityResponse> DeleteMessageAsync(DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
         {
+            CheckBsRule(new ChatShouldBeAvailableForInterlocutor(dtoDeleteChatMessageRequest.IssuerId, dtoDeleteChatMessageRequest.ChatId));
             return await _daChatMessage.DeleteMessageAsync(dtoDeleteChatMessageRequest);
         }
 
-
+        public async Task<DtoDeleteEntitiesResponse> DeleteMessagesAsync(int issuerId, IEnumerable<Guid> messageIds)
+        {
+            await CheckBsRuleAsync(new UserCanRemoveOwnMessagesOnlyAsync(_daChatMessage, issuerId, messageIds));
+            return await _daChatMessage.DeleteMessages(messageIds);
+        }
     }
 }

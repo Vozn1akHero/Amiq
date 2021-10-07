@@ -2,11 +2,23 @@
   width: 100%;
   position: absolute;
   bottom: 0;
-  padding: 1.732312rem;
   //border-radius: 30px;
-
+  display: flex;
 
   &__textarea{
     resize: none;
+    //margin: 0 1rem 1rem 0 !important;
+  }
+
+  &__fieldset{
+    margin: 1rem !important;
+    width: 90%;
+  }
+
+  &__submit-btn{
+    margin: 1rem 1rem 1rem 0 !important;
+    width: 10%;
+    text-align: center;
+    padding: 0;
   }
 }

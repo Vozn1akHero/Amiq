@@ -24,13 +24,16 @@ namespace Amiq.DataAccess.Chat
             Message chatMessage = APAutoMapper.Instance.Map<Message>(dtoChatMessage);
             _amiqContext.Add(chatMessage);
             await _amiqContext.SaveChangesAsync();
-            var mappedMsg = APAutoMapper.Instance.Map<DtoChatMessage>(chatMessage);
+            var query = _amiqContext.Messages.Where(e=>e.MessageId == chatMessage.MessageId);
+            //var mappedMsg = APAutoMapper.Instance.Map<DtoChatMessage>(chatMessage);
+            var mappedMsg = APAutoMapper.Instance.ProjectTo<DtoChatMessage>(query).First();
             return mappedMsg;
         }
 
         public async Task<List<DtoChatMessage>> GetChatMessagesAsync(Guid chatId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             var query = _amiqContext.Messages.Where(e => e.ChatId == chatId)
+                .OrderByDescending(e=>e.CreatedAt)
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                 .Take(dtoPaginatedRequest.Count);
             var data = await APAutoMapper.Instance.ProjectTo<DtoChatMessage>(query).ToListAsync();
@@ -102,6 +105,30 @@ namespace Amiq.DataAccess.Chat
             return dtoDeleteEntityResponse;
         }
 
+        public async Task<DtoDeleteEntitiesResponse> DeleteMessages(IEnumerable<Guid> messageIds)
+        {
+            var result = new DtoDeleteEntitiesResponse();
+            var entities = _amiqContext.Messages.Where(e => messageIds.Contains(e.MessageId)).ToList();
+            try
+            {
+                _amiqContext.Messages.RemoveRange(entities);
+                await _amiqContext.SaveChangesAsync();
+                result.Result = true;
+                result.Entities = APAutoMapper.Instance.Map<List<DtoChatMessage>>(entities);
+            } catch (Exception ex)
+            {
+                result.Result = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public async Task<bool> AreMessagesCreatedByUserAsync(int userId, IEnumerable<Guid> messageIds)
+        {
+            var entities = await _amiqContext.Messages.Where(e => messageIds.Contains(e.MessageId)).ToListAsync();
+            bool result = !entities.Any(e => e.AuthorId != userId);
+            return result;
+        }
     }
 
     /*public static class SqlQueryExtensions
