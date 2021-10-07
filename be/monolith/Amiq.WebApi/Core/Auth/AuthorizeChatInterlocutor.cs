@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,6 +41,16 @@ namespace Amiq.WebApi.Core.Auth
             } catch 
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+        }
+
+        private Guid ExtractChatId(HttpRequest httpRequest)
+        {
+            using (var reader = new StreamReader(httpRequest.Body))
+            {
+                var body = reader.ReadToEnd();
+
+                
             }
         }
     }

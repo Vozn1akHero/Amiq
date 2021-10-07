@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {FriendService} from "features/friend/friend-service";
 import FriendListPage from "./FriendListPage";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {StatusCodes} from "http-status-codes";
 import {IFriendship} from "../../features/friend/friendship-models";
 import {IFoundUser} from "../../features/user/models/found-user";

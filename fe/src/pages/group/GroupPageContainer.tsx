@@ -5,7 +5,7 @@ import {GroupService} from "../../features/group/group-service";
 import {StatusCodes} from "http-status-codes";
 import {GroupPostService} from "../../features/post/group-post-service";
 import {IGroupPost} from "../../features/post/models/group-post";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/group-participant-service";
 import {IPostComment} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";

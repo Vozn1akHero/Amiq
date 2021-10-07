@@ -4,7 +4,7 @@ import {Component, memo, RefObject, useState} from "react";
 import "./logo.scss"
 import {Routes} from "core/routing";
 import {Observable, take} from "rxjs";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 
 type State = {
     isAuthenticated: boolean;

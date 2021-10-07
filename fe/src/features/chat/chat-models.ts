@@ -39,3 +39,10 @@ export interface IChat {
 export interface IGroupedMessages {
 
 }
+
+export interface IChatMessageCreation {
+    chatId: string;
+    authorId: number;
+    receiverId: number;
+    textContent: string;
+}

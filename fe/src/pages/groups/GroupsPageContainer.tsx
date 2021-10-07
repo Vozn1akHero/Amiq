@@ -3,7 +3,7 @@ import BasePageComponent from "core/BasePageComponent";
 import {container} from "tsyringe";
 import {GroupService} from "features/group/group-service";
 import GroupsPage from "./GroupsPage";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IGroupCard} from "../../features/group/group-models";
 import {GroupParticipantService} from "../../features/group/group-participant-service";
 import {StatusCodes} from "http-status-codes";

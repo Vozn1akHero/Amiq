@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
-import {AuthStore} from "../../../store/auth/auth-store";
+import {AuthStore} from "../../../store/custom/auth/auth-store";
 
 type Props = {
 

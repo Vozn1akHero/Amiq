@@ -4,8 +4,8 @@ import AuthService from "../../core/auth/auth-service";
 import {log} from "util";
 import {constants} from "http2";
 import {StatusCodes} from "http-status-codes";
-import {AuthStore} from "../../store/auth/auth-store";
-import {IdentityModel} from "../../store/auth/identity-model";
+import {AuthStore} from "../../store/custom/auth/auth-store";
+import {IdentityModel} from "../../store/custom/auth/identity-model";
 import {useHistory, withRouter} from 'react-router-dom';
 
 class AuthPageContainer extends Component<any,any> {

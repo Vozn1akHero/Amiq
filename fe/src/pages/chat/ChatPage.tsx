@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ChatPreviewCard} from "features/chat/ChatPreviewCard";
-import {IChat, IChatPreview} from "features/chat/chat-models";
+import {IChat, IChatPreview, IMessage} from "features/chat/chat-models";
 import Chat from "features/chat/Chat";
 import "./chat-page.scss"
 import {ChatPreviewMode} from "../../features/chat/chat-enums";
@@ -11,6 +11,7 @@ type Props = {
     chatPreviewsLoaded: boolean;
     chatMessagesLoaded: boolean;
     onChatSelection(selectedChatId: string):void;
+    onCreateMessage(message: Partial<IMessage>): void;
 }
 
 type State = {
@@ -23,6 +24,11 @@ class ChatPage extends Component<Props, State> {
         this.state = {
             chatPreviewMode: ChatPreviewMode.InterlocutorDataAndMessage
         }
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
+        console.log(nextProps)
+        return true;
     }
 
     onChatSelection = (chatId: string) => {
@@ -57,7 +63,7 @@ class ChatPage extends Component<Props, State> {
                     </div>
                     <div className={`uk-grid ${this.props.selectedChat ? `uk-child-width-1-1` : `uk-child-width-1-3`}`}>
                         {
-                            this.props.chats.map((value, i) =>
+                            this.props.chatPreviewsLoaded && this.props.chats.map((value, i) =>
                                 {
                                     return <div key={i} className="uk-margin-top">
                                         <ChatPreviewCard avatarSrc={value.interlocutor.avatarPath}
@@ -81,6 +87,7 @@ class ChatPage extends Component<Props, State> {
                     this.props.selectedChat && <div className="selected-chat uk-flex chat-width-when-selected">
                         <hr className="uk-divider-vertical max-height uk-margin-large-left uk-margin-large-right"/>
                         <Chat chat={this.props.selectedChat}
+                              onCreateMessage={this.props.onCreateMessage}
                               chatMessagesLoaded={this.props.chatMessagesLoaded} />
                     </div>
                 }

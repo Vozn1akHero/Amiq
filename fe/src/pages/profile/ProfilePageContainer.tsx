@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import ProfilePage from "./ProfilePage";
 import {IUserPost} from "../../features/post/models/user-post";
 import {UserPostService} from "../../features/post/user-post-service";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {useHistory, useParams, withRouter} from "react-router-dom";
 import UserService from "features/user/user-service";
 import {IUser} from "features/user/models/user";

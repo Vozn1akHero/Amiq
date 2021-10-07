@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {IChat, IMessage} from "./chat-models";
+import {IChat, IChatMessageCreation, IMessage} from "./chat-models";
 import {getViewDate} from "assets/utils/date-utils";
 import "./chat.scss"
 import {ChatPreviewMode} from "./chat-enums";
 import ChatMessage from "./ChatMessage";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {Utils} from "../../core/utils";
+import MessageCreationForm from "./components/MessageCreationForm";
 
 type State = {
     parsedChat: Array<Array<IMessage>>
@@ -14,6 +15,7 @@ type State = {
 type Props = {
     chat: IChat;
     chatMessagesLoaded: boolean;
+    onCreateMessage(message: IChatMessageCreation): void;
 }
 
 class Chat extends Component<Props, State> {
@@ -22,8 +24,8 @@ class Chat extends Component<Props, State> {
         //console.log(t1, t2)
         let dif = new Date(t1).getTime() - new Date(t2).getTime();
         let Seconds_from_T1_to_T2 = dif / 1000;
-        let Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-        return Seconds_Between_Dates;
+        let seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
+        return seconds_Between_Dates;
     }
 
     getGroupedMessages = () => {
@@ -53,26 +55,22 @@ class Chat extends Component<Props, State> {
 
             previousMessage = message;
         }
-        /*this.props.chat.messages.forEach((message,i) => {
-            localIndex++;
-
-            if(localIndex === 0) {
-                currentGroup.push(message);
-            } else if(localIndex >= 1) {
-                if(message.author.userId === previousMessage.author.userId){
-                    if(localIndex > 1 && this.getDifferenceBetweenDates(message.date, previousMessage.date) < SECONDS_TO_BE_GROUPED){
-                        currentGroup.push(message)
-                    }
-                } else {
-                    parsedChat.push(currentGroup);
-                    currentGroup = [];
-                    localIndex = -1;
-                }
-            }
-
-            previousMessage = message;
-        })*/
         return parsedChat;
+    }
+
+    onMessageCreationFormBlur = (content: string) => {
+
+    }
+
+    onMessageCreationFormSubmit = (text: string) => {
+        const {chat} = this.props;
+        let data : IChatMessageCreation = {
+            receiverId: chat.interlocutor.userId,
+            authorId: AuthStore.identity.userId,
+            textContent: text,
+            chatId: chat.chatId
+        }
+        this.props.onCreateMessage(data);
     }
 
     render() {
@@ -97,15 +95,6 @@ class Chat extends Component<Props, State> {
                 </header>
                 <hr className="max-width uk-margin-small-left"/>
                 <div className="uk-grid uk-width-1-1">
-                    {/*{
-                        this.props.chat.messages.map((value,i) => {
-                            return <div key={i} className="uk-margin-top chat__message-wrapper">
-                                <ChatMessage message={value}
-                                              previousMessage={i > 0 ? this.props.chat.messages[i-1] : null}
-                                              viewerId={AuthStore.identity.userId} />
-                            </div>
-                        })
-                    }*/}
                     {
                         this.getGroupedMessages().map((group) => {
                             return group.map((value, index) => {
@@ -117,6 +106,9 @@ class Chat extends Component<Props, State> {
                         })
                     }
                 </div>
+                <MessageCreationForm onFormBlur={this.onMessageCreationFormBlur}
+                                     onSubmit={this.onMessageCreationFormSubmit}
+                                     isFocused={true} />
             </div>
         );
     }

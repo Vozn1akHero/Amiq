@@ -7,7 +7,7 @@ import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IPostComment} from "../../features/post/models/post-comment";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
 
 type Props = {

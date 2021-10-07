@@ -44,7 +44,7 @@ namespace Amiq.WebApi.Controllers
 
         [HttpPost]
         [AuthorizeChatInterlocutor]
-        public async Task<IActionResult> CreateMessage([FromBody] DtoChatMessageCreation dtoMessage)
+        public async Task<IActionResult> CreateMessage([FromQuery] Guid chatId, [FromBody] DtoChatMessageCreation dtoMessage)
         {
             var createdMsg = await _bsChatMessage.CreateChatMessageAsync(dtoMessage);
             await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), createdMsg);

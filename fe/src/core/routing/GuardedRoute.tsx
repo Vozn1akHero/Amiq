@@ -1,6 +1,6 @@
 import {FC, Component, ComponentClass} from 'react';
 import { Route, Redirect } from "react-router-dom";
-import {AuthStore} from "../../store/auth/auth-store";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 
 const GuardedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated : boolean = AuthStore.isAuthenticated;

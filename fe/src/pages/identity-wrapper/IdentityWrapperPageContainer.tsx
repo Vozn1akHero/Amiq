@@ -1,10 +1,10 @@
 import React, {Component, useEffect, useState} from 'react';
 import AuthService from "core/auth/auth-service";
 import {Observable, take} from "rxjs";
-import {AuthStore} from "store/auth/auth-store";
+import {AuthStore} from "store/custom/auth/auth-store";
 import {Routes} from "core/routing";
 import IdentityWrapperPage from "./IdentityWrapperPage";
-import { IdentityModel } from 'store/auth/identity-model';
+import { IdentityModel } from 'store/custom/auth/identity-model';
 import {useHistory, useLocation} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import {StatusCodes} from "http-status-codes";

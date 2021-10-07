@@ -14,4 +14,11 @@ export default class ChatMessageService extends BaseService{
                 //return chatsMock.find(value => value.chatId === chatId) as IChat;
         return this.httpClient.get(this.buildApiPath("list-by-chat"), null, queryParams)
     }
+
+    create(message: Partial<IMessage>){
+        return this.httpClient.post(this.buildApiPath(""),
+            message,
+            null,
+            new HttpQueryParams().append("chatId", message.chatId))
+    }
 }
