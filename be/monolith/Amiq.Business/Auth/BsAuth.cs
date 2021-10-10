@@ -26,7 +26,7 @@ namespace Amiq.Business.Auth
                 dtoUserRegistration.Password = hashedPassword;
                 return _daAuth.Register(dtoUserRegistration);
             }
-            catch (BsIsBrokenException businessRuleBrokenException)
+            catch (BsRuleIsBrokenException businessRuleBrokenException)
             {
                 output.Success = false;
                 output.Message = businessRuleBrokenException.Message;

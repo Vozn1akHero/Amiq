@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Post;
+using Amiq.Business.Utils;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
@@ -29,6 +30,19 @@ namespace Amiq.WebApi.Controllers
         {
             await bsUserPost.EditAsync(dtoEditUserPostRequest);
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] DtoPostCreation dtoPost)
+        {
+            try
+            {
+                var data = await bsUserPost.CreateAsync(JwtStoredUserInfo.UserId, dtoPost);
+                return CreatedAtAction(nameof(CreateAsync), data);
+            } catch (BsRuleIsBrokenException ex)
+            {
+                return UnprocessableEntity(ex.Message);
+            }
         }
     }
 }

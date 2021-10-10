@@ -1,13 +1,15 @@
 import {Link} from "react-router-dom";
 import {INavigationLink} from "./INavigationLink";
 import {Component, memo, RefObject, useState} from "react";
-import "./logo.scss"
+import "./navigation.scss"
 import {Routes} from "core/routing";
 import {Observable, take} from "rxjs";
 import {AuthStore} from "../../store/custom/auth/auth-store";
+import {NotificationList} from "../../features/notification/components/NotificationList";
 
 type State = {
     isAuthenticated: boolean;
+    isNotificationListVisible: boolean;
 }
 
 type Props = {
@@ -18,7 +20,8 @@ export class Navigation extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            isAuthenticated: true
+            isAuthenticated: true,
+            isNotificationListVisible: false
         }
     }
 
@@ -67,6 +70,13 @@ export class Navigation extends Component<Props, State> {
         });
     }
 
+    onBellClick = e => {
+        e.preventDefault();
+        this.setState({
+            isNotificationListVisible: !this.state.isNotificationListVisible
+        })
+    }
+
     render() {
         return (
             <nav className="navigation uk-padding-small" ref={this.props.navRef}>
@@ -86,6 +96,14 @@ export class Navigation extends Component<Props, State> {
                             </div>
                             <div className="uk-margin-medium-right uk-navbar-right">
                                 <ul className="uk-navbar-nav">
+                                    <li>
+                                        <a href="" onClick={this.onBellClick}
+                                           className="uk-icon-link"
+                                           uk-icon="bell" />
+                                        {
+                                            this.state.isNotificationListVisible && <NotificationList />
+                                        }
+                                    </li>
                                     {
                                         this.loggedInUserNavigationRightSideLinks.map(((value,i) =>
                                             <li key={i}>

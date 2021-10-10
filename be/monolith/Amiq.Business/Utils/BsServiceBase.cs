@@ -10,14 +10,14 @@ namespace Amiq.Business.Utils
     {
         protected void CheckBsRule(IBsRule businessRule){
             if (!businessRule.CheckBsRule()) {
-                throw new BsIsBrokenException(businessRule.ErrorContent);
+                throw new BsRuleIsBrokenException(businessRule.ErrorContent);
             }
         }
 
         protected async Task CheckBsRuleAsync(IBsRuleAsync bsRuleAsync){
             if (!await bsRuleAsync.CheckBsRuleAsync())
             {
-                throw new BsIsBrokenException(bsRuleAsync.ErrorContent);
+                throw new BsRuleIsBrokenException(bsRuleAsync.ErrorContent);
             }
         }
     }

@@ -30,6 +30,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<TextBlock> TextBlocks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
@@ -41,7 +42,6 @@ namespace Amiq.DataAccess.Models.Models
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("data source=localhost;Database=Amiq;MultipleActiveResultSets=True;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer("data source=.\\SQLEXPRESS;Database=Amiq;MultipleActiveResultSets=True;Trusted_Connection=True;");
             }
         }
 
@@ -191,6 +191,8 @@ namespace Amiq.DataAccess.Models.Models
                 entity.ToTable("Group", "Group");
 
                 entity.HasIndex(e => e.Name, "IX_Group_Name");
+
+                entity.HasIndex(e => e.Name, "IX_Group_ViewName");
 
                 entity.Property(e => e.AvatarSrc).IsUnicode(false);
 
@@ -347,6 +349,27 @@ namespace Amiq.DataAccess.Models.Models
                     .HasConstraintName("FK_Post_User");
             });
 
+            modelBuilder.Entity<Session>(entity =>
+            {
+                entity.ToTable("Session", "User");
+
+                entity.Property(e => e.SessionId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.EndedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.SessionToken)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StartedAt).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Sessions)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Session_User");
+            });
+
             modelBuilder.Entity<TextBlock>(entity =>
             {
                 entity.ToTable("TextBlock", "Core");
@@ -365,6 +388,8 @@ namespace Amiq.DataAccess.Models.Models
                 entity.ToTable("User", "User");
 
                 entity.HasIndex(e => new { e.Name, e.Surname }, "IX_User");
+
+                entity.HasIndex(e => new { e.Name, e.Surname }, "IX_User_ViewName");
 
                 entity.HasIndex(e => e.Login, "UC_UserLogin")
                     .IsUnique();

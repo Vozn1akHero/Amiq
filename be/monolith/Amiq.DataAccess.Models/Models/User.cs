@@ -24,6 +24,7 @@ namespace Amiq.DataAccess.Models.Models
             Groups = new HashSet<Group>();
             Messages = new HashSet<Message>();
             Posts = new HashSet<Post>();
+            Sessions = new HashSet<Session>();
             UserDescriptionBlocks = new HashSet<UserDescriptionBlock>();
             UserPosts = new HashSet<UserPost>();
         }
@@ -54,6 +55,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Session> Sessions { get; set; }
         public virtual ICollection<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
     }

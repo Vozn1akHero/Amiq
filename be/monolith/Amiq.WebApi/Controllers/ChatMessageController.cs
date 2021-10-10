@@ -49,7 +49,7 @@ namespace Amiq.WebApi.Controllers
                 var createdMsg = await _bsChatMessage.CreateChatMessageAsync(dtoMessage);
                 await _signalRChatService.PushMessageAsync(dtoMessage.ChatId.ToString(), createdMsg);
                 return CreatedAtAction(nameof(CreateMessage), createdMsg);
-            } catch (BsIsBrokenException bsException)
+            } catch (BsRuleIsBrokenException bsException)
             {
                 return UnprocessableEntity(bsException.Message);
             }
@@ -65,7 +65,7 @@ namespace Amiq.WebApi.Controllers
             {
                 var res = await _bsChatMessage.DeleteMessagesAsync(JwtStoredUserInfo.UserId, dtoDeleteChatMessagesRequest.MessageIds);
                 return Ok(res);
-            } catch (BsIsBrokenException bsException)
+            } catch (BsRuleIsBrokenException bsException)
             {
                 return UnprocessableEntity(bsException.Message);
             }

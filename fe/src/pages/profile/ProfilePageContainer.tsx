@@ -22,18 +22,21 @@ const ProfilePageContainer : React.FC = () => {
     const [userData, setUserData] = useState(null);
     const [userDataLoaded, setUserDataLoaded] = useState(false);
     const [postsLoaded, setPostsLoaded] = useState(false);
-
-    //const [actualProfileId, setActualProfileId] = useState()
-    let actualProfileId:number;
+    const [actualProfileId, setActualProfileId] = useState(null);
 
     const history = useHistory();
-    const {profileId} = useParams<any>();
+    const {userId} = useParams<any>();
 
     useEffect(() => {
         initProfileId();
-        getUserData();
-        getUserPosts();
     }, []);
+
+    useEffect(() => {
+        if(actualProfileId){
+            getUserData();
+            getUserPosts();
+        }
+    }, [actualProfileId])
 
     //TODO
     const getViewerStatus = () => {
@@ -41,7 +44,7 @@ const ProfilePageContainer : React.FC = () => {
     }
 
     const getUserPosts = () => {
-        userPostService.getUserPosts(AuthStore.identity.userId, 1).then(value => {
+        userPostService.getUserPosts(actualProfileId.toString(), 1).then(value => {
             const posts = value.data as Array<IUserPost>;
             console.log(posts)
             setUserPosts(posts);
@@ -50,17 +53,17 @@ const ProfilePageContainer : React.FC = () => {
     }
 
     const initProfileId = () => {
-        console.log(AuthStore.identity)
-        if(profileId){
-            setIsViewerProfile(AuthStore.identity.userId === profileId);
-            actualProfileId = profileId;
+        if(userId){
+            setIsViewerProfile(AuthStore.identity.userId === userId);
+            setActualProfileId(userId);
         } else {
             setIsViewerProfile(true);
-            actualProfileId = AuthStore.identity.userId;
+            setActualProfileId(AuthStore.identity.userId);
         }
     }
 
     const getUserData = () => {
+        console.log(actualProfileId);
         userService.getById(actualProfileId.toString()).then(res => {
             const userData = res.data as IUser;
             setUserData(userData);
@@ -77,7 +80,7 @@ const ProfilePageContainer : React.FC = () => {
         }
         const result : AxiosResponse<IUserPost> = await userPostService.create(post)
         const {data} = result;
-        setUserPosts([...userPosts, data]);
+        setUserPosts([data, ...userPosts]);
     }
 
     const deletePost = (postId: string) => {

@@ -1,6 +1,7 @@
 ﻿using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
 using AutoMapper;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Amiq.Mapping.Post
@@ -18,7 +19,7 @@ namespace Amiq.Mapping.Post
                 .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Post.CreatedAt))
                 .ForMember(e => e.EditedAt, dest => dest.MapFrom(i => i.Post.EditedAt))
                 .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy))
-                .ForMember(e => e.HasMoreCommentsThanRecent, dest => dest.MapFrom(i=>i.Post.Comments.Where(e=>!e.ParentId.HasValue).Count() > 5))
+                .ForMember(e => e.HasMoreCommentsThanRecent, dest => dest.MapFrom(i=> i.Post.Comments != null && i.Post.Comments.Where(e=>!e.ParentId.HasValue).Count() > 5))
                 .ForMember(e => e.RecentComments, dest => dest.MapFrom(i => i.Post.Comments.Where(e=>!e.ParentId.HasValue).OrderByDescending(e=>e.CreatedAt).Take(5)));
 
             CreateMap<GroupPost, DtoGroupPost>()
@@ -31,6 +32,10 @@ namespace Amiq.Mapping.Post
                 .ForMember(e => e.EditedBy, dest => dest.MapFrom(i => i.Post.EditedBy))
                 .ForMember(e => e.HasMoreCommentsThanRecent, dest => dest.MapFrom(i => i.Post.Comments.Where(e => !e.ParentId.HasValue).Count() > 5))
                 .ForMember(e => e.RecentComments, dest => dest.MapFrom(i => i.Post.Comments.Where(e => !e.ParentId.HasValue).OrderByDescending(e => e.CreatedAt).Take(5)));
+
+            CreateTwoWayMap<DtoPostCreation, UserPost>();
+            CreateTwoWayMap<DtoPostCreation, GroupPost>();
+            CreateTwoWayMap<DtoPostCreation, DataAccess.Models.Models.Post>();
         }
     }
 }

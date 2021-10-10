@@ -19,7 +19,9 @@ namespace Amiq.DataAccess.Post
         {
             var query = _amiqContext.UserPosts.Where(e=>e.UserId == userId)
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                .Take(dtoPaginatedRequest.Count).Include(e=>e.Post).Include(e=>e.Post.Comments);
+                .Take(dtoPaginatedRequest.Count)
+                .OrderByDescending(e=>e.Post.CreatedAt)
+                .Include(e=>e.Post).Include(e=>e.Post.Comments);
             var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
             return data;
         }
@@ -34,6 +36,28 @@ namespace Amiq.DataAccess.Post
                 post.Post.EditedBy = dtoEditUserPostRequest.UserId;
                 await _amiqContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<DtoUserPost> CreateAsync(int issuerId, DtoPostCreation dtoPost)
+        {
+            var userPost = APAutoMapper.Instance.Map<UserPost>(dtoPost);
+            var post = APAutoMapper.Instance.Map<Models.Models.Post>(dtoPost);
+            userPost.UserId = issuerId;
+            _amiqContext.Posts.Add(post);
+            await _amiqContext.SaveChangesAsync();
+
+            userPost.PostId = post.PostId;
+            _amiqContext.UserPosts.Add(userPost);
+            await _amiqContext.SaveChangesAsync();
+
+            var query = _amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId)
+                .Include(e => e.Post)
+                .Include(e => e.Post.Comments);
+            var query2 = _amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId)
+                .Include(e => e.Post)
+                .Include(e => e.Post.Comments).Single();
+            var res = APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).Single();
+            return res;
         }
     }
 }

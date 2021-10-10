@@ -69,10 +69,12 @@ class ProfilePage extends Component<Props> {
                         <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Brak znajomych" />
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
-                        <div className="uk-margin-medium-bottom">
-                            <PostCreationForm handleSubmit={this.props.createPost}
-                                              publishAsAdminOptionVisible={false} />
-                        </div>
+                        {
+                            this.props.isViewerProfile && <div className="uk-margin-medium-bottom">
+                                <PostCreationForm handleSubmit={this.props.createPost}
+                                                  publishAsAdminOptionVisible={false} />
+                            </div>
+                        }
                         {
                             this.props.posts.map((post, index) => {
                                 return <Post postId={post.postId}
