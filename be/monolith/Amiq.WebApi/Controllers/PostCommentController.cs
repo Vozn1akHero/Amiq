@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
-    //[Authorize]
+    
     public class PostCommentController : AmiqBaseController
     {
         private BsPostComment bsPostComment = new BsPostComment();
@@ -44,10 +44,11 @@ namespace Amiq.WebApi.Controllers
             return Ok(data);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromBody] DtoNewPostComment newPostComment)
         {
-            var data = await bsPostComment.CreateAsync(newPostComment);
+            var data = await bsPostComment.CreateAsync(JwtStoredUserInfo.UserId, newPostComment);
             return CreatedAtAction(nameof(CreateAsync), data);
         }
     }

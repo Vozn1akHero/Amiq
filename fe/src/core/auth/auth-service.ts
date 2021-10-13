@@ -19,4 +19,8 @@ export default class AuthService extends BaseService {
     register(dtoRegister: DtoRegister){
         return this.httpClient.post(this.buildApiPath("register"), dtoRegister);
     }
+
+    logout() {
+        return this.httpClient.post(this.buildApiPath("logout"));
+    }
 }

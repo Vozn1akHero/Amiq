@@ -2,7 +2,7 @@
 {
     public class DtoUserPost : DtoPost
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        //public string Name { get; set; }
+        //public string Surname { get; set; }
     }
 }

@@ -55,6 +55,14 @@ namespace Amiq.WebApi.Controllers
             }
         }
 
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            HttpContext.Response.Cookies.Delete("token");
+            return Ok();
+        }
+
         [HttpGet("validate-credentials")]
         [Authorize]
         public IActionResult ValidateCredentials()

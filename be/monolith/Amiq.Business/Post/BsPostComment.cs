@@ -20,9 +20,9 @@ namespace Amiq.Business.Post
             return await daPostComment.GetPostCommentAsync(postId, dto);
         }
 
-        public async Task<DtoPostComment> CreateAsync(DtoNewPostComment newPostComment)
+        public async Task<DtoPostComment> CreateAsync(int authorId, DtoNewPostComment newPostComment)
         {
-           return await daPostComment.CreateAsync(newPostComment);
+           return await daPostComment.CreateAsync(authorId, newPostComment);
         }
 
         public async Task<DtoPostComment> DeleteAsync(Guid postCommentId)

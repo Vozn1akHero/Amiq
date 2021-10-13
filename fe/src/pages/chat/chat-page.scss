@@ -10,4 +10,27 @@
   .selected-chat{
     height: 60vh;
   }
+
+  .controls {
+    &__preview-mode-btn{
+      width: 2.2rem;
+      height: 2.1rem;
+      border: none;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: transparent;
+      cursor: pointer;
+      opacity: 0.75;
+    }
+
+    &__preview-mode{
+      &--data{
+        background-image: url("../../assets/images/dataOnlyIcon.png");
+      }
+      &--data-message{
+        background-image: url("../../assets/images/dataAndMessageIcon.png");
+      }
+    }
+  }
 }

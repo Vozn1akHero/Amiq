@@ -38,10 +38,10 @@ namespace Amiq.DataAccess.Post
             return _amiqContext.Comments.SingleOrDefault(e => e.CommentId == postCommentId);
         }
 
-        public async Task<DtoPostComment> CreateAsync(DtoNewPostComment newPostComment)
+        public async Task<DtoPostComment> CreateAsync(int authorId, DtoNewPostComment newPostComment)
         {
             var entity = new Comment { 
-                AuthorId = newPostComment.AuthorId,
+                AuthorId = authorId,
                 PostId = newPostComment.PostId,
                 TextContent = newPostComment.Text
             };

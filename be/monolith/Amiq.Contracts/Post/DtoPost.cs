@@ -9,7 +9,7 @@ namespace Amiq.Contracts.Post
         public Guid PostId { get; set; }
         public string TextContent { get; set; }
         //public int UserId { get; set; }
-        public DtoUserInfo Author { get; set; }
+        public DtoBasicUserInfo Author { get; set; }
         public int? EditedBy { get; set; }
         public DateTime? EditedAt {  get; set; }
         public DateTime CreatedAt { get; set; }

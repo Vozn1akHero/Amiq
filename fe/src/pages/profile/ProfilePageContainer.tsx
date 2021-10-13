@@ -10,12 +10,14 @@ import {AxiosResponse} from "axios";
 import {IPostComment} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
 import {StatusCodes} from "http-status-codes";
+import {PostCommentService} from "../../features/post/post-comment-service";
 
 
 const ProfilePageContainer : React.FC = () => {
     const userPostService = new UserPostService();
     const userService = new UserService();
     const postService = new PostService();
+    const postCommentService = new PostCommentService();
 
     const [isViewerProfile, setIsViewerProfile] = useState(null);
     const [userPosts, setUserPosts] = useState<Array<IUserPost>>([]);
@@ -80,7 +82,8 @@ const ProfilePageContainer : React.FC = () => {
         }
         const result : AxiosResponse<IUserPost> = await userPostService.create(post)
         const {data} = result;
-        setUserPosts([data, ...userPosts]);
+        const arr : Array<IUserPost> = [data, ...userPosts];
+        setUserPosts(arr);
     }
 
     const deletePost = (postId: string) => {
@@ -93,7 +96,9 @@ const ProfilePageContainer : React.FC = () => {
     }
 
     const onCommentCreated = (data: Partial<IPostComment>) => {
-        console.log(data)
+        postCommentService.create(data).then(res => {
+            console.log(res.data)
+        })
     }
 
     return (

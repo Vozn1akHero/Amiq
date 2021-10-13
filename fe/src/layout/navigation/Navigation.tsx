@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {INavigationLink} from "./INavigationLink";
 import {Component, memo, RefObject, useState} from "react";
 import "./navigation.scss"
@@ -13,10 +13,13 @@ type State = {
 }
 
 type Props = {
-    navRef: RefObject<HTMLElement>
+    navRef: RefObject<HTMLElement>;
+    match: any;
+    location: any;
+    history: any;
 }
 
-export class Navigation extends Component<Props, State> {
+class Navigation extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,15 +31,18 @@ export class Navigation extends Component<Props, State> {
     loggedInUserNavigationLinks : Array<INavigationLink> = [
         {
             title: "Profil",
-            anchor: Routes.getLink(Routes.profilePageRoutes)
+            anchor: Routes.getLink(Routes.profilePageRoutes),
+            uiKitIcon: ""
         },
         {
             title: "Znajomi",
-            anchor: Routes.getLink(Routes.friendListPageRoutes)
+            anchor: Routes.getLink(Routes.friendListPageRoutes),
+            uiKitIcon: "users"
         },
         {
             title: "Czat",
-            anchor: Routes.getLink(Routes.chatPageRoutes)
+            anchor: Routes.getLink(Routes.chatPageRoutes),
+            uiKitIcon: "mail"
         },
         {
             title: "Grupy",
@@ -45,10 +51,10 @@ export class Navigation extends Component<Props, State> {
     ];
 
     loggedInUserNavigationRightSideLinks : Array<INavigationLink> = [
-        {
+        /*{
             title: "Wyloguj",
             anchor: Routes.getLink(Routes.logoutPageRoutes)
-        }
+        }*/
     ]
 
     notLoggedInUserLinks : Array<INavigationLink> = [
@@ -75,6 +81,13 @@ export class Navigation extends Component<Props, State> {
         this.setState({
             isNotificationListVisible: !this.state.isNotificationListVisible
         })
+    }
+
+    onLogoutClick = e => {
+        e.preventDefault();
+        AuthStore.logout().then(()=>{
+            this.props.history.push("/login");
+        });
     }
 
     render() {
@@ -110,6 +123,11 @@ export class Navigation extends Component<Props, State> {
                                                 <Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link>
                                             </li>))
                                     }
+                                    <li>
+                                        <a href="" onClick={this.onLogoutClick}
+                                           className="uk-icon-link"
+                                           uk-icon="sign-out" />
+                                    </li>
                                 </ul>
                             </div>
                         </>
@@ -132,4 +150,6 @@ export class Navigation extends Component<Props, State> {
     }
 };
 
-export const MemoizedNavigation = memo(Navigation)
+const NavigationWithRouter = withRouter(Navigation);
+
+export default NavigationWithRouter;

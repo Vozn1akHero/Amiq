@@ -16,13 +16,14 @@ import GroupPageContainer from "pages/group/GroupPageContainer";
 import ChatPageContainer from "pages/chat/ChatPageContainer";
 import AuthPageContainer from "pages/auth/AuthPageContainer";
 import ProfilePageContainer from "pages/profile/ProfilePageContainer";
-import {MemoizedNavigation, Navigation} from "../../layout/navigation/Navigation";
+import NavigationWithRouter from "../../layout/navigation/Navigation";
 import Breadcrumb from "../../common/components/Breadcrumb/Breadcrumb";
 import {Observable} from "rxjs";
 import JoinupPageContainer from "../joinup/JoinupPageContainer";
 import Footer from "layout/footer/Footer";
 import "./identity-wrapper-page.scss"
 import GuardedRoute from "../../core/routing/GuardedRoute";
+import NotFoundPage from "../not-found/NotFoundPage";
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -49,11 +50,11 @@ const IdentityWrapperPage = (props: Props) => {
             <Switch>
                 <Redirect from="/" to={Routes.getRouteAsString(Routes.profilePageRoutes)} exact={true} />
                 <Route path="/" render={() => <>
-                    <Navigation navRef={navigationRef} />
+                    <NavigationWithRouter navRef={navigationRef} />
 
                     <div className="main-content" ref={mainContentRef}>
                         <div className="uk-margin-medium-top">
-                            <Breadcrumb />
+                            {/*<Breadcrumb />*/}
                             <div className="page-wrapper uk-margin-medium-top">
                                 <Route component={AuthPageContainer} path={Routes.getRouteAsString(Routes.authPageRoutes)} />
                                 <Route component={JoinupPageContainer} path={Routes.getRouteAsString(Routes.registrationPageRoutes)} />
@@ -62,6 +63,7 @@ const IdentityWrapperPage = (props: Props) => {
                                 <Route component={GroupsPageContainer} path={Routes.getRouteAsString(Routes.groupsPageRoutes)} />
                                 <Route component={GroupPageContainer} path={Routes.getRouteAsString(Routes.groupPageRoutes)} />
                                 <Route component={ChatPageContainer} path={Routes.getRouteAsString(Routes.chatPageRoutes)} />
+                                <Route path="/not-found" component={NotFoundPage} />
                             </div>
                         </div>
                     </div>

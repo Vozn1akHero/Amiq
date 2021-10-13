@@ -9,9 +9,13 @@ import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/group-participant-service";
 import {IPostComment} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
+import {withRouter} from "react-router-dom";
+import {AxiosResponse} from "axios";
 
 type Props = {
-    match: any,
+    match: any;
+    location: any;
+    history: any;
     //onCommentCreated(data: Partial<IPostComment>);
 }
 
@@ -46,10 +50,11 @@ class GroupPageContainer extends Component<Props, State>{
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.getGroupData()
+
         this.getViewerRole()
             .then(() => {
-                this.getGroupData();
                 this.getGroupPosts(1);
                 this.getParticipants();
             })
@@ -68,19 +73,24 @@ class GroupPageContainer extends Component<Props, State>{
     }
 
     getGroupData = () => {
-        this.groupService.getGroupById(this.props.match.params.groupId).then(res => {
+        return this.groupService.getGroupById(this.props.match.params.groupId).then(res => {
             if(res.status === StatusCodes.OK){
                 this.setState({
                     groupData: res.data as IGroupData,
                     groupDataLoaded: true
                 })
             }
+        }).catch((err) => {
+            if (err.response.status === StatusCodes.NOT_FOUND) {
+                this.props.history.push("/not-found")
+            } else {
+                this.props.history.push("/profile")
+            }
         })
     }
 
     getGroupPosts = (page: number) => {
         this.groupPostService.getPostsByGroupId(this.props.match.params.groupId, page).then(res => {
-            console.log(res)
             this.setState({
                 groupPosts: res.data as Array<IGroupPost>
             })
@@ -139,4 +149,4 @@ class GroupPageContainer extends Component<Props, State>{
     }
 }
 
-export default GroupPageContainer;
+export default withRouter(GroupPageContainer);

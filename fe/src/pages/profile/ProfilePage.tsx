@@ -20,10 +20,6 @@ type Props = {
     onCommentCreated(data: Partial<IPostComment>);
 }
 
-type State = {
-
-}
-
 class ProfilePage extends Component<Props> {
     friends = []
 
@@ -32,7 +28,7 @@ class ProfilePage extends Component<Props> {
     }
 
     onDeletePost = (postId: string) => {
-
+        this.props.deletePost(postId);
     }
 
     render() {

@@ -61,12 +61,13 @@ class ChatPage extends Component<Props, State> {
                             <input className="uk-input" type="text" placeholder="Szukaj"/>
                         </div>
                     </div>
-                    <div className="controls">
+                    {/*<div className="controls">
                         <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataAndMessage)}
-                            className="uk-button-small uk-button controls__preview-mode--data-message uk-margin-small-right">X</button>
+                            className="uk-button controls__preview-mode-btn
+                             controls__preview-mode--data-message"></button>
                         <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataOnly)}
-                            className="uk-button-small uk-button controls__preview-mode-btn controls__preview-mode--data">Y</button>
-                    </div>
+                            className="uk-button controls__preview-mode-btn controls__preview-mode--data uk-margin-medium-left"></button>
+                    </div>*/}
                     <div className={`uk-grid ${this.props.selectedChat ? `uk-child-width-1-1` : `uk-child-width-1-3`}`}>
                         {
                             this.props.chatPreviewsLoaded && this.props.chats.map((value, i) =>

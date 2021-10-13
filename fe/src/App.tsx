@@ -14,6 +14,7 @@ class App extends Component {
                         <IdentityWrapperPageContainer />
                     </div>
                 </BrowserRouter>
+
             </Provider>
         );
     }

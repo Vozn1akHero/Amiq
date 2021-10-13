@@ -12,8 +12,8 @@ namespace Amiq.Mapping.Post
         {
             CreateMap<UserPost, DtoUserPost>()
                 .ForMember(e => e.Author, dest => dest.MapFrom(i => i.User))
-                .ForMember(e => e.Name, dest => dest.MapFrom(i => i.User.Name))
-                .ForMember(e => e.Surname, dest => dest.MapFrom(i => i.User.Surname))
+                //.ForMember(e => e.Name, dest => dest.MapFrom(i => i.User.Name))
+                //.ForMember(e => e.Surname, dest => dest.MapFrom(i => i.User.Surname))
                 .ForMember(e => e.AvatarPath, dest => dest.MapFrom(i => i.User.AvatarPath))
                 .ForMember(e => e.TextContent, dest => dest.MapFrom(i => i.Post.TextContent))
                 .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Post.CreatedAt))
