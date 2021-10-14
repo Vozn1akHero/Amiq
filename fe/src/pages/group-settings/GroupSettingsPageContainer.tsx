@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
+import GroupSettingsPage from "./GroupSettingsPage";
 
 class GroupSettingsPageContainer extends Component {
     render() {
         return (
-            <div>
-
-            </div>
+            <GroupSettingsPage />
         );
     }
 }

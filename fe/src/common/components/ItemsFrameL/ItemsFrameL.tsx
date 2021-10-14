@@ -1,18 +1,23 @@
 import './items-frame-l.scss'
 import {IUserInFrame} from "./IUserInFrame";
-import {Utils} from "../../../core/utils";
+import {Utils} from "core/utils";
 import {Link} from "react-router-dom";
+import React from "react";
 
 type Props = {
     title: string;
     //items: {imageSrc: string, title: string}[];
     items: Array<IUserInFrame>;
     callbackText: string;
+    icon?: string;
 };
 export const ItemsFrameL = (props: Props) => {
     return (
         <div className="uk-card uk-card-default uk-card-body items-frame-l">
-            <span className="uk-card-header">
+            <span className="uk-card-header uk-margin-small-left">
+                {
+                    props.icon && <span className="uk-margin-small-right" uk-icon={`icon: ${props.icon}`}></span>
+                }
                 {props.title}
             </span>
             <div className="uk-margin-small-top">

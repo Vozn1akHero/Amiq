@@ -4,6 +4,7 @@ import {IGroupCard} from "../../features/group/group-models";
 import DebounceInput from "../../common/components/DebounceInput/DebounceInput";
 import SimpleDropdown from "../../common/components/SimpleDropdown/SimpleDropdown";
 import CenteredPopup from "../../common/components/CenteredPopup/CenteredPopup";
+import IDropdownOption from "../../common/components/SimpleDropdown/IDropdownOption";
 
 type Props = {
     groupsLoaded: boolean;
@@ -18,6 +19,25 @@ type State = {
 class GroupsPage extends Component<Props, State> {
     constructor(props) {
         super(props);
+    }
+
+    sortDropdownValues : Array<IDropdownOption> = [{
+        id: 1,
+        text: "Wszystkie"
+    },{
+        id: 2,
+        text: "Administrowane"
+    },{
+        id: 3,
+        text: "Nieadministrowane"
+    },{
+        id: 4,
+        text: "Ukryte"
+    }
+    ]
+
+    handleSortClick = (option: IDropdownOption) => {
+
     }
 
     render() {
@@ -36,7 +56,8 @@ class GroupsPage extends Component<Props, State> {
                     <button className="groups-page__create-btn uk-button uk-button-primary uk-margin-small-right" uk-toggle="target: #new-group-popup">
                         Utwórz grupę
                     </button>
-                    <SimpleDropdown />
+                    <SimpleDropdown options={this.sortDropdownValues}
+                                    handleOptionClick={this.handleSortClick} />
                 </div>
                 <div className="uk-grid uk-child-width-1-3">
                     {

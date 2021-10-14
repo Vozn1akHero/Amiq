@@ -149,4 +149,4 @@ class GroupPageContainer extends Component<Props, State>{
     }
 }
 
-export default withRouter(GroupPageContainer);
+export default GroupPageContainer;

@@ -1,5 +1,5 @@
 import "./group-card.scss"
-import {memo} from "react";
+import React, {memo} from "react";
 import { Link } from "react-router-dom";
 import {IGroupCard} from "../group-models";
 import devConfig from "dev-config.json"
@@ -43,17 +43,17 @@ const GroupCard = (props: GroupCardProps) => {
                 <div className="controls uk-margin-medium-top">
                     <button className="uk-button uk-button-secondary"
                             onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
-                    <div className="uk-inline uk-margin-small-left">
-                        <button className="uk-button uk-button-default" type="button">więcej</button>
-                        {/*<div uk-dropdown>*/}
-                        {/*    <ul className="uk-nav uk-dropdown-nav">*/}
-                        {/*        <li><a href="#">Dodaj do ulubionych</a></li>*/}
-                        {/*        <li className="uk-nav-header">Inne</li>*/}
-                        {/*        <li><a href="#">Zablokuj</a></li>*/}
-                        {/*        <li><a href="#">Zgłoś</a></li>*/}
-                        {/*    </ul>*/}
-                        {/*</div>*/}
-                    </div>
+                    <button className="uk-button uk-button-default uk-margin-small-left">
+                        <span uk-icon="icon: more"></span>
+                    </button>
+                    {/*<div uk-dropdown>*/}
+                    {/*    <ul className="uk-nav uk-dropdown-nav">*/}
+                    {/*        <li><a href="#">Dodaj do ulubionych</a></li>*/}
+                    {/*        <li className="uk-nav-header">Inne</li>*/}
+                    {/*        <li><a href="#">Zablokuj</a></li>*/}
+                    {/*        <li><a href="#">Zgłoś</a></li>*/}
+                    {/*    </ul>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import "./post-creation-form.scss"
 
 type Props = {
     handleSubmit(text: string):void;
@@ -21,7 +22,7 @@ class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean,
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="post-creation-form">
                 <fieldset className="uk-fieldset">
                     <legend className="uk-legend" style={{color: 'black'}}>Stwórz nowy wpis</legend>
 
@@ -30,7 +31,7 @@ class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean,
                     </div>*/}
 
                     <div className="uk-margin">
-                        <textarea className="uk-textarea"
+                        <textarea className="uk-textarea post-creation-form__textarea"
                                   rows={5}
                                   placeholder="Treść"
                                   onChange={(e) => {

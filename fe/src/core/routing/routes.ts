@@ -1,12 +1,19 @@
-interface IRoute {
+interface ISimpleRoute {
     link: string;
-    subroutes: Array<string>,
-    params: Array<string>,
-    queryParams: string;
+    navLink?: string;
+    //subroutes: Array<string>,
+    //params: Array<string>,
+    //queryParams: string;
 }
 
+/*interface IRouteWithChildren {
+    parts: Array<string>;
+    params: Array<string>;
+    queryParams: string;
+}*/
+
 export default class Routes {
-    public static getRouteAsString(route: IRoute) : string{
+    /*public static getRouteAsString(route: ISimpleRoute) : string{
         let output: string = "/";
         output += route.link;
         route.subroutes.forEach(subroute => {
@@ -19,94 +26,74 @@ export default class Routes {
         //todo
         //query params
         return output;
-    }
+    }*/
 
-    public static getLink(route: IRoute):string{
+    public static getSimpleLink(route: ISimpleRoute):string{
         let output: string = "/";
         output += route.link;
         return output;
     }
 
-    public static getNavRoute = (route: IRoute) => route.link;
+    public static getNavRoute = (route: ISimpleRoute) => route.link;
 
-    public static get myProfilePageRoutes() : IRoute{
+    public static get myProfilePageRoutes() : ISimpleRoute{
         return {
             link: "profile",
-            subroutes: [],
-            params: [],
-            queryParams: ""
         };
     }
 
-    public static get profilePageRoutes() : IRoute{
+    public static get profilePageRoutes() : ISimpleRoute{
         return {
-            link: "profile",
-            subroutes: [],
-            params: ["/:userId?"],
-            queryParams: ""
+            link: "profile/:userId?",
         };
     }
 
-    public static get friendListPageRoutes() : IRoute{
+    public static get friendListPageRoutes() : ISimpleRoute{
         return {
-            link: "friends",
-            subroutes: [],
-            params: ["/:userId?"],
-            queryParams: ""
+            link: "friends/:userId?"
         };
     }
 
-    public static get chatPageRoutes() : IRoute{
+    public static get chatPageRoutes() : ISimpleRoute{
         return {
-            link: "chat",
-            subroutes: [],
-            params: [],
-            queryParams: ""
+            link: "chat"
         };
     }
 
-    public static get groupsPageRoutes() : IRoute{
+    public static get groupsPageRoutes() : ISimpleRoute{
         return {
-            link: "groups",
-            subroutes: [],
-            params: ["/:userId?"],
-            queryParams: ""
+            link: "groups"
         };
     }
 
-    public static get groupPageRoutes() : IRoute{
+    public static get groupPageRoutes() : ISimpleRoute{
         return {
-            link: "group",
-            subroutes: [],
-            params: ["/:groupId"],
-            queryParams: ""
+            link: "group/:groupId"
         };
     }
 
-    public static get authPageRoutes(): IRoute{
+    public static get groupSettingsPageRoutes() : ISimpleRoute{
         return {
-            link: "login",
-            subroutes: [],
-            params: [],
-            queryParams: ""
+            link: "group/:groupId/settings",
         };
     }
 
-    public static get registrationPageRoutes(): IRoute{
+    public static get authPageRoutes(): ISimpleRoute{
         return {
-            link: "joinup",
-            subroutes: [],
-            params: [],
-            queryParams: ""
+            link: "login"
         };
     }
 
-    public static get logoutPageRoutes() : IRoute {
+    public static get registrationPageRoutes(): ISimpleRoute{
         return {
-            link: "logout",
-            subroutes: [],
-            params: [],
-            queryParams: ""
+            link: "joinup"
+        };
+    }
+
+    public static get logoutPageRoutes() : ISimpleRoute {
+        return {
+            link: "logout"
         }
     }
+
 }

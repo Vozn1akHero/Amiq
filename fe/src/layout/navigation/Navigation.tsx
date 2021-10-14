@@ -31,22 +31,22 @@ class Navigation extends Component<Props, State> {
     loggedInUserNavigationLinks : Array<INavigationLink> = [
         {
             title: "Profil",
-            anchor: Routes.getLink(Routes.profilePageRoutes),
+            anchor: Routes.getSimpleLink(Routes.myProfilePageRoutes),
             uiKitIcon: ""
         },
         {
             title: "Znajomi",
-            anchor: Routes.getLink(Routes.friendListPageRoutes),
+            anchor: Routes.getSimpleLink(Routes.friendListPageRoutes),
             uiKitIcon: "users"
         },
         {
             title: "Czat",
-            anchor: Routes.getLink(Routes.chatPageRoutes),
+            anchor: Routes.getSimpleLink(Routes.chatPageRoutes),
             uiKitIcon: "mail"
         },
         {
             title: "Grupy",
-            anchor: Routes.getLink(Routes.groupsPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.groupsPageRoutes)
         }
     ];
 
@@ -60,11 +60,11 @@ class Navigation extends Component<Props, State> {
     notLoggedInUserLinks : Array<INavigationLink> = [
         {
             title: "Zaloguj",
-            anchor: Routes.getLink(Routes.authPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.authPageRoutes)
         },
         {
             title: "Dołącz",
-            anchor: Routes.getLink(Routes.registrationPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.registrationPageRoutes)
         }
     ]
 

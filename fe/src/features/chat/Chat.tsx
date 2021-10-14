@@ -121,7 +121,7 @@ class Chat extends Component<Props, State> {
                 <header className="chat__interlocutor-data">
                     <div className="uk-grid uk-grid-medium" >
                         <div className="uk-width-auto uk-flex-first">
-                            <Link to={`${Routes.getLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                            <Link to={`${Routes.getSimpleLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
                                 <img className="border-radius-50"
                                      src={Utils.getImageSrc(this.props.chat.interlocutor.avatarPath)}
                                      width="80"
@@ -130,7 +130,7 @@ class Chat extends Component<Props, State> {
                         </div>
                         <div className="uk-width-expand">
                             <h4 className="uk-comment-title uk-margin-remove">
-                                <Link className="uk-link-text" to={`${Routes.getLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                                <Link className="uk-link-text" to={`${Routes.getSimpleLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
                                     {this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}
                                 </Link>
                             </h4>

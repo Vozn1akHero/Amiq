@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
-import {EnGroupViewerRole, IGroupData, IGroupParticipant} from "../../features/group/group-models";
+import {IGroupData, IGroupParticipant} from "../../features/group/group-models";
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IPostComment} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
+import DescriptionBlocks from "../../common/components/DescriptionBlock/DescriptionBlocks";
+import {Link, withRouter} from 'react-router-dom';
 
 type Props = {
     groupData: IGroupData;
@@ -19,6 +21,9 @@ type Props = {
     onCommentCreated(data: Partial<IPostComment>);
     onPostCreated(data: Partial<IGroupPost>);
     onDeletePost(postId: string);
+    match: any;
+    location: any;
+    history: any;
     //groupViewerRole: EnGroupViewerRole;
 }
 
@@ -54,10 +59,14 @@ class GroupPage extends Component<Props, any>  {
         }
     }
 
+    getSettingsLink = (part?:string):string => {
+        const link:string = `/group/${this.props.groupData.groupId}/settings${part ? "#"+part : ""}`;
+        return link;
+    }
+
     render() {
         return (
             <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
-
                     <div className="uk-grid-item-match uk-first-column uk-width-1-3">
                         { this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
                                                                     viewTitle={this.props.groupData.name}/> }
@@ -67,7 +76,7 @@ class GroupPage extends Component<Props, any>  {
                         <p>
                             {this.props.groupData?.description}
                         </p>
-                        {this.props.groupData?.descriptionBlocks && <ul uk-accordion="collapsible: false">
+                        {/*{this.props.groupData?.descriptionBlocks && <ul uk-accordion="collapsible: false">
                             {
                                 this.props.groupData.descriptionBlocks.map(((value, index) => {
                                     return <li key={index}>
@@ -78,14 +87,52 @@ class GroupPage extends Component<Props, any>  {
                                     </li>
                                 }))
                             }
-                        </ul>}
-                    </div>
-                    <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
+                        </ul>}*/}
                         {
-                            this.props.groupParticipants && <ItemsFrameL title="Uczestnicy"
-                                                                         items={this.getConvertedParticipantsToFrameItem()}
-                                                                         callbackText="Brak uczestników" />
+                            this.props.groupData?.descriptionBlocks && <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks} />
                         }
+                    </div>
+
+                    <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
+                        <div className="uk-card uk-card-default uk-card-body uk-background-default">
+                            <span className="uk-card-title">Zarządzanie grupą</span>
+                            {
+                                this.props.basicAdminPermissionsAvailable && <div className="uk-margin-small-top">
+                                    {
+                                        this.props.groupDataLoaded && <div className="uk-flex uk-flex-column">
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("basic")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:nut"></span> Podstawowe dane
+                                            </Link>
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("participants")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:users"></span> Uczestnicy
+                                            </Link>
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("events")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:calendar"></span> Wydarzenia
+                                            </Link>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        {
+                            this.props.groupParticipants && <div className="uk-margin-medium-top">
+                                <ItemsFrameL title="Uczestnicy" icon="users" items={this.getConvertedParticipantsToFrameItem()} callbackText="Brak uczestników" />
+                            </div>
+                        }
+
+                        <div className="uk-margin-medium-top">
+                            <ItemsFrameL title="Wydarzenia"
+                                         icon="calendar"
+                                         items={[]}
+                                         callbackText="Brak wydarzeń" />
+                        </div>
+                        <div className="uk-margin-medium-top">
+                            <ItemsFrameL title="Linki"
+                                         icon="world"
+                                         items={[]}
+                                         callbackText="Brak linków" />
+                        </div>
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         <div className="uk-margin-medium-bottom">
@@ -116,4 +163,4 @@ class GroupPage extends Component<Props, any>  {
     }
 }
 
-export default GroupPage;
+export default withRouter(GroupPage);

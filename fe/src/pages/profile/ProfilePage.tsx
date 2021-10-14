@@ -62,7 +62,21 @@ class ProfilePage extends Component<Props> {
                         </>
                     }
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Znajomi" items={this.friends} callbackText="Brak znajomych" />
+                        <ItemsFrameL title="Znajomi"
+                                     items={this.friends}
+                                     callbackText="Brak znajomych" />
+
+                        <div className="uk-margin-medium-top">
+                            <ItemsFrameL title="Najlepsi znajomi"
+                                         items={[]}
+                                         callbackText="Brak najlepszych znajomych" />
+                        </div>
+
+                        <div className="uk-margin-medium-top">
+                            <ItemsFrameL title="Linki"
+                                         items={[]}
+                                         callbackText="Brak linków" />
+                        </div>
                     </div>
                     <div className="uk-margin-left uk-margin-large-top">
                         {

@@ -18,7 +18,6 @@ class Footer extends Component<Props, any> {
     setFooterStylesBasedOnProps = (footerShouldHaveAbsolutePosition: boolean) => {
         console.log(footerShouldHaveAbsolutePosition)
         if(footerShouldHaveAbsolutePosition){
-            console.log(1)
             this.footerRef.current.style.height = this.props.footerHeight + "px";
             this.footerRef.current.style.position = "absolute"
             this.footerRef.current.style.bottom = "0"
@@ -31,7 +30,7 @@ class Footer extends Component<Props, any> {
     render() {
         return (
             <footer className="footer uk-text-center" style={this.props.styles} ref={this.footerRef}>
-                <span className="main-footer-text">Projekt zrealizowany w ramach pracy magisterskiej</span>
+                <span className="main-footer-text">Projekt zrealizowany w ramach pracy magisterskiej © {new Date().getFullYear()}</span>
             </footer>
         );
     }
