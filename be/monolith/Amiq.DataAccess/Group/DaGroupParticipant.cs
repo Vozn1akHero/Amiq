@@ -1,4 +1,5 @@
 ﻿using Amiq.Contracts.Group;
+using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models;
 using Amiq.DataAccess.Models.Models;
@@ -24,7 +25,8 @@ namespace Amiq.DataAccess.Group
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId,
+            DtoPaginatedRequest dtoPaginatedRequest)
         {
             IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
                                    join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
@@ -32,8 +34,63 @@ namespace Amiq.DataAccess.Group
                                    join u in _amiqContextWithDebug.Users.AsNoTracking()
                                    on gp.UserId equals u.UserId
                                    where u.UserId == userId
-                                   select g);
+                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count);
+
             List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+
+            return groups;
+        }
+
+        public async Task<List<DtoGroup>> GetAdministeredUserGroupsByUserIdAsync(int userId,
+            DtoPaginatedRequest dtoPaginatedRequest)
+        {
+            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
+                                   on g.GroupId equals gp.GroupId
+                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
+                                   on gp.UserId equals u.UserId
+                                   where u.UserId == userId && gp.IsAdmin
+                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count);
+            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+
+            return groups;
+        }
+
+        public async Task<List<DtoGroup>> GetNonAdministeredUserGroupsByUserIdAsync(int userId,
+            DtoPaginatedRequest dtoPaginatedRequest)
+        {
+            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
+                                   on g.GroupId equals gp.GroupId
+                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
+                                   on gp.UserId equals u.UserId
+                                   where u.UserId == userId && !gp.IsAdmin
+                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count);
+            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+
+            return groups;
+        }
+
+        public async Task<List<DtoGroup>> GetHiddenUserGroupsByUserIdAsync(int userId,
+            DtoPaginatedRequest dtoPaginatedRequest)
+        {
+            IQueryable dbGroups = (from g in _amiqContext.Groups.AsNoTracking()
+                                   join hg in _amiqContext.HiddenGroups.AsNoTracking()
+                                   on g.GroupId equals hg.GroupId
+                                   /*join gp in _amiqContext.GroupParticipants.AsNoTracking()
+                                   on g.GroupId equals gp.GroupId into gpn
+                                   from gp in gpn.DefaultIfEmpty()*/
+                                   join u in _amiqContext.Users.AsNoTracking()
+                                   on hg.UserId equals u.UserId
+                                   where u.UserId == userId
+                                   select g
+                                   ).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count);
+            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+
             return groups;
         }
 

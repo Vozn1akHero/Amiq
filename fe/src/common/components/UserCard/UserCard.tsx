@@ -1,5 +1,5 @@
 import {Utils} from "../../../core/utils";
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import "./user-card.scss"
 import {IUserCardControl} from "./IUserCardControl";
@@ -21,6 +21,9 @@ const UserCard = (props: Props) => {
         e.preventDefault();
         value.event();
     }*/
+    useEffect(()=>{
+        console.log(props.controls)
+    }, [])
 
     return (
         <div className="user-card uk-card uk-card-default uk-card-body" style={{zIndex: 1, overflow: "hidden"}}>

@@ -7,6 +7,7 @@ import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IGroupCard} from "../../features/group/group-models";
 import {GroupParticipantService} from "../../features/group/group-participant-service";
 import {StatusCodes} from "http-status-codes";
+import IDropdownOption from "../../common/components/SimpleDropdown/IDropdownOption";
 
 type State = {
     groups: Array<IGroupCard>;
@@ -30,11 +31,11 @@ class GroupsPageContainer extends Component<any, State> {
     }
 
     componentDidMount() {
-        this.setGroups();
+        this.setGroups(0);
     }
 
-    setGroups = () => {
-        this.groupParticipant.getUserGroups(1).then((res) => {
+    setGroups = (filterType: number) => {
+        this.groupParticipant.getUserGroups(1, filterType).then((res) => {
             const data  = res.data as Array<IGroupCard>;
             this.setState({
                 groups: data,
@@ -79,12 +80,17 @@ class GroupsPageContainer extends Component<any, State> {
         }
     }
 
+    onSortDropdownOptionSelection = (option: IDropdownOption) => {
+        this.setGroups(option.id);
+    }
+
     render() {
         return (
             <>
                 <GroupsPage groupList={this.state.groups}
                             groupsLoaded={this.state.groupsLoaded}
                             leaveGroup={this.leaveGroup}
+                            onSortDropdownOptionSelection={this.onSortDropdownOptionSelection}
                             onSearchInputChange={this.onSearchInputChange} />
             </>
         );

@@ -1,5 +1,6 @@
 ﻿using Amiq.Business;
 using Amiq.Contracts.Group;
+using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
 using Amiq.Mapping;
 using Amiq.WebApi.Base;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
@@ -18,9 +20,16 @@ namespace Amiq.WebApi.Controllers
         private BsGroupParticipant _bsGroupParticipant = new BsGroupParticipant();
 
         [HttpGet("user-groups")]
-        public async Task<ActionResult<List<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<ActionResult<List<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] EnGroupFilterType filterType,
+            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
+            CancellationToken cancellationToken = default)
         {
-            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
+            }
+
+            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest, filterType);
             return Ok(groups);
         }
 

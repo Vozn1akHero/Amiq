@@ -12,6 +12,7 @@ namespace Amiq.DataAccess.Models.Models
         public int UserId { get; set; }
         public DateTime Joined { get; set; }
         public bool IsAdmin { get; set; }
+        public bool? IsParticipantVisible { get; set; }
 
         public virtual Group Group { get; set; }
         public virtual User User { get; set; }

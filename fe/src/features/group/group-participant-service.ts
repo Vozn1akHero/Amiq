@@ -4,9 +4,10 @@ import {HttpParams, HttpQueryParams} from "../../core/http-client";
 export class GroupParticipantService extends BaseService {
     apiModule = "group-participant"
 
-    getUserGroups(page: number){
+    getUserGroups(page: number, filterType: number){
         const count: number = 10;
         const queryParams = new HttpQueryParams();
+        queryParams.append("filterType", filterType);
         queryParams.append("count", count);
         queryParams.append("page", page.toString());
         return this.httpClient.get(this.buildApiPath("user-groups"), null, queryParams)

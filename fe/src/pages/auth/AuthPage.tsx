@@ -2,6 +2,7 @@ import React from 'react';
 import BasePage from "../base-page";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+
 type Props = {
     authenticate(login: string, password: string): void
 }
@@ -20,6 +21,7 @@ class AuthPage extends BasePage<Props, any> {
                                 setSubmitting(false);
                             }, 400);
                         }}
+
                     >
                         {({ isSubmitting }) => (
                             <Form>

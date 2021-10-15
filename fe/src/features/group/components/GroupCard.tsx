@@ -1,8 +1,10 @@
-import "./group-card.scss"
+import "./GroupCard/group-card.scss"
 import React, {memo} from "react";
 import { Link } from "react-router-dom";
 import {IGroupCard} from "../group-models";
 import devConfig from "dev-config.json"
+import SimpleDropdown from "../../../common/components/SimpleDropdown/SimpleDropdown";
+import IDropdownOption from "../../../common/components/SimpleDropdown/IDropdownOption";
 
 type GroupCardProps = {
     groupCard: IGroupCard;
@@ -15,6 +17,15 @@ const GroupCard = (props: GroupCardProps) => {
     const avatarBgStyles : any = {
         backgroundImage: "url(" + avatarSrc + ")"
     }
+
+    const handleShowMoreOptionsClick = (option: IDropdownOption) => {
+
+    }
+
+    const moreOptionsDropdownValues : Array<IDropdownOption> =  [
+        {id: 1, text: "Ukryj"},
+        {id: 2, text: "Zablokuj"},
+    ];
 
     return (
         <div className="uk-card uk-card-default uk-card-body group-card">
@@ -31,7 +42,9 @@ const GroupCard = (props: GroupCardProps) => {
                 <Link to={"/group/" + props.groupCard.groupId}>
                     <h3 className="uk-card-title name">{props.groupCard.name}</h3>
                 </Link>
-                <span className="group-add-info">{props.groupCard.participantsCount} uczestników</span>
+                <span className="group-add-info">
+                    <span uk-icon="icon:users" className="uk-margin-small-left"></span> {props.groupCard.participantsCount} uczestników
+                </span>
                 {
                     props.groupCard.subjects &&
                         <span className="group-add-info">{props.groupCard.subjects.join(", ")}</span>
@@ -40,20 +53,14 @@ const GroupCard = (props: GroupCardProps) => {
                 {/*<span className="group-add-info">3 nowych uczestników</span>
                 <span className="group-add-info">13 nowych wpisów</span>*/}
 
-                <div className="controls uk-margin-medium-top">
+                <div className="controls uk-margin-medium-top uk-flex">
                     <button className="uk-button uk-button-secondary"
                             onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
-                    <button className="uk-button uk-button-default uk-margin-small-left">
-                        <span uk-icon="icon: more"></span>
-                    </button>
-                    {/*<div uk-dropdown>*/}
-                    {/*    <ul className="uk-nav uk-dropdown-nav">*/}
-                    {/*        <li><a href="#">Dodaj do ulubionych</a></li>*/}
-                    {/*        <li className="uk-nav-header">Inne</li>*/}
-                    {/*        <li><a href="#">Zablokuj</a></li>*/}
-                    {/*        <li><a href="#">Zgłoś</a></li>*/}
-                    {/*    </ul>*/}
-                    {/*</div>*/}
+                    <div className="uk-margin-small-left">
+                        <SimpleDropdown icon="more"
+                                        options={moreOptionsDropdownValues}
+                                        handleOptionClick={handleShowMoreOptionsClick} />
+                    </div>
                 </div>
             </div>
         </div>

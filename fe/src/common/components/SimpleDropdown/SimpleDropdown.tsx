@@ -1,13 +1,17 @@
 import React, {Component, MouseEvent} from 'react';
 import IDropdownOption from "./IDropdownOption";
+import {DropDownType} from "./drop-down-type";
 
 type State = {
     isOpen: boolean;
     isCursorOnBody: boolean;
 }
 type Props = {
+    placeholder?: string;
     options: Array<IDropdownOption>;
     handleOptionClick(option: IDropdownOption);
+    icon?: string;
+    //type: DropDownType;
 }
 
 class SimpleDropdown extends Component<Props,State> {
@@ -40,7 +44,7 @@ class SimpleDropdown extends Component<Props,State> {
     render() {
         return (
             <div className="simple-dropdown">
-                <button onMouseOver={() => {
+                <div onMouseOver={() => {
                     clearTimeout(this.myVar);
                     this.setState({
                        isOpen: true
@@ -49,7 +53,14 @@ class SimpleDropdown extends Component<Props,State> {
                     if(this.myVar){
                         this.myVar();
                     }
-                }} className="uk-button uk-button-default" type="button">Pokaż</button>
+                }} className="uk-button uk-button-default" style={{borderRadius: "1rem"}}>
+                    {
+                        this.props.placeholder && <span className={this.props.icon && `uk-margin-right`}>{this.props.placeholder}</span>
+                    }
+                    {
+                        this.props.icon && <span uk-icon={`icon:${this.props.icon}`}></span>
+                    }
+                </div>
                 <div className={`uk-dropdown ${this.state.isOpen && `uk-open`}`}>
                     <ul className="uk-nav uk-dropdown-nav"
                         onMouseOver={() => {this.setState({isCursorOnBody: true}); this.myVar();}}

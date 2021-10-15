@@ -1,14 +1,9 @@
 import {BehaviorSubject, Subject, take} from "rxjs";
 import {IdentityModel} from "./identity-model";
-import {atom} from "recoil";
 import AuthService from "../../../core/auth/auth-service";
 import {StatusCodes} from "http-status-codes";
 
 export class AuthStore {
-    /*authState = atom({
-        key: 'authStore',
-        default: null,
-    });*/
     private static authService: AuthService = new AuthService();
 
     private static _isLoaded$ = new BehaviorSubject(false);

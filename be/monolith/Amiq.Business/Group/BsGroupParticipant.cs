@@ -1,4 +1,5 @@
 ﻿using Amiq.Contracts.Group;
+using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Group;
 using System;
@@ -18,9 +19,18 @@ namespace Amiq.Business
             _daGroupParticipant = new DaGroupParticipant();
         }
 
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId,
+            DtoPaginatedRequest dtoPaginatedRequest, EnGroupFilterType filterType)
         {
-            return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            if (filterType == EnGroupFilterType.All)
+                return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            else if (filterType == EnGroupFilterType.Administered)
+                return await _daGroupParticipant.GetAdministeredUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            else if (filterType == EnGroupFilterType.Nonadministered)
+                return await _daGroupParticipant.GetNonAdministeredUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            else if (filterType == EnGroupFilterType.Hidden)
+                return await _daGroupParticipant.GetHiddenUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
+            else return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
         }
 
         public async Task LeaveGroupAsync(int userId, int groupId)

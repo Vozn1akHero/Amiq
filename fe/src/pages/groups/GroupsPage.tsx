@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import MemoizedGroupCard from "features/group/components/GroupCard";
-import {IGroupCard} from "../../features/group/group-models";
-import DebounceInput from "../../common/components/DebounceInput/DebounceInput";
-import SimpleDropdown from "../../common/components/SimpleDropdown/SimpleDropdown";
-import CenteredPopup from "../../common/components/CenteredPopup/CenteredPopup";
-import IDropdownOption from "../../common/components/SimpleDropdown/IDropdownOption";
+import {IGroupCard} from "features/group/group-models";
+import DebounceInput from "common/components/DebounceInput/DebounceInput";
+import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
+import IDropdownOption from "common/components/SimpleDropdown/IDropdownOption";
+import GroupCreationPopup from "features/group/components/GroupCreationPopup/GroupCreationPopup";
 
 type Props = {
     groupsLoaded: boolean;
     groupList: Array<IGroupCard>;
     onSearchInputChange(text:string):void;
     leaveGroup(groupId: number):void;
+    onSortDropdownOptionSelection(option: IDropdownOption):void;
 };
 
 type State = {
@@ -22,28 +23,23 @@ class GroupsPage extends Component<Props, State> {
     }
 
     sortDropdownValues : Array<IDropdownOption> = [{
-        id: 1,
+        id: 0,
         text: "Wszystkie"
     },{
-        id: 2,
+        id: 1,
         text: "Administrowane"
     },{
-        id: 3,
+        id: 2,
         text: "Nieadministrowane"
     },{
-        id: 4,
+        id: 3,
         text: "Ukryte"
-    }
-    ]
-
-    handleSortClick = (option: IDropdownOption) => {
-
-    }
+    }]
 
     render() {
         return (
             <div className="groups-page">
-                <CenteredPopup id="new-group-popup" title="Utwórz grupę" controlsVisible={true} />
+                <GroupCreationPopup />
 
                 <legend className="uk-legend uk-margin-medium-top">Moje grupy</legend>
                 <div className="input-search">
@@ -56,19 +52,20 @@ class GroupsPage extends Component<Props, State> {
                     <button className="groups-page__create-btn uk-button uk-button-primary uk-margin-small-right" uk-toggle="target: #new-group-popup">
                         Utwórz grupę
                     </button>
-                    <SimpleDropdown options={this.sortDropdownValues}
-                                    handleOptionClick={this.handleSortClick} />
+                    <SimpleDropdown placeholder="Pokaż"
+                                    icon="triangle-down"
+                                    options={this.sortDropdownValues}
+                                    handleOptionClick={this.props.onSortDropdownOptionSelection} />
                 </div>
-                <div className="uk-grid uk-child-width-1-3">
+                <div className="uk-grid uk-child-width-1-3@xl uk-child-width-1-2@l uk-child-width-1-2@m">
                     {
-                        this.props.groupsLoaded && this.props.groupList.map((value, i) =>
+                        this.props.groupsLoaded && (this.props.groupList.length > 0 ? this.props.groupList.map((value, i) =>
                             {
                                 return <div key={i} className="uk-margin-top">
                                     <MemoizedGroupCard leaveGroup={this.props.leaveGroup}
                                                        groupCard={value} />
                                 </div>
-                            }
-                        )
+                            }) : <span>Nie znaleziono grup</span>)
                     }
                 </div>
             </div>

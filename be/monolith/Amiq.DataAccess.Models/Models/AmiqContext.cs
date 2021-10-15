@@ -28,7 +28,9 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
+        public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<NotificationType> NotificationTypes { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<TextBlock> TextBlocks { get; set; }
@@ -262,6 +264,10 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.GroupParticipantId).HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.IsParticipantVisible)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Joined)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -302,6 +308,25 @@ namespace Amiq.DataAccess.Models.Models
                     .HasConstraintName("FK_GroupPost_Post");
             });
 
+            modelBuilder.Entity<HiddenGroup>(entity =>
+            {
+                entity.ToTable("HiddenGroup", "Group");
+
+                entity.Property(e => e.HiddenGroupId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.HiddenGroups)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HiddenGroup_Group");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.HiddenGroups)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HiddenGroup_User");
+            });
+
             modelBuilder.Entity<Message>(entity =>
             {
                 entity.ToTable("Message", "Chat");
@@ -327,6 +352,17 @@ namespace Amiq.DataAccess.Models.Models
                     .HasForeignKey(d => d.ChatId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Message_Chat");
+            });
+
+            modelBuilder.Entity<NotificationType>(entity =>
+            {
+                entity.ToTable("NotificationType", "Notification");
+
+                entity.Property(e => e.NotificationTypeId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(150);
             });
 
             modelBuilder.Entity<Post>(entity =>

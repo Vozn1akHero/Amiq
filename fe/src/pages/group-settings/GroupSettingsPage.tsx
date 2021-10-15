@@ -3,11 +3,17 @@ import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {Link, withRouter} from "react-router-dom";
 import GroupBasicSettings from "../../features/group/components/GroupSettings/GroupBasicSettings";
 import GroupParticipantsSettings from "../../features/group/components/GroupSettings/GroupParticipantsSettings";
+import {IGroupData} from "../../features/group/group-models";
+import UiKitDefaultSpinner from "../../common/components/UIKitDefaultSpinner/UIKitDefaultSpinner";
+import GroupEventsSettings from "../../features/group/components/GroupSettings/GroupEventsSettings";
 
 type Props = {
     match: any;
     location: any;
     history: any;
+    raiseGetBasicData():void;
+    basicGroupData: IGroupData;
+    basicGroupDataLoaded: boolean;
 }
 
 type State = {
@@ -19,27 +25,44 @@ class GroupSettingsPage extends Component<Props, State> {
         super(props);
 
         this.state = {
-            chosenSectionId: 1
+            chosenSectionId: this.getTabIndex()
         }
     }
 
 
     componentDidMount() {
-        console.log(this.props.location)
+        this.raiseDataLoad();
     }
 
-    /*changeTab = (e, chosenSectionId: number) => {
-        e.preventDefault();
+    componentWillUnmount() {
+        //window.removeEventListener("hashchange", this.rerenderSubpageAfterHashChange, false);
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+        if(this.getTabIndex() !== this.state.chosenSectionId){
+            this.rerenderSubpageAfterHashChange();
+        }
+    }
+
+    raiseDataLoad = () => {
+        switch (this.state.chosenSectionId){
+            case 1:
+                this.props.raiseGetBasicData();
+                break;
+        }
+    }
+
+    rerenderSubpageAfterHashChange = () => {
+        let index = this.getTabIndex();
+        console.log(index)
         this.setState({
-            chosenSectionId
+            chosenSectionId: index
         })
-    }*/
+    }
 
-    navigate = (e, link:string) => {
-        e.preventDefault();
-        this.props.history.push(link);
-
+    getTabIndex = () => {
         let index : number;
+        console.log(this.props.location.hash)
         switch(this.props.location.hash){
             case "#basic":
                 index = 1;
@@ -55,30 +78,36 @@ class GroupSettingsPage extends Component<Props, State> {
                 break;
         }
 
-        this.setState({
-            chosenSectionId: index
-        })
+        return index;
+    }
+
+    navigate = (e, link:string) => {
+        e.preventDefault();
+        this.props.history.push(link);
     }
 
     render() {
         return (
             <div className="group-settings-page">
-                <PageAvatar viewTitle="Test" avatarSrc="user.jpg" />
+                {
+                    this.props.basicGroupDataLoaded ? <PageAvatar viewTitle={this.props.basicGroupData.name}
+                                                                  avatarSrc={this.props.basicGroupData.avatarSrc} /> : <UiKitDefaultSpinner />
+                }
 
-                <div className="uk-margin-top">
+                <div className="uk-margin-medium-top">
                     <ul className="uk-child-width-expand" uk-tab="true">
-                        <li className="uk-active">
-                            <a href="#" onClick={e=>{this.navigate(e, this.props.location.pathname+"#basic")}}>
+                        <li className={this.state.chosenSectionId === 1 ? `uk-active` : ""}>
+                            <a href="#" onClick={e=>{this.navigate(e, "#basic")}}>
                                 <span className="uk-margin-small-right" uk-icon="icon:nut"></span> Podstawowe
                             </a>
                         </li>
-                        <li>
-                            <a href="#" onClick={e=>{this.navigate(e, this.props.location.pathname+"#participants")}} >
+                        <li className={this.state.chosenSectionId === 2 ? `uk-active` : ""}>
+                            <a href="#" onClick={e=>{this.navigate(e, "#participants")}} >
                                 <span className="uk-margin-small-right" uk-icon="icon:users"></span> Uczestnicy
                             </a>
                         </li>
-                        <li>
-                            <a href="#" onClick={e=>{this.navigate(e, this.props.location.pathname+"#events")}} >
+                        <li className={this.state.chosenSectionId === 3 ? `uk-active` : ""}>
+                            <a href="#" onClick={e=>{this.navigate(e, "#events")}} >
                                 <span className="uk-margin-small-right" uk-icon="icon:calendar"></span> Wydarzenia
                             </a>
                         </li>
@@ -86,8 +115,10 @@ class GroupSettingsPage extends Component<Props, State> {
                 </div>
 
                 <div className="chosen-section">
-                    {  this.state.chosenSectionId === 1 && <GroupBasicSettings /> }
-                    {  this.state.chosenSectionId === 2 && <GroupParticipantsSettings /> }
+                    {  this.state.chosenSectionId === 1 && (this.props.basicGroupDataLoaded ?
+                        <GroupBasicSettings groupData={this.props.basicGroupData} /> : <UiKitDefaultSpinner />) }
+                    {  this.state.chosenSectionId === 2 && <GroupParticipantsSettings groupId={this.props.match.params.groupId} /> }
+                    { this.state.chosenSectionId === 3 && <GroupEventsSettings groupId={this.props.match.params.groupId} /> }
                 </div>
             </div>
         );
