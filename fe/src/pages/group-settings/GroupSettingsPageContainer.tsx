@@ -1,8 +1,8 @@
 import React, {Component, useEffect, useState} from 'react';
 import GroupSettingsPage from "./GroupSettingsPage";
 import {StatusCodes} from "http-status-codes";
-import {IGroupData, IGroupParticipant} from "../../features/group/group-models";
-import {GroupService} from "../../features/group/group-service";
+import {IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
+import {GroupService} from "../../features/group/services/group-service";
 import {useHistory, useLocation, useParams} from "react-router-dom";
 
 const GroupSettingsPageContainer = () => {

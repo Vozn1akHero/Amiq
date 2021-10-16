@@ -3,7 +3,7 @@ import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {Link, withRouter} from "react-router-dom";
 import GroupBasicSettings from "../../features/group/components/GroupSettings/GroupBasicSettings";
 import GroupParticipantsSettings from "../../features/group/components/GroupSettings/GroupParticipantsSettings";
-import {IGroupData} from "../../features/group/group-models";
+import {IGroupData} from "../../features/group/models/group-models";
 import UiKitDefaultSpinner from "../../common/components/UIKitDefaultSpinner/UIKitDefaultSpinner";
 import GroupEventsSettings from "../../features/group/components/GroupSettings/GroupEventsSettings";
 

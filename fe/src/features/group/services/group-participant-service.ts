@@ -1,5 +1,5 @@
-import {BaseService} from "../../core/base-service";
-import {HttpParams, HttpQueryParams} from "../../core/http-client";
+import {BaseService} from "../../../core/base-service";
+import {HttpParams, HttpQueryParams} from "../../../core/http-client";
 
 export class GroupParticipantService extends BaseService {
     apiModule = "group-participant"

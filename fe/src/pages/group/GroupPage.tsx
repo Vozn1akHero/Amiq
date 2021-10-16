@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
-import {IGroupData, IGroupParticipant} from "../../features/group/group-models";
+import {IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";

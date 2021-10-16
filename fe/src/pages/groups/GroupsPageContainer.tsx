@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import BasePageComponent from "core/BasePageComponent";
 import {container} from "tsyringe";
-import {GroupService} from "features/group/group-service";
+import {GroupService} from "features/group/services/group-service";
 import GroupsPage from "./GroupsPage";
 import {AuthStore} from "../../store/custom/auth/auth-store";
-import {IGroupCard} from "../../features/group/group-models";
-import {GroupParticipantService} from "../../features/group/group-participant-service";
+import {IGroupCard} from "../../features/group/models/group-models";
+import {GroupParticipantService} from "../../features/group/services/group-participant-service";
 import {StatusCodes} from "http-status-codes";
 import IDropdownOption from "../../common/components/SimpleDropdown/IDropdownOption";
 

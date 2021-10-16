@@ -1,6 +1,6 @@
 ﻿namespace Amiq.Contracts
 {
-    public class DtoDeleteEntityResponse
+    public class DtoEditEntityResponse
     {
         public bool Result { get; set; }
         public string Message { get; set; }

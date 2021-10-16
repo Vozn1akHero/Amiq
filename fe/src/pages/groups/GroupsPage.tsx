@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import MemoizedGroupCard from "features/group/components/GroupCard";
-import {IGroupCard} from "features/group/group-models";
+import MemoizedGroupCard from "features/group/components/GroupCard/GroupCard";
+import {IGroupCard} from "features/group/models/group-models";
 import DebounceInput from "common/components/DebounceInput/DebounceInput";
 import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import IDropdownOption from "common/components/SimpleDropdown/IDropdownOption";

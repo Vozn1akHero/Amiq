@@ -1,7 +1,7 @@
 import {GET_PARTICIPANTS, SET_PARTICIPANTS} from "../types/groupParticipantTypes";
-import {GroupParticipantService} from "../../../features/group/group-participant-service";
+import {GroupParticipantService} from "../../../features/group/services/group-participant-service";
 import {StatusCodes} from "http-status-codes";
-import {IGroupParticipant} from "../../../features/group/group-models";
+import {IGroupParticipant} from "../../../features/group/models/group-models";
 
 const groupParticipantService: GroupParticipantService = new GroupParticipantService();
 

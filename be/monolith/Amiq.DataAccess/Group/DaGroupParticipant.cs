@@ -80,9 +80,6 @@ namespace Amiq.DataAccess.Group
             IQueryable dbGroups = (from g in _amiqContext.Groups.AsNoTracking()
                                    join hg in _amiqContext.HiddenGroups.AsNoTracking()
                                    on g.GroupId equals hg.GroupId
-                                   /*join gp in _amiqContext.GroupParticipants.AsNoTracking()
-                                   on g.GroupId equals gp.GroupId into gpn
-                                   from gp in gpn.DefaultIfEmpty()*/
                                    join u in _amiqContext.Users.AsNoTracking()
                                    on hg.UserId equals u.UserId
                                    where u.UserId == userId

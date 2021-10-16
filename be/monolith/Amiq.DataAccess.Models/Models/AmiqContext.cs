@@ -26,6 +26,8 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
         public virtual DbSet<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
+        public virtual DbSet<GroupEvent> GroupEvents { get; set; }
+        public virtual DbSet<GroupEventParticipant> GroupEventParticipants { get; set; }
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
         public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
@@ -256,6 +258,62 @@ namespace Amiq.DataAccess.Models.Models
                     .HasForeignKey(d => d.TextBlockId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupDescriptionBlock_TextBlock");
+            });
+
+            modelBuilder.Entity<GroupEvent>(entity =>
+            {
+                entity.ToTable("GroupEvent", "Group");
+
+                entity.Property(e => e.GroupEventId).HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.AvatarSrc)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(500);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.GroupEvents)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupEvent_User");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupEvents)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupEvent_Group");
+            });
+
+            modelBuilder.Entity<GroupEventParticipant>(entity =>
+            {
+                entity.ToTable("GroupEventParticipant", "Group");
+
+                entity.Property(e => e.GroupEventParticipantId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.JoinedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.GroupEvent)
+                    .WithMany(p => p.GroupEventParticipants)
+                    .HasForeignKey(d => d.GroupEventId)
+                    .HasConstraintName("FK_GroupEventParticipant_GroupEvent");
+
+                entity.HasOne(d => d.GroupParticipant)
+                    .WithMany(p => p.GroupEventParticipants)
+                    .HasForeignKey(d => d.GroupParticipantId)
+                    .HasConstraintName("FK_GroupEventParticipant_GroupParticipant");
             });
 
             modelBuilder.Entity<GroupParticipant>(entity =>

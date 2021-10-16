@@ -1,4 +1,4 @@
-import {IGroupParticipant} from "../../../features/group/group-models";
+import {IGroupParticipant} from "../../../features/group/models/group-models";
 import {GET_PARTICIPANTS, SET_PARTICIPANTS} from "../types/groupParticipantTypes";
 
 type GroupParticipantsState = {

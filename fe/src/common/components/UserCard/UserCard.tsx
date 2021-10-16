@@ -45,15 +45,16 @@ const UserCard = (props: Props) => {
                 </Link>
                 <div className="user-card__controls">
                     {
-                        props.controls.map((value, index) => {
+                        props.controls.map((value, index) =>
                             <a href="#"
+                               key={index}
                                onClick={e => {
                                    e.preventDefault();
                                    value.event(props.userId);
                                }}
                                uk-icon={value.icon}
-                               className="uk-icon-link uk-margin-small-left"></a>
-                        })
+                               className="uk-icon-link uk-margin-small-left" />
+                        )
                     }
                 </div>
             </div>

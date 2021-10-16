@@ -19,6 +19,7 @@ namespace Amiq.DataAccess.Models.Models
             FriendshipFirstUsers = new HashSet<Friendship>();
             FriendshipSecondUsers = new HashSet<Friendship>();
             GroupBlockedUsers = new HashSet<GroupBlockedUser>();
+            GroupEvents = new HashSet<GroupEvent>();
             GroupParticipants = new HashSet<GroupParticipant>();
             GroupPosts = new HashSet<GroupPost>();
             Groups = new HashSet<Group>();
@@ -51,6 +52,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual ICollection<Friendship> FriendshipFirstUsers { get; set; }
         public virtual ICollection<Friendship> FriendshipSecondUsers { get; set; }
         public virtual ICollection<GroupBlockedUser> GroupBlockedUsers { get; set; }
+        public virtual ICollection<GroupEvent> GroupEvents { get; set; }
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
         public virtual ICollection<GroupPost> GroupPosts { get; set; }
         public virtual ICollection<Group> Groups { get; set; }

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import UserCard from "common/components/UserCard/UserCard";
 import {IUserCardControl} from "common/components/UserCard/IUserCardControl";
-import {IGroupParticipant} from "../../group-models";
-import {GroupParticipantService} from "../../group-participant-service";
+import {IGroupParticipant} from "../../models/group-models";
+import {GroupParticipantService} from "../../services/group-participant-service";
 import {connect} from "react-redux";
 import {GET_PARTICIPANTS} from "../../../../store/redux/types/groupParticipantTypes";
 import UiKitDefaultSpinner from "../../../../common/components/UIKitDefaultSpinner/UIKitDefaultSpinner";
@@ -28,7 +28,7 @@ class GroupParticipantsSettings extends Component<Props> {
 
         this.cardControls = [
             {
-                icon: "trash",
+                icon: "ban",
                 event: this.onBlockClick
             }
         ];
@@ -42,14 +42,14 @@ class GroupParticipantsSettings extends Component<Props> {
         return (
             <div className="group-participants-settings">
                 {
-                    this.props.participantsLoaded ? <div className="uk-grid uk-child-width-1-3">
+                    this.props.participantsLoaded ? <div className="uk-grid uk-flex-middle uk-child-width-1-3 uk-grid-margin uk-margin-remove" data-uk-grid>
                         {this.props.groupParticipants.map((value, index) => {
                             return <UserCard key={index}
                                              userId={value.userId}
                                              surname={value.surname}
                                              name={value.name}
                                              avatarPath={value.avatarPath}
-                                             controls={this.cardControls} />;
+                                             controls={this.cardControls} />
                         })}
                     </div> : <UiKitDefaultSpinner />
                 }
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
     return {
         groupParticipants: state.groupParticipant.participants,
         participantsLoaded: state.groupParticipant.participantsLoaded
-    }// as Partial<Props>
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupParticipantsSettings);

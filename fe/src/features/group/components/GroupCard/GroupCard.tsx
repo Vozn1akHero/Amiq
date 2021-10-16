@@ -1,10 +1,10 @@
-import "./GroupCard/group-card.scss"
+import "./group-card.scss"
 import React, {memo} from "react";
 import { Link } from "react-router-dom";
-import {IGroupCard} from "../group-models";
-import devConfig from "dev-config.json"
-import SimpleDropdown from "../../../common/components/SimpleDropdown/SimpleDropdown";
-import IDropdownOption from "../../../common/components/SimpleDropdown/IDropdownOption";
+import {IGroupCard} from "../../models/group-models";
+import devConfig from "../../../../dev-config.json"
+import SimpleDropdown from "../../../../common/components/SimpleDropdown/SimpleDropdown";
+import IDropdownOption from "../../../../common/components/SimpleDropdown/IDropdownOption";
 
 type GroupCardProps = {
     groupCard: IGroupCard;

@@ -1,4 +1,4 @@
-import {IGroupData} from "../../group/group-models";
+import {IGroupData} from "../../group/models/group-models";
 import {IUser} from "../../user/models/user";
 
 export interface IPostComment {

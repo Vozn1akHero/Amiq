@@ -1,4 +1,4 @@
-import {IDescriptionBlock} from "../../common/models/description-block";
+import {IDescriptionBlock} from "../../../common/models/description-block";
 
 export interface IGroupCard {
     groupId: number;

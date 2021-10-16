@@ -1,6 +1,5 @@
-import React, {Component, MouseEvent} from 'react';
+import React, {Component} from 'react';
 import IDropdownOption from "./IDropdownOption";
-import {DropDownType} from "./drop-down-type";
 
 type State = {
     isOpen: boolean;
@@ -11,7 +10,6 @@ type Props = {
     options: Array<IDropdownOption>;
     handleOptionClick(option: IDropdownOption);
     icon?: string;
-    //type: DropDownType;
 }
 
 class SimpleDropdown extends Component<Props,State> {
@@ -33,12 +31,6 @@ class SimpleDropdown extends Component<Props,State> {
                     })
             }, 200);
         }
-    }
-
-    onOptionClick = (e:MouseEvent<HTMLAnchorElement>, option: IDropdownOption) => {
-        e.preventDefault();
-        this.props.handleOptionClick(option);
-        return false;
     }
 
     render() {
@@ -68,8 +60,19 @@ class SimpleDropdown extends Component<Props,State> {
                     >
                         {
                             this.props.options.map((value, index) => {
-                                return <li>
-                                    <a onClick={e => this.onOptionClick(e, value)} href="#">
+                                return <li key={index}>
+                                    <a onClick={e => {
+                                            if(value.event) {
+                                                e.preventDefault();
+                                                value.event();
+                                            }
+                                            else {
+                                                e.preventDefault();
+                                                this.props.handleOptionClick(value);
+                                                //return false;
+                                            }
+                                        }
+                                    } href="#">
                                         {value.text}
                                     </a>
                                 </li>
