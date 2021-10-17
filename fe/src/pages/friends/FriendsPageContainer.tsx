@@ -11,6 +11,7 @@ type State = {
     friendsLoaded: boolean;
     allFriends: Array<IFriendship>;
     foundUsers: Array<IFoundUser>;
+    searchInputLoading: boolean;
 }
 
 class FriendsPageContainer extends Component<any, State> {
@@ -24,7 +25,8 @@ class FriendsPageContainer extends Component<any, State> {
             friends: [],
             friendsLoaded: false,
             allFriends: [],
-            foundUsers: []
+            foundUsers: [],
+            searchInputLoading: false
         }
     }
 
@@ -33,7 +35,9 @@ class FriendsPageContainer extends Component<any, State> {
     }
 
     onSearchInputChange = (text: string) => {
-        console.log(text)
+        this.setState({
+            searchInputLoading: true
+        })
         this.friendService.search(text).then(res => {
             console.log(res.data)
             const data : any = res.data;
@@ -43,6 +47,10 @@ class FriendsPageContainer extends Component<any, State> {
                     foundUsers: data.foundUsers as Array<IFoundUser>
                 })
             }
+        }).finally(() => {
+            this.setState({
+                searchInputLoading: false
+            })
         })
     }
 
@@ -65,6 +73,7 @@ class FriendsPageContainer extends Component<any, State> {
                 <FriendListPage friendList={this.state.friends}
                                 foundUsers={this.state.foundUsers}
                                 friendsLoaded={this.state.friendsLoaded}
+                                searchInputLoading={this.state.searchInputLoading}
                                 onSearchInputChange={this.onSearchInputChange} />
             </>
         );

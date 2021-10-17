@@ -19,7 +19,9 @@ namespace Amiq.DataAccess.Group
         public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId)
         {
             var result = new DtoListResponseOf<DtoGroupEvent>();
-            var query = _context.GroupEvents.AsNoTracking().Where(x => x.GroupId == groupId);
+            var query = _context.GroupEvents.AsNoTracking()
+                .Include(e=>e.GroupEventParticipants)
+                .Where(x => x.GroupId == groupId);
             //result.Length = await _context.GroupEvents.AsNoTracking().Where(x => x.GroupId == groupId).CountAsync();
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroupEvent>(query).ToListAsync();
             result.Entities = data;

@@ -14,6 +14,7 @@ type State = {
     groupsLoaded: boolean;
     cachedGroupsBeforeSearch: Array<IGroupCard>;
     initialSearch: boolean;
+    searchInputLoading: boolean;
 }
 
 class GroupsPageContainer extends Component<any, State> {
@@ -26,6 +27,7 @@ class GroupsPageContainer extends Component<any, State> {
             groups: [],
             cachedGroupsBeforeSearch: [],
             groupsLoaded: false,
+            searchInputLoading: false,
             initialSearch: true
         }
     }
@@ -61,6 +63,9 @@ class GroupsPageContainer extends Component<any, State> {
             })
         }
         if(text?.length > 0){
+            this.setState({
+                searchInputLoading: true
+            })
             this.groupService.getByName(text).then(res => {
                 if(this.state.initialSearch){
                     this.setState({
@@ -76,6 +81,10 @@ class GroupsPageContainer extends Component<any, State> {
                         groups: res.data as Array<IGroupCard>
                     })
                 }
+            }).finally(() => {
+                this.setState({
+                    searchInputLoading: false
+                })
             })
         }
     }
@@ -90,6 +99,7 @@ class GroupsPageContainer extends Component<any, State> {
                 <GroupsPage groupList={this.state.groups}
                             groupsLoaded={this.state.groupsLoaded}
                             leaveGroup={this.leaveGroup}
+                            searchInputLoading={this.state.searchInputLoading}
                             onSortDropdownOptionSelection={this.onSortDropdownOptionSelection}
                             onSearchInputChange={this.onSearchInputChange} />
             </>

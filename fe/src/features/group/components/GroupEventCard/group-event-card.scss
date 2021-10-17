@@ -1,0 +1,52 @@
+.group-event-card {
+  z-index: 1;
+  overflow: hidden;
+  min-width: 28rem;
+
+  .avatar-bg{
+    background-position: top center;
+    background-size: cover;
+    filter: blur(15px);
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    transform: scale(1.2);
+  }
+
+  .avatar-wrap{
+    margin-bottom: 3rem;
+    height: 100%;
+    width: 30%;
+    max-width: 7.5rem;
+
+    .avatar-img{
+      border-radius: 50%;
+      border: 3px solid white;
+      height: 100%;
+      width: 100%;
+      max-height: 7rem;
+      max-width: 7rem;
+    }
+  }
+
+  .name{
+    font-weight: bold;
+    margin-top: 15px
+  }
+
+  .event-info-wrapper{
+    width: 70%;
+    height: 100%;
+    background: white;
+
+    .group-add-info{
+      display: block;
+      margin-top: 5px;
+    }
+  }
+
+}

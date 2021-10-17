@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import MemoizedGroupCard from "features/group/components/GroupCard/GroupCard";
 import {IGroupCard} from "features/group/models/group-models";
-import DebounceInput from "common/components/DebounceInput/DebounceInput";
+import SearchInput from "common/components/SearchInput/SearchInput";
 import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import IDropdownOption from "common/components/SimpleDropdown/IDropdownOption";
 import GroupCreationPopup from "features/group/components/GroupCreationPopup/GroupCreationPopup";
@@ -12,6 +12,7 @@ type Props = {
     onSearchInputChange(text:string):void;
     leaveGroup(groupId: number):void;
     onSortDropdownOptionSelection(option: IDropdownOption):void;
+    searchInputLoading: boolean;
 };
 
 type State = {
@@ -36,6 +37,10 @@ class GroupsPage extends Component<Props, State> {
         text: "Ukryte"
     }]
 
+    toggleGroupVisibility = (groupId: number, isVisible: boolean) => {
+
+    }
+
     render() {
         return (
             <div className="groups-page">
@@ -44,8 +49,9 @@ class GroupsPage extends Component<Props, State> {
                 <legend className="uk-legend uk-margin-medium-top">Moje grupy</legend>
                 <div className="input-search">
                     <div className="uk-margin-medium-top uk-margin-medium-bottom">
-                        <DebounceInput debounceTime={600}
-                                       onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
+                        <SearchInput debounceTime={600}
+                                     showSpinner={this.props.searchInputLoading}
+                                     onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
                     </div>
                 </div>
                 <div className="groups-page__configuration-controls uk-flex">
@@ -53,6 +59,7 @@ class GroupsPage extends Component<Props, State> {
                         Utwórz grupę
                     </button>
                     <SimpleDropdown placeholder="Pokaż"
+                                    isStatic={true}
                                     icon="triangle-down"
                                     options={this.sortDropdownValues}
                                     handleOptionClick={this.props.onSortDropdownOptionSelection} />
@@ -63,6 +70,7 @@ class GroupsPage extends Component<Props, State> {
                             {
                                 return <div key={i} className="uk-margin-top">
                                     <MemoizedGroupCard leaveGroup={this.props.leaveGroup}
+                                                       toggleGroupVisibility={this.toggleGroupVisibility}
                                                        groupCard={value} />
                                 </div>
                             }) : <span>Nie znaleziono grup</span>)

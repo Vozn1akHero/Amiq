@@ -36,6 +36,7 @@ namespace Amiq.Mapping
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfiles(profiles);
+                cfg.AllowNullCollections = false;
             });
 
             _mapper = config.CreateMapper();

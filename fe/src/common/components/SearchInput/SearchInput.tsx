@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {debounceTime, distinctUntilChanged, fromEvent, map, Subscription} from "rxjs";
+import "./search-input.scss"
+import UiKitDefaultSpinner from "../UIKitDefaultSpinner/UIKitDefaultSpinner";
 
 type Props = {
     debounceTime: number;
     onDebounceInputChange(text:string):void;
+    showSpinner: boolean;
 }
 
-class DebounceInput extends Component<Props, never> {
+class SearchInput extends Component<Props, never> {
     inputRef: React.RefObject<HTMLInputElement>
     sub: Subscription
 
@@ -37,9 +40,16 @@ class DebounceInput extends Component<Props, never> {
 
     render() {
         return (
-            <input className="uk-input" ref={this.inputRef} type="text" placeholder="Szukaj grup"/>
+            <div className="search-input">
+                <input className="uk-input" ref={this.inputRef} type="text" placeholder="Szukaj"/>
+                <div className="search-input__align-right-content">
+                    {
+                        this.props.showSpinner ? <UiKitDefaultSpinner /> : <span className="search-input__icon" uk-icon="search"></span>
+                    }
+                </div>
+            </div>
         );
     }
 }
 
-export default DebounceInput;
+export default SearchInput;

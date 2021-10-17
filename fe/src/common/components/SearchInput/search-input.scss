@@ -1,0 +1,10 @@
+.search-input{
+  display: flex;
+  position: relative;
+  align-items: center;
+
+  &__align-right-content {
+    position: absolute;
+    right: .6rem;
+  }
+}

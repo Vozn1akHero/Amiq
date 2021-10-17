@@ -2,6 +2,7 @@
 using Amiq.Contracts.Group;
 using Amiq.DataAccess.Models.Models;
 using AutoMapper;
+using System.Linq;
 
 namespace Amiq.Mapping
 {

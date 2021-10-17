@@ -1,0 +1,17 @@
+.category-input {
+  &__wrap{
+    position: relative;
+  }
+
+  &__selected-categories {
+    position: absolute;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    height: 90%;
+
+    & > div {
+     margin-right: .5rem;
+    }
+  }
+}

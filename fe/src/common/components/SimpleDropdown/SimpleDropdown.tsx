@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
 import IDropdownOption from "./IDropdownOption";
+import "./simple-dropdown.scss"
+import UiKitDefaultSpinner from "../UIKitDefaultSpinner/UIKitDefaultSpinner";
 
 type State = {
     isOpen: boolean;
     isCursorOnBody: boolean;
 }
 type Props = {
+    isStatic: boolean;
     placeholder?: string;
     options: Array<IDropdownOption>;
     handleOptionClick(option: IDropdownOption);
     icon?: string;
+    areOptionsLoaded?:boolean;
+    onDropdownMouseOver?: () => void;
 }
 
 class SimpleDropdown extends Component<Props,State> {
@@ -38,6 +43,8 @@ class SimpleDropdown extends Component<Props,State> {
             <div className="simple-dropdown">
                 <div onMouseOver={() => {
                     clearTimeout(this.myVar);
+                    if(this.props.onDropdownMouseOver)
+                        this.props.onDropdownMouseOver();
                     this.setState({
                        isOpen: true
                     })
@@ -53,33 +60,31 @@ class SimpleDropdown extends Component<Props,State> {
                         this.props.icon && <span uk-icon={`icon:${this.props.icon}`}></span>
                     }
                 </div>
-                <div className={`uk-dropdown ${this.state.isOpen && `uk-open`}`}>
-                    <ul className="uk-nav uk-dropdown-nav"
+                <div className={`simple-dropdown__dropdown uk-dropdown ${this.state.isOpen && `uk-open`}`}>
+                    <ul className="simple-dropdown__nav uk-nav uk-dropdown-nav"
                         onMouseOver={() => {this.setState({isCursorOnBody: true}); this.myVar();}}
                         onMouseOut={() => {this.setState({isCursorOnBody: false}); this.myVar();}}
                     >
                         {
-                            this.props.options.map((value, index) => {
+                            this.props.isStatic || this.props.areOptionsLoaded ? this.props.options.map((value, index) => {
                                 return <li key={index}>
                                     <a onClick={e => {
-                                            if(value.event) {
-                                                e.preventDefault();
-                                                value.event();
-                                            }
-                                            else {
-                                                e.preventDefault();
-                                                this.props.handleOptionClick(value);
-                                                //return false;
-                                            }
+                                        if(value.event) {
+                                            e.preventDefault();
+                                            value.event();
                                         }
+                                        else {
+                                            e.preventDefault();
+                                            this.props.handleOptionClick(value);
+                                            //return false;
+                                        }
+                                    }
                                     } href="#">
                                         {value.text}
                                     </a>
                                 </li>
-                            })
+                            }) : <UiKitDefaultSpinner />
                         }
-                        {/*  <li className="uk-nav-divider"></li>
-                        <li><a href="#">Inne</a></li>*/}
                     </ul>
                 </div>
             </div>

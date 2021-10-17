@@ -5,6 +5,7 @@ export interface IGroupCard {
     name: string;
     avatarSrc: string;
     participantsCount: number;
+    isHidden: boolean;
     //participants: Array<IGroupParticipant>;
     subjects: Array<string>;
 }
@@ -40,4 +41,9 @@ export enum EnGroupViewerRole {
     Participant,
     Guest,
     Blocked
+}
+
+export interface IGroupUserParams {
+    groupId: number;
+    isHidden: boolean;
 }

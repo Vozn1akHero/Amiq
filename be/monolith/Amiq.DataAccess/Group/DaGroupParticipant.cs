@@ -22,6 +22,14 @@ namespace Amiq.DataAccess.Group
         private AmiqContextWithDebugLogging _amiqContextWithDebug = new AmiqContextWithDebugLogging();
         private DaGroupViewer _daGroupViewer = new DaGroupViewer();
 
+        public async Task<DtoGroupUserParams> GetGroupUserParamsAsync(int userId, int groupId)
+        {
+            DtoGroupUserParams result = new();
+            result.GroupId = groupId;
+            result.IsHidden = await _amiqContext.HiddenGroups.AnyAsync(e=>e.UserId == userId && e.GroupId == groupId);
+            return result;
+        }
+
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>

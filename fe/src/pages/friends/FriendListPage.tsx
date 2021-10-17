@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import FoundUserCard from "features/friend/components/FoundUserCard";
-import DebounceInput from "../../common/components/DebounceInput/DebounceInput";
+import SearchInput from "../../common/components/SearchInput/SearchInput";
 import {IFriendship} from "../../features/friend/friendship-models";
 import {IFoundUser} from "../../features/user/models/found-user";
 
@@ -8,6 +8,7 @@ type Props = {
     friendList: Array<IFriendship>;
     friendsLoaded: boolean;
     foundUsers: Array<IFoundUser>;
+    searchInputLoading: boolean;
     onSearchInputChange: (text: string) => void;
 };
 
@@ -23,8 +24,9 @@ class FriendListPage extends Component<Props, State> {
                     <legend className="uk-legend uk-margin-medium-top">Moi znajomi</legend>
                     <div className="input-search">
                         <div className="uk-margin-medium-top uk-margin-medium-bottom">
-                            <DebounceInput debounceTime={600}
-                                           onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
+                            <SearchInput debounceTime={600}
+                                         showSpinner={this.props.searchInputLoading}
+                                         onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
                         </div>
                     </div>
                     <div className="uk-grid uk-child-width-1-3">

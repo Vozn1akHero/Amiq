@@ -14,7 +14,6 @@ namespace Amiq.WebApi.Controllers
     {
         private BsGroup bsGroup = new BsGroup();
 
-
         [HttpPost("drop")]
         [AuthorizeMainGroupAdmin]
         public async Task<IActionResult> DropGroup([FromBody] DtoDropGroupRequest dtoDropGroupRequest)
@@ -37,5 +36,18 @@ namespace Amiq.WebApi.Controllers
             return Ok(data);
         }
 
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditBasicDataAsync([FromBody] DtoEditGroupDataRequest dtoEditGroupDataRequest)
+        {
+            var result = await bsGroup.EditAsync(dtoEditGroupDataRequest);
+            return Ok(result);
+        }
+
+        [HttpGet("user-params/{groupId}")]
+        public async Task<IActionResult> GetGroupUserParamsAsync([FromRoute] int groupId)
+        {
+            var result = await bsGroup.GetGroupUserParamsAsync(JwtStoredUserInfo.UserId, groupId);
+            return Ok(result);
+        }
     }
 }

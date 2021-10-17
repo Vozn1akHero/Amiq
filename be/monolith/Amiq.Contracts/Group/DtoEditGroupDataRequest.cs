@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmicaPlus.ResultSets.Group
+namespace Amiq.Contracts.Group
 {
-    public class RsGroup
+    public class DtoEditGroupDataRequest
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
         public string AvatarSrc { get; set; }
         public string Description { get; set; }
-        public List<RsGroupParticipant> Participants { get; set; }
     }
-
-    //public record RsGroup(int GroupId, string Name, string AvatarSrc, string Description);
 }

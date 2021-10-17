@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.DataAccess.Group;
 using System;
@@ -12,6 +13,12 @@ namespace Amiq.Business
     public class BsGroup : BsServiceBase
     {
         private DaGroup _daGroup = new DaGroup();
+        private DaGroupParticipant _daGroupParticipant = new DaGroupParticipant();
+
+        public async Task<DtoGroupUserParams> GetGroupUserParamsAsync(int userId, int groupId)
+        {
+            return await _daGroupParticipant.GetGroupUserParamsAsync(userId, groupId);
+        }
 
         public DtoGroup GetGroupDataById(int groupId)
         {
@@ -34,6 +41,11 @@ namespace Amiq.Business
         public async Task<DtoGroup> GetGroupById(int groupId)
         {
             return await _daGroup.GetGroupById(groupId);
+        }
+
+        public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
+        {
+            return await _daGroup.EditAsync(dtoEditGroupDataRequest);
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using Amiq.Contracts.Core;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Core;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
 using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,9 +48,27 @@ namespace Amiq.DataAccess.Group
             return data;
         }
 
-        /*public async Task<DtoDescriptionBlock> GetGroupDescriptionByGroupId(int groupId)
+        public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
         {
-
-        }*/
+            DtoEditEntityResponse result = new();
+            var group = _AmiqContext.Groups.SingleOrDefault(e => e.GroupId == dtoEditGroupDataRequest.GroupId);
+            try
+            {
+                if (group != null)
+                {
+                    group.Name = dtoEditGroupDataRequest.Name;
+                    group.AvatarSrc = dtoEditGroupDataRequest.AvatarSrc;
+                    group.Description = dtoEditGroupDataRequest.Description;
+                    await _AmiqContext.SaveChangesAsync();
+                    result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
+                    result.Result = true;
+                }
+            } catch(Exception ex)
+            {
+                result.Result = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
     }
 }

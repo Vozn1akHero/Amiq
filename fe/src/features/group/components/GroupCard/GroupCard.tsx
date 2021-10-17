@@ -1,17 +1,23 @@
 import "./group-card.scss"
-import React, {memo} from "react";
+import React, {memo, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import {IGroupCard} from "../../models/group-models";
+import {IGroupCard, IGroupUserParams} from "../../models/group-models";
 import devConfig from "../../../../dev-config.json"
-import SimpleDropdown from "../../../../common/components/SimpleDropdown/SimpleDropdown";
+import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import IDropdownOption from "../../../../common/components/SimpleDropdown/IDropdownOption";
+import {GroupService} from "../../services/group-service";
 
 type GroupCardProps = {
     groupCard: IGroupCard;
+    toggleGroupVisibility(groupId: number, isVisible: boolean):void;
     leaveGroup(groupId: number):void;
 }
 
 const GroupCard = (props: GroupCardProps) => {
+    const groupService : GroupService = new GroupService();
+    const [userParamsLoaded, setUserParamsLoaded] = useState(false);
+    //const [userParams, setUserParams] = useState(false);
+    const [dropdownOptions, setDropdownOptions] = useState<Array<IDropdownOption>>([]);
     const avatarSrc = devConfig.monolithUrl + "/" + props.groupCard.avatarSrc;
 
     const avatarBgStyles : any = {
@@ -19,13 +25,40 @@ const GroupCard = (props: GroupCardProps) => {
     }
 
     const handleShowMoreOptionsClick = (option: IDropdownOption) => {
-
     }
 
-    const moreOptionsDropdownValues : Array<IDropdownOption> =  [
-        {id: 1, text: "Ukryj"},
-        {id: 2, text: "Zablokuj"},
-    ];
+    const getMoreUserParamsDropdownValues = () => {
+        if(!userParamsLoaded)
+            groupService.getUserParams(props.groupCard.groupId).then(res => {
+                const data = res.data as IGroupUserParams;
+                const dropdownValues : Array<IDropdownOption> = [];
+                const dropdownOption : IDropdownOption = {
+                    id: 1,
+                    text: data.isHidden ? "Pokaż" : "Ukryj",
+                    event: () => {
+                        if(props.groupCard.isHidden)
+                            props.toggleGroupVisibility(props.groupCard.groupId, true);
+                        else props.toggleGroupVisibility(props.groupCard.groupId, false);
+                    }
+                }
+                dropdownValues.push(dropdownOption);
+                setDropdownOptions(dropdownValues);
+            }).finally(() => {
+                setUserParamsLoaded(true);
+            })
+    }
+
+    /*const moreOptionsDropdownValues : Array<IDropdownOption> =  [
+        {
+            id: 1,
+            text: props.groupCard.isHidden ? "Pokaż" : "Ukryj",
+            event: () => {
+                if(props.groupCard.isHidden)
+                    props.toggleGroupVisibility(props.groupCard.groupId, true);
+                else props.toggleGroupVisibility(props.groupCard.groupId, false);
+            }
+        },
+    ];*/
 
     return (
         <div className="uk-card uk-card-default uk-card-body group-card">
@@ -58,7 +91,10 @@ const GroupCard = (props: GroupCardProps) => {
                             onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
                     <div className="uk-margin-small-left">
                         <SimpleDropdown icon="more"
-                                        options={moreOptionsDropdownValues}
+                                        isStatic={false}
+                                        onDropdownMouseOver={getMoreUserParamsDropdownValues}
+                                        options={dropdownOptions}
+                                        areOptionsLoaded={userParamsLoaded}
                                         handleOptionClick={handleShowMoreOptionsClick} />
                     </div>
                 </div>

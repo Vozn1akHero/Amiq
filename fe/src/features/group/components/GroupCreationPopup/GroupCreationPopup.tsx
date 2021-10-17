@@ -1,26 +1,18 @@
 import React, {Component} from 'react';
 import CenteredPopup from "common/components/CenteredPopup/CenteredPopup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from 'yup';
+import {GroupCreationPopupValidationSchema} from "../group-validation-schema";
+import CategoryInput from "../CategoryInput/CategoryInput";
 
 
 const GroupCreationPopup  = () => {
-    const GroupCreationPopupValidationSchema = Yup.object().shape({
-        name: Yup.string()
-            .max(100, "100 znaków")
-            .required("Pole nie może być puste"),
-        description: Yup.string()
-            .max(100, "100 znaków")
-            .required("Pole nie może być puste"),
-    });
-
     return (
         <CenteredPopup id="new-group-popup"
                        title="Utwórz grupę"
                        controlsVisible={true}>
             <div className="group-creation-form">
                 <Formik
-                    initialValues={{name: '', description: '', category: ''}}
+                    initialValues={{name: '', description: ''}}
                     onSubmit={(values, {setSubmitting}) => {
 
                     }}
@@ -33,8 +25,9 @@ const GroupCreationPopup  = () => {
                             <Field as="textarea" name="description" placeholder="Opis"
                                    className="uk-textarea uk-margin-small-top" rows={3}/>
                             <ErrorMessage name="description" component="div"/>
-                            <Field name="category" placeholder="Kategorie" className="uk-input uk-margin-small-top"/>
-                            <ErrorMessage name="category" component="div"/>
+                            <div className="uk-margin-small-top">
+                                <CategoryInput />
+                            </div>
                             <button className="uk-button uk-button-default uk-modal-close uk-margin-small-top">
                                 Anuluj
                             </button>
