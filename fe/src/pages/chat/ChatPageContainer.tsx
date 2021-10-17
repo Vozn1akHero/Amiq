@@ -39,11 +39,10 @@ const ChatPageContainer = () => {
         dispatch(createMessage(message));
     }
 
-    //const [chatPreviews, setchatPreviews] = useState(null);
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [selectedChat, setSelectedChat] = useState(null);
     const [isChatSelected, setIsChatSelected] = useState(false);
-    //const [chatMessagesLoaded, setChatMessagesLoaded] = useState(false);
+    const [searchInputLoading, setSearchInputLoading] = useState(false);
 
     const onChatSelection = (selectedChatId: string) => {
         setSelectedChatId(selectedChatId);
@@ -61,8 +60,14 @@ const ChatPageContainer = () => {
         dispatch(deleteMessages(ids))
     }
 
+    const onSearchInputChange = e => {
+
+    }
+
     return (
         <ChatPage chats={chatPreviews}
+                  onSearchInputChange={onSearchInputChange}
+                  searchInputLoading={searchInputLoading}
                   onDeleteMessages={onDeleteMessages}
                   messages={messages}
                   onCreateMessage={onCreateMessage}

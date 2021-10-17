@@ -76,18 +76,6 @@ class GroupPage extends Component<Props, any>  {
                         <p>
                             {this.props.groupData?.description}
                         </p>
-                        {/*{this.props.groupData?.descriptionBlocks && <ul uk-accordion="collapsible: false">
-                            {
-                                this.props.groupData.descriptionBlocks.map(((value, index) => {
-                                    return <li key={index}>
-                                        <a className="uk-accordion-title" href="#">{value.header}</a>
-                                        <div className="uk-accordion-content">
-                                            <p>{value.content}</p>
-                                        </div>
-                                    </li>
-                                }))
-                            }
-                        </ul>}*/}
                         {
                             this.props.groupData?.descriptionBlocks && <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks} />
                         }
@@ -117,7 +105,10 @@ class GroupPage extends Component<Props, any>  {
 
                         {
                             this.props.groupParticipants && <div className="uk-margin-medium-top">
-                                <ItemsFrameL title="Uczestnicy" icon="users" items={this.getConvertedParticipantsToFrameItem()} callbackText="Brak uczestników" />
+                                <ItemsFrameL title="Uczestnicy"
+                                             icon="users"
+                                             items={this.getConvertedParticipantsToFrameItem()}
+                                             callbackText="Brak uczestników" />
                             </div>
                         }
 

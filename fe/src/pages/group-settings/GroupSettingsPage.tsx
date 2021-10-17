@@ -6,6 +6,8 @@ import GroupParticipantsSettings from "../../features/group/components/GroupSett
 import {IGroupData} from "../../features/group/models/group-models";
 import UiKitDefaultSpinner from "../../common/components/UIKitDefaultSpinner/UIKitDefaultSpinner";
 import GroupEventsSettings from "../../features/group/components/GroupSettings/GroupEventsSettings";
+import "./group-settings-page.scss"
+import {Routes} from "../../core/routing";
 
 type Props = {
     match: any;
@@ -89,10 +91,20 @@ class GroupSettingsPage extends Component<Props, State> {
     render() {
         return (
             <div className="group-settings-page">
-                {
-                    this.props.basicGroupDataLoaded ? <PageAvatar viewTitle={this.props.basicGroupData.name}
-                                                                  avatarSrc={this.props.basicGroupData.avatarSrc} /> : <UiKitDefaultSpinner />
-                }
+                <div className="group-settings-page__group-avatar-wrap uk-flex">
+                    <Link to={`/${Routes.groupPageRoutes.baseLink}/${this.props.match.params.groupId}`}
+                          className="group-settings-page__get-back-btn uk-background-muted uk-text-center uk-margin-remove-bottom"
+                          style={{width: "4%"}}>
+                        <span className="uk-icon"
+                              uk-icon="chevron-double-left"></span>
+                    </Link>
+                    <div className="max-width">
+                        {
+                            this.props.basicGroupDataLoaded ? <PageAvatar viewTitle={this.props.basicGroupData.name}
+                                                                          avatarSrc={this.props.basicGroupData.avatarSrc} /> : <UiKitDefaultSpinner />
+                        }
+                    </div>
+                </div>
 
                 <div className="uk-margin-medium-top">
                     <ul className="uk-child-width-expand" uk-tab="true">

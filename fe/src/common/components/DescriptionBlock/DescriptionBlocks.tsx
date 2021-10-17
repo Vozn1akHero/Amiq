@@ -20,7 +20,6 @@ class DescriptionBlocks extends Component<Props, State> {
         }
     }
 
-
     render() {
         return (
             <div className="description-blocks">

@@ -6,6 +6,7 @@ import {GroupCreationPopupValidationSchema} from "../group-validation-schema";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as UIkit from "uikit"
 import CategoryInput from "../CategoryInput/CategoryInput";
+import {IDescriptionBlock} from "common/models/description-block";
 
 type Props = {
     groupData: IGroupData;
@@ -16,6 +17,7 @@ const GroupBasicSettings = (props:Props) => {
 
     const [name, setName] = useState(props.groupData.name);
     const [description, setDescription] = useState(props.groupData.description);
+    const [descriptionBlocks, setDescriptionBlocks] = useState<Array<IDescriptionBlock>>(props.groupData.descriptionBlocks);
 
     const groupService : GroupService = new GroupService();
 
@@ -25,6 +27,22 @@ const GroupBasicSettings = (props:Props) => {
     const onResetClick = () => {
         setName(props.groupData.name);
         setDescription(props.groupData.description);
+    }
+
+    const addNewDescriptionBlock = () => {
+        let lastDb = descriptionBlocks[descriptionBlocks.length - 1];
+        if(lastDb.content.length === 0){
+            return;
+        }
+        const db : IDescriptionBlock = {
+            content: "",
+            header: "",
+            descriptionBlockId: null
+        }
+        setDescriptionBlocks([
+            ...descriptionBlocks,
+            db
+        ])
     }
 
     return (
@@ -56,7 +74,41 @@ const GroupBasicSettings = (props:Props) => {
                         <div className="uk-margin-small-top">
                             <CategoryInput />
                         </div>
-                        <div className="uk-margin-top">
+                        <div className="group-basic-settings__db-blocks uk-margin-medium-top">
+                            <button className="uk-button uk-border-rounded" onClick={(e) => {
+                                e.preventDefault();
+                                addNewDescriptionBlock();
+                            }}>
+                                <span uk-icon="plus" className="uk-icon"></span>
+                            </button>
+                            <div className="uk-grid uk-child-width-1-3 uk-grid-margin uk-margin-small-top">
+                                {
+                                    descriptionBlocks.map((value, index) => {
+                                        return <div className="uk-card uk-card-default uk-card-body">
+                                            <input defaultValue={value.header}
+                                                   className="uk-input"
+                                                   placeholder="Tytuł"
+                                                   onChange={e => {
+                                                       let dB : IDescriptionBlock = descriptionBlocks[index];
+                                                       dB.header = e.target.value;
+                                                   }}
+                                                   minLength={1} />
+                                            <textarea defaultValue={value.content}
+                                                      style={{resize: "none"}}
+                                                      rows={3}
+                                                      placeholder="Opis"
+                                                      className="uk-textarea uk-margin-small-top"
+                                                      onChange={e => {
+                                                          let dB : IDescriptionBlock = descriptionBlocks[index];
+                                                          dB.content = e.target.value;
+                                                      }}
+                                                      minLength={1} />
+                                        </div>
+                                    })
+                                }
+                            </div>
+                        </div>
+                        <div className="uk-margin-medium-top">
                             <button className="uk-button uk-button-default"
                                     disabled={isSubmitting}
                                     onClick={onResetClick}>

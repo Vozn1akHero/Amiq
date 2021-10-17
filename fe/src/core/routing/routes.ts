@@ -1,5 +1,6 @@
 interface ISimpleRoute {
-    link: string;
+    reactRouterLink: string;
+    baseLink?: string;
     navLink?: string;
     //subroutes: Array<string>,
     //params: Array<string>,
@@ -30,69 +31,72 @@ export default class Routes {
 
     public static getSimpleLink(route: ISimpleRoute):string{
         let output: string = "/";
-        output += route.link;
+        output += route.reactRouterLink;
         return output;
     }
 
-    public static getNavRoute = (route: ISimpleRoute) => route.link;
+    public static getNavRoute = (route: ISimpleRoute) => route.reactRouterLink;
 
     public static get myProfilePageRoutes() : ISimpleRoute{
         return {
-            link: "profile",
+            reactRouterLink: "profile",
         };
     }
 
     public static get profilePageRoutes() : ISimpleRoute{
         return {
-            link: "profile/:userId?",
+            reactRouterLink: "profile/:userId?",
+            baseLink: "profile"
         };
     }
 
     public static get friendListPageRoutes() : ISimpleRoute{
         return {
-            link: "friends/:userId?"
+            reactRouterLink: "friends/:userId?",
+            baseLink: "friends"
         };
     }
 
     public static get chatPageRoutes() : ISimpleRoute{
         return {
-            link: "chat"
+            reactRouterLink: "chat"
         };
     }
 
     public static get groupsPageRoutes() : ISimpleRoute{
         return {
-            link: "groups"
+            reactRouterLink: "groups"
         };
     }
 
     public static get groupPageRoutes() : ISimpleRoute{
         return {
-            link: "group/:groupId"
+            reactRouterLink: "group/:groupId",
+            baseLink: "group"
         };
     }
 
     public static get groupSettingsPageRoutes() : ISimpleRoute{
         return {
-            link: "group/:groupId/settings",
+            reactRouterLink: "group/:groupId/settings",
         };
     }
 
     public static get authPageRoutes(): ISimpleRoute{
         return {
-            link: "login"
+            reactRouterLink: "login"
         };
     }
 
     public static get registrationPageRoutes(): ISimpleRoute{
         return {
-            link: "joinup"
+            reactRouterLink: "joinup"
         };
     }
 
     public static get logoutPageRoutes() : ISimpleRoute {
         return {
-            link: "logout"
+            reactRouterLink: "logout"
         }
     }
 

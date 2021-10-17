@@ -1,6 +1,6 @@
 import {Link, withRouter} from "react-router-dom";
 import {INavigationLink} from "./INavigationLink";
-import {Component, memo, RefObject, useState} from "react";
+import React, {Component, memo, RefObject, useState} from "react";
 import "./navigation.scss"
 import {Routes} from "core/routing";
 import {Observable, take} from "rxjs";
@@ -32,12 +32,13 @@ class Navigation extends Component<Props, State> {
         {
             title: "Profil",
             anchor: Routes.getSimpleLink(Routes.myProfilePageRoutes),
-            uiKitIcon: ""
+            uiKitIcon: "user"
         },
         {
             title: "Znajomi",
             anchor: Routes.getSimpleLink(Routes.friendListPageRoutes),
-            uiKitIcon: "users"
+            uiKitIcon: "users",
+
         },
         {
             title: "Czat",
@@ -46,7 +47,8 @@ class Navigation extends Component<Props, State> {
         },
         {
             title: "Grupy",
-            anchor: Routes.getSimpleLink(Routes.groupsPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.groupsPageRoutes),
+            uiKitIcon: "social"
         }
     ];
 
@@ -101,8 +103,11 @@ class Navigation extends Component<Props, State> {
                                 <ul className="uk-navbar-nav">
                                     {
                                         this.loggedInUserNavigationLinks.map(((value,i) =>
-                                            <li key={i}>
-                                                <Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link>
+                                            <li key={i} uk-tooltip={value.tooltip}>
+                                                <Link to={value.anchor} style={{textTransform: "initial"}}>
+                                                    <span uk-icon={`icon: ${value.uiKitIcon}`}></span>
+                                                    {value.title}
+                                                </Link>
                                             </li>))
                                     }
                                 </ul>
@@ -112,6 +117,7 @@ class Navigation extends Component<Props, State> {
                                     <li>
                                         <a href="" onClick={this.onBellClick}
                                            className="uk-icon-link"
+                                           uk-tooltip="Powiadomienia"
                                            uk-icon="bell" />
                                         {
                                             this.state.isNotificationListVisible && <NotificationList />
@@ -125,6 +131,7 @@ class Navigation extends Component<Props, State> {
                                     }
                                     <li>
                                         <a href="" onClick={this.onLogoutClick}
+                                           uk-tooltip="Wyloguj"
                                            className="uk-icon-link"
                                            uk-icon="sign-out" />
                                     </li>

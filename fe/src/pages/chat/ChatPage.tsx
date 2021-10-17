@@ -4,6 +4,7 @@ import {IChat, IChatPreview, IMessage} from "features/chat/chat-models";
 import Chat from "features/chat/Chat";
 import "./chat-page.scss"
 import {ChatPreviewMode} from "../../features/chat/chat-enums";
+import SearchInput from "../../common/components/SearchInput/SearchInput";
 
 type Props = {
     chats: Array<IChatPreview>;
@@ -11,6 +12,8 @@ type Props = {
     selectedChat: IChat;
     chatPreviewsLoaded: boolean;
     chatMessagesLoaded: boolean;
+    searchInputLoading: boolean;
+    onSearchInputChange(e):void;
     onChatSelection(selectedChatId: string):void;
     onCreateMessage(message: Partial<IMessage>): void;
     onDeleteMessages(ids: Array<string>);
@@ -58,7 +61,9 @@ class ChatPage extends Component<Props, State> {
                     <legend className="uk-legend uk-margin-medium-top">Moje wiadomości</legend>
                     <div className="input-search">
                         <div className="uk-margin-medium-top uk-margin-medium-bottom">
-                            <input className="uk-input" type="text" placeholder="Szukaj"/>
+                            <SearchInput debounceTime={600}
+                                         showSpinner={this.props.searchInputLoading}
+                                         onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
                         </div>
                     </div>
                     {/*<div className="controls">
