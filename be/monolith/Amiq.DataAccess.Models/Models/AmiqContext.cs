@@ -110,6 +110,10 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.CommentId).HasDefaultValueSql("(newsequentialid())");
 
+                entity.Property(e => e.AuthorVisibilityType)
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");

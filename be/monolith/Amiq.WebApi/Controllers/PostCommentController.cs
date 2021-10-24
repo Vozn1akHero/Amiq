@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Post;
+using Amiq.Common.Enums;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
@@ -46,8 +47,18 @@ namespace Amiq.WebApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateAsync([FromBody] DtoNewPostComment newPostComment)
+        public async Task<IActionResult> CreateAsync([FromBody] DtoCreatePostComment newPostComment)
         {
+            try
+            {
+                newPostComment.AuthorVisibilityType = !string.IsNullOrEmpty(newPostComment.AuthorVisibilityType) ?
+                EnumExtensions.TryMapStrValueToAltValue(typeof(EnCommentAuthorVisibilityType), newPostComment.AuthorVisibilityType) :
+                EnCommentAuthorVisibilityType.User.GetEnumAltValue();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             var data = await bsPostComment.CreateAsync(JwtStoredUserInfo.UserId, newPostComment);
             return CreatedAtAction(nameof(CreateAsync), data);
         }

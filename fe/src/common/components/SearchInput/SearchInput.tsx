@@ -44,7 +44,7 @@ class SearchInput extends Component<Props, never> {
                 <input className="uk-input" ref={this.inputRef} type="text" placeholder="Szukaj"/>
                 <div className="search-input__align-right-content">
                     {
-                        this.props.showSpinner ? <UiKitDefaultSpinner /> : <span className="search-input__icon" uk-icon="search"></span>
+                        this.props.showSpinner ? <UiKitDefaultSpinner /> : <span className="search-input__icon uk-display-block" uk-icon="search"></span>
                     }
                 </div>
             </div>

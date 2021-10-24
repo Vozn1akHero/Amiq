@@ -5,14 +5,17 @@ type Props = {
     responseCreationRunningEntity: {commentId: string};
     dropResponseCreationRunningEntity(commentId: string);
     onCommentFormBlur(content: string):void;
-    onCommentSubmit(text: string):void;
+    onCommentSubmit(text: string, commentVisibilityType: string):void;
     publishAsAdminOptionVisible:boolean;
 }
 
-class CommentCreationForm extends Component<Props, {isCreateButtonVisible: boolean; value: string}> {
+class CommentCreationForm extends Component<Props, {isCreateButtonVisible: boolean;
+    createAsAdmin: boolean;
+    value: string}> {
     constructor(props) {
         super(props);
         this.state = {
+            createAsAdmin: false,
             isCreateButtonVisible: false,
             value: ""
         }
@@ -20,7 +23,7 @@ class CommentCreationForm extends Component<Props, {isCreateButtonVisible: boole
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.onCommentSubmit(this.state.value);
+        this.props.onCommentSubmit(this.state.value, this.state.createAsAdmin ? 'GA' : 'U');
     }
 
     render() {
@@ -31,7 +34,7 @@ class CommentCreationForm extends Component<Props, {isCreateButtonVisible: boole
                         <textarea onBlur={e=>{this.props.onCommentFormBlur(e.target.value)}}
                               autoFocus={this.props.isFocused}
                               className="uk-textarea"
-                              rows={5}
+                              rows={3}
                               onChange={(e) => {
                                 this.setState({
                                     value: e.target.value,
@@ -51,7 +54,14 @@ class CommentCreationForm extends Component<Props, {isCreateButtonVisible: boole
                 }
                 {
                    this.props.publishAsAdminOptionVisible && this.state.isCreateButtonVisible &&  <div className="comment-as-group-admin-wrap">
-                        <label><input className="uk-checkbox" type="checkbox"/> jako administrator</label>
+                        <label><input className="uk-checkbox"
+                                      type="checkbox"
+                                      checked={this.state.createAsAdmin}
+                                      onChange={() => {
+                                          this.setState({
+                                              createAsAdmin: !this.state.createAsAdmin
+                                          })
+                                      }}/> jako administrator</label>
                     </div>
                 }
                 {

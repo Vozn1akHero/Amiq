@@ -7,10 +7,11 @@ import {GroupPostService} from "../../features/post/group-post-service";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/services/group-participant-service";
-import {IPostComment} from "../../features/post/models/post-comment";
+import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
 import {withRouter} from "react-router-dom";
 import {AxiosResponse} from "axios";
+import {PostCommentService} from "../../features/post/post-comment-service";
 
 type Props = {
     match: any;
@@ -36,6 +37,7 @@ class GroupPageContainer extends Component<Props, State>{
     groupPostService: GroupPostService = new GroupPostService();
     groupParticipantService: GroupParticipantService = new GroupParticipantService();
     postService = new PostService();
+    postCommentService = new PostCommentService();
 
     constructor(props) {
         super(props);
@@ -107,8 +109,56 @@ class GroupPageContainer extends Component<Props, State>{
         })
     }
 
-    onCommentCreated = (data: Partial<IPostComment>) => {
-        console.log(data)
+    onCommentCreated = (data: IPostCommentCreation) => {
+        data.groupId = this.state.groupData.groupId;
+        this.postCommentService.create(data).then(res => {
+            if(res.status === StatusCodes.CREATED){
+                const newComment = res.data as IPostComment;
+                this.setState({
+                    groupPosts: [
+                        ...this.state.groupPosts.map((value, index) => {
+                            if(value.postId === data.postId){
+                                if(newComment.parentId){
+                                    value.comments = value.comments.map(comment => {
+                                        if(comment.commentId === newComment.parentId){
+                                            comment.children = [...comment.children, newComment]
+                                        }
+                                        return comment;
+                                    })
+                                } else {
+                                    const comments = value.comments == null ? [] : value.comments;
+                                    value.comments = [newComment, ...comments]
+                                }
+                            }
+                            return value;
+                        })
+                    ]
+                })
+            }
+        })
+
+    }
+
+    onRemoveComment = (postCommentId: string) => {
+        this.postCommentService.delete(postCommentId).then(res => {
+            if(res.status === StatusCodes.OK){
+                const removeComment = res.data as IPostComment;
+                for(const groupPost of this.state.groupPosts){
+                    if(groupPost.postId === removeComment.postId){
+                        if(removeComment.parentId){
+                            groupPost.comments = groupPost.comments.map(comment => {
+                                if(comment.commentId === removeComment.parentId){
+                                    comment.children = [...comment.children.filter(value => value.commentId !== removeComment.commentId)]
+                                }
+                                return comment;
+                            })
+                        } else {
+                            groupPost.comments = groupPost.comments.filter(value => value.commentId !== removeComment.commentId)
+                        }
+                    }
+                }
+            }
+        })
     }
 
     onPostCreated = (data: Partial<IGroupPost>) => {
@@ -137,6 +187,7 @@ class GroupPageContainer extends Component<Props, State>{
     render() {
         return (
             <GroupPage groupParticipants={this.state.groupParticipants}
+                       onRemoveComment={this.onRemoveComment}
                        onDeletePost={this.onDeletePost}
                        onPostCreated={this.onPostCreated}
                        onCommentCreated={this.onCommentCreated}

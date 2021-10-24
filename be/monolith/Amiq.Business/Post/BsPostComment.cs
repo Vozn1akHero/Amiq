@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Common.Enums;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Post;
@@ -17,22 +18,22 @@ namespace Amiq.Business.Post
 
         public async Task<IEnumerable<DtoPostComment>> GetPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
         {
-            return await daPostComment.GetPostCommentAsync(postId, dto);
+             return await daPostComment.GetPostCommentAsync(postId, dto);
         }
 
-        public async Task<DtoPostComment> CreateAsync(int authorId, DtoNewPostComment newPostComment)
+        public async Task<DtoPostComment> CreateAsync(int authorId, DtoCreatePostComment newPostComment)
         {
-           return await daPostComment.CreateAsync(authorId, newPostComment);
+            return await daPostComment.CreateAsync(authorId, newPostComment);
         }
 
         public async Task<DtoPostComment> DeleteAsync(Guid postCommentId)
         {
-           return await daPostComment.DeleteAsync(postCommentId);
+            return await daPostComment.DeleteAsync(postCommentId);
         }
 
         public async Task<DtoPostComment> EditAsync(Guid postCommentId, string text)
         {
-            return await daPostComment.EditAsync(postCommentId, text);
+             return await daPostComment.EditAsync(postCommentId, text);
         }
     }
 }

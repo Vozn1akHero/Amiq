@@ -52,8 +52,8 @@ const IdentityWrapperPage = (props: Props) => {
                                 <GuardedRoute component={ProfilePageContainer} path={Routes.getSimpleLink(Routes.profilePageRoutes)} />
                                 <Route component={FriendsPageContainer} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
                                 <Route component={GroupsPageContainer} path={Routes.getSimpleLink(Routes.groupsPageRoutes)} />
-                                <Route exact={true} component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />
                                 <Route exact={true} component={GroupSettingsPageContainer} path={Routes.getSimpleLink(Routes.groupSettingsPageRoutes)} />
+                                <Route component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />
                                 <Route component={ChatPageContainer} path={Routes.getSimpleLink(Routes.chatPageRoutes)} />
                                 <Route path="/not-found" component={NotFoundPage} />
                             </div>

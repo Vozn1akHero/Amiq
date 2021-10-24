@@ -70,7 +70,7 @@ namespace Amiq.DataAccess.Post
                 CreatedAt = i.Post.CreatedAt,
                 EditedAt = i.Post.EditedAt,
                 EditedBy = i.Post.EditedBy,
-                RecentComments = new List<DtoPostComment>()
+                Comments = new List<DtoPostComment>()
             }).First();
 
             return res;

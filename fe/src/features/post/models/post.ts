@@ -10,6 +10,6 @@ export interface IPost {
     editedAt: Date;
     createdAt: Date;
     avatarPath: string;
-    recentComments: Array<IPostComment>;
+    comments: Array<IPostComment>;
     hasMoreCommentsThanRecent: boolean;
 }

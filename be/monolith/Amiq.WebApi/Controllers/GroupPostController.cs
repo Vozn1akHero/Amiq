@@ -21,6 +21,10 @@ namespace Amiq.WebApi.Controllers
         public async Task<IActionResult> GetPostsByGroupIdAsync([FromQuery] DtoGroupPostRequest dtoGroupPostRequest, 
             CancellationToken cancellationToken = default)
         {
+            if(dtoGroupPostRequest.Count > 10)
+            {
+                return BadRequest();
+            }
             if (cancellationToken.IsCancellationRequested)
             {
                 return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);

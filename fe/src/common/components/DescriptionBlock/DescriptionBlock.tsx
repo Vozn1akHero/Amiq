@@ -3,7 +3,6 @@ import {IDescriptionBlock} from "../../models/description-block";
 
 type Props = {
     descriptionBlock: IDescriptionBlock;
-    editModeEnabled: boolean;
 }
 
 type State = {
@@ -23,22 +22,7 @@ class DescriptionBlock extends Component<Props, State> {
     render() {
         return (
             <li className="description-block">
-                {
-                    this.props.editModeEnabled ? <input className="uk-input"
-                                                        defaultValue={this.props.descriptionBlock.header}
-                                                        onChange={(e) => {
-                                                                this.setState({
-                                                                    descriptionBlock: {
-                                                                        ...this.props.descriptionBlock,
-                                                                        header: e.target.value
-                                                                    }
-                                                                })
-                                                            }
-                                                        }
-                                                        minLength={1} />
-                        :
-                        <a className="uk-accordion-title" href="#">{this.props.descriptionBlock.header}</a>
-                }
+                <a className="uk-accordion-title" href="#">{this.props.descriptionBlock.header}</a>
 
                 <div className="uk-accordion-content">
                     <p>{this.props.descriptionBlock.content}</p>

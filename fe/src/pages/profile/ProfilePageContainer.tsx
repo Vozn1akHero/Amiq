@@ -7,7 +7,7 @@ import {useHistory, useParams, withRouter} from "react-router-dom";
 import UserService from "features/user/user-service";
 import {IUser} from "features/user/models/user";
 import {AxiosResponse} from "axios";
-import {IPostComment} from "../../features/post/models/post-comment";
+import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
 import {StatusCodes} from "http-status-codes";
 import {PostCommentService} from "../../features/post/post-comment-service";
@@ -95,14 +95,19 @@ const ProfilePageContainer : React.FC = () => {
         })
     }
 
-    const onCommentCreated = (data: Partial<IPostComment>) => {
+    const onCommentCreated = (data: IPostCommentCreation) => {
         postCommentService.create(data).then(res => {
             console.log(res.data)
         })
     }
 
+    const onRemoveComment = (commentId: string) => {
+
+    }
+
     return (
         <ProfilePage posts={userPosts}
+                     onRemoveComment={onRemoveComment}
                      onCommentCreated={onCommentCreated}
                      postsLoaded={postsLoaded}
                      deletePost={deletePost}

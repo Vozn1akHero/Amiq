@@ -1,7 +1,7 @@
 import React, {Component, ComponentClass, MouseEvent} from 'react';
 import "./post.scss"
 import {IUserPost} from "./models/user-post";
-import {IPostComment} from "./models/post-comment";
+import {IPostComment, IPostCommentCreation} from "./models/post-comment";
 import Comment from "./Comment";
 import CommentCreationForm from "./CommentCreationForm";
 import {IPost} from "./models/post";
@@ -18,8 +18,10 @@ type Props  = {
     publishCommentAsAdminOptionVisible: boolean;
     comments: Array<IPostComment>;
     hasMoreCommentsThanPassed: boolean;
-    onCommentCreated(data: Partial<IPostComment>);
+    onCommentCreated(data: IPostCommentCreation);
+    onRemoveComment(postCommentId: string);
     onDeletePost(postId: string);
+    onRemoveComment(postCommentId: string);
 }
 
 type State = {
@@ -69,14 +71,19 @@ class Post extends Component<Props, State> {
         }
     }
 
-    onCommentSubmit = (text: string) => {
-        let entity : Partial<IPostComment> = {};
+    onCommentSubmit = (text: string, commentVisibilityType: string) => {
+        let entity : Partial<IPostCommentCreation> = {};
+        entity.authorVisibilityType = commentVisibilityType;
         entity.postId = this.props.postId;
         if(this.state.responseCreationRunningEntity){
-            entity.commentId = this.state.responseCreationRunningEntity.commentId;
+            const responseCreationRunningEntity = this.props.comments
+                .filter(value => value.commentId === this.state.responseCreationRunningEntity.commentId)[0];
+            entity.mainParentId = responseCreationRunningEntity.mainParentId
+                ? responseCreationRunningEntity.mainParentId : responseCreationRunningEntity.commentId;
+            entity.parentId = responseCreationRunningEntity.commentId;
         }
         entity.textContent = text;
-        this.props.onCommentCreated(entity);
+        this.props.onCommentCreated(entity as IPostCommentCreation);
     }
 
     onCommentReplyClick = (commentId: string) => {
@@ -127,8 +134,9 @@ class Post extends Component<Props, State> {
                     </div>
                 </article>
                 {
-                    this.props.comments.map((value, index) => {
+                    this.props.comments?.map((value, index) => {
                         return <Comment onReplyClick={this.onCommentReplyClick}
+                                        onRemoveComment={this.props.onRemoveComment}
                                         comment={value}
                                         key={index} />
                     })

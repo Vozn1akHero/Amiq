@@ -7,7 +7,7 @@ import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {IUserPost} from "features/post/models/user-post";
 import {IUser} from "../../features/user/models/user";
 import {Utils} from "../../core/utils";
-import {IPostComment} from "../../features/post/models/post-comment";
+import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
 
 type Props = {
     posts: Array<IUserPost>;
@@ -17,7 +17,8 @@ type Props = {
     createPost(text: string);
     deletePost(postId: string);
     isViewerProfile: boolean;
-    onCommentCreated(data: Partial<IPostComment>);
+    onCommentCreated(data: IPostCommentCreation);
+    onRemoveComment(postCommentId: string);
 }
 
 class ProfilePage extends Component<Props> {
@@ -91,6 +92,7 @@ class ProfilePage extends Component<Props> {
                         {
                             this.props.posts.map((post, index) => {
                                 return <Post postId={post.postId}
+                                             onRemoveComment={this.props.onRemoveComment}
                                              onDeletePost={this.onDeletePost}
                                              publishCommentAsAdminOptionVisible={false}
                                              onCommentCreated={this.props.onCommentCreated}
@@ -100,7 +102,7 @@ class ProfilePage extends Component<Props> {
                                              createdAt={post.createdAt}
                                              viewName={post.author.name + " " + post.author.surname}
                                              deleteBtnVisible={this.props.isViewerProfile}
-                                             comments={post.recentComments}
+                                             comments={post.comments}
                                              hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
                                              key={index} />
                             })

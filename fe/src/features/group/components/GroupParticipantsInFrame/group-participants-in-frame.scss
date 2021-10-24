@@ -1,24 +1,19 @@
-.items-frame-l{
-  .frame-item{
+.group-participants-in-frame{
+  &__item{
     max-width: 7rem;
     margin: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    &__avatar{
+      width: 5rem;
+      height: 5rem;
+    }
   }
 
-  .avatar{
-    width: 5rem;
-    height: 5rem;
-  }
-
-  .uk-card-header{
-    padding: 0 0 8px 0;
-    font-weight: 500;
-  }
-
-  .items-wrapper{
+  &__items{
     opacity: 0.9;
     display: grid;
     grid-template-columns: repeat(4, 7rem);

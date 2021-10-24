@@ -28,7 +28,7 @@ class Navigation extends Component<Props, State> {
         }
     }
 
-    loggedInUserNavigationLinks : Array<INavigationLink> = [
+    loggedInUserNavigationLinks: Array<INavigationLink> = [
         {
             title: "Profil",
             anchor: Routes.getSimpleLink(Routes.myProfilePageRoutes),
@@ -52,14 +52,14 @@ class Navigation extends Component<Props, State> {
         }
     ];
 
-    loggedInUserNavigationRightSideLinks : Array<INavigationLink> = [
+    loggedInUserNavigationRightSideLinks: Array<INavigationLink> = [
         /*{
             title: "Wyloguj",
             anchor: Routes.getLink(Routes.logoutPageRoutes)
         }*/
     ]
 
-    notLoggedInUserLinks : Array<INavigationLink> = [
+    notLoggedInUserLinks: Array<INavigationLink> = [
         {
             title: "Zaloguj",
             anchor: Routes.getSimpleLink(Routes.authPageRoutes)
@@ -87,7 +87,7 @@ class Navigation extends Component<Props, State> {
 
     onLogoutClick = e => {
         e.preventDefault();
-        AuthStore.logout().then(()=>{
+        AuthStore.logout().then(() => {
             this.props.history.push("/login");
         });
     }
@@ -102,11 +102,11 @@ class Navigation extends Component<Props, State> {
                             <div className="uk-margin-large-left uk-navbar-left">
                                 <ul className="uk-navbar-nav">
                                     {
-                                        this.loggedInUserNavigationLinks.map(((value,i) =>
-                                            <li key={i} uk-tooltip={value.tooltip}>
-                                                <Link to={value.anchor} style={{textTransform: "initial"}}>
+                                        this.loggedInUserNavigationLinks.map(((value, i) =>
+                                            <li key={i}>
+                                                <Link uk-tooltip={value.title} to={value.anchor} style={{textTransform: "initial"}}>
                                                     <span uk-icon={`icon: ${value.uiKitIcon}`}></span>
-                                                    {value.title}
+                                                   {/* {value.title}*/}
                                                 </Link>
                                             </li>))
                                     }
@@ -118,38 +118,40 @@ class Navigation extends Component<Props, State> {
                                         <a href="" onClick={this.onBellClick}
                                            className="uk-icon-link"
                                            uk-tooltip="Powiadomienia"
-                                           uk-icon="bell" />
+                                           uk-icon="bell"/>
                                         {
-                                            this.state.isNotificationListVisible && <NotificationList />
+                                            this.state.isNotificationListVisible && <NotificationList/>
                                         }
                                     </li>
                                     {
-                                        this.loggedInUserNavigationRightSideLinks.map(((value,i) =>
+                                        this.loggedInUserNavigationRightSideLinks.map(((value, i) =>
                                             <li key={i}>
-                                                <Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link>
+                                                <Link to={value.anchor}
+                                                      style={{textTransform: "initial"}}>{value.title}</Link>
                                             </li>))
                                     }
                                     <li>
                                         <a href="" onClick={this.onLogoutClick}
                                            uk-tooltip="Wyloguj"
                                            className="uk-icon-link"
-                                           uk-icon="sign-out" />
+                                           uk-icon="sign-out"/>
                                     </li>
                                 </ul>
                             </div>
                         </>
                         :
-                    <div className="uk-margin-large-right uk-navbar-right">
-                        <ul className="uk-navbar-nav">
-                            {
-                                this.notLoggedInUserLinks.map(((value,i) =>
-                                    <li key={i}>
-                                        <Link to={value.anchor} style={{textTransform: "initial"}}>{value.title}</Link>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    </div>
+                        <div className="uk-margin-large-right uk-navbar-right">
+                            <ul className="uk-navbar-nav">
+                                {
+                                    this.notLoggedInUserLinks.map(((value, i) =>
+                                            <li key={i}>
+                                                <Link to={value.anchor}
+                                                      style={{textTransform: "initial"}}>{value.title}</Link>
+                                            </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
                 }
 
             </nav>

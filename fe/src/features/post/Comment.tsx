@@ -7,6 +7,7 @@ import CommentCreationForm from "./CommentCreationForm";
 type Props = {
     comment: IPostComment;
     onReplyClick(commentId: string):void;
+    onRemoveComment(postCommentId: string);
 }
 
 class Comment extends Component<Props> {
@@ -15,6 +16,10 @@ class Comment extends Component<Props> {
     onReplyClick = (event:MouseEvent) => {
         event.preventDefault();
         this.props.onReplyClick(this.comment.commentId);
+    }
+
+    onRemoveClick = () => {
+        this.props.onRemoveComment(this.comment.commentId);
     }
 
     render() {
@@ -62,13 +67,13 @@ class Comment extends Component<Props> {
                                         <header className="uk-comment-header uk-position-relative">
                                             <div className="uk-grid uk-grid-medium uk-flex-middle">
                                                 <div className="uk-width-auto">
-                                                    <img className="user-avatar-common border-radius-50 uk-comment-avatar" src={value.group
+                                                    <img className="user-avatar-common border-radius-50 uk-comment-avatar" src={value.authorVisibilityType === 'GA'
                                                         ? Utils.getImageSrc(value.group.avatarSrc) : Utils.getImageSrc(value.author.avatarPath)}
                                                          alt=""/>
                                                 </div>
                                                 <div className="uk-width-expand">
                                                     <h4 className="uk-comment-title uk-margin-remove">
-                                                        <a className="uk-link-reset" href="#">{value.group ?
+                                                        <a className="uk-link-reset" href="#">{value.authorVisibilityType === 'GA' ?
                                                             value.group.name : value.author.name + " " + value.author.surname}</a>
                                                     </h4>
                                                     <p className="uk-comment-meta uk-margin-remove-top">

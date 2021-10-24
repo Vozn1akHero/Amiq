@@ -6,7 +6,7 @@ export class GroupPostService extends BaseService {
     apiModule = "group-post";
 
     getPostsByGroupId(groupId: number, page: number) {
-        const postsCount: number = 20;
+        const postsCount: number = 10;
         const queryParams = new HttpQueryParams();
         queryParams.append("groupId", groupId.toString());
         queryParams.append("count", postsCount);

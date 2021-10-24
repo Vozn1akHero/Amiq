@@ -1,6 +1,6 @@
 import {BaseService} from "core/base-service";
 import {HttpParams, HttpQueryParams} from "core/http-client";
-import {IPostComment} from "./models/post-comment";
+import {IPostComment, IPostCommentCreation} from "./models/post-comment";
 
 export class PostCommentService extends BaseService {
     apiModule = "post-comment"
@@ -19,7 +19,7 @@ export class PostCommentService extends BaseService {
         return this.httpClient.delete(this.buildApiPath(), params)
     }
 
-    create(data:Partial<IPostComment>) {
+    create(data:IPostCommentCreation) {
         return this.httpClient.post(this.apiModule, data)
     }
 }

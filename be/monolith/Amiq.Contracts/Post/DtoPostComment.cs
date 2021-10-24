@@ -18,7 +18,6 @@ namespace Amiq.Contracts.Post
         public Guid? ParentCommentId { get; set; }
         public DtoPostComment Parent { get; set; }
         public List<DtoPostComment> Children { get; set; }
-        //todo
-        //public bool HasMoreChildrenThanPassed { get; set; }
+        public string AuthorVisibilityType { get; set; }
     }
 }

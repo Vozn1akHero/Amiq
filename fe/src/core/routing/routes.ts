@@ -78,7 +78,7 @@ export default class Routes {
 
     public static get groupSettingsPageRoutes() : ISimpleRoute{
         return {
-            reactRouterLink: "group/:groupId/settings",
+            reactRouterLink: "group-settings/:groupId",
         };
     }
 

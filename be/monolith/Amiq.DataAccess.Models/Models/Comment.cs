@@ -23,6 +23,7 @@ namespace Amiq.DataAccess.Models.Models
         public DateTime? EditedAt { get; set; }
         public Guid? MainParentId { get; set; }
         public int? GroupId { get; set; }
+        public string AuthorVisibilityType { get; set; }
 
         public virtual User Author { get; set; }
         public virtual Group Group { get; set; }

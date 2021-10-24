@@ -38,16 +38,21 @@ namespace Amiq.DataAccess.Post
             return _amiqContext.Comments.SingleOrDefault(e => e.CommentId == postCommentId);
         }
 
-        public async Task<DtoPostComment> CreateAsync(int authorId, DtoNewPostComment newPostComment)
+        public async Task<DtoPostComment> CreateAsync(int authorId, DtoCreatePostComment newPostComment)
         {
             var entity = new Comment { 
                 AuthorId = authorId,
                 PostId = newPostComment.PostId,
-                TextContent = newPostComment.Text
+                TextContent = newPostComment.TextContent,
+                AuthorVisibilityType = newPostComment.AuthorVisibilityType,
+                ParentId = newPostComment.ParentId,
+                MainParentId = newPostComment.MainParentId,
+                GroupId = newPostComment.GroupId.HasValue ? newPostComment.GroupId.Value : null
             };
             await _amiqContext.AddAsync(entity);
             await _amiqContext.SaveChangesAsync();
-            DtoPostComment res = APAutoMapper.Instance.Map<DtoPostComment>(entity);
+            IQueryable createdCommentQuery = _amiqContext.Comments.Where(e=>e.CommentId == entity.CommentId);
+            DtoPostComment res = APAutoMapper.Instance.ProjectTo<DtoPostComment>(createdCommentQuery).Single();
             return res;
         }
 
