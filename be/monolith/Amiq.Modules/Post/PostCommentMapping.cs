@@ -10,20 +10,25 @@ namespace Amiq.Mapping.Post
             CreateMap<Comment, DtoPostComment>()
                 .PreserveReferences()
                 .ForMember(e => e.Author, dest => dest.MapFrom(i => i.Author))
-                .ForMember(e => e.Group, dest => dest.MapFrom(i => i.Group))
                 .ForMember(e => e.Children, dest => dest.MapFrom(i => i.InverseMainParent))
-                .ForMember(e => e.Parent, dest => dest.MapFrom(i => i.Parent))
+                //.ForMember(e => e.Parent, dest => dest.MapFrom(i => i.Parent))
+                //.ForMember(e => e.MainParent, dest => dest.MapFrom(i => i.MainParent))
                 .ForMember(e => e.ParentCommentId, dest => dest.MapFrom(i => i.ParentId))
-                //.ForMember(e=>e.HasMoreChildrenThanPassed, dest=> dest.MapFrom(i => i.InverseMainParent.))
-                //.PreserveReferences()
-                //.MaxDepth(300)
-                //.ForMember(dest => dest.IsChild, opt => opt.MapFrom(i => i.ParentId.HasValue))
-                /*.AfterMap((src, dest) => {
-                    if (dest.IsChild)
-                    {
-                        dest.Parent = APAutoMapper.Instance.Map<DtoPostComment>(src).Parent;
-                    }
-                })*/;
+                .ForMember(e => e.MainParentCommentId, dest => dest.MapFrom(i => i.MainParentId));
+
+            CreateMap<Comment, DtoGroupPostComment>().PreserveReferences();
+
+            CreateMap<GroupPostComment, DtoGroupPostComment>()
+                .PreserveReferences()
+                .ForMember(e => e.PostId, dest => dest.MapFrom(i => i.Comment.PostId))
+                .ForMember(e => e.TextContent, dest => dest.MapFrom(i => i.Comment.TextContent))
+                .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Comment.CreatedAt))
+                .ForMember(e => e.Group, dest => dest.MapFrom(i => i.Group))
+                .ForMember(e => e.Author, dest => dest.MapFrom(i => i.Comment.Author))
+                .ForMember(e => e.Children, dest => dest.MapFrom(i => i.Comment.InverseMainParent))
+                .ForMember(e => e.ParentCommentId, dest => dest.MapFrom(i => i.Comment.ParentId))
+                .ForMember(e => e.MainParentCommentId, dest => dest.MapFrom(i => i.Comment.MainParentId))
+                .ForMember(e => e.AuthorVisibilityType, dest => dest.MapFrom(i => i.AuthorVisibilityType));
         }
     }
 }

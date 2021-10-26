@@ -1,14 +1,13 @@
-import React, {Component, ComponentClass, MouseEvent} from 'react';
+import React, {Component, MouseEvent} from 'react';
 import "./post.scss"
-import {IUserPost} from "./models/user-post";
-import {IPostComment, IPostCommentCreation} from "./models/post-comment";
+import {IGroupPostComment, IGroupPostCommentCreation, IPostComment, IPostCommentCreation} from "./models/post-comment";
 import Comment from "./Comment";
 import CommentCreationForm from "./CommentCreationForm";
-import {IPost} from "./models/post";
+import {EnPostType} from "./en-post-type";
+import moment from "moment";
 
 type Props  = {
     postId: string;
-    //authorId: number;
     avatarPath: string;
     viewName: string;
     authorLink: string;
@@ -16,8 +15,11 @@ type Props  = {
     text: string;
     deleteBtnVisible: boolean;
     publishCommentAsAdminOptionVisible: boolean;
-    comments: Array<IPostComment>;
+    //comments: Array<IPostComment>;
+    comments: Array<IPostComment & IGroupPostComment | IPostComment>;
     hasMoreCommentsThanPassed: boolean;
+    postType: EnPostType;
+
     onCommentCreated(data: IPostCommentCreation);
     onRemoveComment(postCommentId: string);
     onDeletePost(postId: string);
@@ -71,19 +73,27 @@ class Post extends Component<Props, State> {
         }
     }
 
+    flattenDeep = (arr1) => {
+        return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(this.flattenDeep(val)) : acc.concat(val), []);
+    }
+
     onCommentSubmit = (text: string, commentVisibilityType: string) => {
-        let entity : Partial<IPostCommentCreation> = {};
-        entity.authorVisibilityType = commentVisibilityType;
+        let entity : Partial<IPostCommentCreation & IGroupPostCommentCreation> = {};
+        if(this.props.postType === EnPostType.Group)
+        {
+            entity.authorVisibilityType = commentVisibilityType;
+        }
         entity.postId = this.props.postId;
         if(this.state.responseCreationRunningEntity){
-            const responseCreationRunningEntity = this.props.comments
+            const flattenComments = this.flattenDeep([this.props.comments.map(value => [value, ...value.children])])
+            const responseCreationRunningEntity = flattenComments
                 .filter(value => value.commentId === this.state.responseCreationRunningEntity.commentId)[0];
-            entity.mainParentId = responseCreationRunningEntity.mainParentId
-                ? responseCreationRunningEntity.mainParentId : responseCreationRunningEntity.commentId;
+            entity.mainParentId = responseCreationRunningEntity.mainParentCommentId
+                ? responseCreationRunningEntity.mainParentCommentId : responseCreationRunningEntity.commentId;
             entity.parentId = responseCreationRunningEntity.commentId;
         }
         entity.textContent = text;
-        this.props.onCommentCreated(entity as IPostCommentCreation);
+        this.props.onCommentCreated(entity as IPostCommentCreation & IGroupPostCommentCreation);
     }
 
     onCommentReplyClick = (commentId: string) => {
@@ -119,7 +129,7 @@ class Post extends Component<Props, State> {
                                     <a className="uk-link-reset" href={this.props.authorLink}>{this.props.viewName}</a>
                                 </h4>
                                 <p className="uk-comment-meta uk-margin-remove-top">
-                                    <a className="uk-link-reset" href="#">{this.props.createdAt}</a>
+                                    <a className="uk-link-reset" href="#">{moment(this.props.createdAt).fromNow()}</a>
                                 </p>
                             </div>
                         </div>
@@ -134,7 +144,7 @@ class Post extends Component<Props, State> {
                     </div>
                 </article>
                 {
-                    this.props.comments?.map((value, index) => {
+                    this.props.comments && this.props.comments.map((value, index) => {
                         return <Comment onReplyClick={this.onCommentReplyClick}
                                         onRemoveComment={this.props.onRemoveComment}
                                         comment={value}

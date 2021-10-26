@@ -11,6 +11,9 @@ import "uikit/dist/css/uikit.min.css";
 import "uikit/dist/css/uikit-core.min.css";*/
 
 import "reflect-metadata";
+import moment from "moment";
+
+moment.locale('pl')
 
 ReactDOM.render(
   <React.StrictMode>

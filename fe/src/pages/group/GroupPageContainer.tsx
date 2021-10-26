@@ -7,28 +7,27 @@ import {GroupPostService} from "../../features/post/group-post-service";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/services/group-participant-service";
-import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
+import {
+    IGroupPostComment,
+    IGroupPostCommentCreation,
+    IPostComment,
+    IPostCommentCreation
+} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
-import {withRouter} from "react-router-dom";
-import {AxiosResponse} from "axios";
 import {PostCommentService} from "../../features/post/post-comment-service";
 
 type Props = {
     match: any;
     location: any;
     history: any;
-    //onCommentCreated(data: Partial<IPostComment>);
 }
 
 type State = {
     groupData: IGroupData;
     groupDataLoaded: boolean;
     groupPosts: Array<IGroupPost>;
-    //groupViewer: IGroupViewer;
     groupViewerRole: EnGroupViewerRole;
-    //deletePostBtnVisible: boolean;
     basicAdminPermissionsAvailable: boolean;
-    //groupPostsLoaded: boolean;
     groupParticipants: Array<IGroupParticipant>;
 }
 
@@ -91,14 +90,6 @@ class GroupPageContainer extends Component<Props, State>{
         })
     }
 
-    getGroupPosts = (page: number) => {
-        this.groupPostService.getPostsByGroupId(this.props.match.params.groupId, page).then(res => {
-            this.setState({
-                groupPosts: res.data as Array<IGroupPost>
-            })
-        })
-    }
-
     getParticipants = () => {
         this.groupParticipantService.getGroupParticipantsByGroupId(this.props.match.params.groupId, 1).then(res => {
             if(res.status === StatusCodes.OK){
@@ -109,30 +100,33 @@ class GroupPageContainer extends Component<Props, State>{
         })
     }
 
-    onCommentCreated = (data: IPostCommentCreation) => {
+    //#region comments
+
+    onCommentCreated = (data: IGroupPostCommentCreation) => {
         data.groupId = this.state.groupData.groupId;
-        this.postCommentService.create(data).then(res => {
+        this.postCommentService.createGroupPostComment(data).then(res => {
             if(res.status === StatusCodes.CREATED){
-                const newComment = res.data as IPostComment;
-                this.setState({
-                    groupPosts: [
-                        ...this.state.groupPosts.map((value, index) => {
-                            if(value.postId === data.postId){
-                                if(newComment.parentId){
-                                    value.comments = value.comments.map(comment => {
-                                        if(comment.commentId === newComment.parentId){
-                                            comment.children = [...comment.children, newComment]
-                                        }
-                                        return comment;
-                                    })
-                                } else {
-                                    const comments = value.comments == null ? [] : value.comments;
-                                    value.comments = [newComment, ...comments]
+                const newComment = res.data as IGroupPostComment;
+                const groupPosts : Array<IGroupPost> = this.state.groupPosts.map((value, index) => {
+                    if(value.postId === data.postId){
+                        if(newComment.parentCommentId){
+                            value.comments = value.comments.map(comment => {
+                                if(comment.commentId === newComment.parentCommentId){
+                                    comment.children = [...comment.children, newComment]
                                 }
-                            }
-                            return value;
-                        })
-                    ]
+                                return comment;
+                            })
+                        } else {
+                            const comments = value.comments == null ? [] : value.comments;
+                            value.comments = [newComment, ...comments]
+                        }
+                    }
+                    return value;
+                });
+                this.setState({
+                    groupPosts
+                }, () => {
+                    console.log(this.state.groupPosts)
                 })
             }
         })
@@ -145,9 +139,9 @@ class GroupPageContainer extends Component<Props, State>{
                 const removeComment = res.data as IPostComment;
                 for(const groupPost of this.state.groupPosts){
                     if(groupPost.postId === removeComment.postId){
-                        if(removeComment.parentId){
+                        if(removeComment.parentCommentId){
                             groupPost.comments = groupPost.comments.map(comment => {
-                                if(comment.commentId === removeComment.parentId){
+                                if(comment.commentId === removeComment.parentCommentId){
                                     comment.children = [...comment.children.filter(value => value.commentId !== removeComment.commentId)]
                                 }
                                 return comment;
@@ -158,6 +152,18 @@ class GroupPageContainer extends Component<Props, State>{
                     }
                 }
             }
+        })
+    }
+
+    //#endregion
+
+    //#region posts
+
+    getGroupPosts = (page: number) => {
+        this.groupPostService.getPostsByGroupId(this.props.match.params.groupId, page).then(res => {
+            this.setState({
+                groupPosts: res.data as Array<IGroupPost>
+            })
         })
     }
 
@@ -184,6 +190,8 @@ class GroupPageContainer extends Component<Props, State>{
         })
     }
 
+    //#endregion
+
     render() {
         return (
             <GroupPage groupParticipants={this.state.groupParticipants}
@@ -199,5 +207,17 @@ class GroupPageContainer extends Component<Props, State>{
         );
     }
 }
+
+/*const mapDispatchToProps = (dispatch) => {
+    return {
+        getGroupPosts: (groupId: number, page: number) => dispatch(getGroupPosts(groupId, page))
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        groupPosts: state.groupPost.groupPosts
+    }
+}*/
 
 export default GroupPageContainer;

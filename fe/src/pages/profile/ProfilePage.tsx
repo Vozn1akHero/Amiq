@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import BasePageComponent from "core/BasePageComponent";
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import Post from "features/post/Post";
 import PostCreationForm from "features/post/PostCreationForm";
@@ -7,7 +6,8 @@ import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {IUserPost} from "features/post/models/user-post";
 import {IUser} from "../../features/user/models/user";
 import {Utils} from "../../core/utils";
-import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
+import {IPostCommentCreation} from "../../features/post/models/post-comment";
+import {EnPostType} from "../../features/post/en-post-type";
 
 type Props = {
     posts: Array<IUserPost>;
@@ -92,6 +92,7 @@ class ProfilePage extends Component<Props> {
                         {
                             this.props.posts.map((post, index) => {
                                 return <Post postId={post.postId}
+                                             postType={EnPostType.User}
                                              onRemoveComment={this.props.onRemoveComment}
                                              onDeletePost={this.onDeletePost}
                                              publishCommentAsAdminOptionVisible={false}

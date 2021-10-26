@@ -44,5 +44,18 @@ namespace Amiq.Common.Enums
             }
             throw new ArgumentOutOfRangeException(ENUM_DOESNT_CONTAIN_STRING_ERROR);
         }
+
+        /*public static T AltValueToEnum<T>(string value) where T : Enum
+        {
+            var members = type.GetEnumNames();
+            foreach (var member in members)
+            {
+                var memInfo = type.GetMember(member);
+                string enValue = memInfo[0].Name;
+                if (!string.IsNullOrEmpty(enValue))
+                    return enValue;
+            }
+            throw new ArgumentOutOfRangeException(ENUM_DOESNT_CONTAIN_STRING_ERROR);
+        }*/
     }
 }

@@ -55,25 +55,28 @@ namespace Amiq.DataAccess.Post
             //IQueryable query = _amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId);
             //var res = APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).SingleOrDefault();
 
-            var res = _amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId).Select(i => new DtoUserPost
-            {
-                PostId = i.PostId,
-                Author = new DtoBasicUserInfo
-                {
-                    UserId = i.User.UserId,
-                    Name = i.User.Name,
-                    Surname = i.User.Surname,
-                    AvatarPath = i.User.AvatarPath
-                },
-                AvatarPath = i.User.AvatarPath,
-                TextContent = i.Post.TextContent,
-                CreatedAt = i.Post.CreatedAt,
-                EditedAt = i.Post.EditedAt,
-                EditedBy = i.Post.EditedBy,
-                Comments = new List<DtoPostComment>()
-            }).First();
-
-            return res;
+            /*var res = _amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId)
+                 .Select(i => new DtoUserPost
+             {
+                 PostId = i.PostId,
+                 Author = new DtoBasicUserInfo
+                 {
+                     UserId = i.User.UserId,
+                     Name = i.User.Name,
+                     Surname = i.User.Surname,
+                     AvatarPath = i.User.AvatarPath
+                 },
+                 AvatarPath = i.User.AvatarPath,
+                 TextContent = i.Post.TextContent,
+                 CreatedAt = i.Post.CreatedAt,
+                 EditedAt = i.Post.EditedAt,
+                 EditedBy = i.Post.EditedBy,
+                 Comments = new List<DtoPostComment>()
+             }).First();*/
+           
+            return APAutoMapper.Instance
+                .ProjectTo<DtoUserPost>(_amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId))
+                .Single();
         }
     }
 }

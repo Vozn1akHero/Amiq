@@ -30,6 +30,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<GroupEventParticipant> GroupEventParticipants { get; set; }
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
+        public virtual DbSet<GroupPostComment> GroupPostComments { get; set; }
         public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<NotificationType> NotificationTypes { get; set; }
@@ -110,10 +111,6 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.CommentId).HasDefaultValueSql("(newsequentialid())");
 
-                entity.Property(e => e.AuthorVisibilityType)
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -129,12 +126,6 @@ namespace Amiq.DataAccess.Models.Models
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_User");
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.Comments)
-                    .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_Comment_Group");
 
                 entity.HasOne(d => d.MainParent)
                     .WithMany(p => p.InverseMainParent)
@@ -368,6 +359,31 @@ namespace Amiq.DataAccess.Models.Models
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.PostId)
                     .HasConstraintName("FK_GroupPost_Post");
+            });
+
+            modelBuilder.Entity<GroupPostComment>(entity =>
+            {
+                entity.ToTable("GroupPostComment", "Post");
+
+                entity.Property(e => e.GroupPostCommentId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.AuthorVisibilityType)
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('U')");
+
+                entity.HasOne(d => d.Comment)
+                    .WithMany(p => p.GroupPostComments)
+                    .HasForeignKey(d => d.CommentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPostComment_Comment");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupPostComments)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPostComment_Group");
             });
 
             modelBuilder.Entity<HiddenGroup>(entity =>

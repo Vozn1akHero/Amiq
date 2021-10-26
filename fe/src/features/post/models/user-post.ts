@@ -1,11 +1,6 @@
 import {IPost} from "./post";
-import {IUser} from "../../user/models/user";
+import {IPostComment} from "./post-comment";
 
 export interface IUserPost extends IPost {
-    /*postId: number;
-    authorId: number;
-    text: string;
-    name: string;
-    surname: string;*/
-    author: Partial<IUser>;
+    comments: Array<IPostComment>;
 }

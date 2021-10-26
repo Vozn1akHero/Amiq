@@ -16,14 +16,24 @@ namespace Amiq.Business.Post
     {
         private DaPostComment daPostComment = new DaPostComment();
 
-        public async Task<IEnumerable<DtoPostComment>> GetPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
+        public async Task<IEnumerable<DtoPostComment>> GetUserPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
         {
-             return await daPostComment.GetPostCommentAsync(postId, dto);
+             return await daPostComment.GetUserPostCommentAsync(postId, dto);
+        }
+
+        public async Task<IEnumerable<DtoGroupPostComment>> GetGroupPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
+        {
+            return await daPostComment.GetGroupPostCommentsAsync(postId, dto);
         }
 
         public async Task<DtoPostComment> CreateAsync(int authorId, DtoCreatePostComment newPostComment)
         {
             return await daPostComment.CreateAsync(authorId, newPostComment);
+        }
+
+        public async Task<DtoGroupPostComment> CreateGroupPostCommentAsync(int authorId, DtoCreateGroupPostComment dtoCreateGroupPostComment)
+        {
+            return await daPostComment.CreateGroupPostCommentAsync(authorId, dtoCreateGroupPostComment);
         }
 
         public async Task<DtoPostComment> DeleteAsync(Guid postCommentId)
@@ -35,5 +45,6 @@ namespace Amiq.Business.Post
         {
              return await daPostComment.EditAsync(postCommentId, text);
         }
+
     }
 }

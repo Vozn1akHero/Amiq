@@ -15,7 +15,7 @@ namespace Amiq.Contracts.Post
         public DateTime CreatedAt { get; set; }
         public string AvatarPath { get; set; }
         public bool HasMoreCommentsThanRecent { get; set; }
-        public List<DtoPostComment> Comments { get; set; }
+        //public List<DtoPostComment> Comments { get; set; }
         public int CommentsCount { get; set; }
     }
 }

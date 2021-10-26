@@ -13,13 +13,12 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
-    
     public class PostCommentController : AmiqBaseController
     {
         private BsPostComment bsPostComment = new BsPostComment();
 
-        [HttpGet("list")]
-        public async Task<IActionResult> GetPostCommentsByGroupIdAsync([FromQuery] Guid postId,
+        [HttpGet("user-post-comments")]
+        public async Task<IActionResult> GetUserPostCommentsByGroupIdAsync([FromQuery] Guid postId,
             [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
             CancellationToken cancellationToken = default)
         {
@@ -27,7 +26,20 @@ namespace Amiq.WebApi.Controllers
             {
                 return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
             }
-            var data = await bsPostComment.GetPostCommentsAsync(postId, dtoPaginatedRequest);
+            var data = await bsPostComment.GetUserPostCommentsAsync(postId, dtoPaginatedRequest);
+            return Ok(data);
+        }
+
+        [HttpGet("group-post-comments")]
+        public async Task<IActionResult> GetGroupPostCommentsByGroupIdAsync([FromQuery] Guid postId,
+            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
+            }
+            var data = await bsPostComment.GetGroupPostCommentsAsync(postId, dtoPaginatedRequest);
             return Ok(data);
         }
 
@@ -47,20 +59,29 @@ namespace Amiq.WebApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateAsync([FromBody] DtoCreatePostComment newPostComment)
+        public async Task<IActionResult> CreatePostComment([FromBody] DtoCreatePostComment dtoCreatePostComment)
+        {
+            var data = await bsPostComment.CreateAsync(JwtStoredUserInfo.UserId, dtoCreatePostComment);
+            return CreatedAtAction(nameof(CreatePostComment), data); 
+        }
+
+        [HttpPost("group-post-comment")]
+        [Authorize]
+        public async Task<IActionResult> CreateGroupPostComment([FromBody] DtoCreateGroupPostComment dtoCreateGroupPostComment)
         {
             try
             {
-                newPostComment.AuthorVisibilityType = !string.IsNullOrEmpty(newPostComment.AuthorVisibilityType) ?
-                EnumExtensions.TryMapStrValueToAltValue(typeof(EnCommentAuthorVisibilityType), newPostComment.AuthorVisibilityType) :
-                EnCommentAuthorVisibilityType.User.GetEnumAltValue();
-            } catch (Exception ex)
+                dtoCreateGroupPostComment.AuthorVisibilityType = !string.IsNullOrEmpty(dtoCreateGroupPostComment.AuthorVisibilityType) ?
+                    EnumExtensions.TryMapStrValueToAltValue(typeof(EnCommentAuthorVisibilityType), dtoCreateGroupPostComment.AuthorVisibilityType) :
+                    EnCommentAuthorVisibilityType.User.GetEnumAltValue();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            var data = await bsPostComment.CreateAsync(JwtStoredUserInfo.UserId, newPostComment);
-            return CreatedAtAction(nameof(CreateAsync), data);
+            var data = await bsPostComment.CreateGroupPostCommentAsync(JwtStoredUserInfo.UserId, dtoCreateGroupPostComment);
+            return CreatedAtAction(nameof(CreateGroupPostComment), data);
         }
     }
 }

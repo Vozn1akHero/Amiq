@@ -6,7 +6,7 @@ import {IGroupData, IGroupParticipant} from "../../features/group/models/group-m
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
-import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
+import {IGroupPostCommentCreation, IPostCommentCreation} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
 import DescriptionBlocks from "../../common/components/DescriptionBlock/DescriptionBlocks";
@@ -16,6 +16,7 @@ import GroupEventsSubpage from "./subpages/group-events-subpage/GroupEventsSubpa
 import GroupEventSubpage from "./subpages/group-event/GroupEventSubpage";
 import GroupParticipantsInFrame
     from "../../features/group/components/GroupParticipantsInFrame/GroupParticipantsInFrame";
+import {EnPostType} from "../../features/post/en-post-type";
 
 
 type Props = {
@@ -24,7 +25,7 @@ type Props = {
     groupPosts: Array<IGroupPost>;
     basicAdminPermissionsAvailable: boolean;
     groupParticipants: Array<IGroupParticipant>;
-    onCommentCreated(data: IPostCommentCreation);
+    onCommentCreated(data: IGroupPostCommentCreation);
     onPostCreated(data: Partial<IGroupPost>);
     onDeletePost(postId: string);
     onRemoveComment(postCommentId: string);
@@ -206,6 +207,7 @@ class GroupPage extends Component<Props, State>  {
                             {
                                 this.props.groupPosts != null && this.props.groupPosts.map((post, index) => {
                                     return <Post postId={post.postId}
+                                                 postType={EnPostType.Group}
                                                  onDeletePost={this.onDeletePost}
                                                  onRemoveComment={this.props.onRemoveComment}
                                                  onCommentCreated={this.props.onCommentCreated}

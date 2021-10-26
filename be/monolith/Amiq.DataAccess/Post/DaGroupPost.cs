@@ -1,4 +1,7 @@
-﻿using Amiq.Contracts.Post;
+﻿using Amiq.Common;
+using Amiq.Contracts.Group;
+using Amiq.Contracts.Post;
+using Amiq.Contracts.User;
 using Amiq.DataAccess.Models;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
@@ -52,15 +55,8 @@ namespace Amiq.DataAccess.Post
 
         public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
         {
-            /*var query = (from p in _amiqContextWithDebugLogging.Posts.AsNoTracking()
-                         join gp in _amiqContextWithDebugLogging.GroupPosts.AsNoTracking()
-                         on p.PostId equals gp.PostId
-                         where gp.GroupId == dtoGroupPostRequest.GroupId
-                         select gp)
-                         .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
-                         .Take(dtoGroupPostRequest.Count);*/
-            //using var transaction = _amiqContext.Database.BeginTransaction();
-
+            const int TAKE = 5;
+            const int PAGE = 1;
             var query = _amiqContextWithDebugLogging.GroupPosts.AsNoTracking()
                          .Include(e => e.Post)
                          .Where(e=>e.GroupId == dtoGroupPostRequest.GroupId)
@@ -72,12 +68,12 @@ namespace Amiq.DataAccess.Post
             {
                 if(item.CommentsCount > 0)
                 {
-                    var recentCommentsQuery = _amiqContextWithDebugLogging.Comments.AsNoTracking()
-                        .Where(e => e.PostId == item.PostId && !e.ParentId.HasValue)
-                        .Include(e=>e.Group)
-                        .Take(5)
-                        .OrderByDescending(e => e.CreatedAt);
-                    var comments = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(recentCommentsQuery).ToListAsync();
+                    var recentCommentsQuery = _amiqContextWithDebugLogging.GroupPostComments.AsNoTracking()
+                        .Where(e => e.Comment.PostId == item.PostId && !e.Comment.ParentId.HasValue)
+                        .Include(e => e.Comment.Author)
+                        .Paginate(PAGE, TAKE)
+                        .OrderByDescending(e => e.Comment.CreatedAt);
+                    var comments = await APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(recentCommentsQuery).ToListAsync();
                     item.Comments = comments;
                     item.HasMoreCommentsThanRecent = item.CommentsCount > item.Comments.Count;
                 }
