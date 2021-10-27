@@ -62,11 +62,13 @@ class Navigation extends Component<Props, State> {
     notLoggedInUserLinks: Array<INavigationLink> = [
         {
             title: "Zaloguj",
-            anchor: Routes.getSimpleLink(Routes.authPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.authPageRoutes),
+            uiKitIcon: "sign-in"
         },
         {
             title: "Dołącz",
-            anchor: Routes.getSimpleLink(Routes.registrationPageRoutes)
+            anchor: Routes.getSimpleLink(Routes.registrationPageRoutes),
+            uiKitIcon: "social"
         }
     ]
 

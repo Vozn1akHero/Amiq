@@ -8,22 +8,27 @@ import {IUser} from "../../features/user/models/user";
 import {Utils} from "../../core/utils";
 import {IPostCommentCreation} from "../../features/post/models/post-comment";
 import {EnPostType} from "../../features/post/en-post-type";
+import {IFriendship} from "../../features/friend/friendship-models";
+import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
+import ExemplaryUserFriendsInFrame
+    from "../../features/friend/components/ExemplaryUserFriendsInFrame/ExemplaryUserFriendsInFrame";
 
 type Props = {
     posts: Array<IUserPost>;
     postsLoaded: boolean;
     userData: IUser;
     userDataLoaded: boolean;
+    isViewerProfile: boolean;
+    userFriends: Array<IFriendship>;
+    userFriendsLoaded: boolean;
+    profileId: number;
     createPost(text: string);
     deletePost(postId: string);
-    isViewerProfile: boolean;
     onCommentCreated(data: IPostCommentCreation);
     onRemoveComment(postCommentId: string);
 }
 
 class ProfilePage extends Component<Props> {
-    friends = []
-
     buildPostProfileLink = (userId: number) => {
         return this.props.isViewerProfile ? "/profile/" : `/profile/${userId}`
     }
@@ -63,10 +68,9 @@ class ProfilePage extends Component<Props> {
                         </>
                     }
                     <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                        <ItemsFrameL title="Znajomi"
-                                     icon="users"
-                                     items={this.friends}
-                                     callbackText="Brak znajomych" />
+                        <ExemplaryUserFriendsInFrame userId={this.props.profileId}
+                                                     userFriendsLoaded={this.props.userFriendsLoaded}
+                                                     userFriends={this.props.userFriends} />
 
                         {/*<div className="uk-margin-medium-top">
                             <ItemsFrameL title="Najlepsi znajomi"

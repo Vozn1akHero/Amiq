@@ -172,12 +172,6 @@ class GroupPage extends Component<Props, State>  {
 
                     {
                         this.props.groupParticipants && <div className="uk-margin-medium-top">
-                            {/*<ItemsFrameL title="Uczestnicy"
-                                         displayHeaderAsLink={true}
-                                         link={"/group/1/participants"}
-                                         icon="users"
-                                         items={this.getConvertedParticipantsToFrameItem()}
-                                         callbackText="Brak uczestników" />*/}
                             <GroupParticipantsInFrame items={this.getConvertedParticipantsToFrameItem()} />
                         </div>
                     }

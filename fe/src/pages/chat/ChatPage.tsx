@@ -56,7 +56,7 @@ class ChatPage extends Component<Props, State> {
 
     render() {
         return (
-            <div className="chat-page uk-flex">
+            <div className={`chat-page ${this.props.selectedChat && `uk-flex`}`}>
                 <div className={`chats ${this.props.selectedChat && `chat-list-width-when-selected`}`}>
                     <legend className="uk-legend uk-margin-medium-top">Moje wiadomości</legend>
                     <div className="input-search">
@@ -66,13 +66,6 @@ class ChatPage extends Component<Props, State> {
                                          onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
                         </div>
                     </div>
-                    {/*<div className="controls">
-                        <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataAndMessage)}
-                            className="uk-button controls__preview-mode-btn
-                             controls__preview-mode--data-message"></button>
-                        <button onClick={() => this.togglePreviewMode(ChatPreviewMode.InterlocutorDataOnly)}
-                            className="uk-button controls__preview-mode-btn controls__preview-mode--data uk-margin-medium-left"></button>
-                    </div>*/}
                     <div className={`uk-grid ${this.props.selectedChat ? `uk-child-width-1-1` : `uk-child-width-1-3`}`}>
                         {
                             this.props.chatPreviewsLoaded && this.props.chats.map((value, i) =>

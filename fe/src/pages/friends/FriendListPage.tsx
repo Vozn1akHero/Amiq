@@ -7,16 +7,30 @@ import {IFoundUser} from "../../features/user/models/found-user";
 type Props = {
     friendList: Array<IFriendship>;
     friendsLoaded: boolean;
-    foundUsers: Array<IFoundUser>;
+    foundUsers: {foundFriends: Array<IFoundUser>, foundUsers: Array<IFoundUser>};
     searchInputLoading: boolean;
     onSearchInputChange: (text: string) => void;
 };
 
 type State = {
-
+    searchInputValue: string
 };
 
 class FriendListPage extends Component<Props, State> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchInputValue: ""
+        }
+    }
+
+    onSearchForUsers = (searchInputValue: string) => {
+        this.setState({
+            searchInputValue
+        })
+        this.props.onSearchInputChange(searchInputValue);
+    }
+
     render() {
         return (
             <div className="friend-list-page">
@@ -26,32 +40,46 @@ class FriendListPage extends Component<Props, State> {
                         <div className="uk-margin-medium-top uk-margin-medium-bottom">
                             <SearchInput debounceTime={600}
                                          showSpinner={this.props.searchInputLoading}
-                                         onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
+                                         onDebounceInputChange={this.onSearchForUsers} />
                         </div>
                     </div>
                     <div className="uk-grid uk-child-width-1-3">
                         {
-                            this.props.friendsLoaded && this.props.friendList.map((value, i) =>
-                                {
-                                    return <div key={i} className="uk-margin-top">
-                                        <FoundUserCard userId={value.userId}
-                                                       name={value.name}
-                                                       surname={value.surname}
-                                                       avatarPath={value.avatarPath}
-                                                       isIssuerFriend={true}
-                                                       key={i} />
-                                    </div>
-                                }
-                            )
+                            this.state.searchInputValue.length === 0 ?
+                                (this.props.friendsLoaded && this.props.friendList.map((value, i) =>
+                                    {
+                                        return <div key={i} className="uk-margin-top">
+                                            <FoundUserCard userId={value.userId}
+                                                           name={value.name}
+                                                           surname={value.surname}
+                                                           avatarPath={value.avatarPath}
+                                                           isIssuerFriend={true}
+                                                           key={i} />
+                                        </div>
+                                    }
+                                )) :  (
+                                    !this.props.searchInputLoading && this.props.foundUsers.foundFriends.map((value, i) =>
+                                        {
+                                            return <div key={i} className="uk-margin-top">
+                                                <FoundUserCard userId={value.userId}
+                                                               name={value.name}
+                                                               surname={value.surname}
+                                                               avatarPath={value.avatarPath}
+                                                               isIssuerFriend={true}
+                                                               key={i} />
+                                            </div>
+                                        }
+                                    )
+                                )
                         }
                     </div>
                 </div>
                 {
-                    this.props.foundUsers.length > 0 && <div className="other-users uk-margin-large-top">
+                    !this.props.searchInputLoading && this.props.foundUsers.foundUsers.length > 0 && <div className="other-users uk-margin-large-top">
                         <legend className="uk-legend uk-margin-medium-top">Inni użytkownicy</legend>
                         <div className="uk-grid uk-child-width-1-3">
                             {
-                                this.props.foundUsers.map((value, i) =>
+                                this.props.foundUsers.foundUsers.map((value, i) =>
                                     {
                                         return <div key={i} className="uk-margin-top">
                                             <FoundUserCard

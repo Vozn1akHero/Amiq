@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Contracts", "..\Amiq.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Common", "..\Amiq.Common\Amiq.Common.csproj", "{C533CEB3-466F-4184-9368-659793F42286}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{1DB4B67B-3A2E-42BD-AD2D-32DE668D8C97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.FakeDataGenerator", "..\Amiq.FakeDataGenerator\Amiq.FakeDataGenerator.csproj", "{CCA3EB8D-3648-40FE-80DC-29739D063DD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,9 +55,16 @@ Global
 		{C533CEB3-466F-4184-9368-659793F42286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C533CEB3-466F-4184-9368-659793F42286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C533CEB3-466F-4184-9368-659793F42286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCA3EB8D-3648-40FE-80DC-29739D063DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA3EB8D-3648-40FE-80DC-29739D063DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA3EB8D-3648-40FE-80DC-29739D063DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA3EB8D-3648-40FE-80DC-29739D063DD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCA3EB8D-3648-40FE-80DC-29739D063DD7} = {1DB4B67B-3A2E-42BD-AD2D-32DE668D8C97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F22CD24-FF49-407B-BB90-5C45A40B13A5}

@@ -2,82 +2,65 @@ import React, {Component} from 'react';
 import {FriendService} from "features/friend/friend-service";
 import FriendListPage from "./FriendListPage";
 import {AuthStore} from "../../store/custom/auth/auth-store";
-import {StatusCodes} from "http-status-codes";
 import {IFriendship} from "../../features/friend/friendship-models";
 import {IFoundUser} from "../../features/user/models/found-user";
+import {getUserFriends, searchForFriends} from "store/redux/actions/userFriendActions";
+import {connect} from "react-redux";
 
 type State = {
-    friends: Array<IFriendship>;
-    friendsLoaded: boolean;
-    allFriends: Array<IFriendship>;
-    foundUsers: Array<IFoundUser>;
-    searchInputLoading: boolean;
 }
 
-class FriendsPageContainer extends Component<any, State> {
-    //readonly friendService : FriendService = container.resolve(FriendService);
+type Props = {
+    getUserFriends(userId: number, page: number, count: number):void;
+    searchForFriends(text: string);
+    userFriends: Array<IFriendship>;
+    userFriendsLoaded: boolean;
+    searching: boolean;
+    foundUsers: {foundFriends: Array<IFoundUser>, foundUsers: Array<IFoundUser>};
+}
+
+class FriendsPageContainer extends Component<Props, State> {
     friendService = new FriendService();
 
-    constructor(props:any) {
-        super(props);
-
-        this.state = {
-            friends: [],
-            friendsLoaded: false,
-            allFriends: [],
-            foundUsers: [],
-            searchInputLoading: false
-        }
-    }
-
     componentDidMount() {
-        this.getUserFriends();
+        this.props.getUserFriends(AuthStore.identity.userId, 1, 20);
     }
 
     onSearchInputChange = (text: string) => {
-        this.setState({
-            searchInputLoading: true
-        })
-        this.friendService.search(text).then(res => {
-            console.log(res.data)
-            const data : any = res.data;
-            if(res.status === StatusCodes.OK){
-                this.setState({
-                    friends: data.foundFriends as Array<IFriendship>,
-                    foundUsers: data.foundUsers as Array<IFoundUser>
-                })
-            }
-        }).finally(() => {
-            this.setState({
-                searchInputLoading: false
-            })
-        })
+        this.props.searchForFriends(text);
     }
 
-    getUserFriends = () => {
-        this.friendService.getFriendsByUserId(AuthStore.identity.userId, 1, 20).then(res => {
-            console.log(res.data)
-            if(res.status === StatusCodes.OK){
-                this.setState({
-                    friendsLoaded: true,
-                    friends: res.data as Array<IFriendship>,
-                    allFriends: [...this.state.friends, ...this.state.allFriends]
-                })
-            }
-        })
-    }
 
     render() {
         return (
             <>
-                <FriendListPage friendList={this.state.friends}
-                                foundUsers={this.state.foundUsers}
-                                friendsLoaded={this.state.friendsLoaded}
-                                searchInputLoading={this.state.searchInputLoading}
+                <FriendListPage friendList={this.props.userFriends}
+                                foundUsers={this.props.foundUsers}
+                                friendsLoaded={this.props.userFriendsLoaded}
+                                searchInputLoading={this.props.searching}
                                 onSearchInputChange={this.onSearchInputChange} />
             </>
         );
     }
 }
 
-export default FriendsPageContainer;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getUserFriends: (userId: number, page: number, count: number) => dispatch(getUserFriends(userId, page, count)),
+        searchForFriends: (text: string) => dispatch(searchForFriends(text))
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        userFriends: state.userFriend.userFriends,
+        userFriendsLoaded: state.userFriend.userFriendsLoaded,
+        searching: state.userFriend.searching,
+        foundUsers: {
+            foundFriends: state.userFriend.foundFriends,
+            foundUsers: state.userFriend.foundUsers
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsPageContainer);

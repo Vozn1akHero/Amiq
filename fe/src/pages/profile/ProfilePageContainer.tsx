@@ -1,16 +1,20 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Dispatch, useEffect, useState} from 'react';
 import ProfilePage from "./ProfilePage";
 import {IUserPost} from "../../features/post/models/user-post";
 import {UserPostService} from "../../features/post/user-post-service";
 import {AuthStore} from "../../store/custom/auth/auth-store";
-import {useHistory, useParams, withRouter} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import UserService from "features/user/user-service";
 import {IUser} from "features/user/models/user";
 import {AxiosResponse} from "axios";
-import {IPostComment, IPostCommentCreation} from "../../features/post/models/post-comment";
+import {IPostCommentCreation} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
 import {StatusCodes} from "http-status-codes";
 import {PostCommentService} from "../../features/post/post-comment-service";
+import {getUserFriends} from "../../store/redux/actions/userFriendActions";
+import {useDispatch, useSelector} from "react-redux";
+import {IFriendship} from "../../features/friend/friendship-models";
+import {createUserPost, deletePost, getUserPosts} from "../../store/redux/actions/postActions";
 
 
 const ProfilePageContainer : React.FC = () => {
@@ -20,14 +24,16 @@ const ProfilePageContainer : React.FC = () => {
     const postCommentService = new PostCommentService();
 
     const [isViewerProfile, setIsViewerProfile] = useState(null);
-    const [userPosts, setUserPosts] = useState<Array<IUserPost>>([]);
+    //const [userPosts, setUserPosts] = useState<Array<IUserPost>>([]);
     const [userData, setUserData] = useState(null);
     const [userDataLoaded, setUserDataLoaded] = useState(false);
-    const [postsLoaded, setPostsLoaded] = useState(false);
+    //const [postsLoaded, setPostsLoaded] = useState(false);
     const [actualProfileId, setActualProfileId] = useState(null);
 
-    const history = useHistory();
+    const EXEMPLARY_ENTITIES_LENGTH: number = 6;
     const {userId} = useParams<any>();
+
+    const dispatch: Dispatch<any> = useDispatch();
 
     useEffect(() => {
         initProfileId();
@@ -36,7 +42,9 @@ const ProfilePageContainer : React.FC = () => {
     useEffect(() => {
         if(actualProfileId){
             getUserData();
-            getUserPosts();
+            //getUserPosts();
+            dispatch(getUserFriends(actualProfileId, 1, EXEMPLARY_ENTITIES_LENGTH));
+            dispatch(getUserPosts(actualProfileId, 1));
         }
     }, [actualProfileId])
 
@@ -45,14 +53,40 @@ const ProfilePageContainer : React.FC = () => {
 
     }
 
-    const getUserPosts = () => {
+    //#region user friends
+
+    const userFriends: Array<IFriendship> = useSelector(
+        (state:any) => {
+            return state.userFriend.userFriends
+        }
+    )
+    const userFriendsLoaded: boolean = useSelector(
+        (state:any) => {
+            return state.userFriend.userFriendsLoaded
+        }
+    )
+
+    //#endregion
+
+    const postsLoaded: boolean = useSelector(
+        (state:any) => {
+            return state.post.loaded
+        }
+    )
+    const userPosts: Array<IUserPost> = useSelector(
+        (state:any) => {
+            return state.post.posts
+        }
+    )
+
+    /*const getUserPosts = () => {
         userPostService.getUserPosts(actualProfileId.toString(), 1).then(value => {
             const posts = value.data as Array<IUserPost>;
             console.log(posts)
             setUserPosts(posts);
             setPostsLoaded(true);
         });
-    }
+    }*/
 
     const initProfileId = () => {
         if(userId){
@@ -60,12 +94,14 @@ const ProfilePageContainer : React.FC = () => {
             setActualProfileId(userId);
         } else {
             setIsViewerProfile(true);
-            setActualProfileId(AuthStore.identity.userId);
+            AuthStore.identity$.subscribe(value => {
+                if(value)
+                    setActualProfileId(value.userId);
+            })
         }
     }
 
     const getUserData = () => {
-        console.log(actualProfileId);
         userService.getById(actualProfileId.toString()).then(res => {
             const userData = res.data as IUser;
             setUserData(userData);
@@ -73,7 +109,7 @@ const ProfilePageContainer : React.FC = () => {
         })
     }
 
-    const createPost = async (text: string) => {
+    /*const createPost = async (text: string) => {
         const post : Partial<IUserPost> = {
             textContent: text,
             author: {
@@ -83,17 +119,8 @@ const ProfilePageContainer : React.FC = () => {
         const result : AxiosResponse<IUserPost> = await userPostService.create(post)
         const {data} = result;
         const arr : Array<IUserPost> = [data, ...userPosts];
-        setUserPosts(arr);
-    }
-
-    const deletePost = (postId: string) => {
-        postService.removePostById(postId).then(res => {
-            if(res.status === StatusCodes.OK){
-                const posts = [...userPosts.filter(e=>e.postId !== postId)];
-                setUserPosts(posts);
-            }
-        })
-    }
+        //setUserPosts(arr);
+    }*/
 
     const onCommentCreated = (data: IPostCommentCreation) => {
         postCommentService.create(data).then(res => {
@@ -107,14 +134,27 @@ const ProfilePageContainer : React.FC = () => {
 
     return (
         <ProfilePage posts={userPosts}
+                     profileId={actualProfileId}
+                     userFriendsLoaded={userFriendsLoaded}
+                     userFriends={userFriends}
                      onRemoveComment={onRemoveComment}
                      onCommentCreated={onCommentCreated}
                      postsLoaded={postsLoaded}
-                     deletePost={deletePost}
+                     deletePost={(postId: string) => {
+                         dispatch(deletePost(postId))
+                     }}
                      isViewerProfile={isViewerProfile}
                      userData={userData}
                      userDataLoaded={userDataLoaded}
-                     createPost={createPost}
+                     createPost={(text: string) => {
+                         const newPost : Partial<IUserPost> = {
+                             textContent: text,
+                             author: {
+                                 userId: AuthStore.identity.userId
+                             }
+                         }
+                         dispatch(createUserPost(newPost))
+                     }}
         />
     );
 
