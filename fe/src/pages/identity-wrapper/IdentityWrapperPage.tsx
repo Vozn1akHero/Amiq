@@ -1,7 +1,6 @@
 import React, {createRef, useCallback, useState} from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
 import {Routes} from "core/routing";
-import FriendsPageContainer from "pages/friends/FriendsPageContainer";
 import GroupsPageContainer from "pages/groups/GroupsPageContainer";
 import GroupPageContainer from "pages/group/GroupPageContainer";
 import ChatPageContainer from "pages/chat/ChatPageContainer";
@@ -15,6 +14,7 @@ import "./identity-wrapper-page.scss"
 import GuardedRoute from "../../core/routing/GuardedRoute";
 import NotFoundPage from "../not-found/NotFoundPage";
 import GroupSettingsPageContainer from "../group-settings/GroupSettingsPageContainer";
+import FriendListPage from "../friends/FriendListPage";
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -50,7 +50,7 @@ const IdentityWrapperPage = (props: Props) => {
                                 <Route component={AuthPageContainer} path={Routes.getSimpleLink(Routes.authPageRoutes)} />
                                 <Route component={JoinupPageContainer} path={Routes.getSimpleLink(Routes.registrationPageRoutes)} />
                                 <GuardedRoute component={ProfilePageContainer} path={Routes.getSimpleLink(Routes.profilePageRoutes)} />
-                                <Route component={FriendsPageContainer} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
+                                <Route component={FriendListPage} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
                                 <Route component={GroupsPageContainer} path={Routes.getSimpleLink(Routes.groupsPageRoutes)} />
                                 <Route exact={true} component={GroupSettingsPageContainer} path={Routes.getSimpleLink(Routes.groupSettingsPageRoutes)} />
                                 <Route component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />

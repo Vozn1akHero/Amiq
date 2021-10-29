@@ -56,7 +56,7 @@ class GroupSettingsPage extends Component<Props, State> {
 
     rerenderSubpageAfterHashChange = () => {
         let index = this.getTabIndex();
-        console.log(index)
+
         this.setState({
             chosenSectionId: index
         })

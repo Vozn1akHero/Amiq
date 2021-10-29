@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Post
 {
-    public class BsGroupPost : BsServiceBase
+    public class BsGroupPost : BusinessLayerBase
     {
         private DaGroupPost _daGroupPost = new DaGroupPost();
 

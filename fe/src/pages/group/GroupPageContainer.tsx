@@ -15,8 +15,15 @@ import {
 } from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
 import {PostCommentService} from "../../features/post/post-comment-service";
+import {connect} from "react-redux";
+import {createGroupPost, deletePost, getGroupPosts} from "../../store/redux/actions/postActions";
 
 type Props = {
+    getGroupPosts(groupId: number, page: number);
+    deleteGroupPost(postId: string);
+    createPost(post: Partial<IGroupPost>);
+    groupPosts: Array<IGroupPost>;
+    groupPostsLoaded: boolean;
     match: any;
     location: any;
     history: any;
@@ -25,7 +32,7 @@ type Props = {
 type State = {
     groupData: IGroupData;
     groupDataLoaded: boolean;
-    groupPosts: Array<IGroupPost>;
+    //groupPosts: Array<IGroupPost>;
     groupViewerRole: EnGroupViewerRole;
     basicAdminPermissionsAvailable: boolean;
     groupParticipants: Array<IGroupParticipant>;
@@ -43,11 +50,10 @@ class GroupPageContainer extends Component<Props, State>{
         this.state = {
             groupDataLoaded: false,
             groupData: null,
-            groupPosts: null,
+            //groupPosts: null,
             groupViewerRole: null,
             basicAdminPermissionsAvailable: false,
             groupParticipants: null
-            //groupPostsLoaded: false
         }
     }
 
@@ -56,7 +62,8 @@ class GroupPageContainer extends Component<Props, State>{
 
         this.getViewerRole()
             .then(() => {
-                this.getGroupPosts(1);
+                //this.getGroupPosts(1);
+                this.props.getGroupPosts(this.props.match.params.groupId, 1);
                 this.getParticipants();
             })
     }
@@ -103,7 +110,7 @@ class GroupPageContainer extends Component<Props, State>{
     //#region comments
 
     onCommentCreated = (data: IGroupPostCommentCreation) => {
-        data.groupId = this.state.groupData.groupId;
+        /*data.groupId = this.state.groupData.groupId;
         this.postCommentService.createGroupPostComment(data).then(res => {
             if(res.status === StatusCodes.CREATED){
                 const newComment = res.data as IGroupPostComment;
@@ -130,11 +137,11 @@ class GroupPageContainer extends Component<Props, State>{
                 })
             }
         })
-
+*/
     }
 
     onRemoveComment = (postCommentId: string) => {
-        this.postCommentService.delete(postCommentId).then(res => {
+        /*this.postCommentService.delete(postCommentId).then(res => {
             if(res.status === StatusCodes.OK){
                 const removeComment = res.data as IPostComment;
                 for(const groupPost of this.state.groupPosts){
@@ -152,22 +159,24 @@ class GroupPageContainer extends Component<Props, State>{
                     }
                 }
             }
-        })
+        })*/
     }
 
     //#endregion
 
     //#region posts
 
-    getGroupPosts = (page: number) => {
+
+
+    /*getGroupPosts = (page: number) => {
         this.groupPostService.getPostsByGroupId(this.props.match.params.groupId, page).then(res => {
             this.setState({
                 groupPosts: res.data as Array<IGroupPost>
             })
         })
-    }
+    }*/
 
-    onPostCreated = (data: Partial<IGroupPost>) => {
+    /*onPostCreated = (data: Partial<IGroupPost>) => {
         console.log(data)
         this.groupPostService.create(data).then(res => {
             if(res.status === StatusCodes.CREATED){
@@ -188,7 +197,7 @@ class GroupPageContainer extends Component<Props, State>{
                 })
             }
         })
-    }
+    }*/
 
     //#endregion
 
@@ -196,28 +205,32 @@ class GroupPageContainer extends Component<Props, State>{
         return (
             <GroupPage groupParticipants={this.state.groupParticipants}
                        onRemoveComment={this.onRemoveComment}
-                       onDeletePost={this.onDeletePost}
-                       onPostCreated={this.onPostCreated}
+                       onDeletePost={this.props.deleteGroupPost}
+                       onPostCreated={this.props.createPost}
                        onCommentCreated={this.onCommentCreated}
                        basicAdminPermissionsAvailable={this.state.basicAdminPermissionsAvailable}
                        groupData={this.state.groupData}
-                       groupPosts={this.state.groupPosts}
+                       groupPosts={this.props.groupPosts}
+                       groupPostsLoaded={this.props.groupPostsLoaded}
                        groupDataLoaded={this.state.groupDataLoaded}
             />
         );
     }
 }
 
-/*const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        getGroupPosts: (groupId: number, page: number) => dispatch(getGroupPosts(groupId, page))
+        getGroupPosts: (groupId: number, page: number) => dispatch(getGroupPosts(groupId, page)),
+        deleteGroupPost: (postId: string) => dispatch(deletePost(postId)),
+        createPost: (post: Partial<IGroupPost>) => dispatch(createGroupPost(post))
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        groupPosts: state.groupPost.groupPosts
+        groupPosts: state.post.posts,
+        groupPostsLoaded: state.post.postsLoaded
     }
-}*/
+}
 
-export default GroupPageContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(GroupPageContainer);

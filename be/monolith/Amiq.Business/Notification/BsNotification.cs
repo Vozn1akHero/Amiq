@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Notification
 {
-    public class BsNotification : BsServiceBase
+    public class BsNotification : BusinessLayerBase
     {
     }
 }

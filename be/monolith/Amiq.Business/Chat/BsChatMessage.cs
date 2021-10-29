@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Chat
 {
-    public class BsChatMessage : BsServiceBase
+    public class BsChatMessage : BusinessLayerBase
     {
         private DaChatMessage _daChatMessage = new DaChatMessage();
         private DaBlockedUser _daBlockedUser = new DaBlockedUser();

@@ -1,4 +1,4 @@
-import {Utils} from "../../../core/utils";
+import {Utils} from "../../../../core/utils";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./found-user-card.scss"
@@ -8,11 +8,16 @@ type FriendCardProps = {
     name: string;
     surname: string;
     avatarPath: string;
-    blockedByIssuer: boolean;
-    issuerBlocked: boolean;
-    isIssuerFriend: boolean;
-    issuerReceivedFriendRequest: boolean;
-    issuerSentFriendRequest: boolean;
+    blockedByIssuer?: boolean;
+    issuerBlocked?: boolean;
+    isIssuerFriend?: boolean;
+    issuerReceivedFriendRequest?: boolean;
+    issuerSentFriendRequest?: boolean;
+    friendRequestId?: string;
+    onAcceptFriendRequest?(friendRequestId:string):void;
+    onCancelFriendRequest?(friendRequestId:string):void;
+    onRejectFriendRequest?(friendRequestId:string):void;
+    onRemoveFriendById?(friendId: number):void;
 }
 
 const FoundUserCard = (props: Partial<FriendCardProps>) => {
@@ -26,7 +31,12 @@ const FoundUserCard = (props: Partial<FriendCardProps>) => {
                 <Link to={`/chat?to=${props.userId}`}
                       uk-icon="mail"
                       className="uk-icon-link"/>
-                <a href="#" uk-icon="trash" className="uk-icon-link uk-margin-small-left"></a>
+                <a uk-icon="trash"
+                   onClick={e => {
+                       e.preventDefault();
+                       props.onRemoveFriendById(props.userId);
+                   }}
+                   className="uk-icon-link uk-margin-small-left" />
             </>
         } else if (props.blockedByIssuer) {
             return <>
@@ -36,11 +46,27 @@ const FoundUserCard = (props: Partial<FriendCardProps>) => {
             return <a href="#" uk-icon="lock" className="uk-icon-link uk-margin-small-left"></a>
         } else if(props.issuerReceivedFriendRequest) {
             return <>
-                <a href="#" uk-icon="check" className="uk-icon-link uk-margin-small-left"></a>
-                <a href="#" uk-icon="close" className="uk-icon-link uk-margin-small-left"></a>
+                <a uk-icon="check"
+                   onClick={e=>{
+                       e.preventDefault();
+                       props.onAcceptFriendRequest(props.friendRequestId);
+                   }}
+                   className="uk-icon-link uk-margin-small-left" />
+                <a href=""
+                   uk-icon="close"
+                   onClick={e=>{
+                       e.preventDefault();
+                       props.onRejectFriendRequest(props.friendRequestId);
+                   }}
+                   className="uk-icon-link uk-margin-small-left" />
             </>
         } else if(props.issuerSentFriendRequest) {
-            return <a href="#" uk-icon="close" className="uk-icon-link uk-margin-small-left"></a>;
+            return <a uk-icon="close"
+                      onClick={e=>{
+                          e.preventDefault();
+                          props.onCancelFriendRequest(props.friendRequestId);
+                      }}
+                      className="uk-icon-link uk-margin-small-left"></a>;
         }
     }
 

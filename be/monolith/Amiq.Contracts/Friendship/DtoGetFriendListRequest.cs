@@ -3,7 +3,7 @@ using Amiq.Contracts.Utils;
 
 namespace Amiq.Contracts.Friendship
 {
-    public class DtoFriendListRequest : DtoPaginatedRequest
+    public class DtoGetFriendListRequest : DtoPaginatedRequest
     { 
         public int IssuerId { get; set; }
     }

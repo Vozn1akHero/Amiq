@@ -8,6 +8,7 @@ namespace Amiq.FakeDataGenerator
 {
     internal interface IFakeDataGenerator
     {
-        Task GenerateFakeDataAsync(int rows);
+        void ReadNamesFromFile(int rows);
+        void GenerateFakeData();
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Utils
 {
-    public class BsServiceBase : IDomainService
+    public class BusinessLayerBase : IDomainService
     {
         protected void CheckBsRule(IBsRule businessRule){
             if (!businessRule.CheckBsRule()) {

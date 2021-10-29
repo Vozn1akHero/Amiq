@@ -1,7 +1,7 @@
 import {IFriendship} from "features/friend/friendship-models";
 import {
     BEGIN_SEARCHING_FOR_USER_FRIENDS, CLEAR_FOUND_USERS,
-    CLEAR_USER_FRIENDS,
+    CLEAR_USER_FRIENDS, REMOVE_FRIEND_FROM_STORE,
     SET_FOUND_USER_FRIENDS,
     SET_USER_FRIENDS
 } from "../types/userFriendTypes";
@@ -55,6 +55,14 @@ export default function(state:UserFriendReducer = initialState, action) {
                 ...state,
                 foundFriends: [],
                 foundUsers: []
+            }
+        }
+        case REMOVE_FRIEND_FROM_STORE: {
+            return {
+                ...state,
+                userFriends: state.userFriends.filter(e=>e.userId !== action.payload),
+                foundFriends: state.foundFriends.filter(e=>e.userId !== action.payload),
+                foundUsers: state.foundUsers.filter(e=>e.userId !== action.payload)
             }
         }
         default:

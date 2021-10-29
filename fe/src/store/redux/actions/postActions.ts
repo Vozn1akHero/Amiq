@@ -28,6 +28,22 @@ export const getGroupPosts = (groupId: number, page: number) => (dispatch) => {
     })
 }
 
+export const createGroupPost = (data : Partial<IGroupPost>) => dispatch => {
+    dispatch({
+        type: CREATE_POST
+    })
+
+    groupPostService.create(data).then(res => {
+        if(res.status === StatusCodes.CREATED) {
+            const createdPost = res.data as IGroupPost;
+            dispatch({
+                type: SET_CREATED_POST,
+                payload: createdPost
+            })
+        }
+    })
+}
+
 export const getUserPosts = (userId: number, page: number) => dispatch => {
     dispatch({
         type: GET_USER_POSTS

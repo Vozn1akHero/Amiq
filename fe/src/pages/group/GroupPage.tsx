@@ -23,6 +23,7 @@ type Props = {
     groupData: IGroupData;
     groupDataLoaded: boolean;
     groupPosts: Array<IGroupPost>;
+    groupPostsLoaded: boolean;
     basicAdminPermissionsAvailable: boolean;
     groupParticipants: Array<IGroupParticipant>;
     onCommentCreated(data: IGroupPostCommentCreation);

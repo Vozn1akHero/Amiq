@@ -5,7 +5,7 @@ import {IFriendship} from "../../../features/friend/friendship-models";
 import {
     BEGIN_SEARCHING_FOR_USER_FRIENDS, CLEAR_FOUND_USERS,
     CLEAR_USER_FRIENDS,
-    GET_USER_FRIENDS, SET_FOUND_USER_FRIENDS,
+    GET_USER_FRIENDS, REMOVE_FRIEND, REMOVE_FRIEND_FROM_STORE, SET_FOUND_USER_FRIENDS,
     SET_USER_FRIENDS
 } from "../types/userFriendTypes";
 import {IFoundUser} from "../../../features/user/models/found-user";
@@ -50,5 +50,19 @@ export const searchForFriends = (text: string) => dispatch => {
                 payload: foundFriends
             })
         }
+    })
+}
+
+export const removeFriend = (friendId: number) => dispatch => {
+    dispatch({
+        type: REMOVE_FRIEND
+    })
+
+    friendService.removeFriend(friendId).then(res => {
+        if(res.status === StatusCodes.OK)
+            dispatch({
+                type: REMOVE_FRIEND_FROM_STORE,
+                payload: friendId
+            })
     })
 }

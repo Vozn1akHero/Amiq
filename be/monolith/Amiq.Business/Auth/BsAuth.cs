@@ -7,7 +7,7 @@ using System;
 
 namespace Amiq.Business.Auth
 {
-    public class BsAuth : BsServiceBase
+    public class BsAuth : BusinessLayerBase
     {
         private DaAuth _daAuth;
 

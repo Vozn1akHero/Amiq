@@ -52,7 +52,7 @@ class SimpleDropdown extends Component<Props,State> {
                     if(this.myVar){
                         this.myVar();
                     }
-                }} className="uk-button uk-button-default" style={{borderRadius: "1rem"}}>
+                }} className="uk-button uk-button-default simple-dropdown__btn">
                     {
                         this.props.placeholder && <span className={this.props.icon && `uk-margin-right`}>{this.props.placeholder}</span>
                     }
@@ -60,7 +60,7 @@ class SimpleDropdown extends Component<Props,State> {
                         this.props.icon && <span uk-icon={`icon:${this.props.icon}`}></span>
                     }
                 </div>
-                <div className={`simple-dropdown__dropdown uk-dropdown ${this.state.isOpen && `uk-open`}`}>
+                <div className={`simple-dropdown__dropdown uk-dropdown uk-background-default ${this.state.isOpen && `uk-open`}`}>
                     <ul className="simple-dropdown__nav uk-nav uk-dropdown-nav"
                         onMouseOver={() => {this.setState({isCursorOnBody: true}); this.myVar();}}
                         onMouseOut={() => {this.setState({isCursorOnBody: false}); this.myVar();}}

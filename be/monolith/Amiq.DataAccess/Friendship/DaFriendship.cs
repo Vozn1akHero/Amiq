@@ -1,6 +1,8 @@
-﻿using Amiq.Contracts.Friendship;
+﻿using Amiq.Common.DbOperation;
+using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
+using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ namespace Amiq.DataAccess.Friendship
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoFriendListRequest request)
+        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest request)
         {
             return await (from fr in _amiqContext.Friendships.AsNoTracking()
                           join u1 in _amiqContext.Users.AsNoTracking()
@@ -31,28 +33,6 @@ namespace Amiq.DataAccess.Friendship
                           .Skip((request.Page-1) * request.Count)
                           .Take(request.Count)
                           .ToListAsync();
-        }
-
-        public DtoFriendRequest CreateFriendRequest(int issuerId, int receiverId)
-        {
-            var record = new FriendRequest { IssuerId = issuerId, ReceiverId = receiverId };
-            _amiqContext.FriendRequests.Add(record);
-            _amiqContext.SaveChanges();
-            return new DtoFriendRequest { FriendRequestId = record.FriendRequestId,
-                IssuerId = issuerId, 
-                ReceiverId = receiverId };
-        }
-
-        public async Task DeleteFriendRequestAsync(int issuerId, int receiverId)
-        {
-            var friendRequest = _amiqContext
-                .FriendRequests
-                .SingleOrDefault(e => e.IssuerId == issuerId && e.ReceiverId == receiverId);
-            if (friendRequest != null)
-            {
-                _amiqContext.FriendRequests.Remove(friendRequest);
-                await _amiqContext.SaveChangesAsync();
-            }
         }
 
         public async Task<IEnumerable<DtoFriend>> SearchForUserFriendsAsync(int issuerId, DtoPaginatedRequest request, string searchText)
@@ -77,6 +57,16 @@ namespace Amiq.DataAccess.Friendship
                           .ToListAsync();
         }
 
+        public DbOperationResult RemoveFriend(int userId, int friendId)
+        {
+            DbOperationResult dbOperationResult = new();
+            var entity = _amiqContext.Friendships.Single(e => (e.FirstUserId == userId && e.SecondUserId == friendId)
+                || e.FirstUserId == friendId && e.SecondUserId == userId);
+            _amiqContext.Friendships.Remove(entity);
+            _amiqContext.SaveChangesAsync();
+            dbOperationResult.Success = true;
+            return dbOperationResult;
+        }
 
         /*public async Task<DtoFriendSearchResult> SearchAsync(int issuerId, DtoPaginatedRequest paginatedRequest, string text)
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business
 {
-    public class BsGroup : BsServiceBase
+    public class BsGroup : BusinessLayerBase
     {
         private DaGroup _daGroup = new DaGroup();
         private DaGroupParticipant _daGroupParticipant = new DaGroupParticipant();

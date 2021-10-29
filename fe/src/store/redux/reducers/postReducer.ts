@@ -12,8 +12,6 @@ type PostReducer = {
 }
 
 const initialState : PostReducer = {
-    //groupPosts: [],
-    //groupPostsLoaded: false
     postsLoaded: false,
     posts: []
 }

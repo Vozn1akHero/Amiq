@@ -22,4 +22,8 @@ export class FriendService extends BaseService{
             .append("count", 10);
         return this.httpClient.get(this.buildApiPath("search"), null, query)
     }
+
+    removeFriend(friendId: number) {
+        return this.httpClient.delete(this.buildApiPath(), null, new HttpParams().append("friendId", friendId))
+    }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Post
 {
-    public class BsPostComment : BsServiceBase
+    public class BsPostComment : BusinessLayerBase
     {
         private DaPostComment daPostComment = new DaPostComment();
 

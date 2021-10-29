@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.User
 {
-    public class BsUser : BsServiceBase
+    public class BsUser : BusinessLayerBase
     {
         private DaUser _daUser = new DaUser();
 

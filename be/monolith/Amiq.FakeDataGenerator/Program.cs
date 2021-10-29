@@ -10,6 +10,14 @@ namespace Amiq.FakeDataGenerator
     {
         public static void Main(string[] args)
         {
+            
+        }
+
+        private static void GenerateUsers()
+        {
+            var dao = new UserFakeDataDao();
+            dao.ReadNamesFromFile(500);
+            dao.GenerateFakeData();
         }
     }
 }

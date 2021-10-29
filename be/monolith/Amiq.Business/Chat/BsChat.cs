@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Chat
 {
-    public class BsChat : BsServiceBase
+    public class BsChat : BusinessLayerBase
     {
         private DaChat _daChat = new DaChat();
 

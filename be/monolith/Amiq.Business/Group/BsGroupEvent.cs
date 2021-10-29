@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Group
 {
-    public class BsGroupEvent : BsServiceBase
+    public class BsGroupEvent : BusinessLayerBase
     {
         private DaGroupEvent _daGroupEvent = new DaGroupEvent();
 

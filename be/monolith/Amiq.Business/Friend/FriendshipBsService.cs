@@ -14,22 +14,13 @@ using System.Threading.Tasks;
 
 namespace Amiq.Business.Friend
 {
-    public class BsFriendship : BsServiceBase
+    public class FriendshipBsService : BusinessLayerBase
     {
         private DaFriendship _daFriendship = new DaFriendship();
 
-        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoFriendListRequest dtoFriendListRequest)
+        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest dtoFriendListRequest)
         {
             return await _daFriendship.GetUserFriendListAsync(dtoFriendListRequest);
-        }
-
-        public DtoFriendRequest CreateFriendRequest(int issuerId, int receiverId)
-        {
-            CheckBsRule(new BsRuleFriendRequestAlreadyExists());
-            CheckBsRule(new BsRuleRequestIssuerCannotBeBlockedByReceiver());
-            CheckBsRule(new BsRuleFriendRequestAlreadyExists());
-
-            return _daFriendship.CreateFriendRequest(issuerId, receiverId);
         }
 
         public async Task CancelFriendRequestAsync(int issuerId, int receiverId)
@@ -58,6 +49,11 @@ namespace Amiq.Business.Friend
                 result.FoundUsers = foundUsers;
             }
             return result;
+        }
+
+        public DbOperationResult RemoveFriend(int userId, int friendId)
+        {
+            return _daFriendship.RemoveFriend(userId, friendId);
         }
     }
 }
