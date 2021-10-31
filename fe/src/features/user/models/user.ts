@@ -9,4 +9,9 @@ export interface IUser {
     avatarPath: string;
     shortDescription: string;
     userDescriptionBlocks: Array<IDescriptionBlock>;
+    blockedByIssuer: boolean;
+    issuerBlocked: boolean;
+    issuerReceivedFriendRequest: boolean;
+    issuerSentFriendRequest: boolean;
+    isIssuerFriend: boolean;
 }

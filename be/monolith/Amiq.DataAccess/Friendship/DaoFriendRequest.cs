@@ -84,5 +84,12 @@ namespace Amiq.DataAccess.Friendship
         {
             return _amiqContext.FriendRequests.Any(e => e.IssuerId == userId && e.FriendRequestId == friendRequestId);
         }
+
+        public DtoFriendRequest GetFriendRequestByUserIds(int fUserId, int sUserId)
+        {
+            IQueryable queryable = _amiqContext.FriendRequests.Where(e=>(e.IssuerId == fUserId && e.ReceiverId == sUserId)
+                || (e.IssuerId == sUserId && e.ReceiverId == fUserId));
+            return APAutoMapper.Instance.ProjectTo<DtoFriendRequest>(queryable).Single();
+        }
     }
 }

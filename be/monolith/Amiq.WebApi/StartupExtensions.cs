@@ -14,7 +14,7 @@ namespace Amiq.WebApi
     {
         public static void ConfigureMiddlewares(this IApplicationBuilder app)
         {
-            app.UseMiddleware<WorkContextMiddleware>();
+            app.UseMiddleware<RequestContextMiddleware>();
         }
 
         public static void ConfigureCustomServices(this IServiceCollection services)

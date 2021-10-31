@@ -20,7 +20,7 @@ namespace Amiq.Business.Chat
         public async Task<DtoChatMessage> CreateChatMessageAsync(DtoChatMessageCreation dtoChatMessageCreation)
         {
             CheckBsRule(new ChatShouldBeAvailableForInterlocutor(dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ChatId));
-            CheckBsRule(new BsRuleBlockedUserCannotPerformAction(_daBlockedUser, dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ReceiverId));
+            CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(_daBlockedUser, dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ReceiverId));
             return await _daChatMessage.CreateChatMessageAsync(dtoChatMessageCreation);
         }
 

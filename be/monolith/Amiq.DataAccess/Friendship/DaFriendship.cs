@@ -1,4 +1,5 @@
 ﻿using Amiq.Common.DbOperation;
+using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
@@ -16,9 +17,13 @@ namespace Amiq.DataAccess.Friendship
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest request)
+        public async Task<DtoListResponseOf<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest request)
         {
-            return await (from fr in _amiqContext.Friendships.AsNoTracking()
+            DtoListResponseOf<DtoFriend> result = new();
+            result.Length = await _amiqContext.Friendships.AsNoTracking()
+                .Where(fr => fr.FirstUserId == request.IssuerId || fr.SecondUserId == request.IssuerId)
+                .CountAsync();
+            result.Entities = await (from fr in _amiqContext.Friendships.AsNoTracking()
                           join u1 in _amiqContext.Users.AsNoTracking()
                           on fr.FirstUserId equals u1.UserId
                           join u2 in _amiqContext.Users.AsNoTracking()
@@ -33,6 +38,7 @@ namespace Amiq.DataAccess.Friendship
                           .Skip((request.Page-1) * request.Count)
                           .Take(request.Count)
                           .ToListAsync();
+            return result;
         }
 
         public async Task<IEnumerable<DtoFriend>> SearchForUserFriendsAsync(int issuerId, DtoPaginatedRequest request, string searchText)

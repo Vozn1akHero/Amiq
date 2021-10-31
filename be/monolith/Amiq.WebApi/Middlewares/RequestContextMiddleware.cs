@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Middlewares
 {
-    public class WorkContextMiddleware 
+    public class RequestContextMiddleware 
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<WorkContextMiddleware> _logger;
-        public WorkContextMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        private readonly ILogger<RequestContextMiddleware> _logger;
+        public RequestContextMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = loggerFactory?.CreateLogger<WorkContextMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory?.CreateLogger<RequestContextMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory));
         }
         public async Task InvokeAsync(HttpContext context)
         {

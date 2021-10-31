@@ -16,14 +16,14 @@ class ExemplaryUserFriendsInFrame extends Component<Props> {
     getConvertedExemplaryFriendsToFrameItems = () => {
         if(this.props.userFriendsLoaded){
             let arr : Array<IUserInFrame> = [];
-            this.props.userFriends.map(e=>{
+            for(const e of this.props.userFriends){
                 arr.push({
                     userId: e.userId,
                     viewName: e.name + " " + e.surname,
                     imagePath: e.avatarPath,
                     link: "/profile/" + e.userId
                 })
-            })
+            }
             return arr;
         }
     }
@@ -33,7 +33,7 @@ class ExemplaryUserFriendsInFrame extends Component<Props> {
             <div className="exemplary-user-friends-in-frame">
                 <ItemsFrameL title="Znajomi"
                              displayHeaderAsLink={true}
-                             link={`/profile/:${this.props.userId}/friends`}
+                             link={`/profile/${this.props.userId}/friends`}
                              icon="users"
                              callbackText="Brak znajomych" >
                     {

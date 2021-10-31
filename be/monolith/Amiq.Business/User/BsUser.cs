@@ -14,6 +14,7 @@ namespace Amiq.Business.User
     public class BsUser : BusinessLayerBase
     {
         private DaUser _daUser = new DaUser();
+        private BsBlockedUser _blockedUser = new BsBlockedUser();
 
         public async Task<IEnumerable<DtoUserDescriptionBlock>> GetUserDescriptionAsync(int userId)
         {
@@ -22,11 +23,13 @@ namespace Amiq.Business.User
 
         public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestIssuerId, int userId)
         {
-            var user = await _daUser.GetUserByIdAsync(userId);
-            if (user == null) return null;
-            var result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
-            result.UserDescriptionBlocks = await GetUserDescriptionAsync(userId);
-            return result;
+            var user = await _daUser.GetUserByIdAsync(requestIssuerId, userId);
+            //if (user == null) return null;
+            //var result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
+            user.UserDescriptionBlocks = await GetUserDescriptionAsync(userId);
+            /*result.IsBlockedByRequestCreator = _blockedUser.IsUserBlockedByAnotherUser(requestIssuerId, userId);
+            result.IsFriendRequestSentByRequestCreator = */
+            return user;
         }
 
         public async Task<IEnumerable<DtoUserSearchResult>> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)

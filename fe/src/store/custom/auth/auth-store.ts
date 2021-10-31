@@ -36,7 +36,6 @@ export class AuthStore {
     }
 
     public static configureIdentity(identityModel: IdentityModel){
-        console.log(identityModel)
         this._isAuthenticated$.next(identityModel.isAuthenticated);
         this._identity$.next(identityModel);
         this._isLoading$.next(true);

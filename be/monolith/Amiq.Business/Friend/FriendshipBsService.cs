@@ -2,6 +2,7 @@
 using Amiq.Business.User;
 using Amiq.Business.Utils;
 using Amiq.Common.DbOperation;
+using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Friendship;
@@ -18,7 +19,7 @@ namespace Amiq.Business.Friend
     {
         private DaFriendship _daFriendship = new DaFriendship();
 
-        public async Task<IEnumerable<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest dtoFriendListRequest)
+        public async Task<DtoListResponseOf<DtoFriend>> GetUserFriendListAsync(DtoGetFriendListRequest dtoFriendListRequest)
         {
             return await _daFriendship.GetUserFriendListAsync(dtoFriendListRequest);
         }

@@ -123,21 +123,90 @@ class GroupPage extends Component<Props, State>  {
     render() {
         return (
             <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
-                <div className="uk-grid-item-match uk-first-column uk-width-1-3">
+                <div className="uk-first-column uk-width-1-3">
                     { this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
                                                                 viewTitle={this.props.groupData.name}/> }
-                </div>
-                {
-                    !this.state.showSubpageSwitch && <div className="uk-preserve-width uk-margin-left">
-                        <h3>O nas</h3>
-                        <p>
-                            {this.props.groupData?.description}
-                        </p>
+
+                    <div className="uk-margin-medium-top">
+                        <div className="uk-card uk-card-default uk-card-body uk-background-default">
+                            <span className="uk-card-title">Zarządzanie grupą</span>
+                            {
+                                this.props.basicAdminPermissionsAvailable && <div className="uk-margin-small-top">
+                                    {
+                                        this.props.groupDataLoaded && <div className="uk-flex uk-flex-column">
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("basic")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:nut"></span> Podstawowe dane
+                                            </Link>
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("participants")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:users"></span> Uczestnicy
+                                            </Link>
+                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("events")}>
+                                                <span className="uk-margin-small-right" uk-icon="icon:calendar"></span> Wydarzenia
+                                            </Link>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+
                         {
-                            this.props.groupData?.descriptionBlocks && <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks} />
+                            this.props.groupParticipants && <div className="uk-margin-medium-top">
+                                <GroupParticipantsInFrame items={this.getConvertedParticipantsToFrameItem()} />
+                            </div>
                         }
+
+                        <div className="uk-margin-medium-top">
+                            <ItemsFrameL title="Wydarzenia"
+                                         displayHeaderAsLink={true}
+                                         link={"/group/1/events"}
+                                         icon="calendar"
+
+                                         callbackText="Brak wydarzeń" />
+                        </div>
                     </div>
-                }
+                </div>
+
+                <div className="uk-margin-left">
+                    {
+                        !this.state.showSubpageSwitch && <>
+                            <div className="uk-preserve-width">
+                                <h3>O nas</h3>
+                                <p>
+                                    {this.props.groupData?.description}
+                                </p>
+                                {
+                                    this.props.groupData?.descriptionBlocks && <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks} />
+                                }
+                            </div>
+
+                            <div className="uk-margin-large-top">
+                                <div className="uk-margin-medium-bottom">
+                                    <PostCreationForm handleSubmit={this.onPostCreated}
+                                                      publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable} />
+                                </div>
+                                {
+                                    this.props.groupPostsLoaded && this.props.groupPosts.map((post, index) => {
+                                        return <Post postId={post.postId}
+                                                     postType={EnPostType.Group}
+                                                     onDeletePost={this.onDeletePost}
+                                                     onRemoveComment={this.props.onRemoveComment}
+                                                     onCommentCreated={this.props.onCommentCreated}
+                                                     hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
+                                                     comments={post.comments}
+                                                     avatarPath={Utils.getImageSrc(post.avatarPath)}
+                                                     text={post.textContent}
+                                                     authorLink={"/group/"+post.groupId}
+                                                     createdAt={post.createdAt}
+                                                     viewName={post.groupName}
+                                                     publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
+                                                     deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
+                                                     key={index} />
+                                    })
+                                }
+                            </div>
+                        </>
+                    }
+                </div>
 
                 {
                     this.state.showSubpageSwitch && <div className="uk-preserve-width uk-margin-left">
@@ -148,79 +217,6 @@ class GroupPage extends Component<Props, State>  {
                         </Switch>
                     </div>
                 }
-
-                <div className="uk-first-column uk-margin-medium-top uk-width-1-3">
-                    <div className="uk-card uk-card-default uk-card-body uk-background-default">
-                        <span className="uk-card-title">Zarządzanie grupą</span>
-                        {
-                            this.props.basicAdminPermissionsAvailable && <div className="uk-margin-small-top">
-                                {
-                                    this.props.groupDataLoaded && <div className="uk-flex uk-flex-column">
-                                        <Link className="uk-margin-small-top" to={this.getSettingsLink("basic")}>
-                                            <span className="uk-margin-small-right" uk-icon="icon:nut"></span> Podstawowe dane
-                                        </Link>
-                                        <Link className="uk-margin-small-top" to={this.getSettingsLink("participants")}>
-                                            <span className="uk-margin-small-right" uk-icon="icon:users"></span> Uczestnicy
-                                        </Link>
-                                        <Link className="uk-margin-small-top" to={this.getSettingsLink("events")}>
-                                            <span className="uk-margin-small-right" uk-icon="icon:calendar"></span> Wydarzenia
-                                        </Link>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    {
-                        this.props.groupParticipants && <div className="uk-margin-medium-top">
-                            <GroupParticipantsInFrame items={this.getConvertedParticipantsToFrameItem()} />
-                        </div>
-                    }
-
-                    <div className="uk-margin-medium-top">
-                        <ItemsFrameL title="Wydarzenia"
-                                     displayHeaderAsLink={true}
-                                     link={"/group/1/events"}
-                                     icon="calendar"
-
-                                     callbackText="Brak wydarzeń" />
-                    </div>
-                   {/* <div className="uk-margin-medium-top">
-                        <ItemsFrameL title="Linki"
-                                     icon="world"
-                                     items={[]}
-                                     callbackText="Brak linków" />
-                    </div>*/}
-                </div>
-                <div className="uk-margin-left uk-margin-large-top">
-                    {
-                        !this.state.showSubpageSwitch && <>
-                            <div className="uk-margin-medium-bottom">
-                                <PostCreationForm handleSubmit={this.onPostCreated}
-                                                  publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable} />
-                            </div>
-                            {
-                                this.props.groupPosts != null && this.props.groupPosts.map((post, index) => {
-                                    return <Post postId={post.postId}
-                                                 postType={EnPostType.Group}
-                                                 onDeletePost={this.onDeletePost}
-                                                 onRemoveComment={this.props.onRemoveComment}
-                                                 onCommentCreated={this.props.onCommentCreated}
-                                                 hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
-                                                 comments={post.comments}
-                                                 avatarPath={Utils.getImageSrc(post.avatarPath)}
-                                                 text={post.textContent}
-                                                 authorLink={"/group/"+post.groupId}
-                                                 createdAt={post.createdAt}
-                                                 viewName={post.groupName}
-                                                 publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
-                                                 deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
-                                                 key={index} />
-                                })
-                            }
-                        </>
-                    }
-                </div>
             </div>
         );
     }

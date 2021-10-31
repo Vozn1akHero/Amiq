@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.Post;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
 using Amiq.DataAccess.Post;
@@ -14,7 +15,7 @@ namespace Amiq.Business.Post
     {
         private DaUserPost daUserPost = new DaUserPost();
 
-        public async Task<IEnumerable<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             return await daUserPost.GetUserPostsAsync(userId, dtoPaginatedRequest);
         }

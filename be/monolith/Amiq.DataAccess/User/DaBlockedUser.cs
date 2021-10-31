@@ -58,10 +58,15 @@ namespace Amiq.DataAccess.User
                 .SingleOrDefault();
         }
 
-        public bool IsUserBlockedByAnotherUser(int issuerId, int userId)
+        public bool OneWayBlockExists(int issuerId, int userId)
         {
             return _amiqContext.BlockedUsers.Any(e => (e.IssuerId == issuerId && e.DestUserId == userId) 
             || e.IssuerId == userId && e.DestUserId == issuerId);
+        }
+
+        public bool IsUserBlockedByAnotherUser(int issuerId, int userId)
+        {
+            return _amiqContext.BlockedUsers.Any(e => e.IssuerId == userId && e.DestUserId == issuerId);
         }
     }
 }

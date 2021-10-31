@@ -5,11 +5,11 @@ import {IUserPost} from "./models/user-post";
 export class UserPostService extends BaseService {
     apiModule = "user-post";
 
-    getUserPosts(userId: number, page: number){
+    getUserPosts(userId: number, page: number, length: number){
         const params = new HttpParams()
             .append("userId", userId.toString());
         const queryParams = new HttpQueryParams()
-            .append("count", 20)
+            .append("count", length)
             .append("page", page);
         return this.httpClient.get(this.buildApiPath("list"), params, queryParams);
     }

@@ -1,18 +1,46 @@
 import {UserPostService} from "../../../features/post/user-post-service";
 import {GroupPostService} from "../../../features/post/group-post-service";
 import {IGroupPost} from "../../../features/post/models/group-post";
-import {GET_GROUP_POSTS} from "../types/groupPostTypes";
+import {GET_GROUP_POSTS, SET_GROUP_POSTS} from "../types/groupPostTypes";
 import {GET_USER_POSTS, SET_USER_POSTS} from "../types/userPostTypes";
 import {IUserPost} from "../../../features/post/models/user-post";
 import {StatusCodes} from "http-status-codes";
 import {PostService} from "../../../features/post/post-service";
-import {CREATE_POST, DELETE_POST, SET_CREATED_POST} from "../types/postTypes";
-import {AuthStore} from "../../custom/auth/auth-store";
+import {CLEAR_POSTS, CREATE_POST, DELETE_POST, SET_CREATED_POST} from "../types/postTypes";
 import {AxiosResponse} from "axios";
+import {IResponseListOf} from "../../../core/http-client/response-list-of";
+import {PostCommentService} from "../../../features/post/post-comment-service";
+import {IGroupPostComment, IGroupPostCommentCreation, IPostComment} from "../../../features/post/models/post-comment";
+import {REMOVE_GROUP_POST_COMMENT} from "../types/groupPostCommentTypes";
 
 const userPostService = new UserPostService();
 const groupPostService = new GroupPostService();
 const postService = new PostService();
+const postCommentService = new PostCommentService();
+
+//#region comments
+
+export const createGroupPostComment = (data: IGroupPostCommentCreation) => (dispatch) => {
+    postCommentService.createGroupPostComment(data).then(res => {
+        if(res.status === StatusCodes.CREATED){
+            const newComment = res.data as IGroupPostComment;
+        }
+    })
+}
+
+export const removeComment = (postCommentId: string) => (dispatch) => {
+    postCommentService.delete(postCommentId).then(res => {
+        if (res.status === StatusCodes.OK) {
+            const removeComment = res.data as IPostComment;
+            dispatch({
+                type: REMOVE_GROUP_POST_COMMENT,
+                payload: removeComment
+            })
+        }
+    })
+}
+
+//#endregion
 
 export const getGroupPosts = (groupId: number, page: number) => (dispatch) => {
     dispatch({
@@ -20,21 +48,21 @@ export const getGroupPosts = (groupId: number, page: number) => (dispatch) => {
     });
 
     groupPostService.getPostsByGroupId(groupId, page).then(res => {
-        const groupPosts = res.data as Array<IGroupPost>;
+        const groupPosts = res.data as IResponseListOf<IGroupPost>;
         dispatch({
-            type: "SET_POSTS",
+            type: SET_GROUP_POSTS,
             payload: groupPosts
         })
     })
 }
 
-export const createGroupPost = (data : Partial<IGroupPost>) => dispatch => {
+export const createGroupPost = (data: Partial<IGroupPost>) => dispatch => {
     dispatch({
         type: CREATE_POST
     })
 
     groupPostService.create(data).then(res => {
-        if(res.status === StatusCodes.CREATED) {
+        if (res.status === StatusCodes.CREATED) {
             const createdPost = res.data as IGroupPost;
             dispatch({
                 type: SET_CREATED_POST,
@@ -44,16 +72,22 @@ export const createGroupPost = (data : Partial<IGroupPost>) => dispatch => {
     })
 }
 
-export const getUserPosts = (userId: number, page: number) => dispatch => {
+export const getUserPosts = (userId: number, page: number, length: number) => dispatch => {
+    if (page === 1) {
+        dispatch({
+            type: CLEAR_POSTS
+        })
+    }
+
     dispatch({
         type: GET_USER_POSTS
     })
 
-    userPostService.getUserPosts(userId, page).then(({data, status}) => {
-        if(status === StatusCodes.OK){
+    userPostService.getUserPosts(userId, page, length).then(({data, status}) => {
+        if (status === StatusCodes.OK) {
             dispatch({
                 type: SET_USER_POSTS,
-                payload: data as Array<IUserPost>
+                payload: data as IResponseListOf<IUserPost>
             })
         }
     })
@@ -64,8 +98,8 @@ export const createUserPost = (post: Partial<IUserPost>) => async dispatch => {
         type: CREATE_POST
     })
 
-    const result : AxiosResponse<IUserPost> = await userPostService.create(post)
-    const { data } : { data: IUserPost } = result;
+    const result: AxiosResponse<IUserPost> = await userPostService.create(post)
+    const {data}: { data: IUserPost } = result;
 
     dispatch({
         type: SET_CREATED_POST,
@@ -74,12 +108,12 @@ export const createUserPost = (post: Partial<IUserPost>) => async dispatch => {
 }
 
 export const deletePost = (postId: string) => dispatch => {
-   /* dispatch({
-        type:
-    })*/
+    /* dispatch({
+         type:
+     })*/
 
     postService.removePostById(postId).then(res => {
-        if(res.status === StatusCodes.OK){
+        if (res.status === StatusCodes.OK) {
             dispatch({
                 type: DELETE_POST,
                 payload: postId

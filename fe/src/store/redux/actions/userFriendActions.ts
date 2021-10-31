@@ -1,5 +1,4 @@
 import {FriendService} from "../../../features/friend/friend-service";
-import {AuthStore} from "../../custom/auth/auth-store";
 import {StatusCodes} from "http-status-codes";
 import {IFriendship} from "../../../features/friend/friendship-models";
 import {
@@ -9,6 +8,7 @@ import {
     SET_USER_FRIENDS
 } from "../types/userFriendTypes";
 import {IFoundUser} from "../../../features/user/models/found-user";
+import {IResponseListOf} from "../../../core/http-client/response-list-of";
 
 const friendService = new FriendService();
 
@@ -19,9 +19,10 @@ export const getUserFriends = (userId: number, page, count) => (dispatch, state)
         type: GET_USER_FRIENDS
     })
 
-    friendService.getFriendsByUserId(AuthStore.identity.userId, page, count).then(res => {
+    friendService.getFriendsByUserId(userId, page, count).then(res => {
         if(res.status === StatusCodes.OK){
-            const friends = res.data as Array<IFriendship>;
+            const friends = res.data as IResponseListOf<IFriendship>;
+
             dispatch({
                 type: SET_USER_FRIENDS,
                 payload: friends

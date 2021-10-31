@@ -46,14 +46,18 @@ class Comment extends Component<Props> {
                                     </div>
                                 </div>
                                 <div className="uk-position-top-right uk-position-small uk-hidden-hover">
-                                    <a href="#"
-                                       onClick={e=>{
+                                    <a onClick={e=>{
                                            e.preventDefault();
                                            this.props.onReplyClick(this.props.comment.commentId);
                                        }}
                                        uk-icon="reply"
                                        className="uk-icon-link"/>
-                                    <a href="#" uk-icon="trash" className="uk-icon-link uk-margin-small-left"/>
+                                    <a uk-icon="trash"
+                                       onClick={e=>{
+                                           e.preventDefault();
+                                           this.props.onRemoveComment(this.props.comment.commentId);
+                                       }}
+                                       className="uk-icon-link uk-margin-small-left"/>
                                 </div>
                             </header>
                             <div className="uk-comment-body">

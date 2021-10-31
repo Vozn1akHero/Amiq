@@ -16,5 +16,10 @@ namespace Amiq.Contracts.User
         public DateTime Birthdate { get; set; }
         public string ShortDescription { get; set; }
         public IEnumerable<DtoUserDescriptionBlock> UserDescriptionBlocks { get; set; }
+        public bool BlockedByIssuer { get; set; }
+        public bool IssuerBlocked { get; set; }
+        public bool IssuerReceivedFriendRequest { get; set; }
+        public bool IssuerSentFriendRequest { get; set; }
+        public bool IsIssuerFriend { get; set; }
     }
 }

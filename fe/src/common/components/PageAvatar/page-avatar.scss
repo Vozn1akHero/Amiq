@@ -17,11 +17,26 @@
     transform: scale(1.2);
   }
 
+  &__img-wrap{
+    position: relative;
+  }
+
+  &__change-avatar-btn{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
   &__img{
     border-radius: 50%;
     border: 3px solid white;
     height: 9rem;
     width: 9rem;
+  }
+
+  &__controls{
+    display: flex;
+
   }
 
   &__name-wrap{
@@ -30,7 +45,10 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    padding-left: 42px;
+    //padding-left: 42px;
     background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }

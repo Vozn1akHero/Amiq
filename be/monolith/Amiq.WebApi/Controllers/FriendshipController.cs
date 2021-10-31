@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Friend;
+using Amiq.Contracts;
 using Amiq.Contracts.Auth;
 using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;
@@ -20,7 +21,7 @@ namespace Amiq.WebApi.Controllers
         private FriendshipBsService _bsFriend = new FriendshipBsService();
 
         [HttpGet("friend-list/{userId}")]
-        [Produces(typeof(IEnumerable<DtoFriend>))]
+        [Produces(typeof(DtoListResponseOf<DtoFriend>))]
         [ProducesResponseType(((int)HttpStatusCode.OK))]
         [ProducesResponseType(499)]
         public async Task<IActionResult> GetUserFriendListAsync(int userId, 

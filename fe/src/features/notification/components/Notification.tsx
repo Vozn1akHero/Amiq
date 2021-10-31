@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import {INotification} from "../notification-models";
 import "./notification.scss"
+import moment from "moment";
 
 type Props = {
     notification: INotification;
@@ -26,7 +27,7 @@ class Notification extends Component<Props, State> {
                             </div>
                             <div className="uk-width-expand">
                                 <p className="uk-comment-meta uk-margin-remove-top">
-                                    <a className="uk-link-reset" href="#">{this.props.notification.createdAt.toDateString()}</a>
+                                    <a className="uk-link-reset" href="#">{moment(this.props.notification.createdAt).fromNow()}</a>
                                 </p>
                             </div>
                         </div>

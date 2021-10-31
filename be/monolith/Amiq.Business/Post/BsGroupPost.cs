@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.DataAccess.Models.Models;
 using Amiq.DataAccess.Post;
@@ -24,7 +25,7 @@ namespace Amiq.Business.Post
             await _daGroupPost.EditAsync(dtoEditGroupPostRequest);
         }
 
-        public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
+        public async Task<DtoListResponseOf<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
         {
             return await _daGroupPost.GetGroupPostsAsync(dtoGroupPostRequest);
         }

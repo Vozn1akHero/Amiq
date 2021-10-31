@@ -86,17 +86,17 @@ class FriendListPage extends Component<Props, State> {
                     </div>
 
                     <div className="friend-requests">
-                        <h4 className="uk-h4">Zaproszenia z znajomych</h4>
+                        <h4 className="uk-h4">Zaproszenia do znajomych</h4>
                         <div>
                             <ul className="uk-child-width-expand" uk-tab="true">
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Receiver ? `uk-active` : ""}>
                                     <a href="#" onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Receiver)}}>
-                                        <span className="uk-margin-small-right" uk-icon="icon:users"></span> Otrzymane
+                                        Otrzymane
                                     </a>
                                 </li>
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Creator ? `uk-active` : ""}>
                                     <a href="#" onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Creator)}} >
-                                        <span className="uk-margin-small-right" uk-icon="icon:users"></span> Wysłane
+                                        Wysłane
                                     </a>
                                 </li>
                             </ul>

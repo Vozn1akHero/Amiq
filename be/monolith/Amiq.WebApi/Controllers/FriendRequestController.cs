@@ -34,17 +34,39 @@ namespace Amiq.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("cancel-friend-request")]
+        [HttpPost("accept-friend-request/{destUserId}")]
+        public async Task<IActionResult> AcceptFriendRequest([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserInfo.UserId, destUserId);
+            return Ok(result);
+        }
+
+        [HttpPost("cancel-friend-request/{friendRequestId}")]
         public async Task<IActionResult> CancelFriendRequest([FromRoute] Guid friendRequestId)
         {
             var result = await _bsFriendRequest.CancelFriendRequestAsync(JwtStoredUserInfo.UserId, friendRequestId);
             return Ok(result);
         }
 
-        [HttpPost("reject-friend-request")]
+        [HttpPost("cancel-friend-request/{destUserId}")]
+        public async Task<IActionResult> CancelFriendRequestByDestUserId([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.CancelFriendRequestAsync(JwtStoredUserInfo.UserId, destUserId);
+            return Ok(result);
+        }
+
+
+        [HttpPost("reject-friend-request/{friendRequestId}")]
         public async Task<IActionResult> RejectFriendRequest([FromRoute] Guid friendRequestId)
         {
             var result = await _bsFriendRequest.RejectFriendRequestAsync(JwtStoredUserInfo.UserId, friendRequestId);
+            return Ok(result);
+        }
+
+        [HttpPost("reject-friend-request/{destUserId}")]
+        public async Task<IActionResult> RejectFriendRequestByDestUserId([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.RejectFriendRequestAsync(JwtStoredUserInfo.UserId, destUserId);
             return Ok(result);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Amiq.Common;
+using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
@@ -53,10 +54,15 @@ namespace Amiq.DataAccess.Post
             }
         }
 
-        public async Task<IEnumerable<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
+        public async Task<DtoListResponseOf<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
         {
+            DtoListResponseOf<DtoGroupPost> result = new();
             const int TAKE = 5;
             const int PAGE = 1;
+
+            result.Length = await _amiqContextWithDebugLogging.GroupPosts.AsNoTracking()
+                .Where(e => e.GroupId == dtoGroupPostRequest.GroupId).CountAsync();
+
             var query = _amiqContextWithDebugLogging.GroupPosts.AsNoTracking()
                          .Include(e => e.Post)
                          .Where(e=>e.GroupId == dtoGroupPostRequest.GroupId)
@@ -64,6 +70,7 @@ namespace Amiq.DataAccess.Post
                          .Skip((dtoGroupPostRequest.Page - 1) * dtoGroupPostRequest.Count)
                          .Take(dtoGroupPostRequest.Count);
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroupPost>(query).ToListAsync();
+            
             foreach (var item in data)
             {
                 if(item.CommentsCount > 0)
@@ -78,7 +85,9 @@ namespace Amiq.DataAccess.Post
                     item.HasMoreCommentsThanRecent = item.CommentsCount > item.Comments.Count;
                 }
             }
-            return data;
+
+            result.Entities = data;
+            return result;
         }
     }
 }

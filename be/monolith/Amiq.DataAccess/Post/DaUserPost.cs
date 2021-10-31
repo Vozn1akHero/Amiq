@@ -1,12 +1,11 @@
-﻿using Amiq.Contracts.Post;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,15 +16,18 @@ namespace Amiq.DataAccess.Post
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<IEnumerable<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
+            DtoListResponseOf<DtoUserPost> result = new();
+            result.Length = await _amiqContext.UserPosts.Where(e => e.UserId == userId).CountAsync();
             var query = _amiqContext.UserPosts.Where(e=>e.UserId == userId)
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                 .Take(dtoPaginatedRequest.Count)
                 .OrderByDescending(e=>e.Post.CreatedAt)
-                .Include(e=>e.Post).Include(e=>e.Post.Comments);
-            var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
-            return data;
+                .Include(e=>e.Post)
+                .Include(e=>e.Post.Comments);
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
+            return result;
         }
 
         public async Task EditAsync(DtoEditUserPostRequest dtoEditUserPostRequest)

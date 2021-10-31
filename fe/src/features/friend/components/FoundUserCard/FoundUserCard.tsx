@@ -52,8 +52,7 @@ const FoundUserCard = (props: Partial<FriendCardProps>) => {
                        props.onAcceptFriendRequest(props.friendRequestId);
                    }}
                    className="uk-icon-link uk-margin-small-left" />
-                <a href=""
-                   uk-icon="close"
+                <a uk-icon="close"
                    onClick={e=>{
                        e.preventDefault();
                        props.onRejectFriendRequest(props.friendRequestId);
@@ -66,7 +65,7 @@ const FoundUserCard = (props: Partial<FriendCardProps>) => {
                           e.preventDefault();
                           props.onCancelFriendRequest(props.friendRequestId);
                       }}
-                      className="uk-icon-link uk-margin-small-left"></a>;
+                      className="uk-icon-link uk-margin-small-left" />
         }
     }
 

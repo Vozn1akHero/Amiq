@@ -34,10 +34,31 @@ namespace Amiq.DataAccess.User
             return output;
         }
 
-        public async Task<DtoUserInfo> GetUserByIdAsync(int userId)
+        public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestCreatorId, int userId)
         {
-            var query = _amiqContext.Users.Where(e => e.UserId == userId);
-            var result = await APAutoMapper.Instance.ProjectTo<DtoUserInfo>(query).SingleOrDefaultAsync();
+            var result = await _amiqContext.Users
+                .Where(e => e.UserId == userId)
+                .Select(e => new DtoExtendedUserInfo {
+                    UserId = e.UserId,
+                    Name = e.Name,
+                    Surname = e.Surname,
+                    Email = e.Email,
+                    AvatarPath = e.AvatarPath,
+                    Birthdate = e.Birthdate,
+                    ShortDescription = e.ShortDescription,
+                    UserDescriptionBlocks = e.UserDescriptionBlocks.Select(d=> new DtoUserDescriptionBlock { 
+                        TextBlockId = d.TextBlockId,
+                        Header = d.TextBlock.Header,
+                        Content = d.TextBlock.Content
+                    }),
+                    BlockedByIssuer = e.BlockedUserDestUsers.Any(i => i.DestUserId == userId && i.IssuerId == requestCreatorId),
+                    IssuerBlocked = e.BlockedUserIssuers.Any(i => i.IssuerId == userId && i.DestUserId == requestCreatorId),
+                    IssuerReceivedFriendRequest = e.FriendRequestIssuers.Any(i => i.ReceiverId == userId && i.IssuerId == requestCreatorId),
+                    IssuerSentFriendRequest = e.FriendRequestReceivers.Any(i => i.IssuerId == requestCreatorId && i.ReceiverId == userId),
+                    IsIssuerFriend = e.FriendshipFirstUsers.Any(d => (d.FirstUserId == userId && d.SecondUserId == requestCreatorId) || (d.FirstUserId == requestCreatorId && d.SecondUserId == userId))
+                    || e.FriendshipSecondUsers.Any(d => (d.FirstUserId == userId && d.SecondUserId == requestCreatorId) || (d.FirstUserId == requestCreatorId && d.SecondUserId == userId)),
+                }).SingleOrDefaultAsync();
+
             return result;
         }
 
