@@ -16,9 +16,11 @@ import {AxiosResponse} from "axios";
 import {BlockedUserService} from "../../features/user/blocked-user-service";
 import {StatusCodes} from "http-status-codes";
 import {FriendService} from "../../features/friend/friend-service";
+import {first} from "rxjs";
+import {IdentityModel} from "../../store/custom/auth/identity-model";
 
 
-const ProfilePageContainer : React.FC = (props:any) => {
+const ProfilePageContainer: React.FC = (props: any) => {
     const userService = new UserService();
     const postCommentService = new PostCommentService();
     const friendRequestService = new FriendRequestService();
@@ -35,17 +37,16 @@ const ProfilePageContainer : React.FC = (props:any) => {
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    /*
     useEffect(() => {
         initProfileId();
-    }, []);*/
+    }, []);
 
     useEffect(() => {
         initProfileId();
     }, [props.match.params.userId]);
 
     useEffect(() => {
-        if(actualProfileId){
+        if (actualProfileId) {
             getUserData();
             dispatch(getUserFriends(actualProfileId, 1, EXEMPLARY_ENTITIES_LENGTH));
             dispatch(getUserPosts(actualProfileId, 1, POSTS_PER_PAGE));
@@ -54,48 +55,53 @@ const ProfilePageContainer : React.FC = (props:any) => {
 
     //#region user friends
     const userFriends: Array<IFriendship> = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.userFriend.userFriends
         }
     )
     const userFriendsLoaded: boolean = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.userFriend.userFriendsLoaded
         }
     )
     //#endregion
 
     const postsLoaded: boolean = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.post.postsLoaded
         }
     )
     const userPosts: Array<IUserPost> = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.post.posts
         }
     )
-    const postsLength : number = useSelector(
-        (state:any) => {
+    const postsLength: number = useSelector(
+        (state: any) => {
             return state.post.postsLength
         }
     )
-    const nextPage : number = useSelector(
-        (state:any) => {
+    const nextPage: number = useSelector(
+        (state: any) => {
             return state.post.nextPage
         }
     )
 
     const initProfileId = () => {
         const userId = props.match.params.userId;
-        if(userId){
-            const isUserProfile : boolean = AuthStore.identity.userId === +userId;
+        if (userId) {
+            const isUserProfile: boolean = AuthStore.identity.userId === +userId;
             console.log(isUserProfile)
             setIsViewerProfile(isUserProfile);
             setActualProfileId(userId);
         } else {
             setIsViewerProfile(true);
-            setActualProfileId(AuthStore.identity.userId)
+            AuthStore.identity$
+                .pipe(first((e: IdentityModel) => e.userId != null && e.userId != undefined))
+                .subscribe((value:IdentityModel) => {
+                    setActualProfileId(value.userId)
+                })
+
         }
     }
 
@@ -120,42 +126,42 @@ const ProfilePageContainer : React.FC = (props:any) => {
     //#region avatar component events handling
     const sendFriendRequest = (destUserId: number) => {
         return friendRequestService.sendFriendRequest(destUserId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.CREATED){
+            if (res.status === StatusCodes.CREATED) {
                 userData.issuerSentFriendRequest = true;
             }
         })
     }
     const rejectFriendRequest = (destUserId: number) => {
         return friendRequestService.rejectFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.OK){
+            if (res.status === StatusCodes.OK) {
                 userData.issuerReceivedFriendRequest = false;
             }
         })
     }
     const cancelFriendRequest = (destUserId: number) => {
         return friendRequestService.cancelFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.OK){
+            if (res.status === StatusCodes.OK) {
                 userData.issuerSentFriendRequest = false;
             }
         })
     }
-    const acceptFriendRequest = (destUserId:number) => {
+    const acceptFriendRequest = (destUserId: number) => {
         return friendRequestService.acceptFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.OK){
+            if (res.status === StatusCodes.OK) {
                 userData.issuerSentFriendRequest = false;
             }
         })
     }
     const blockUser = (destUserId: number) => {
         return blockedUserService.blockUser(destUserId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.OK){
+            if (res.status === StatusCodes.OK) {
                 userData.issuerBlocked = true;
             }
         })
     }
     const removeFriend = (friendId: number) => {
         return friendService.removeFriend(friendId).then((res: AxiosResponse) => {
-            if(res.status === StatusCodes.OK){
+            if (res.status === StatusCodes.OK) {
                 userData.isIssuerFriend = false;
             }
         })
@@ -165,7 +171,9 @@ const ProfilePageContainer : React.FC = (props:any) => {
     return (
         <ProfilePage posts={userPosts}
                      postsLength={postsLength}
-                     getMorePosts={()=>{dispatch(getUserPosts(actualProfileId, nextPage, POSTS_PER_PAGE))}}
+                     getMorePosts={() => {
+                         dispatch(getUserPosts(actualProfileId, nextPage, POSTS_PER_PAGE))
+                     }}
                      postsPerPage={POSTS_PER_PAGE}
                      profileId={actualProfileId}
                      userFriendsLoaded={userFriendsLoaded}
@@ -186,7 +194,7 @@ const ProfilePageContainer : React.FC = (props:any) => {
                      userData={userData}
                      userDataLoaded={userDataLoaded}
                      createPost={(text: string) => {
-                         const newPost : Partial<IUserPost> = {
+                         const newPost: Partial<IUserPost> = {
                              textContent: text,
                              author: {
                                  userId: AuthStore.identity.userId

@@ -1,4 +1,4 @@
-import {Utils} from "../../../core/utils";
+import {Utils} from "../../../../core/utils";
 import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import "./user-card.scss"

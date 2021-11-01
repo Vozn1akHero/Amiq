@@ -14,10 +14,16 @@ namespace Amiq.WebApi.Controllers
     {
         private BsGroupEvent bsGroupEvent = new BsGroupEvent();
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetEventsByGroupIdAsync([FromQuery] int groupId, CancellationToken cancellationToken = default)
+        [HttpGet("list")]
+        public async Task<IActionResult> GetEventsByGroupIdAsync([FromQuery] int groupId,
+            [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
+            CancellationToken cancellationToken = default)
         {
-            var data = await bsGroupEvent.GetAllGroupEventsAsync(groupId);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
+            }
+            var data = await bsGroupEvent.GetAllGroupEventsAsync(groupId, dtoPaginatedRequest);
             return Ok(data);
         }
 

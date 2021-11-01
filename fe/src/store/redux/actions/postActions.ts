@@ -11,7 +11,7 @@ import {AxiosResponse} from "axios";
 import {IResponseListOf} from "../../../core/http-client/response-list-of";
 import {PostCommentService} from "../../../features/post/post-comment-service";
 import {IGroupPostComment, IGroupPostCommentCreation, IPostComment} from "../../../features/post/models/post-comment";
-import {REMOVE_GROUP_POST_COMMENT} from "../types/groupPostCommentTypes";
+import {REMOVE_GROUP_POST_COMMENT, SET_CREATED_GROUP_POST_COMMENT} from "../types/groupPostCommentTypes";
 
 const userPostService = new UserPostService();
 const groupPostService = new GroupPostService();
@@ -24,6 +24,11 @@ export const createGroupPostComment = (data: IGroupPostCommentCreation) => (disp
     postCommentService.createGroupPostComment(data).then(res => {
         if(res.status === StatusCodes.CREATED){
             const newComment = res.data as IGroupPostComment;
+            console.log(newComment)
+            dispatch({
+                type: SET_CREATED_GROUP_POST_COMMENT,
+                payload: newComment
+            })
         }
     })
 }

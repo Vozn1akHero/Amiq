@@ -1,15 +1,33 @@
 import React, {Component} from 'react';
 import {IUserInFrame} from "common/components/ItemsFrameL/IUserInFrame";
 import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Utils} from "core/utils";
 import "./group-participants-in-frame.scss"
+import {IPaginatedStoreData} from "../../../../store/redux/base/paginated-store-data";
+import {IGroupParticipant} from "../../models/group-models";
 
 type Props = {
-    items: Array<IUserInFrame>;
+    //items: Array<IUserInFrame>;
+    groupParticipants: IPaginatedStoreData<IGroupParticipant>;
 }
 
 class GroupParticipantsInFrame extends Component<Props> {
+    getConvertedParticipantsToFrameItem = () => {
+        if (this.props.groupParticipants.loaded) {
+            let arr: Array<IUserInFrame> = [];
+            this.props.groupParticipants.entities.slice(0, 6).map(e => {
+                arr.push({
+                    userId: e.userId,
+                    viewName: e.name + " " + e.surname,
+                    imagePath: e.avatarPath,
+                    link: "/profile/" + e.userId
+                })
+            })
+            return arr;
+        }
+    }
+
     render() {
         return (
             <div className="group-participants-in-frame">
@@ -17,19 +35,19 @@ class GroupParticipantsInFrame extends Component<Props> {
                              displayHeaderAsLink={true}
                              link={"/group/1/participants"}
                              icon="users"
-                             callbackText="Brak uczestników" >
+                             callbackText="Brak uczestników">
                     {
-                        this.props.items.length > 0 && <div className="group-participants-in-frame__items">
+                        this.props.groupParticipants.loaded && <div className="group-participants-in-frame__items">
                             {
-                                this.props.items.map((value, index) => <Link key={index} to={value.link}>
-                                    <div className="group-participants-in-frame__item">
-                                        <img className="group-participants-in-frame__item__avatar border-radius-50"
-                                             src={Utils.getImageSrc(value.imagePath)} />
-                                        {/*<span>{value.viewName}</span>*/}
-                                    </div>
-                                </Link>)
+                                this.getConvertedParticipantsToFrameItem().map((value, index) =>
+                                    <Link key={index} to={value.link}>
+                                        <div className="group-participants-in-frame__item">
+                                            <img className="group-participants-in-frame__item__avatar border-radius-50"
+                                                 src={Utils.getImageSrc(value.imagePath)}/>
+                                        </div>
+                                    </Link>)
                             }
-                            </div>
+                        </div>
                     }
                 </ItemsFrameL>
             </div>

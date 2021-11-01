@@ -17,8 +17,9 @@ namespace Amiq.Mapping
 
             CreateMap<DataAccess.Models.Models.Group, DtoGroup>()
                 .ForMember(e=>e.DescriptionBlocks, d=>d.MapFrom(g=>g.GroupDescriptionBlocks))
-                //.ForMember(e=>e.Participants, d => d.MapFrom(g=>g.GroupParticipants));
                 .ForMember(e=>e.ParticipantsCount, d => d.MapFrom(g=>g.GroupParticipants.Count));
+
+            CreateMap<DataAccess.Models.Models.Group, DtoMinifiedGroup>();
         }
     }
 }

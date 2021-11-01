@@ -10,11 +10,15 @@ export interface IPostComment {
     parentCommentId: string;
     mainParentCommentId: string;
     children: Array<IGroupPostComment&IPostComment>;
+    isRemoved: boolean;
 }
 
 export interface IGroupPostComment extends IPostComment {
     group: Partial<IGroupData>;
+    groupPostCommentId: string;
     authorVisibilityType: string;
+    groupCommentParentId: string;
+    groupCommentMainParentId: string;
 }
 
 export interface IPostCommentCreation {
@@ -27,4 +31,6 @@ export interface IPostCommentCreation {
 export interface IGroupPostCommentCreation extends IPostCommentCreation {
     authorVisibilityType: string;
     groupId: number;
+    groupCommentParentId: string;
+    groupCommentMainParentId: string;
 }

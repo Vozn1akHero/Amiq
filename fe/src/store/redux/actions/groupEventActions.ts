@@ -9,21 +9,23 @@ import {
 import {IGroupEvent} from "features/group/models/group-event";
 import {IResponseListOf} from "core/http-client/response-list-of";
 import {StatusCodes} from "http-status-codes";
+import {IIdBasedPersistentDataEntry} from "../base/id-based-persistent-data";
 
 const groupEventService = new GroupEventService();
 
-export const getAllGroupEvents = (groupId: number) => (dispatch) => {
+export const getAllGroupEvents = (groupId: number, page: number, count: number) => (dispatch) => {
     dispatch({
         type: GET_GROUP_EVENTS
     })
 
-    groupEventService.getGroupEvents(groupId).then(res => {
-        const result : IResponseListOf<IGroupEvent> = res.data as IResponseListOf<IGroupEvent>;
-        console.log(result)
-
+    groupEventService.getGroupEvents(groupId, page, count).then(res => {
+        const result : IIdBasedPersistentDataEntry<IResponseListOf<IGroupEvent>> = {
+            id: groupId,
+            data: res.data as IResponseListOf<IGroupEvent>
+        }
         dispatch({
             type: SET_GROUP_EVENTS,
-            payload: result.entities
+            payload: result
         })
     })
 }
@@ -33,11 +35,16 @@ export const cancelEventById = (groupId: number, groupEventId: string) => (dispa
         type: CANCEL_EVENT
     })
     groupEventService.cancel(groupId, groupEventId).then(res => {
-        if(res.status === StatusCodes.OK)
+        if(res.status === StatusCodes.OK) {
+            const payload:IIdBasedPersistentDataEntry<Partial<IGroupEvent>> = {
+                id: groupId,
+                data: {groupEventId}
+            }
             dispatch({
                 type: SET_CANCELLED_EVENT,
-                payload: { groupId, groupEventId }
+                payload
             })
+        }
     })
 }
 
@@ -46,20 +53,30 @@ export const reopenEventById = (groupId: number, groupEventId: string) => (dispa
         type: REOPEN_EVENT
     })
     groupEventService.reopen(groupId, groupEventId).then(res => {
-        if(res.status === StatusCodes.OK)
+        if(res.status === StatusCodes.OK) {
+            const payload:IIdBasedPersistentDataEntry<Partial<IGroupEvent>> = {
+                id: groupId,
+                data: {groupEventId}
+            }
             dispatch({
                 type: SET_REOPEN_EVENT,
-                payload: { groupId, groupEventId }
+                payload
             })
+        }
     })
 }
 
 export const setEventVisibility = (groupId: number, groupEventId: string, isVisible: boolean) => (dispatch) => {
     groupEventService.setEventVisibility(groupId, groupEventId, isVisible).then(res => {
-        if(res.status === StatusCodes.OK)
+        if(res.status === StatusCodes.OK) {
+            const payload:IIdBasedPersistentDataEntry<Partial<IGroupEvent>> = {
+                id: groupId,
+                data: {groupEventId}
+            }
             dispatch({
                 type: SET_EVENT_VISIBILITY,
-                payload: res.data.entity as IGroupEvent
+                payload
             })
+        }
     })
 }

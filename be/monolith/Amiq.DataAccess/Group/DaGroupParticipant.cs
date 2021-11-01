@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.Group;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models;
@@ -145,8 +146,9 @@ namespace Amiq.DataAccess.Group
             };
         }
 
-        public async Task<IEnumerable<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
         {
+            DtoListResponseOf<DtoGroupParticipant> result = new();
             IQueryable query = (from gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
                                    join g in _amiqContextWithDebug.Groups.AsNoTracking()
                                    on gp.GroupId equals g.GroupId
@@ -155,8 +157,9 @@ namespace Amiq.DataAccess.Group
                                    select gp)
                                    .Skip((paginatedRequest.Page-1)*paginatedRequest.Count)
                                    .Take(paginatedRequest.Count);
-            var participants = await APAutoMapper.Instance.ProjectTo<DtoGroupParticipant>(query).ToListAsync();
-            return participants;
+            result.Length = await _amiqContextWithDebug.GroupParticipants.AsNoTracking().Where(e => e.GroupId == groupId).CountAsync();
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoGroupParticipant>(query).ToListAsync();
+            return result;
         }
     }
 

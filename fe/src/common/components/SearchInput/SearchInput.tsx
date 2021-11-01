@@ -4,7 +4,7 @@ import "./search-input.scss"
 import UiKitDefaultSpinner from "../UIKitDefaultSpinner/UIKitDefaultSpinner";
 
 type Props = {
-    debounceTime: number;
+    debounceTime?: number;
     onDebounceInputChange(text:string):void;
     showSpinner: boolean;
 }
@@ -12,6 +12,8 @@ type Props = {
 class SearchInput extends Component<Props, never> {
     inputRef: React.RefObject<HTMLInputElement>
     sub: Subscription
+
+    readonly DEFAULT_DEBOUNCE_TIME: number = 700;
 
     constructor(props) {
         super(props);
@@ -27,7 +29,7 @@ class SearchInput extends Component<Props, never> {
             map((event: any) => {
                 return event.target.value;
             }),
-            debounceTime(700),
+            debounceTime(this.props.debounceTime ? this.props.debounceTime : this.DEFAULT_DEBOUNCE_TIME),
             distinctUntilChanged()
         ).subscribe((text: string) => {
             this.props.onDebounceInputChange(text);

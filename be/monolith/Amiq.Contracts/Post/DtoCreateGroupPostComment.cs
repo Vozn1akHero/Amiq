@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Contracts.Post
 {
@@ -10,5 +6,7 @@ namespace Amiq.Contracts.Post
     {
         public int GroupId { get; set; }
         public string AuthorVisibilityType { get; set; }
+        public Guid? GroupCommentParentId { get; set; }
+        public Guid? GroupCommentMainParentId { get; set; }
     }
 }

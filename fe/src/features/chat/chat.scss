@@ -14,7 +14,11 @@
 
   &__messages {
     overflow-y: scroll;
-    height: 67%;
+    height: 75%;
     margin: 0 !important;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

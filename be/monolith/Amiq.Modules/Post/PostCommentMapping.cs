@@ -25,10 +25,12 @@ namespace Amiq.Mapping.Post
                 .ForMember(e => e.CreatedAt, dest => dest.MapFrom(i => i.Comment.CreatedAt))
                 .ForMember(e => e.Group, dest => dest.MapFrom(i => i.Group))
                 .ForMember(e => e.Author, dest => dest.MapFrom(i => i.Comment.Author))
-                .ForMember(e => e.Children, dest => dest.MapFrom(i => i.Comment.InverseMainParent))
+                .ForMember(e => e.Children, dest => dest.MapFrom(i => i.InverseMainParent))
                 .ForMember(e => e.ParentCommentId, dest => dest.MapFrom(i => i.Comment.ParentId))
                 .ForMember(e => e.MainParentCommentId, dest => dest.MapFrom(i => i.Comment.MainParentId))
-                .ForMember(e => e.AuthorVisibilityType, dest => dest.MapFrom(i => i.AuthorVisibilityType));
+                .ForMember(e => e.GroupCommentParentId, dest => dest.MapFrom(i => i.ParentId))
+                .ForMember(e => e.GroupCommentMainParentId, dest => dest.MapFrom(i => i.MainParentId))
+                .ForMember(e => e.IsRemoved, dest => dest.MapFrom(i => i.Comment.IsRemoved));
         }
     }
 }

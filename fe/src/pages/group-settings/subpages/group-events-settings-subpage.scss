@@ -1,0 +1,7 @@
+.group-events-settings{
+  &__entities{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}

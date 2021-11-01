@@ -21,7 +21,7 @@ export class GroupParticipantService extends BaseService {
     }
 
     getGroupParticipantsByGroupId(groupId: number, page: number) {
-        const count: number = 4;
+        const count: number = 10;
         const params = new HttpParams().append("groupId", groupId.toString());
         const queryParams = new HttpQueryParams();
         queryParams.append("count", count);

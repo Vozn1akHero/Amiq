@@ -80,32 +80,45 @@ export default function(state:PostReducer = initialState, action) {
                         if (action.payload.parentCommentId) {
                             groupPost.comments = groupPost.comments.map(comment => {
                                 if (comment.commentId === action.payload.parentCommentId) {
-                                    comment.children = [...comment.children.filter(value => value.commentId !== action.payload.commentId)]
+                                    //comment.children = [...comment.children.filter(value => value.commentId !== action.payload.commentId)]
+                                    comment.children = [...comment.children.map(value => {
+                                        if(value.commentId === action.payload.commentId){
+                                            value.isRemoved = true;
+                                        }
+                                        return value;
+                                    })]
                                 }
                                 return comment;
                             })
                         } else {
-                            groupPost.comments = groupPost.comments.filter(value => value.commentId !== action.payload.commentId)
+                            groupPost.comments = groupPost.comments.map(value => {
+                                if(value.commentId === action.payload.commentId){
+                                    value.isRemoved = true;
+                                }
+                                return value;
+                            })
                         }
                     }
+                    return groupPost;
                 })]
             }
         }
         case SET_CREATED_GROUP_POST_COMMENT:{
             return {
                 ...state,
-                posts: [...state.posts.map((value, index) => {
+                posts: [...state.posts.map((value) => {
                     if(value.postId === action.payload.postId){
                         if(action.payload.parentCommentId){
                             value.comments = value.comments.map(comment => {
                                 if(comment.commentId === action.payload.parentCommentId){
                                     comment.children = [...comment.children, action.payload]
+                                    console.log(action.payload, comment.children)
                                 }
                                 return comment;
                             })
                         } else {
                             const comments = value.comments == null ? [] : value.comments;
-                            value.comments = [action.payload, ...comments]
+                            value.comments = [...comments, action.payload]
                         }
                     }
                     return value;

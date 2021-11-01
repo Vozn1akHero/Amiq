@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts;
+﻿using Amiq.Common;
+using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
@@ -16,16 +17,16 @@ namespace Amiq.DataAccess.Group
     {
         private AmiqContext _context = new AmiqContext();
 
-        public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId)
+        public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             var result = new DtoListResponseOf<DtoGroupEvent>();
-            var query = _context.GroupEvents.AsNoTracking()
+            IQueryable query = _context.GroupEvents.AsNoTracking()
                 .Include(e=>e.GroupEventParticipants)
-                .Where(x => x.GroupId == groupId);
-            //result.Length = await _context.GroupEvents.AsNoTracking().Where(x => x.GroupId == groupId).CountAsync();
-            var data = await APAutoMapper.Instance.ProjectTo<DtoGroupEvent>(query).ToListAsync();
-            result.Entities = data;
-            result.Length = data.Count();
+                .Where(x => x.GroupId == groupId)
+                .Paginate(dtoPaginatedRequest.Page, dtoPaginatedRequest.Count);
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoGroupEvent>(query).ToListAsync();
+            result.Length = await _context.GroupEvents.AsNoTracking()
+                .Where(x => x.GroupId == groupId).CountAsync();
             return result;
         }
 

@@ -79,7 +79,9 @@ namespace Amiq.DataAccess.Post
                     MainParentId = dtoCreateGroupPostComment.MainParentId,
                 },
                 AuthorVisibilityType = dtoCreateGroupPostComment.AuthorVisibilityType,
-                GroupId = dtoCreateGroupPostComment.GroupId
+                GroupId = dtoCreateGroupPostComment.GroupId,
+                MainParentId = dtoCreateGroupPostComment.GroupCommentMainParentId,
+                ParentId = dtoCreateGroupPostComment.GroupCommentParentId
             };
             _amiqContext.GroupPostComments.Add(entity);
             await _amiqContext.SaveChangesAsync();
@@ -93,7 +95,12 @@ namespace Amiq.DataAccess.Post
             var entity = GetEntityById(postCommentId);
             if (entity != null)
             {
-                _amiqContext.Comments.Remove(entity);
+                /*if (entity.MainParentId.HasValue)
+                {
+                    var children = _amiqContext.Comments.Where(e => e.ParentId == postCommentId);
+                }*/
+                //_amiqContext.Comments.Remove(entity);
+                entity.IsRemoved = true;
                 await _amiqContext.SaveChangesAsync();
             }
             return APAutoMapper.Instance.Map<DtoPostComment>(entity);

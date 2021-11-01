@@ -23,6 +23,7 @@ namespace Amiq.DataAccess.Models.Models
         public int? EditedBy { get; set; }
         public DateTime? EditedAt { get; set; }
         public Guid? MainParentId { get; set; }
+        public bool IsRemoved { get; set; }
 
         public virtual User Author { get; set; }
         public virtual Comment MainParent { get; set; }

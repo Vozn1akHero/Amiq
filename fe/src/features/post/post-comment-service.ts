@@ -26,7 +26,7 @@ export class PostCommentService extends BaseService {
 
     delete(postCommentId: string){
         const params = new HttpParams().append("postCommentId", postCommentId)
-        return this.httpClient.delete(this.buildApiPath(), params)
+        return this.httpClient.delete(this.buildApiPath(), null, params)
     }
 
     create(data:IPostCommentCreation) {

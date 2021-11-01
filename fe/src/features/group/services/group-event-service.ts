@@ -5,10 +5,12 @@ import {IGroupEvent} from "../models/group-event";
 export class GroupEventService extends BaseService {
     apiModule = "group-event";
 
-    getGroupEvents(groupId: number) {
+    getGroupEvents(groupId: number, page: number, count: number) {
         const query = new HttpQueryParams()
+            .append("page", page)
+            .append("count", count)
             .append("groupId", groupId);
-        return this.httpClient.get(this.buildApiPath("all"),null,query);
+        return this.httpClient.get(this.buildApiPath("list"),null,query);
     }
 
     deleteById(groupEventId: string){

@@ -6,7 +6,7 @@ import {IGroupData, IGroupParticipant} from "../../features/group/models/group-m
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
 import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
-import {IGroupPostCommentCreation, IPostCommentCreation} from "../../features/post/models/post-comment";
+import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
 import DescriptionBlocks from "../../common/components/DescriptionBlock/DescriptionBlocks";
@@ -17,6 +17,10 @@ import GroupEventSubpage from "./subpages/group-event/GroupEventSubpage";
 import GroupParticipantsInFrame
     from "../../features/group/components/GroupParticipantsInFrame/GroupParticipantsInFrame";
 import {EnPostType} from "../../features/post/en-post-type";
+import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
+import {IGroupEvent} from "../../features/group/models/group-event";
+import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
+import GroupEventsInFrame from "../../features/group/components/GroupEventsInFrame/GroupEventsInFrame";
 
 
 type Props = {
@@ -25,7 +29,8 @@ type Props = {
     groupPosts: Array<IGroupPost>;
     groupPostsLoaded: boolean;
     basicAdminPermissionsAvailable: boolean;
-    groupParticipants: Array<IGroupParticipant>;
+    groupEvents: IIdBasedPersistentData<IPaginatedStoreData<IGroupEvent>>;
+    groupParticipants: IPaginatedStoreData<IGroupParticipant>;
     onCommentCreated(data: IGroupPostCommentCreation);
     onPostCreated(data: Partial<IGroupPost>);
     onDeletePost(postId: string);
@@ -40,11 +45,11 @@ type State = {
     showSubpageSwitch: boolean;
 }
 
-class GroupPage extends Component<Props, State>  {
+class GroupPage extends Component<Props, State> {
     readonly participantsSubroute = "/group/:groupId/participants";
     readonly eventsSubroute = "/group/:groupId/events";
     readonly groupEventSubroute = "/group/:groupId/event/:groupEventId";
-    readonly subrotes:string[] = [this.participantsSubroute, this.eventsSubroute];
+    readonly subrotes: string[] = [this.participantsSubroute, this.eventsSubroute];
 
     constructor(props) {
         super(props);
@@ -77,8 +82,8 @@ class GroupPage extends Component<Props, State>  {
             path: this.subrotes,
             exact: true,
         });
-        if(match){
-            const subroute = this.subrotes.filter(e=>e===match.path);
+        if (match) {
+            const subroute = this.subrotes.filter(e => e === match.path);
 
         }
         console.log(match)
@@ -86,7 +91,7 @@ class GroupPage extends Component<Props, State>  {
 
     onPostCreated = (text: string) => {
         const {groupData} = this.props;
-        const post : Partial<IGroupPost> = {
+        const post: Partial<IGroupPost> = {
             textContent: text,
             groupId: groupData.groupId,
             author: {
@@ -100,23 +105,8 @@ class GroupPage extends Component<Props, State>  {
         this.props.onDeletePost(postId);
     }
 
-    getConvertedParticipantsToFrameItem = () => {
-        if(this.props.groupParticipants){
-            let arr : Array<IUserInFrame> = [];
-            this.props.groupParticipants.map(e=>{
-                arr.push({
-                    userId: e.userId,
-                    viewName: e.name + " " + e.surname,
-                    imagePath: e.avatarPath,
-                    link: "/profile/" + e.userId
-                })
-            })
-            return arr;
-        }
-    }
-
-    getSettingsLink = (part?:string):string => {
-        const link:string = `/group-settings/${this.props.groupData.groupId}${part ? "#"+part : ""}`;
+    getSettingsLink = (part?: string): string => {
+        const link: string = `/group-settings/${this.props.groupData.groupId}${part ? "#" + part : ""}`;
         return link;
     }
 
@@ -124,8 +114,8 @@ class GroupPage extends Component<Props, State>  {
         return (
             <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
                 <div className="uk-first-column uk-width-1-3">
-                    { this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
-                                                                viewTitle={this.props.groupData.name}/> }
+                    {this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
+                                                               viewTitle={this.props.groupData.name}/>}
 
                     <div className="uk-margin-medium-top">
                         <div className="uk-card uk-card-default uk-card-body uk-background-default">
@@ -135,13 +125,17 @@ class GroupPage extends Component<Props, State>  {
                                     {
                                         this.props.groupDataLoaded && <div className="uk-flex uk-flex-column">
                                             <Link className="uk-margin-small-top" to={this.getSettingsLink("basic")}>
-                                                <span className="uk-margin-small-right" uk-icon="icon:nut"></span> Podstawowe dane
+                                                <span className="uk-margin-small-right"
+                                                      uk-icon="icon:nut"></span> Podstawowe dane
                                             </Link>
-                                            <Link className="uk-margin-small-top" to={this.getSettingsLink("participants")}>
-                                                <span className="uk-margin-small-right" uk-icon="icon:users"></span> Uczestnicy
+                                            <Link className="uk-margin-small-top"
+                                                  to={this.getSettingsLink("participants")}>
+                                                <span className="uk-margin-small-right"
+                                                      uk-icon="icon:users"></span> Uczestnicy
                                             </Link>
                                             <Link className="uk-margin-small-top" to={this.getSettingsLink("events")}>
-                                                <span className="uk-margin-small-right" uk-icon="icon:calendar"></span> Wydarzenia
+                                                <span className="uk-margin-small-right"
+                                                      uk-icon="icon:calendar"></span> Wydarzenia
                                             </Link>
                                         </div>
                                     }
@@ -150,39 +144,34 @@ class GroupPage extends Component<Props, State>  {
                         </div>
 
                         {
-                            this.props.groupParticipants && <div className="uk-margin-medium-top">
-                                <GroupParticipantsInFrame items={this.getConvertedParticipantsToFrameItem()} />
+                            this.props.groupParticipants.loaded && <div className="uk-margin-medium-top">
+                                <GroupParticipantsInFrame groupParticipants={this.props.groupParticipants} />
                             </div>
                         }
 
                         <div className="uk-margin-medium-top">
-                            <ItemsFrameL title="Wydarzenia"
-                                         displayHeaderAsLink={true}
-                                         link={"/group/1/events"}
-                                         icon="calendar"
-
-                                         callbackText="Brak wydarzeń" />
+                            <GroupEventsInFrame groupId={this.props.match.params.groupId} groupEvents={this.props.groupEvents} />
                         </div>
                     </div>
                 </div>
 
                 <div className="uk-margin-left">
                     {
-                        !this.state.showSubpageSwitch && <>
+                        !this.state.showSubpageSwitch && this.props.groupDataLoaded && <>
                             <div className="uk-preserve-width">
                                 <h3>O nas</h3>
                                 <p>
-                                    {this.props.groupData?.description}
+                                    {this.props.groupData.description}
                                 </p>
                                 {
-                                    this.props.groupData?.descriptionBlocks && <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks} />
+                                    <DescriptionBlocks descriptionBlocks={this.props.groupData.descriptionBlocks}/>
                                 }
                             </div>
 
                             <div className="uk-margin-large-top">
                                 <div className="uk-margin-medium-bottom">
                                     <PostCreationForm handleSubmit={this.onPostCreated}
-                                                      publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable} />
+                                                      publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}/>
                                 </div>
                                 {
                                     this.props.groupPostsLoaded && this.props.groupPosts.map((post, index) => {
@@ -195,28 +184,26 @@ class GroupPage extends Component<Props, State>  {
                                                      comments={post.comments}
                                                      avatarPath={Utils.getImageSrc(post.avatarPath)}
                                                      text={post.textContent}
-                                                     authorLink={"/group/"+post.groupId}
+                                                     authorLink={"/group/" + post.groupId}
                                                      createdAt={post.createdAt}
                                                      viewName={post.groupName}
                                                      publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
                                                      deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
-                                                     key={index} />
+                                                     key={index}/>
                                     })
                                 }
                             </div>
                         </>
                     }
-                </div>
 
-                {
-                    this.state.showSubpageSwitch && <div className="uk-preserve-width uk-margin-left">
-                        <Switch>
-                            <Route path={this.participantsSubroute} component={GroupParticipantsSubpage} />
-                            <Route path={this.eventsSubroute} exact={true} component={GroupEventsSubpage} />
-                            <Route path={this.groupEventSubroute} exact={true} component={GroupEventSubpage} />
+                    {
+                        this.state.showSubpageSwitch && <Switch>
+                            <Route path={this.participantsSubroute} component={GroupParticipantsSubpage}/>
+                            <Route path={this.eventsSubroute} exact={true} component={GroupEventsSubpage}/>
+                            <Route path={this.groupEventSubroute} exact={true} component={GroupEventSubpage}/>
                         </Switch>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         );
     }

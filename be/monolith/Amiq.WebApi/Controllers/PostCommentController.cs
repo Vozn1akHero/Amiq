@@ -43,7 +43,7 @@ namespace Amiq.WebApi.Controllers
             return Ok(data);
         }
 
-        [HttpDelete("remove")]
+        [HttpDelete("{postCommentId}")]
         public async Task<IActionResult> DeletePostCommentAsync(Guid postCommentId)
         {
             var data = await bsPostComment.DeleteAsync(postCommentId);

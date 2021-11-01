@@ -1,18 +1,19 @@
-import React, {Component, useEffect, useState} from 'react';
-import {IGroupData} from "../../models/group-models";
-import {GroupService} from "../../services/group-service";
+import React, {useState} from 'react';
+import {IGroupData} from "../../../features/group/models/group-models";
+import {GroupService} from "../../../features/group/services/group-service";
 import {StatusCodes} from "http-status-codes";
-import {GroupCreationPopupValidationSchema} from "../group-validation-schema";
+import {GroupCreationPopupValidationSchema} from "../../../features/group/components/group-validation-schema";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as UIkit from "uikit"
-import CategoryInput from "../CategoryInput/CategoryInput";
+import CategoryInput from "../../../features/group/components/CategoryInput/CategoryInput";
 import {IDescriptionBlock} from "common/models/description-block";
+import "./group-basic-settings-subpage.scss"
 
 type Props = {
     groupData: IGroupData;
 }
 
-const GroupBasicSettings = (props:Props) => {
+const GroupBasicSettingsSubpage = (props:Props) => {
     //const [areControlsAvailable, setAreControlsAvailable] = useState(false)
 
     const [name, setName] = useState(props.groupData.name);
@@ -64,11 +65,12 @@ const GroupBasicSettings = (props:Props) => {
                 }}
                 validationSchema={GroupCreationPopupValidationSchema}
             >
-                {({isSubmitting, errors}) => (
+                {({isSubmitting, isValid}) => (
                     <Form>
                         <Field name="name" className="uk-input" placeholder="Nazwa"/>
                         <ErrorMessage name="name" component="div"/>
                         <Field as="textarea" name="description" placeholder="Opis"
+                               minLength={0}
                                className="uk-textarea uk-margin-small-top" rows={3}/>
                         <ErrorMessage name="description" component="div"/>
                         <div className="uk-margin-small-top">
@@ -81,7 +83,7 @@ const GroupBasicSettings = (props:Props) => {
                             }}>
                                 <span uk-icon="plus" className="uk-icon"></span>
                             </button>
-                            <div className="uk-grid uk-child-width-1-3 uk-grid-margin uk-margin-small-top">
+                            <div className="group-basic-settings__description-blocks uk-margin-small-top">
                                 {
                                     descriptionBlocks.map((value, index) => {
                                         return <div className="uk-card uk-card-default uk-card-body">
@@ -115,7 +117,7 @@ const GroupBasicSettings = (props:Props) => {
                                 Anuluj
                             </button>
                             <button type="submit"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !isValid}
                                     className="uk-button uk-button-primary uk-margin-small-left">
                                 Akceptuj
                             </button>
@@ -127,4 +129,4 @@ const GroupBasicSettings = (props:Props) => {
     );
 };
 
-export default GroupBasicSettings;
+export default GroupBasicSettingsSubpage;

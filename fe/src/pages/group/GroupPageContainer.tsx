@@ -9,7 +9,6 @@ import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/services/group-participant-service";
 import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
 import {PostService} from "../../features/post/post-service";
-import {PostCommentService} from "../../features/post/post-comment-service";
 import {connect} from "react-redux";
 import {
     createGroupPost,
@@ -18,15 +17,24 @@ import {
     getGroupPosts,
     removeComment
 } from "../../store/redux/actions/postActions";
+import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
+import {getGroupParticipants} from "../../store/redux/actions/groupParticipantActions";
+import {getAllGroupEvents} from "../../store/redux/actions/groupEventActions";
+import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
+import {IGroupEvent} from "../../features/group/models/group-event";
 
 type Props = {
-    getGroupPosts(groupId: number, page: number);
-    deleteGroupPost(postId: string);
-    createPost(post: Partial<IGroupPost>);
-    createGroupPostComment(data: IGroupPostCommentCreation);
-    removeComment(postCommentId: string);
+    getGroupEvents(groupId: number, page: number, count: number):void;
+    getGroupPosts(groupId: number, page: number):void;
+    deleteGroupPost(postId: string):void;
+    createPost(post: Partial<IGroupPost>):void;
+    createGroupPostComment(data: IGroupPostCommentCreation):void;
+    removeComment(postCommentId: string):void;
+    getGroupParticipants(groupId: number, page: number):void;
+    groupEvents: IIdBasedPersistentData<IPaginatedStoreData<IGroupEvent>>;
     groupPosts: Array<IGroupPost>;
     groupPostsLoaded: boolean;
+    groupParticipants: IPaginatedStoreData<IGroupParticipant>,
     match: any;
     location: any;
     history: any;
@@ -35,10 +43,8 @@ type Props = {
 type State = {
     groupData: IGroupData;
     groupDataLoaded: boolean;
-    //groupPosts: Array<IGroupPost>;
     groupViewerRole: EnGroupViewerRole;
     basicAdminPermissionsAvailable: boolean;
-    groupParticipants: Array<IGroupParticipant>;
 }
 
 class GroupPageContainer extends Component<Props, State> {
@@ -52,10 +58,8 @@ class GroupPageContainer extends Component<Props, State> {
         this.state = {
             groupDataLoaded: false,
             groupData: null,
-            //groupPosts: null,
             groupViewerRole: null,
             basicAdminPermissionsAvailable: false,
-            groupParticipants: null
         }
     }
 
@@ -64,9 +68,10 @@ class GroupPageContainer extends Component<Props, State> {
 
         this.getViewerRole()
             .then(() => {
-                //this.getGroupPosts(1);
-                this.props.getGroupPosts(this.props.match.params.groupId, 1);
-                this.getParticipants();
+                const{groupId} = this.props.match.params;
+                this.props.getGroupParticipants(groupId, 1);
+                this.props.getGroupPosts(groupId, 1);
+                this.props.getGroupEvents(groupId, 1, 10);
             })
     }
 
@@ -99,24 +104,25 @@ class GroupPageContainer extends Component<Props, State> {
         })
     }
 
-    getParticipants = () => {
-        this.groupParticipantService.getGroupParticipantsByGroupId(this.props.match.params.groupId, 1).then(res => {
-            if (res.status === StatusCodes.OK) {
-                this.setState({
-                    groupParticipants: res.data as Array<IGroupParticipant>
-                })
-            }
-        })
+    createComment = (data: IGroupPostCommentCreation) => {
+        data.groupId = this.state.groupData.groupId;
+        this.props.createGroupPostComment(data);
     }
 
+    getExemplaryGroupEvents = () => {
+
+    }
 
     render() {
         return (
-            <GroupPage groupParticipants={this.state.groupParticipants}
+            <GroupPage groupParticipants={this.props.groupParticipants}
+                       /*groupEvents={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.entities}
+                       groupEventsLoaded={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.loaded}*/
+                       groupEvents={this.props.groupEvents}
                        onRemoveComment={this.props.removeComment}
                        onDeletePost={this.props.deleteGroupPost}
                        onPostCreated={this.props.createPost}
-                       onCommentCreated={this.props.createGroupPostComment}
+                       onCommentCreated={this.createComment}
                        basicAdminPermissionsAvailable={this.state.basicAdminPermissionsAvailable}
                        groupData={this.state.groupData}
                        groupPosts={this.props.groupPosts}
@@ -133,14 +139,18 @@ const mapDispatchToProps = (dispatch) => {
         deleteGroupPost: (postId: string) => dispatch(deletePost(postId)),
         createPost: (post: Partial<IGroupPost>) => dispatch(createGroupPost(post)),
         createGroupPostComment: (data: IGroupPostCommentCreation) => dispatch(createGroupPostComment(data)),
-        removeComment: (postCommentId: string) => dispatch(removeComment(postCommentId))
+        removeComment: (postCommentId: string) => dispatch(removeComment(postCommentId)),
+        getGroupParticipants: (groupId: number, page: number) => dispatch(getGroupParticipants(groupId, page)),
+        getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getAllGroupEvents(groupId, page, count)),
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         groupPosts: state.post.posts,
-        groupPostsLoaded: state.post.postsLoaded
+        groupPostsLoaded: state.post.postsLoaded,
+        groupParticipants: state.groupParticipant.groupParticipants,
+        groupEvents: state.groupEvent.groupEvents
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts.Group;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Group;
@@ -54,7 +55,7 @@ namespace Amiq.Business
             return result;
         }
 
-        public async Task<IEnumerable<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
         {
             return await _daGroupParticipant.GetGroupParticipantsAsync(groupId, paginatedRequest);
         }

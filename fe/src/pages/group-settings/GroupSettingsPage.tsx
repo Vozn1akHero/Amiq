@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {Link, withRouter} from "react-router-dom";
-import GroupBasicSettings from "../../features/group/components/GroupSettings/GroupBasicSettings";
-import GroupParticipantsSettings from "../../features/group/components/GroupSettings/GroupParticipantsSettings";
+import GroupBasicSettingsSubpage from "./subpages/GroupBasicSettingsSubpage";
+import GroupParticipantsSettings from "./subpages/GroupParticipantsSettings";
 import {IGroupData} from "../../features/group/models/group-models";
 import UiKitDefaultSpinner from "../../common/components/UIKitDefaultSpinner/UIKitDefaultSpinner";
-import GroupEventsSettings from "../../features/group/components/GroupSettings/GroupEventsSettings";
+import GroupEventsSettings from "./subpages/GroupEventsSettingsSubpage";
 import "./group-settings-page.scss"
 import {Routes} from "../../core/routing";
 
@@ -128,7 +128,7 @@ class GroupSettingsPage extends Component<Props, State> {
 
                 <div className="chosen-section">
                     {  this.state.chosenSectionId === 1 && (this.props.basicGroupDataLoaded ?
-                        <GroupBasicSettings groupData={this.props.basicGroupData} /> : <UiKitDefaultSpinner />) }
+                        <GroupBasicSettingsSubpage groupData={this.props.basicGroupData} /> : <UiKitDefaultSpinner />) }
                     {  this.state.chosenSectionId === 2 && <GroupParticipantsSettings groupId={this.props.match.params.groupId} /> }
                     { this.state.chosenSectionId === 3 && <GroupEventsSettings groupId={this.props.match.params.groupId} /> }
                 </div>

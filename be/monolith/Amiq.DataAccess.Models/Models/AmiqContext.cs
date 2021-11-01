@@ -376,14 +376,22 @@ namespace Amiq.DataAccess.Models.Models
                 entity.HasOne(d => d.Comment)
                     .WithMany(p => p.GroupPostComments)
                     .HasForeignKey(d => d.CommentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupPostComment_Comment");
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupPostComments)
                     .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GroupPostComment_Group");
+
+                entity.HasOne(d => d.MainParent)
+                    .WithMany(p => p.InverseMainParent)
+                    .HasForeignKey(d => d.MainParentId)
+                    .HasConstraintName("FK_GroupPostComment_GroupPostComment");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_GroupPostComment_GroupPostComment1");
             });
 
             modelBuilder.Entity<HiddenGroup>(entity =>

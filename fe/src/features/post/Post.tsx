@@ -16,7 +16,7 @@ type Props  = {
     deleteBtnVisible: boolean;
     publishCommentAsAdminOptionVisible: boolean;
     //comments: Array<IPostComment>;
-    comments: Array<IPostComment & IGroupPostComment | IPostComment>;
+    comments: Array<IGroupPostComment | IPostComment>;
     hasMoreCommentsThanPassed: boolean;
     postType: EnPostType;
 
@@ -86,14 +86,20 @@ class Post extends Component<Props, State> {
         entity.postId = this.props.postId;
         if(this.state.responseCreationRunningEntity){
             const flattenComments = this.flattenDeep([this.props.comments.map(value => [value, ...value.children])])
-            const responseCreationRunningEntity = flattenComments
+            const responseCreationRunningEntity : IGroupPostComment & IPostComment = flattenComments
                 .filter(value => value.commentId === this.state.responseCreationRunningEntity.commentId)[0];
             entity.mainParentId = responseCreationRunningEntity.mainParentCommentId
                 ? responseCreationRunningEntity.mainParentCommentId : responseCreationRunningEntity.commentId;
             entity.parentId = responseCreationRunningEntity.commentId;
+            if(this.props.postType === EnPostType.Group){
+                entity.groupCommentMainParentId = responseCreationRunningEntity.groupCommentMainParentId
+                    ? responseCreationRunningEntity.groupCommentMainParentId : responseCreationRunningEntity.groupPostCommentId;
+                entity.groupCommentParentId = responseCreationRunningEntity.groupPostCommentId;
+            }
         }
         entity.textContent = text;
-        this.props.onCommentCreated(entity as IPostCommentCreation & IGroupPostCommentCreation);
+        const finalEntity = entity as IGroupPostCommentCreation&IPostCommentCreation;
+        this.props.onCommentCreated(finalEntity);
     }
 
     onCommentReplyClick = (commentId: string) => {
@@ -135,8 +141,8 @@ class Post extends Component<Props, State> {
                         </div>
 
                         <div className="uk-position-top-right uk-position-small uk-hidden-hover">
-                            <a href="" onClick={this.onReplyToPostClick} uk-icon="reply" className="uk-icon-link"></a>
-                            <a href="" onClick={this.handlePostDelete} uk-icon="trash" className="uk-icon-link uk-margin-small-left"></a>
+                            <a onClick={this.onReplyToPostClick} uk-icon="reply" className="uk-icon-link"></a>
+                            <a onClick={this.handlePostDelete} uk-icon="trash" className="uk-icon-link uk-margin-small-left"></a>
                         </div>
                     </header>
                     <div className="uk-comment-body">

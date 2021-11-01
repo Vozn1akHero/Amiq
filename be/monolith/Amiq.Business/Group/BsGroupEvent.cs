@@ -15,9 +15,9 @@ namespace Amiq.Business.Group
     {
         private DaGroupEvent _daGroupEvent = new DaGroupEvent();
 
-        public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId)
+        public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            return await _daGroupEvent.GetAllGroupEventsAsync(groupId);
+            return await _daGroupEvent.GetAllGroupEventsAsync(groupId, dtoPaginatedRequest);
         }
 
         public async Task<DtoEditEntityResponse> CancelEventAsync(int groupId, Guid groupEventId)

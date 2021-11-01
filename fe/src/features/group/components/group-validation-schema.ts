@@ -5,6 +5,6 @@ export const GroupCreationPopupValidationSchema = Yup.object().shape({
         .max(100, "100 znaków")
         .required("Pole nie może być puste"),
     description: Yup.string()
-        .max(100, "100 znaków")
-        .required("Pole nie może być puste"),
+        .max(500, "500 znaków")
+        //.required("Pole nie może być puste"),
 });

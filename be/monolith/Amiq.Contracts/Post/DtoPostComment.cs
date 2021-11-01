@@ -23,5 +23,6 @@ namespace Amiq.Contracts.Post
         //public DtoPostComment Parent { get; set; }
         //public DtoPostComment MainParent { get; set; }
         public List<DtoPostComment> Children { get; set; }
+        public bool IsRemoved { get; set; }
     }
 }

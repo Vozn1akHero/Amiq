@@ -28,7 +28,7 @@ export const ItemsFrameL = (props: Props) => {
             </span>
             <div className="uk-margin-small-top">
                 {
-                    props.children != null && props.children != undefined ?  props.children
+                    props.children != null && props.children != undefined ? props.children
                         : <span>{props.callbackText}</span>
                 }
                 {/*{
