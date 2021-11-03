@@ -1,0 +1,48 @@
+.group-event-subpage {
+  &__event-card {
+    position: relative;
+
+    &__avatarBg-wrap {
+      overflow: hidden;
+      z-index: 1;
+      position: relative;
+      padding: 2rem;
+    }
+
+    &__avatarBg {
+      background-position: top center;
+      background-size: cover;
+      filter: blur(15px);
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      transform: scale(1.2);
+    }
+
+    &__avatar-wrap {
+      position: relative;
+    }
+
+    &__avatar {
+      border-radius: 50%;
+      border: 3px solid white;
+      height: auto;
+      width: 9rem;
+    }
+
+    &__body {
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__controls {
+      display: flex;
+      justify-content: right;
+    }
+  }
+}

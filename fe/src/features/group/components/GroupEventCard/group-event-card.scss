@@ -1,7 +1,7 @@
 .group-event-card {
   z-index: 1;
   overflow: hidden;
-  min-width: 28rem;
+  //min-width: 28rem;
 
   .avatar-bg{
     background-position: top center;
@@ -20,13 +20,13 @@
   .avatar-wrap{
     margin-bottom: 3rem;
     height: 100%;
-    width: 30%;
+    width: 35%;
     max-width: 7.5rem;
 
     .avatar-img{
       border-radius: 50%;
       border: 3px solid white;
-      height: 100%;
+      height:auto;
       width: 100%;
       max-height: 7rem;
       max-width: 7rem;
@@ -39,7 +39,7 @@
   }
 
   .event-info-wrapper{
-    width: 70%;
+    width: 65%;
     height: 100%;
     background: white;
 

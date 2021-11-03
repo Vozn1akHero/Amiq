@@ -19,7 +19,7 @@ import {
 } from "../../store/redux/actions/postActions";
 import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 import {getGroupParticipants} from "../../store/redux/actions/groupParticipantActions";
-import {getAllGroupEvents} from "../../store/redux/actions/groupEventActions";
+import {getGroupEvents} from "../../store/redux/actions/groupEventActions";
 import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
 import {IGroupEvent} from "../../features/group/models/group-event";
 
@@ -141,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
         createGroupPostComment: (data: IGroupPostCommentCreation) => dispatch(createGroupPostComment(data)),
         removeComment: (postCommentId: string) => dispatch(removeComment(postCommentId)),
         getGroupParticipants: (groupId: number, page: number) => dispatch(getGroupParticipants(groupId, page)),
-        getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getAllGroupEvents(groupId, page, count)),
+        getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getGroupEvents(groupId, page, count)),
     }
 }
 

@@ -14,7 +14,7 @@ namespace Amiq.Mapping.Group
         {
             CreateMap<GroupEventParticipant, DtoGroupEventParticipant>();
             CreateMap<GroupEvent, DtoGroupEvent>()
-                .ForPath(e=>e.GroupEventParticipants, d=>d.MapFrom(g=>g.GroupEventParticipants));
+                .ForPath(e=>e.GroupEventParticipantsCount, d=>d.MapFrom(g=>g.GroupEventParticipants.Count));
         }
     }
 }

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {ItemsFrameL} from "common/components/ItemsFrameL/ItemsFrameL";
 import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
 import {IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
@@ -8,7 +7,6 @@ import {IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/custom/auth/auth-store";
-import {IUserInFrame} from "../../common/components/ItemsFrameL/IUserInFrame";
 import DescriptionBlocks from "../../common/components/DescriptionBlock/DescriptionBlocks";
 import {Link, matchPath, Route, Switch, withRouter} from 'react-router-dom';
 import GroupParticipantsSubpage from "./subpages/group-participants-subpage/GroupParticipantsSubpage";
@@ -21,7 +19,7 @@ import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 import {IGroupEvent} from "../../features/group/models/group-event";
 import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
 import GroupEventsInFrame from "../../features/group/components/GroupEventsInFrame/GroupEventsInFrame";
-
+import "./group-page.scss"
 
 type Props = {
     groupData: IGroupData;
@@ -49,7 +47,7 @@ class GroupPage extends Component<Props, State> {
     readonly participantsSubroute = "/group/:groupId/participants";
     readonly eventsSubroute = "/group/:groupId/events";
     readonly groupEventSubroute = "/group/:groupId/event/:groupEventId";
-    readonly subrotes: string[] = [this.participantsSubroute, this.eventsSubroute];
+    readonly subrotes: string[] = [this.participantsSubroute, this.eventsSubroute, this.groupEventSubroute];
 
     constructor(props) {
         super(props);
@@ -112,8 +110,8 @@ class GroupPage extends Component<Props, State> {
 
     render() {
         return (
-            <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
-                <div className="uk-first-column uk-width-1-3">
+            <div className="group-page uk-flex-center uk-flex">
+                <div className="group-page__first-column">
                     {this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
                                                                viewTitle={this.props.groupData.name}/>}
 
@@ -145,17 +143,18 @@ class GroupPage extends Component<Props, State> {
 
                         {
                             this.props.groupParticipants.loaded && <div className="uk-margin-medium-top">
-                                <GroupParticipantsInFrame groupParticipants={this.props.groupParticipants} />
+                                <GroupParticipantsInFrame groupParticipants={this.props.groupParticipants}/>
                             </div>
                         }
 
                         <div className="uk-margin-medium-top">
-                            <GroupEventsInFrame groupId={this.props.match.params.groupId} groupEvents={this.props.groupEvents} />
+                            <GroupEventsInFrame groupId={this.props.match.params.groupId}
+                                                groupEvents={this.props.groupEvents}/>
                         </div>
                     </div>
                 </div>
 
-                <div className="uk-margin-left">
+                <div className="group-page__second-column uk-margin-medium-left">
                     {
                         !this.state.showSubpageSwitch && this.props.groupDataLoaded && <>
                             <div className="uk-preserve-width">

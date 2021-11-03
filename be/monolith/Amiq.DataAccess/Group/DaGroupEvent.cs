@@ -4,6 +4,7 @@ using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,32 @@ namespace Amiq.DataAccess.Group
             result.Length = await _context.GroupEvents.AsNoTracking()
                 .Where(x => x.GroupId == groupId).CountAsync();
             return result;
+        }
+
+        public DtoGroup GetGroupByGroupEventId(Guid groupEventId)
+        {
+            return _context
+                .Groups
+                .Where(e => e.GroupEvents.Any(d => d.GroupEventId == groupEventId))
+                .ProjectTo<DtoGroup>(APAutoMapper.Instance.ConfigurationProvider)
+                .Single();
+        }
+
+        public DtoGroupEvent GetEventByIdAsync(Guid groupEventId)
+        {
+            return _context.GroupEvents.AsNoTracking()
+                .Include(e => e.GroupEventParticipants)
+                .Where(x => x.GroupEventId == groupEventId)
+                .ProjectTo<DtoGroupEvent>(APAutoMapper.Instance.ConfigurationProvider)
+                .Single();
+        }
+
+        public bool IsParticipant(int userId, Guid groupEventId)
+        {
+            return _context.GroupEvents
+                .AsNoTracking()
+                .Any(e=>e.GroupEventId == groupEventId
+                    && e.GroupEventParticipants.Any(d=>d.GroupParticipant.UserId == userId));
         }
 
         public GroupEvent GetEventById(Guid groupEventId) => _context.GroupEvents

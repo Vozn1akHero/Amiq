@@ -13,6 +13,10 @@ export class GroupEventService extends BaseService {
         return this.httpClient.get(this.buildApiPath("list"),null,query);
     }
 
+    getGroupEventById(groupEventId: string){
+        return this.httpClient.get(this.buildApiPath(),new HttpParams().append("groupEventId", groupEventId));
+    }
+
     deleteById(groupEventId: string){
         const params = new HttpParams().append("groupEventId", groupEventId);
         return this.httpClient.delete(this.buildApiPath(), null, params);

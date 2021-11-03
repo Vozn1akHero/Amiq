@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {
     cancelEventById,
-    getAllGroupEvents,
+    getGroupEvents,
     reopenEventById,
     setEventVisibility
 } from "store/redux/actions/groupEventActions";
@@ -90,6 +90,8 @@ class GroupEventsSettingsSubpage extends Component<Props, State> {
                             } else return value;
                         }).map((value, key) => {
                             return <GroupEventCard key={key}
+                                                   eventPageRoute={`/group/${this.props.groupId}/event/${value.groupEventId}`}
+                                                   showControls
                                                    groupEventData={value}
                                                    onReopenEventClick={this.onReopenClick}
                                                    onHideClick={this.onHideClick}
@@ -105,7 +107,7 @@ class GroupEventsSettingsSubpage extends Component<Props, State> {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getAllGroupEvents(groupId, page, count)),
+        getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getGroupEvents(groupId, page, count)),
         cancelEventById: (groupId: number, eventId: string) => dispatch(cancelEventById(groupId, eventId)),
         reopenEventById: (groupId: number, eventId: string) => dispatch(reopenEventById(groupId, eventId)),
         setEventVisibility: (groupId: number, eventId: string, isVisible: boolean) => dispatch(setEventVisibility(groupId, eventId, isVisible)),

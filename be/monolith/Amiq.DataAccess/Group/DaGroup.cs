@@ -4,6 +4,7 @@ using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
+using AutoMapper.QueryableExtensions;
 using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,18 +16,18 @@ namespace Amiq.DataAccess.Group
 {
     public class DaGroup
     {
-        private AmiqContext _AmiqContext;
+        private AmiqContext _amiqContext;
 
         public DaGroup()
         {
-            _AmiqContext = new AmiqContext();
+            _amiqContext = new AmiqContext();
         }
 
         public async Task<List<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId)
         {
-            IQueryable query = _AmiqContext.GroupParticipants
+            IQueryable query = _amiqContext.GroupParticipants
                 .Where(e => e.GroupId == groupId)
-                .Join(_AmiqContext.Users,
+                .Join(_amiqContext.Users,
                     participant => participant.UserId,
                     user => user.UserId,
                     (participant, user) => new { Participant = participant, User = user });
@@ -36,14 +37,14 @@ namespace Amiq.DataAccess.Group
 
         public async Task<IEnumerable<DtoGroup>> GetByNameAsync(string name)
         {
-            var query = _AmiqContext.Groups.Where(e => e.Name.StartsWith(name));
+            var query = _amiqContext.Groups.Where(e => e.Name.StartsWith(name));
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).ToListAsync();
             return data;
         }
 
         public async Task<DtoGroup> GetGroupById(int groupId)
         {
-            var query = _AmiqContext.Groups.Where(e => e.GroupId == groupId);
+            var query = _amiqContext.Groups.Where(e => e.GroupId == groupId);
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).SingleOrDefaultAsync();
             return data;
         }
@@ -51,7 +52,7 @@ namespace Amiq.DataAccess.Group
         public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
         {
             DtoEditEntityResponse result = new();
-            var group = _AmiqContext.Groups.SingleOrDefault(e => e.GroupId == dtoEditGroupDataRequest.GroupId);
+            var group = _amiqContext.Groups.SingleOrDefault(e => e.GroupId == dtoEditGroupDataRequest.GroupId);
             try
             {
                 if (group != null)
@@ -59,7 +60,7 @@ namespace Amiq.DataAccess.Group
                     group.Name = dtoEditGroupDataRequest.Name;
                     group.AvatarSrc = dtoEditGroupDataRequest.AvatarSrc;
                     group.Description = dtoEditGroupDataRequest.Description;
-                    await _AmiqContext.SaveChangesAsync();
+                    await _amiqContext.SaveChangesAsync();
                     result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
                     result.Result = true;
                 }

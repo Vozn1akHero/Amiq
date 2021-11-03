@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Amiq.DataAccess\Amiq.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GroupEvent\BusinesssRules\" />
+  </ItemGroup>
+
 </Project>

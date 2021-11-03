@@ -33,8 +33,21 @@ namespace Amiq.WebApi.Controllers
             return Ok(groups);
         }
 
+        [HttpPost("block")]
+        public async Task<IActionResult> BlockUserAsync([FromQuery] int userId, [FromQuery] int groupId)
+        {
+            await _bsGroupParticipant.BlockUserAsync(userId, groupId);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteParticipantAsync([FromQuery] int userId, [FromQuery] int groupId)
+        {
+            await _bsGroupParticipant.BlockUserAsync(userId, groupId);
+            return Ok();
+        }
+
         [HttpDelete("leave")]
-        //public async Task<IActionResult> LeaveGroupAsync(DtoLeaveGroup dtoLeaveGroup)
         public async Task<IActionResult> LeaveGroupAsync([FromQuery] int groupId)
         {
             await _bsGroupParticipant.LeaveGroupAsync(JwtStoredUserInfo.UserId, groupId);

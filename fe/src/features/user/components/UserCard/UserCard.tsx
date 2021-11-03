@@ -46,8 +46,8 @@ const UserCard = (props: Props) => {
                 <div className="user-card__controls">
                     {
                         props.controls.map((value, index) =>
-                            <a href="#"
-                               key={index}
+                            <a key={index}
+                               uk-tooltip={value.tooltip}
                                onClick={e => {
                                    e.preventDefault();
                                    value.event(props.userId);

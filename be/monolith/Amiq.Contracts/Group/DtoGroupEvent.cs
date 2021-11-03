@@ -18,6 +18,8 @@ namespace Amiq.Contracts.Group
         public string Description { get; set; }
         public bool IsCancelled { get; set; }
         public bool IsHidden { get; set; }
-        public List<DtoGroupEventParticipant> GroupEventParticipants { get; set; }
+        //public List<DtoGroupEventParticipant> GroupEventParticipants { get; set; }
+        public int GroupEventParticipantsCount { get; set; }
+        public bool IsRequestCreatorParticipant { get; set; }
     }
 }

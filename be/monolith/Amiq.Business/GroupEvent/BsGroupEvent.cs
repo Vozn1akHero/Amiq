@@ -20,6 +20,13 @@ namespace Amiq.Business.Group
             return await _daGroupEvent.GetAllGroupEventsAsync(groupId, dtoPaginatedRequest);
         }
 
+        public DtoGroupEvent GetEventByIdAsync(int requestCreatorId, Guid groupEventId)
+        {
+            DtoGroupEvent groupEvent = _daGroupEvent.GetEventByIdAsync(groupEventId);
+            groupEvent.IsRequestCreatorParticipant = _daGroupEvent.IsParticipant(requestCreatorId, groupEventId);
+            return groupEvent;
+        }
+
         public async Task<DtoEditEntityResponse> CancelEventAsync(int groupId, Guid groupEventId)
         {
             //CheckBsRule(new );

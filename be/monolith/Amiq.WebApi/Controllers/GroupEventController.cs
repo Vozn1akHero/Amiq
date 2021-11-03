@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Group;
+using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,14 @@ namespace Amiq.WebApi.Controllers
                 return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
             }
             var data = await bsGroupEvent.GetAllGroupEventsAsync(groupId, dtoPaginatedRequest);
+            return Ok(data);
+        }
+
+        [HttpGet("{groupEventId}")]
+        [Produces(typeof(DtoGroupEvent))]
+        public IActionResult GetEventById(Guid groupEventId)
+        {
+            var data = bsGroupEvent.GetEventByIdAsync(JwtStoredUserInfo.UserId, groupEventId);
             return Ok(data);
         }
 

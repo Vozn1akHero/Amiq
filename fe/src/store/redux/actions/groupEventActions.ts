@@ -13,7 +13,7 @@ import {IIdBasedPersistentDataEntry} from "../base/id-based-persistent-data";
 
 const groupEventService = new GroupEventService();
 
-export const getAllGroupEvents = (groupId: number, page: number, count: number) => (dispatch) => {
+export const getGroupEvents = (groupId: number, page: number, count: number) => (dispatch) => {
     dispatch({
         type: GET_GROUP_EVENTS
     })

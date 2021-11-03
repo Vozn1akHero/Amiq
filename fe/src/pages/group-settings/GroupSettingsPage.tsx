@@ -64,7 +64,6 @@ class GroupSettingsPage extends Component<Props, State> {
 
     getTabIndex = () => {
         let index : number;
-        console.log(this.props.location.hash)
         switch(this.props.location.hash){
             case "#basic":
                 index = 1;

@@ -3,10 +3,13 @@ export interface IGroupEvent {
     name: string;
     avatarSrc: string;
     date: Date;
+    description: string;
     //participantsCount: number;
-    groupEventParticipants: Array<IGroupEventParticipant>;
+    //groupEventParticipants: Array<IGroupEventParticipant>;
+    groupEventParticipantsCount: number;
     isCancelled:boolean;
     isHidden: boolean;
+    isRequestCreatorParticipant: boolean;
 }
 
 export interface IGroupEventParticipant {

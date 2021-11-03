@@ -67,6 +67,17 @@ namespace Amiq.DataAccess.Group
             return groups;
         }
 
+        public async Task BlockUserAsync(int userId, int groupId)
+        {
+            var entity = new GroupBlockedUser
+            {
+                UserId = userId,
+                GroupId = groupId
+            };
+            _amiqContext.GroupBlockedUsers.Add(entity);
+            await _amiqContext.SaveChangesAsync();
+        }
+
         public async Task<List<DtoGroup>> GetNonAdministeredUserGroupsByUserIdAsync(int userId,
             DtoPaginatedRequest dtoPaginatedRequest)
         {
@@ -79,7 +90,6 @@ namespace Amiq.DataAccess.Group
                                    select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                                    .Take(dtoPaginatedRequest.Count);
             List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
-
             return groups;
         }
 
@@ -121,6 +131,11 @@ namespace Amiq.DataAccess.Group
             await _amiqContext
                 .GroupParticipants.AddAsync(participant);
             await _amiqContext.SaveChangesAsync();
+        }
+
+        public GroupParticipant GetGroupParticipant(int userId, int groupId)
+        {
+            return _amiqContext.GroupParticipants.SingleOrDefault(e=>e.UserId == userId && e.GroupId == groupId);
         }
 
         public async Task<DtoGroupParticipant> GetGroupParticipantAsync(DtoMinifiedGroupParticipant rsSimplifiedGroupParticipant)

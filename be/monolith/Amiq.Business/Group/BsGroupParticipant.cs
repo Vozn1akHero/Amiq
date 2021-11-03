@@ -59,5 +59,10 @@ namespace Amiq.Business
         {
             return await _daGroupParticipant.GetGroupParticipantsAsync(groupId, paginatedRequest);
         }
+
+        public async Task BlockUserAsync(int userId, int groupId)
+        {
+             await _daGroupParticipant.BlockUserAsync(userId, groupId);
+        }
     }
 }

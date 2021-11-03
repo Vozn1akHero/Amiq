@@ -1,13 +1,14 @@
 import {IGroupParticipant} from "../../../features/group/models/group-models";
-import {CLEAR_GROUP_PARTICIPANTS, GET_PARTICIPANTS, SET_PARTICIPANTS} from "../types/groupParticipantTypes";
+import {
+    BLOCK_USER_IN_GROUP,
+    CLEAR_GROUP_PARTICIPANTS,
+    REMOVE_GROUP_PARTICIPANT,
+    SET_PARTICIPANTS
+} from "../types/groupParticipantTypes";
 import {IResponseListOf} from "../../../core/http-client/response-list-of";
 import {IPaginatedStoreData} from "../base/paginated-store-data";
 
 type GroupParticipantsState = {
-    /*participants: Array<IGroupParticipant>;
-    participantsLoaded: boolean;
-    participantsLength: number;
-    currentPage: number;*/
     groupParticipants: IPaginatedStoreData<IGroupParticipant>
 }
 
@@ -39,6 +40,26 @@ export default function(state:GroupParticipantsState = initialState, action) {
                     length: data.length,
                     currentPage: state.groupParticipants.currentPage+1,
                     loading: false
+                }
+            }
+        }
+        case BLOCK_USER_IN_GROUP: {
+            return {
+                ...state,
+                groupParticipants: {
+                    ...state.groupParticipants,
+                    entities: state.groupParticipants.entities
+                        .filter(value => value.groupId === action.payload.groupId && value.userId !== action.payload.userId)
+                }
+            }
+        }
+        case REMOVE_GROUP_PARTICIPANT: {
+            return {
+                ...state,
+                groupParticipants: {
+                    ...state.groupParticipants,
+                    entities: state.groupParticipants.entities
+                        .filter(value => value.groupId === action.payload.groupId && value.userId !== action.payload.userId)
                 }
             }
         }

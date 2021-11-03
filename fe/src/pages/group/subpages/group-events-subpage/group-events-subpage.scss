@@ -1,0 +1,7 @@
+.group-events-subpage {
+  &__events-list{
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    gap: 1rem;
+  }
+}

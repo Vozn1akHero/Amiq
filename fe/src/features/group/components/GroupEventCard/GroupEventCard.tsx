@@ -4,13 +4,16 @@ import devConfig from "dev-config.json";
 import IDropdownOption from "common/components/SimpleDropdown/IDropdownOption";
 import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import "./group-event-card.scss"
+import { Link } from 'react-router-dom';
 
 type Props = {
     groupEventData: IGroupEvent;
-    onCancelClick(groupEventId: string):void;
-    onReopenEventClick(groupEventId: string):void;
-    onHideClick(groupEventId: string):void;
-    onMakeVisibleClick(groupEventId: string):void;
+    onCancelClick?(groupEventId: string):void;
+    onReopenEventClick?(groupEventId: string):void;
+    onHideClick?(groupEventId: string):void;
+    onMakeVisibleClick?(groupEventId: string):void;
+    eventPageRoute: string;
+    showControls?: boolean;
 }
 
 const GroupEventCard = (props:Props) => {
@@ -65,26 +68,31 @@ const GroupEventCard = (props:Props) => {
             </div>
 
             <div className="event-info-wrapper uk-padding">
-                <h3 className="uk-card-title name">{props.groupEventData.name}</h3>
-                <span className="group-add-info">
-                    <span uk-icon="icon:users" className="uk-margin-small-left"></span> {props.groupEventData.groupEventParticipants?.length} weźmie udział
-                </span>
-
-                <div className="group-event-card__controls uk-flex uk-margin-medium-top">
-                    <button className={`uk-button ${props.groupEventData.isCancelled ? `uk-button-primary` : `uk-button-secondary`}`}
-                            onClick={() => {
-                                if(props.groupEventData.isCancelled)
-                                    onReopenEventClick();
-                                else
-                                    onCancelClick();
-                            }}>{props.groupEventData.isCancelled ? <span>Aktywuj</span> : <span>Anuluj</span>}</button>
-                    <div className="uk-margin-small-left">
-                        <SimpleDropdown icon="more"
-                                        isStatic={true}
-                                        options={moreOptionsDropdownValues}
-                                        handleOptionClick={handleShowMoreOptionsClick} />
-                    </div>
+                <Link to={props.eventPageRoute}>
+                    <h3 className="uk-card-title name">{props.groupEventData.name}</h3>
+                </Link>
+                <div className="group-add-info">
+                    <span uk-icon="icon:users" className="uk-margin-small-left"></span>
+                    {props.groupEventData.groupEventParticipantsCount} weźmie udział
                 </div>
+
+                {
+                    props.showControls &&  <div className="group-event-card__controls uk-flex uk-margin-medium-top">
+                        <button className={`uk-button ${props.groupEventData.isCancelled ? `uk-button-primary` : `uk-button-secondary`}`}
+                                onClick={() => {
+                                    if(props.groupEventData.isCancelled)
+                                        onReopenEventClick();
+                                    else
+                                        onCancelClick();
+                                }}>{props.groupEventData.isCancelled ? <span>Aktywuj</span> : <span>Anuluj</span>}</button>
+                        <div className="uk-margin-small-left">
+                            <SimpleDropdown icon="more"
+                                            isStatic={true}
+                                            options={moreOptionsDropdownValues}
+                                            handleOptionClick={handleShowMoreOptionsClick} />
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     );
