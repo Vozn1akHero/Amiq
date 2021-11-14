@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
-#nullable disable
 
 namespace Amiq.DataAccess.Models.Models
 {
@@ -33,6 +32,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<GroupPostComment> GroupPostComments { get; set; }
         public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<NotificationType> NotificationTypes { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
@@ -52,8 +52,6 @@ namespace Amiq.DataAccess.Models.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Polish_CI_AS");
-
             modelBuilder.Entity<BlockedUser>(entity =>
             {
                 entity.HasKey(e => e.BlockedUsersId);
@@ -365,7 +363,7 @@ namespace Amiq.DataAccess.Models.Models
             {
                 entity.ToTable("GroupPostComment", "Post");
 
-                entity.Property(e => e.GroupPostCommentId).HasDefaultValueSql("(newid())");
+                entity.Property(e => e.GroupPostCommentId).HasDefaultValueSql("(newsequentialid())");
 
                 entity.Property(e => e.AuthorVisibilityType)
                     .IsRequired()
@@ -440,11 +438,27 @@ namespace Amiq.DataAccess.Models.Models
                     .HasConstraintName("FK_Message_Chat");
             });
 
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification", "Notification");
+
+                entity.Property(e => e.NotificationId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ImageSrc).IsRequired();
+
+                entity.Property(e => e.Text)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.HasOne(d => d.NotificationType)
+                    .WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.NotificationTypeId)
+                    .HasConstraintName("FK_Notification_NotificationType");
+            });
+
             modelBuilder.Entity<NotificationType>(entity =>
             {
                 entity.ToTable("NotificationType", "Notification");
-
-                entity.Property(e => e.NotificationTypeId).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -544,7 +558,7 @@ namespace Amiq.DataAccess.Models.Models
                     .IsRequired()
                     .HasMaxLength(1)
                     .IsUnicode(false)
-                    .IsFixedLength(true);
+                    .IsFixedLength();
 
                 entity.Property(e => e.ShortDescription).HasMaxLength(400);
 

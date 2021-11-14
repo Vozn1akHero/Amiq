@@ -34,10 +34,9 @@ class ExemplaryUserFriendsInFrame extends Component<Props> {
                 <ItemsFrameL title="Znajomi"
                              displayHeaderAsLink={true}
                              link={`/profile/${this.props.userId}/friends`}
-                             icon="users"
-                             callbackText="Brak znajomych" >
+                             icon="users">
                     {
-                        this.props.userFriendsLoaded && <div className="exemplary-user-friends-in-frame__items">
+                        this.props.userFriendsLoaded && (this.props.userFriends.length > 0 ? <div className="exemplary-user-friends-in-frame__items">
                             {
                                 this.getConvertedExemplaryFriendsToFrameItems().map((value, index) => <Link key={index} to={value.link}>
                                     <div className="exemplary-user-friends-in-frame__item">
@@ -46,7 +45,7 @@ class ExemplaryUserFriendsInFrame extends Component<Props> {
                                     </div>
                                 </Link>)
                             }
-                        </div>
+                        </div> : <span>Brak znajomych</span>)
                     }
                 </ItemsFrameL>
             </div>

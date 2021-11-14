@@ -1,10 +1,14 @@
 import {BaseService} from "core/base-service";
-import {HttpParams} from "../../core/http-client";
+import {HttpParams, HttpQueryParams} from "../../core/http-client";
 
 export class BlockedUserService extends BaseService {
     apiModule = "blocked-user";
 
-    getBlockedUsers(){
+    getBlockedUsers(page: number, count: number){
+        return this.httpClient.get(this.buildApiPath("list"), null,
+            new HttpQueryParams()
+                .append("page", page)
+                .append("count", count));
     }
 
     isUserBlocked(destUserId: number){

@@ -34,20 +34,20 @@ class GroupParticipantsInFrame extends Component<Props> {
                 <ItemsFrameL title="Uczestnicy"
                              displayHeaderAsLink={true}
                              link={"/group/1/participants"}
-                             icon="users"
-                             callbackText="Brak uczestników">
+                             icon="users">
                     {
-                        this.props.groupParticipants.loaded && <div className="group-participants-in-frame__items">
-                            {
-                                this.getConvertedParticipantsToFrameItem().map((value, index) =>
+                        this.props.groupParticipants.loaded &&
+
+                        this.props.groupParticipants.entities.length > 0 ?
+                            <div className="group-participants-in-frame__items">
+                                {this.getConvertedParticipantsToFrameItem().map((value, index) =>
                                     <Link key={index} to={value.link}>
                                         <div className="group-participants-in-frame__item">
                                             <img className="group-participants-in-frame__item__avatar border-radius-50"
                                                  src={Utils.getImageSrc(value.imagePath)}/>
                                         </div>
-                                    </Link>)
-                            }
-                        </div>
+                                    </Link>)}
+                            </div> : <span>Brak uczestników</span>
                     }
                 </ItemsFrameL>
             </div>

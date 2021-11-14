@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Amiq.DataAccess.Models.Models
 {
+    /// <summary>
+    /// Id grupy, jeśli komentarz został stworzony przez administratora grupy
+    /// </summary>
     public partial class Comment
     {
         public Comment()

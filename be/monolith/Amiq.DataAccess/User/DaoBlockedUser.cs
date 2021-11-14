@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.DataAccess.User
 {
-    public class DaBlockedUser
+    public class DaoBlockedUser
     {
         private AmiqContext _amiqContext = new AmiqContext();
 

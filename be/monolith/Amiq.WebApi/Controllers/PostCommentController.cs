@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
         private BsPostComment bsPostComment = new BsPostComment();
 
         [HttpGet("user-post-comments")]
-        public async Task<IActionResult> GetUserPostCommentsByGroupIdAsync([FromQuery] Guid postId,
+        public async Task<IActionResult> GetUserPostCommentsAsync([FromQuery] Guid postId,
             [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
             CancellationToken cancellationToken = default)
         {

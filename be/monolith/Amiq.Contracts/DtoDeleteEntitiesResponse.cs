@@ -4,8 +4,8 @@ namespace Amiq.Contracts
 {
     public class DtoDeleteEntitiesResponse
     {
-        public bool Result { get; set; }
-        public string Message { get; set; }
+        public bool IsBusinessException { get; set; }
+        public string BusinessException { get; set; }
         public IEnumerable<object> Entities { get; set; }
     }
 }

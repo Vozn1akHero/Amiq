@@ -15,6 +15,8 @@ import GuardedRoute from "../../core/routing/GuardedRoute";
 import NotFoundPage from "../not-found/NotFoundPage";
 import GroupSettingsPageContainer from "../group-settings/GroupSettingsPageContainer";
 import FriendListPage from "../friends/FriendListPage";
+import UserSettingsPage from "../user-settings/UsetSettingsPage";
+import Breadcrumb from "../../common/components/Breadcrumb/Breadcrumb";
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -45,17 +47,18 @@ const IdentityWrapperPage = (props: Props) => {
 
                     <div className="main-content" ref={mainContentRef}>
                         <div className="uk-margin-medium-top">
-                            {/*<Breadcrumb />*/}
+                           {/* <Breadcrumb />*/}
                             <div className="page-wrapper uk-margin-medium-top">
                                 <Route component={AuthPageContainer} path={Routes.getSimpleLink(Routes.authPageRoutes)} />
                                 <Route component={JoinupPageContainer} path={Routes.getSimpleLink(Routes.registrationPageRoutes)} />
                                 <GuardedRoute component={ProfilePageContainer} path={Routes.getSimpleLink(Routes.profilePageRoutes)} />
-                                <Route component={FriendListPage} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
-                                <Route component={GroupsPageContainer} path={Routes.getSimpleLink(Routes.groupsPageRoutes)} />
-                                <Route exact={true} component={GroupSettingsPageContainer} path={Routes.getSimpleLink(Routes.groupSettingsPageRoutes)} />
-                                <Route component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />
-                                <Route component={ChatPageContainer} path={Routes.getSimpleLink(Routes.chatPageRoutes)} />
-                                <Route path="/not-found" component={NotFoundPage} />
+                                <GuardedRoute component={UserSettingsPage} path={Routes.getSimpleLink(Routes.userSettingsRoutes)} />
+                                <GuardedRoute component={FriendListPage} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
+                                <GuardedRoute component={GroupsPageContainer} path={Routes.getSimpleLink(Routes.groupsPageRoutes)} />
+                                <GuardedRoute exact={true} component={GroupSettingsPageContainer} path={Routes.getSimpleLink(Routes.groupSettingsPageRoutes)} />
+                                <GuardedRoute component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />
+                                <GuardedRoute component={ChatPageContainer} path={Routes.getSimpleLink(Routes.chatPageRoutes)} />
+                                <GuardedRoute path="/not-found" component={NotFoundPage} />
                             </div>
                         </div>
                     </div>

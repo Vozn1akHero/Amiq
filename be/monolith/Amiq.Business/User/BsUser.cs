@@ -14,7 +14,7 @@ namespace Amiq.Business.User
     public class BsUser : BusinessLayerBase
     {
         private DaUser _daUser = new DaUser();
-        private BsBlockedUser _blockedUser = new BsBlockedUser();
+        private BlBlockedUser _blockedUser = new BlBlockedUser();
 
         public async Task<IEnumerable<DtoUserDescriptionBlock>> GetUserDescriptionAsync(int userId)
         {

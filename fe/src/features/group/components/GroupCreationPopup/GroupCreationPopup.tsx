@@ -1,11 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 import CenteredPopup from "common/components/CenteredPopup/CenteredPopup";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {GroupCreationPopupValidationSchema} from "../group-validation-schema";
 import CategoryInput from "../CategoryInput/CategoryInput";
+import {IGroupCard} from "../../models/group-models";
 
+type Props = {
+    createGroup(groupData: Pick<IGroupCard, 'name' & 'description'>): void;
+}
 
-const GroupCreationPopup  = () => {
+const GroupCreationPopup = (props: Props) => {
     return (
         <CenteredPopup id="new-group-popup"
                        title="Utwórz grupę"
@@ -14,7 +18,10 @@ const GroupCreationPopup  = () => {
                 <Formik
                     initialValues={{name: '', description: ''}}
                     onSubmit={(values, {setSubmitting}) => {
-
+                        props.createGroup({
+                            name: values.name,
+                            description: values.description
+                        });
                     }}
                     validationSchema={GroupCreationPopupValidationSchema}
                 >
@@ -26,7 +33,7 @@ const GroupCreationPopup  = () => {
                                    className="uk-textarea uk-margin-small-top" rows={3}/>
                             <ErrorMessage name="description" component="div"/>
                             <div className="uk-margin-small-top">
-                                <CategoryInput />
+                                <CategoryInput/>
                             </div>
                             <button className="uk-button uk-button-default uk-modal-close uk-margin-small-top">
                                 Anuluj

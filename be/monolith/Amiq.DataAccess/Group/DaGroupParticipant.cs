@@ -34,78 +34,102 @@ namespace Amiq.DataAccess.Group
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId,
-            DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<List<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
-                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
-                                   on g.GroupId equals gp.GroupId
-                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
-                                   on gp.UserId equals u.UserId
-                                   where u.UserId == userId
-                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                                   .Take(dtoPaginatedRequest.Count);
-
-            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+            var groups = await _amiqContextWithDebug.Groups.AsNoTracking()
+                .Where(e=>e.GroupParticipants.Any(gp => gp.UserId == userId))
+                .Select(g => new DtoGroupCard
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name,
+                    AvatarSrc = g.AvatarSrc,
+                    Description = g.Description,
+                    ParticipantsCount = g.GroupParticipants.Count,
+                    IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                    IsRequestCreatorParticipant = true
+                })
+                .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                .Take(dtoPaginatedRequest.Count)
+                .ToListAsync();
 
             return groups;
         }
 
-        public async Task<List<DtoGroup>> GetAdministeredUserGroupsByUserIdAsync(int userId,
+        public async Task DeleteParticipantAsync(GroupParticipant groupParticipant)
+        {
+            _amiqContext.Remove(groupParticipant);
+            await _amiqContext.SaveChangesAsync();
+        }
+
+        public async Task<List<DtoGroupCard>> GetAdministeredUserGroupsByUserIdAsync(int userId,
             DtoPaginatedRequest dtoPaginatedRequest)
         {
-            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+            var groups = await (from g in _amiqContextWithDebug.Groups.AsNoTracking()
                                    join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
                                    on g.GroupId equals gp.GroupId
                                    join u in _amiqContextWithDebug.Users.AsNoTracking()
                                    on gp.UserId equals u.UserId
                                    where u.UserId == userId && gp.IsAdmin
-                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                                   .Take(dtoPaginatedRequest.Count);
-            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+                                    select new DtoGroupCard
+                                    {
+                                        GroupId = g.GroupId,
+                                        Name = g.Name,
+                                        AvatarSrc = g.AvatarSrc,
+                                        Description = g.Description,
+                                        ParticipantsCount = g.GroupParticipants.Count,
+                                        IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                                        IsRequestCreatorParticipant = gp.UserId == userId,
+                                    })
+                                   .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count)
+                                   .ToListAsync();
+            //List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
 
             return groups;
         }
 
-        public async Task BlockUserAsync(int userId, int groupId)
+        public async Task<List<DtoGroupCard>> GetNonAdministeredUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var entity = new GroupBlockedUser
-            {
-                UserId = userId,
-                GroupId = groupId
-            };
-            _amiqContext.GroupBlockedUsers.Add(entity);
-            await _amiqContext.SaveChangesAsync();
-        }
-
-        public async Task<List<DtoGroup>> GetNonAdministeredUserGroupsByUserIdAsync(int userId,
-            DtoPaginatedRequest dtoPaginatedRequest)
-        {
-            IQueryable dbGroups = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+            var groups = await (from g in _amiqContextWithDebug.Groups.AsNoTracking()
                                    join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
                                    on g.GroupId equals gp.GroupId
                                    join u in _amiqContextWithDebug.Users.AsNoTracking()
                                    on gp.UserId equals u.UserId
                                    where u.UserId == userId && !gp.IsAdmin
-                                   select g).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                                   .Take(dtoPaginatedRequest.Count);
-            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+                                    select new DtoGroupCard
+                                    {
+                                        GroupId = g.GroupId,
+                                        Name = g.Name,
+                                        AvatarSrc = g.AvatarSrc,
+                                        Description = g.Description,
+                                        ParticipantsCount = g.GroupParticipants.Count,
+                                        IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                                        IsRequestCreatorParticipant = gp.UserId == userId,
+                                    })
+                                   .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count)
+                                   .ToListAsync();
+
             return groups;
         }
 
-        public async Task<List<DtoGroup>> GetHiddenUserGroupsByUserIdAsync(int userId,
-            DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<List<DtoGroupCard>> GetHiddenUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            IQueryable dbGroups = (from g in _amiqContext.Groups.AsNoTracking()
-                                   join hg in _amiqContext.HiddenGroups.AsNoTracking()
-                                   on g.GroupId equals hg.GroupId
-                                   join u in _amiqContext.Users.AsNoTracking()
-                                   on hg.UserId equals u.UserId
-                                   where u.UserId == userId
-                                   select g
-                                   ).Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                                   .Take(dtoPaginatedRequest.Count);
-            List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
+            var groups = await _amiqContext.HiddenGroups.AsNoTracking()
+                                   .Where(e=>e.UserId == userId)
+                                   .Select(g=> new DtoGroupCard
+                                   {
+                                       GroupId = g.GroupId,
+                                       Name = g.Group.Name,
+                                       AvatarSrc = g.Group.AvatarSrc,
+                                       Description = g.Group.Description,
+                                       ParticipantsCount = g.Group.GroupParticipants.Count,
+                                       IsHidden = true,
+                                       IsRequestCreatorParticipant = g.Group.GroupParticipants.Any(gp=>gp.UserId == userId)
+                                   })
+                                   .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                                   .Take(dtoPaginatedRequest.Count)
+                                   .ToListAsync();
 
             return groups;
         }
@@ -122,11 +146,11 @@ namespace Amiq.DataAccess.Group
             }
         }
 
-        public async Task JoinGroupAsync(DtoJoinGroup rsJoinGroup)
+        public async Task JoinGroupAsync(int userId, int groupId)
         {
             var participant = new GroupParticipant { 
-                GroupId = rsJoinGroup.GroupId,
-                UserId = rsJoinGroup.UserId
+                GroupId = groupId,
+                UserId = userId
             };
             await _amiqContext
                 .GroupParticipants.AddAsync(participant);
@@ -142,6 +166,7 @@ namespace Amiq.DataAccess.Group
         {
             var res = await _amiqContext
                 .GroupParticipants
+                .AsNoTracking()
                 .Where(e => e.GroupId == rsSimplifiedGroupParticipant.GroupId
                 && e.UserId == rsSimplifiedGroupParticipant.UserId)
                 .Include(e=>e.User)

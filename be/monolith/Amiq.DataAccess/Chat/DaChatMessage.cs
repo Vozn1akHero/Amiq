@@ -80,6 +80,7 @@ namespace Amiq.DataAccess.Chat
                                 Surname = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Surname : e.Chat.FirstUser.Surname,
                                 AvatarPath = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
                             },
+                            Date = e.Msg.CreatedAt,
                             WrittenByIssuer = e.Msg.AuthorId == userId
                         })
                         .ToListAsync();
@@ -93,14 +94,14 @@ namespace Amiq.DataAccess.Chat
                 && e.MessageId == dtoDeleteChatMessageRequest.MessageId);
             if(message != null)
             {
-                dtoDeleteEntityResponse.Result = true;
+                dtoDeleteEntityResponse.IsBusinessException = false;
                 dtoDeleteEntityResponse.Entity = DaResults.EntityIsNotFound;
                 _amiqContext.Remove(message);
                 await _amiqContext.SaveChangesAsync();
             }
             else
             {
-                dtoDeleteEntityResponse.Result = false;
+                dtoDeleteEntityResponse.IsBusinessException = true;
             }
             return dtoDeleteEntityResponse;
         }
@@ -109,17 +110,9 @@ namespace Amiq.DataAccess.Chat
         {
             var result = new DtoDeleteEntitiesResponse();
             var entities = _amiqContext.Messages.Where(e => messageIds.Contains(e.MessageId)).ToList();
-            try
-            {
-                _amiqContext.Messages.RemoveRange(entities);
-                await _amiqContext.SaveChangesAsync();
-                result.Result = true;
-                result.Entities = APAutoMapper.Instance.Map<List<DtoChatMessage>>(entities);
-            } catch (Exception ex)
-            {
-                result.Result = false;
-                result.Message = ex.Message;
-            }
+            _amiqContext.Messages.RemoveRange(entities);
+            await _amiqContext.SaveChangesAsync();
+            result.Entities = APAutoMapper.Instance.Map<List<DtoChatMessage>>(entities);
             return result;
         }
 

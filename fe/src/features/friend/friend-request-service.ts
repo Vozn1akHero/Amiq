@@ -13,7 +13,7 @@ export class FriendRequestService extends BaseService {
     }
 
     sendFriendRequest(receiverId: number) {
-        return this.httpClient.post(this.buildApiPath(""), {
+        return this.httpClient.post(this.buildApiPath(), {
             receiverId
         })
     }
@@ -25,7 +25,7 @@ export class FriendRequestService extends BaseService {
     }
 
     cancelFriendRequestByDestUserId(destUserId: number) {
-        return this.httpClient.post(this.buildApiPath("cancel-friend-request"),
+        return this.httpClient.post(this.buildApiPath("cancel-friend-request-by-dest-user"),
             null,
             new HttpParams().append("destUserId", destUserId))
     }
@@ -37,7 +37,7 @@ export class FriendRequestService extends BaseService {
     }
 
     acceptFriendRequestByDestUserId(destUserId: number) {
-        return this.httpClient.post(this.buildApiPath("accept-friend-request"),
+        return this.httpClient.post(this.buildApiPath("accept-friend-request-by-dest-user"),
             null,
             new HttpParams().append("destUserId", destUserId))
     }
@@ -49,7 +49,7 @@ export class FriendRequestService extends BaseService {
     }
 
     rejectFriendRequestByDestUserId(destUserId: number) {
-        return this.httpClient.post(this.buildApiPath("reject-friend-request"),
+        return this.httpClient.post(this.buildApiPath("reject-friend-request-by-dest-user"),
             null,
             new HttpParams().append("destUserId", destUserId))
     }

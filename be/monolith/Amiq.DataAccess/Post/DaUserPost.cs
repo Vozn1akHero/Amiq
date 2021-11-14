@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts;
+﻿using Amiq.Common;
+using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
@@ -21,12 +22,30 @@ namespace Amiq.DataAccess.Post
             DtoListResponseOf<DtoUserPost> result = new();
             result.Length = await _amiqContext.UserPosts.Where(e => e.UserId == userId).CountAsync();
             var query = _amiqContext.UserPosts.Where(e=>e.UserId == userId)
-                .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                .Take(dtoPaginatedRequest.Count)
+                .Paginate(dtoPaginatedRequest.Page, dtoPaginatedRequest.Count)
                 .OrderByDescending(e=>e.Post.CreatedAt)
                 .Include(e=>e.Post)
                 .Include(e=>e.Post.Comments);
-            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
+
+            var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
+
+            /*foreach (var item in data)
+            {
+                if (item.CommentsCount > 0)
+                {
+                    var recentCommentsQuery = _amiqContext.Comments.AsNoTracking()
+                        .Where(e => !e.ParentId.HasValue)
+                        .Include(e => e.Author)
+                        .Paginate(PAGE, TAKE)
+                        .OrderByDescending(e => e.CreatedAt);
+                    var comments = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(recentCommentsQuery).ToListAsync();
+                    item.Comments = comments;
+                    item.HasMoreCommentsThanRecent = item.CommentsCount > item.Comments.Count;
+                }
+            }*/
+
+            result.Entities = data;
+
             return result;
         }
 

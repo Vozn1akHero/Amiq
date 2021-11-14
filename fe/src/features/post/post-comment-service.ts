@@ -6,12 +6,11 @@ export class PostCommentService extends BaseService {
     apiModule = "post-comment"
 
     getPostComments(postId: string, page){
-        const params = new HttpParams()
-            .append("postId", postId);
         const queryParams = new HttpQueryParams()
+            .append("postId", postId)
             .append("count", 20)
             .append("page", page);
-        return this.httpClient.get(this.buildApiPath("user-post-comments"), params, queryParams);
+        return this.httpClient.get(this.buildApiPath("user-post-comments"), null, queryParams);
     }
 
     getGroupPostComments(postId: string, page){

@@ -1,8 +1,10 @@
 ﻿using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
+using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Group;
+using Amiq.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Amiq.Business
             _daGroupParticipant = new DaGroupParticipant();
         }
 
-        public async Task<List<DtoGroup>> GetUserGroupsByUserIdAsync(int userId,
+        public async Task<List<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId,
             DtoPaginatedRequest dtoPaginatedRequest, EnGroupFilterType filterType)
         {
             if (filterType == EnGroupFilterType.All)
@@ -34,14 +36,23 @@ namespace Amiq.Business
             else return await _daGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest);
         }
 
+        public async Task<DtoDeleteEntityResponse> DeleteParticipantAsync(int userId, int groupId)
+        {
+            var deleteEntityResponse = new DtoDeleteEntityResponse();
+            var groupParticipant = _daGroupParticipant.GetGroupParticipant(userId, groupId);
+            await _daGroupParticipant.DeleteParticipantAsync(groupParticipant);
+            deleteEntityResponse.Entity = APAutoMapper.Instance.Map<DtoGroupParticipant>(groupParticipant);
+            return deleteEntityResponse;
+        }
+
         public async Task LeaveGroupAsync(int userId, int groupId)
         {
             await _daGroupParticipant.LeaveGroupAsync(userId, groupId);
         }
 
-        public async Task JoinGroupAsync(DtoJoinGroup dtoJoinGroup)
+        public async Task JoinGroupAsync(int userId, int groupId)
         {
-            await _daGroupParticipant.JoinGroupAsync(dtoJoinGroup);
+            await _daGroupParticipant.JoinGroupAsync(userId, groupId);
         }
 
         public async Task<DtoGroupParticipant> GetGroupParticipantAsync(DtoMinifiedGroupParticipant dtoSimplifiedGroupParticipant)
@@ -58,11 +69,6 @@ namespace Amiq.Business
         public async Task<DtoListResponseOf<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId, DtoPaginatedRequest paginatedRequest)
         {
             return await _daGroupParticipant.GetGroupParticipantsAsync(groupId, paginatedRequest);
-        }
-
-        public async Task BlockUserAsync(int userId, int groupId)
-        {
-             await _daGroupParticipant.BlockUserAsync(userId, groupId);
         }
     }
 }

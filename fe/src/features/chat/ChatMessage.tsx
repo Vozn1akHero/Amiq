@@ -6,21 +6,24 @@ import { Link } from 'react-router-dom';
 
 type State = {
     isSelected: boolean;
+    messageControlsVisible: boolean;
 }
 
 type Props = {
     message: IMessage;
     isAuthorDataVisible: boolean;
     viewerId: number;
-    onMessageSelection(messageId: string):void;
-    onMessageDeselection(messageId: string):void;
+    selectMessage(messageId: string):void;
+    deselectMessage(messageId: string):void;
+    removeMessage(messageId: string):void;
 }
 
 class ChatMessage extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            isSelected: false
+            isSelected: false,
+            messageControlsVisible: false
         }
     }
 
@@ -29,17 +32,31 @@ class ChatMessage extends Component<Props, State> {
             isSelected: !this.state.isSelected
         }, () => {
             if(this.state.isSelected)
-                this.props.onMessageSelection(this.props.message.messageId)
-            else this.props.onMessageDeselection(this.props.message.messageId)
+                this.props.selectMessage(this.props.message.messageId)
+            else this.props.deselectMessage(this.props.message.messageId)
+        })
+    }
+
+    onMessageMouseOver = () => {
+        this.setState({
+            messageControlsVisible: true
+        })
+    }
+
+    onMessageMouseOut  = () => {
+        this.setState({
+            messageControlsVisible: false
         })
     }
 
     render() {
         return (
             <div onClick={this.onMessageSelection}
+                 onMouseOver={this.onMessageMouseOver}
+                 onMouseLeave={this.onMessageMouseOut}
                  className={`chat-message 
                     ${this.props.message.author.userId === this.props.viewerId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
-                    ${this.state.isSelected && `uk-card-default`}
+                    ${this.state.isSelected ? `uk-card-default` : ``}
                     `}>
                 {
                     this.props.isAuthorDataVisible && <Link to={`/user/${this.props.message.author.userId}`} className="uk-float-left">
@@ -50,12 +67,18 @@ class ChatMessage extends Component<Props, State> {
                              alt=""/>
                     </Link>
                 }
-                <div className={`chat-message__text-bg uk-card uk-card-default uk-card-body ${this.props.isAuthorDataVisible && `uk-float-left uk-margin-small-left`}`}>
-                    <p className="chat-message__text">
+                <div className={`chat-message__text-bg uk-card uk-card-default uk-card-body ${this.props.isAuthorDataVisible ? `uk-float-left uk-margin-small-left` : ``}`}>
+                    <div className={`chat-message__text`}>
                         {
                             this.props.message.textContent
                         }
-                    </p>
+                        {
+                            this.state.messageControlsVisible && <div className={`chat-message__controls`}>
+                                <button onClick={() => {this.props.removeMessage(this.props.message.messageId)}}
+                                        className="uk-icon-button uk-margin-small-right" uk-icon="trash"></button>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         )

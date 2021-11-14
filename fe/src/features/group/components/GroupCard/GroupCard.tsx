@@ -11,6 +11,7 @@ type GroupCardProps = {
     groupCard: IGroupCard;
     toggleGroupVisibility(groupId: number, isVisible: boolean):void;
     leaveGroup(groupId: number):void;
+    joinGroup(groupId: number):void;
 }
 
 const GroupCard = (props: GroupCardProps) => {
@@ -83,12 +84,14 @@ const GroupCard = (props: GroupCardProps) => {
                         <span className="group-add-info">{props.groupCard.subjects.join(", ")}</span>
                 }
 
-                {/*<span className="group-add-info">3 nowych uczestników</span>
-                <span className="group-add-info">13 nowych wpisów</span>*/}
-
                 <div className="controls uk-margin-medium-top uk-flex">
-                    <button className="uk-button uk-button-secondary"
-                            onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
+                    {
+                        props.groupCard.isRequestCreatorParticipant ? <button className="uk-button uk-button-secondary"
+                                                                               onClick={() => props.leaveGroup(props.groupCard.groupId)}>Wyjdź</button>
+                            :
+                            <button className="uk-button uk-button-secondary"
+                                    onClick={() => props.joinGroup(props.groupCard.groupId)}>Dołącz</button>
+                    }
                     <div className="uk-margin-small-left">
                         <SimpleDropdown icon="more"
                                         isStatic={false}

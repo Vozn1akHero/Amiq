@@ -13,5 +13,6 @@ namespace Amiq.Contracts.Group
         public int ParticipantsCount { get; set; }
         public bool IsHidden { get; set; }
         public List<DtoDescriptionBlock> DescriptionBlocks { get; set; }
+        public bool IsRequestCreatorParticipant { get; set; }
     }
 }

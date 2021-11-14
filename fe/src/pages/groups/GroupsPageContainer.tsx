@@ -50,7 +50,22 @@ class GroupsPageContainer extends Component<any, State> {
         this.groupParticipant.leaveGroup(AuthStore.identity.userId, groupId).then(res => {
             if(res.status === StatusCodes.OK){
                 this.setState({
-                    groups: [...this.state.groups.filter(e=>e.groupId!==groupId)]
+                    groups: this.state.groups.filter(e=>e.groupId!==groupId)
+                })
+            }
+        })
+    }
+
+    joinGroup = (groupId: number) => {
+        this.groupParticipant.joinGroup(groupId).then(res=> {
+            if(res.status === StatusCodes.OK){
+                this.setState({
+                    groups: this.state.groups.map(value=>{
+                        if(value.groupId===groupId){
+                            value.isRequestCreatorParticipant = true;
+                        }
+                        return value;
+                    })
                 })
             }
         })
@@ -93,12 +108,25 @@ class GroupsPageContainer extends Component<any, State> {
         this.setGroups(option.id);
     }
 
+    createGroup = (groupData: Pick<IGroupCard, 'name' & 'description'>) => {
+        this.groupService.create(groupData).then(res => {
+            if(res.status === StatusCodes.CREATED){
+                const createdGroup: IGroupCard = res.data;
+                this.setState({
+                    groups: [createdGroup,...this.state.groups]
+                })
+            }
+        })
+    }
+
     render() {
         return (
             <>
                 <GroupsPage groupList={this.state.groups}
+                            createGroup={this.createGroup}
                             groupsLoaded={this.state.groupsLoaded}
                             leaveGroup={this.leaveGroup}
+                            joinGroup={this.joinGroup}
                             searchInputLoading={this.state.searchInputLoading}
                             onSortDropdownOptionSelection={this.onSortDropdownOptionSelection}
                             onSearchInputChange={this.onSearchInputChange} />

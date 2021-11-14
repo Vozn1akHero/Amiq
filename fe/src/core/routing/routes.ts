@@ -50,6 +50,12 @@ export default class Routes {
         };
     }
 
+    public static get userSettingsRoutes() : ISimpleRoute {
+        return {
+            reactRouterLink: "settings"
+        }
+    }
+
     public static get friendListPageRoutes() : ISimpleRoute{
         return {
             reactRouterLink: "friends/:userId?",

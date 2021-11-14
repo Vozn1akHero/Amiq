@@ -10,8 +10,10 @@ import {StatusCodes} from "http-status-codes";
 import {IGroupParticipant} from "../../../features/group/models/group-models";
 import {IResponseListOf} from "../../../core/http-client/response-list-of";
 import {AxiosResponse} from "axios";
+import {GroupBlockedUserService} from "../../../features/group/services/group-blocked-user-service";
 
 const groupParticipantService: GroupParticipantService = new GroupParticipantService();
+const groupBlockedUsersService = new GroupBlockedUserService();
 
 export const getGroupParticipants = (groupId: number, page: number) => (dispatch) => {
     dispatch({
@@ -34,7 +36,7 @@ export const getGroupParticipants = (groupId: number, page: number) => (dispatch
 }
 
 export const blockUserInGroup = (userId: number, groupId: number) => dispatch => {
-    groupParticipantService.blockUser(userId, groupId).then((res:AxiosResponse) => {
+    groupBlockedUsersService.blockUser(userId, groupId).then((res:AxiosResponse) => {
         if(res.status === StatusCodes.OK){
             dispatch({
                 type: BLOCK_USER_IN_GROUP,

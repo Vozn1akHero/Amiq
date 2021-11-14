@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Amiq.DataAccess.Models.Models
 {
     public partial class Message
@@ -12,6 +10,7 @@ namespace Amiq.DataAccess.Models.Models
         public string TextContent { get; set; }
         public DateTime CreatedAt { get; set; }
         public int AuthorId { get; set; }
+        public bool IsReadByReceiver { get; set; }
 
         public virtual User Author { get; set; }
         public virtual Chat Chat { get; set; }

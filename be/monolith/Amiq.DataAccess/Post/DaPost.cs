@@ -15,7 +15,7 @@ namespace Amiq.DataAccess.Post
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<DtoDeleteEntityResponse> DeleteAsync(Guid postId)
+        public async Task<DtoDeleteEntityResponse> DeleteByPostIdAsync(Guid postId)
         {
             var dtoDeleteEntityResponse = new DtoDeleteEntityResponse();
             var record = _amiqContext.Posts.Where(e=>e.PostId == postId).FirstOrDefault();
@@ -24,8 +24,8 @@ namespace Amiq.DataAccess.Post
                 _amiqContext.Posts.Remove(record);
                 await _amiqContext.SaveChangesAsync();
                 dtoDeleteEntityResponse.Entity = record;
+                dtoDeleteEntityResponse.IsBusinessException = true;
             }
-            dtoDeleteEntityResponse.Result = record != null;
             return dtoDeleteEntityResponse;
         }
 

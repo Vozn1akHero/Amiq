@@ -33,17 +33,10 @@ namespace Amiq.WebApi.Controllers
             return Ok(groups);
         }
 
-        [HttpPost("block")]
-        public async Task<IActionResult> BlockUserAsync([FromQuery] int userId, [FromQuery] int groupId)
-        {
-            await _bsGroupParticipant.BlockUserAsync(userId, groupId);
-            return Ok();
-        }
-
         [HttpDelete]
         public async Task<IActionResult> DeleteParticipantAsync([FromQuery] int userId, [FromQuery] int groupId)
         {
-            await _bsGroupParticipant.BlockUserAsync(userId, groupId);
+            await _bsGroupParticipant.DeleteParticipantAsync(userId, groupId);
             return Ok();
         }
 
@@ -54,10 +47,10 @@ namespace Amiq.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost("join")]
-        public async Task<IActionResult> JoinGroupAsync([FromBody] DtoJoinGroup dtoJoinGroup)
+        [HttpPost("join/{groupId}")]
+        public async Task<IActionResult> JoinGroupAsync([FromRoute] int groupId)
         {
-            await _bsGroupParticipant.JoinGroupAsync(dtoJoinGroup);
+            await _bsGroupParticipant.JoinGroupAsync(JwtStoredUserInfo.UserId, groupId);
             return Ok();
         }
 
@@ -83,6 +76,6 @@ namespace Amiq.WebApi.Controllers
             var res = await _bsGroupParticipant.GetGroupParticipantsAsync(groupId, dtoPaginatedRequest);
             return Ok(res);
         }
-
+        
     }
 }

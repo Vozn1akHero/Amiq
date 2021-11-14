@@ -1,12 +1,13 @@
 import {BaseService} from "core/base-service";
-import "reflect-metadata";
-import {injectable} from "tsyringe";
 import {HttpParams, HttpQueryParams} from "core/http-client";
-import {IGroupData} from "../models/group-models";
+import {IGroupCard, IGroupData} from "../models/group-models";
 
-//@injectable()
-export class GroupService extends BaseService{
+export class GroupService extends BaseService {
     apiModule = "group";
+
+    create(group: Pick<IGroupCard, 'name' & 'description'>){
+        return this.httpClient.post(this.buildApiPath(), group);
+    }
 
     getByName(name: string) {
         let query = new HttpQueryParams()
@@ -14,7 +15,7 @@ export class GroupService extends BaseService{
         return this.httpClient.get(this.buildApiPath("search"), null, query)
     }
 
-    getGroupById(id: number){
+    getGroupById(id: number) {
         let params = new HttpParams().append("groupId", id.toString())
         return this.httpClient.get(this.buildApiPath(), params)
     }

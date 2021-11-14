@@ -16,6 +16,7 @@ namespace Amiq.Contracts.Post
         public DtoBasicUserInfo Author { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid? ParentCommentId { get; set; }
+        public DtoBasicUserInfo ParentCommentAuthor { get; set; }
         public Guid? MainParentCommentId { get; set; }
         public List<DtoGroupPostComment> Children { get; set; }
         public bool IsRemoved { get; set; }

@@ -11,6 +11,7 @@ namespace Amiq.Contracts.Chat
         public DtoBasicUserInfo Author { get; set; }
         public DtoBasicUserInfo Interlocutor { get; set; }
         public bool WrittenByIssuer { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

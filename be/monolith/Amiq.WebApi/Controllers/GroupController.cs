@@ -1,7 +1,9 @@
 ﻿using Amiq.Business;
+using Amiq.Common.DbOperation;
 using Amiq.Contracts.Group;
 using Amiq.WebApi.Base;
 using Amiq.WebApi.Core.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,17 @@ using System.Threading.Tasks;
 
 namespace Amiq.WebApi.Controllers
 {
+    [Authorize]
     public class GroupController : AmiqBaseController
     {
         private BsGroup bsGroup = new BsGroup();
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGroupAsync([FromBody] DtoCreateGroup dtoCreateGroup)
+        {
+            DtoGroupCard group = await bsGroup.CreateGroupAsync(JwtStoredUserInfo.UserId, dtoCreateGroup);
+            return CreatedAtAction(nameof(CreateGroupAsync), group);
+        }
 
         [HttpPost("drop")]
         [AuthorizeMainGroupAdmin]
@@ -24,7 +34,7 @@ namespace Amiq.WebApi.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
-            var data = await bsGroup.GetByName(name);
+            var data = await bsGroup.GetByName(JwtStoredUserInfo.UserId, name);
             return Ok(data);
         }
 

@@ -35,7 +35,13 @@ export default function (state: FriendRequestState = initialState, action) {
                 sentFriendRequests: action.payload
             }
         }
-        case REMOVE_REJECTED_FRIEND_REQUEST || REMOVE_ACCEPTED_FRIEND_REQUEST: {
+        case REMOVE_REJECTED_FRIEND_REQUEST: {
+            return {
+                ...state,
+                receivedFriendRequests: state.receivedFriendRequests.filter(e=>e.friendRequestId !== action.payload)
+            }
+        }
+        case REMOVE_ACCEPTED_FRIEND_REQUEST: {
             return {
                 ...state,
                 receivedFriendRequests: state.receivedFriendRequests.filter(e=>e.friendRequestId !== action.payload)

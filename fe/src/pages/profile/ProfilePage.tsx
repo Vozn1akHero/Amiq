@@ -15,6 +15,7 @@ import ChangeAvatarPopup from "../../features/user/components/ChangeAvatarPopup/
 import {matchPath, Route, Switch, withRouter} from "react-router-dom";
 import UserFriendsSubpage from "./subpages/UserFriendsSubpage";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import UserAvatar from "../../features/user/components/UserAvatar/UserAvatar";
 
 type Props = {
     posts: Array<IUserPost>;
@@ -27,6 +28,7 @@ type Props = {
     userFriendsLoaded: boolean;
     profileId: number;
     postsPerPage: number;
+    getComments(postId: string, page: number);
     removeFriend(friendId: number): void;
     acceptFriendRequest(destUserId: number): void;
     sendFriendRequest(destUserId: number): void;
@@ -75,50 +77,6 @@ class ProfilePage extends Component<Props, State> {
         this.props.deletePost(postId);
     }
 
-    renderAvatarControls = () => {
-        const {
-            userId,
-            blockedByIssuer,
-            issuerBlocked,
-            issuerReceivedFriendRequest,
-            issuerSentFriendRequest,
-            isIssuerFriend
-        } = this.props.userData;
-
-        if (!this.props.isViewerProfile) {
-            if (!issuerBlocked && !blockedByIssuer && !issuerReceivedFriendRequest && !issuerSentFriendRequest && !isIssuerFriend) {
-                return <Fragment>
-                    <button onClick={() => this.props.sendFriendRequest(userId)}
-                            className="uk-button uk-button-primary page-avatar__control">Dodaj
-                    </button>
-                    <a onClick={(e) => {
-                        e.preventDefault();
-                        this.props.blockUser(userId);
-                    }} className="uk-button uk-button-secondary uk-margin-small-left uk-text-center" uk-icon="lock">
-
-                    </a>
-                </Fragment>
-            } else if (issuerReceivedFriendRequest) {
-                return <>
-                    <button onClick={() => this.props.acceptFriendRequest(userId)}
-                            className="uk-button uk-button-primary">Zatwierdź
-                    </button>
-                    <button onClick={() => this.props.acceptFriendRequest(userId)}
-                            className="uk-button uk-button-danger uk-margin-small-left">Odrzuć
-                    </button>
-                </>
-            } else if (issuerSentFriendRequest) {
-                return <button onClick={() => this.props.rejectFriendRequest(userId)}
-                               className="uk-button uk-button-secondary">Anuluj</button>
-            } else if (isIssuerFriend) {
-                return <a onClick={(e) => {
-                    e.preventDefault();
-                    this.props.removeFriend(userId);
-                }} className="uk-button uk-button-secondary" uk-icon="trash"/>
-            }
-        }
-    }
-
     shouldSubpageBeVisible = () => {
         const {pathname} = this.props.location;
         const match = matchPath(pathname, {
@@ -128,25 +86,24 @@ class ProfilePage extends Component<Props, State> {
         return match != null && match !== undefined
     }
 
-    refresh = () => {
-        console.log("refresh")
-    }
 
     render() {
         return (
-
             <div className='profile-page uk-flex-center uk-grid uk-child-width-1-2'>
                 <ChangeAvatarPopup/>
 
                 {this.props.userDataLoaded &&
                 <>
                     <div className="uk-first-column uk-width-1-3">
-                        <PageAvatar avatarSrc={this.props.userData.avatarPath}
-                                    isChangeAvatarBtnVisible={this.props.isViewerProfile}
-                                    userSpecifics={this.props.userData}
-                                    viewTitle={this.props.userData.name + " " + this.props.userData.surname}>
-                            {this.renderAvatarControls()}
-                        </PageAvatar>
+                        <UserAvatar userData={this.props.userData}
+                                    isViewerProfile={this.props.isViewerProfile}
+                                    removeFriend={this.props.removeFriend}
+                                    acceptFriendRequest={this.props.acceptFriendRequest}
+                                    sendFriendRequest={this.props.sendFriendRequest}
+                                    rejectFriendRequest={this.props.rejectFriendRequest}
+                                    cancelFriendRequest={this.props.cancelFriendRequest}
+                                    blockUser={this.props.blockUser}
+                        />
 
                         {
                             this.props.userDataLoaded && !this.props.userData.issuerBlocked &&
@@ -158,8 +115,7 @@ class ProfilePage extends Component<Props, State> {
                                 <div className="uk-margin-medium-top">
                                     <ItemsFrameL title="Linki"
                                                  icon="world"
-                                                 items={[]}
-                                                 callbackText="Brak linków"/>
+                                                 items={[]}/>
                                 </div>
                             </div>
                         }
@@ -196,51 +152,50 @@ class ProfilePage extends Component<Props, State> {
                             }
                             {
                                 this.props.userDataLoaded && !this.props.userData.issuerBlocked &&
-                                    <div className="uk-margin-large-top">
-                                        {
-                                            this.props.isViewerProfile && <div className="uk-margin-medium-bottom">
-                                                <PostCreationForm handleSubmit={this.props.createPost}
-                                                                  publishAsAdminOptionVisible={false}/>
-                                            </div>
-                                        }
-                                        {
-                                            this.props.postsLoaded &&
-                                            <InfiniteScroll
-                                                dataLength={this.props.postsLength}
-                                                next={this.props.getMorePosts}
-                                                hasMore={this.props.postsLength >= this.props.posts.length}
-                                                loader={<Fragment></Fragment>}
-                                                endMessage={
-                                                    <p style={{textAlign: 'center'}}>
-                                                        <b>Yay! You have seen it all</b>
-                                                    </p>
-                                                }
-                                                refreshFunction={this.refresh}
-                                                pullDownToRefresh
-                                                pullDownToRefreshThreshold={50}
-                                            >
-                                                {
-                                                    this.props.posts.map((post, index) => {
-                                                        return <Post postId={post.postId}
-                                                                     postType={EnPostType.User}
-                                                                     onRemoveComment={this.props.removeComment}
-                                                                     onDeletePost={this.onDeletePost}
-                                                                     publishCommentAsAdminOptionVisible={false}
-                                                                     onCommentCreated={this.props.commentCreated}
-                                                                     avatarPath={Utils.getImageSrc(post.avatarPath)}
-                                                                     text={post.textContent}
-                                                                     authorLink={this.buildPostProfileLink(post.author.userId)}
-                                                                     createdAt={post.createdAt}
-                                                                     viewName={post.author.name + " " + post.author.surname}
-                                                                     deleteBtnVisible={this.props.isViewerProfile}
-                                                                     comments={post.comments}
-                                                                     hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
-                                                                     key={index}/>
-                                                    })
-                                                }
-                                            </InfiniteScroll>
-                                        }
-                                    </div>
+                                <div className="uk-margin-large-top">
+                                    {
+                                        this.props.isViewerProfile && <div className="uk-margin-medium-bottom">
+                                            <PostCreationForm handleSubmit={this.props.createPost}
+                                                              publishAsAdminOptionVisible={false}/>
+                                        </div>
+                                    }
+                                    {
+                                        this.props.postsLoaded &&
+                                        <InfiniteScroll
+                                            dataLength={this.props.postsLength}
+                                            next={this.props.getMorePosts}
+                                            hasMore={this.props.postsLength >= this.props.posts.length}
+                                            loader={<Fragment></Fragment>}
+                                            endMessage={
+                                                <p style={{textAlign: 'center'}}>
+                                                    <b>Yay! You have seen it all</b>
+                                                </p>
+                                            }
+                                        >
+                                            {
+                                                this.props.posts.map((post, index) => {
+                                                    return <Post postId={post.postId}
+                                                                 commentsCount={post.commentsCount}
+                                                                 postType={EnPostType.User}
+                                                                 onRemoveComment={this.props.removeComment}
+                                                                 onDeletePost={this.onDeletePost}
+                                                                 publishCommentAsAdminOptionVisible={false}
+                                                                 onCommentCreated={this.props.commentCreated}
+                                                                 getComments={this.props.getComments}
+                                                                 avatarPath={Utils.getImageSrc(post.avatarPath)}
+                                                                 text={post.textContent}
+                                                                 authorLink={this.buildPostProfileLink(post.author.userId)}
+                                                                 createdAt={post.createdAt}
+                                                                 viewName={post.author.name + " " + post.author.surname}
+                                                                 deleteBtnVisible={this.props.isViewerProfile}
+                                                                 comments={post.comments}
+                                                                 hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
+                                                                 key={index}/>
+                                                })
+                                            }
+                                        </InfiniteScroll>
+                                    }
+                                </div>
                             }
                         </div>
                     }

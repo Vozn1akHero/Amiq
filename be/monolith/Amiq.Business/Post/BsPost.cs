@@ -15,7 +15,7 @@ namespace Amiq.Business.Post
 
         public async Task<DtoDeleteEntityResponse> DeleteAsync(Guid postId)
         {
-            return await _daPost.DeleteAsync(postId);
+            return await _daPost.DeleteByPostIdAsync(postId);
         }
 
         

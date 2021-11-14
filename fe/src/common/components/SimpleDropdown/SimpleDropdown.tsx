@@ -13,12 +13,12 @@ type Props = {
     options: Array<IDropdownOption>;
     handleOptionClick(option: IDropdownOption);
     icon?: string;
-    areOptionsLoaded?:boolean;
+    areOptionsLoaded?: boolean;
     onDropdownMouseOver?: () => void;
 }
 
-class SimpleDropdown extends Component<Props,State> {
-    myVar:any;
+class SimpleDropdown extends Component<Props, State> {
+    myVar: any;
 
     constructor(props) {
         super(props);
@@ -29,8 +29,8 @@ class SimpleDropdown extends Component<Props,State> {
         }
 
         this.myVar = () => {
-            setTimeout(()=>{
-                if(!this.state.isCursorOnBody)
+            setTimeout(() => {
+                if (!this.state.isCursorOnBody)
                     this.setState({
                         isOpen: false
                     })
@@ -43,47 +43,54 @@ class SimpleDropdown extends Component<Props,State> {
             <div className="simple-dropdown">
                 <div onMouseOver={() => {
                     clearTimeout(this.myVar);
-                    if(this.props.onDropdownMouseOver)
+                    if (this.props.onDropdownMouseOver)
                         this.props.onDropdownMouseOver();
                     this.setState({
-                       isOpen: true
+                        isOpen: true
                     })
                 }} onMouseOut={() => {
-                    if(this.myVar){
+                    if (this.myVar) {
                         this.myVar();
                     }
                 }} className="uk-button uk-button-default simple-dropdown__btn">
                     {
-                        this.props.placeholder && <span className={this.props.icon && `uk-margin-right`}>{this.props.placeholder}</span>
+                        this.props.placeholder &&
+                        <span className={this.props.icon && `uk-margin-right`}>{this.props.placeholder}</span>
                     }
                     {
                         this.props.icon && <span uk-icon={`icon:${this.props.icon}`}></span>
                     }
                 </div>
-                <div className={`simple-dropdown__dropdown uk-dropdown uk-background-default ${this.state.isOpen && `uk-open`}`}>
+                <div
+                    className={`simple-dropdown__dropdown uk-dropdown uk-background-default ${this.state.isOpen && `uk-open`}`}>
                     <ul className="simple-dropdown__nav uk-nav uk-dropdown-nav"
-                        onMouseOver={() => {this.setState({isCursorOnBody: true}); this.myVar();}}
-                        onMouseOut={() => {this.setState({isCursorOnBody: false}); this.myVar();}}
+                        onMouseOver={() => {
+                            this.setState({isCursorOnBody: true});
+                            this.myVar();
+                        }}
+                        onMouseOut={() => {
+                            this.setState({isCursorOnBody: false});
+                            this.myVar();
+                        }}
                     >
                         {
                             this.props.isStatic || this.props.areOptionsLoaded ? this.props.options.map((value, index) => {
                                 return <li key={index}>
                                     <a onClick={e => {
-                                        if(value.event) {
+                                        if (value.event) {
                                             e.preventDefault();
                                             value.event();
-                                        }
-                                        else {
+                                        } else {
                                             e.preventDefault();
                                             this.props.handleOptionClick(value);
                                             //return false;
                                         }
                                     }
-                                    } href="#">
+                                    }>
                                         {value.text}
                                     </a>
                                 </li>
-                            }) : <UiKitDefaultSpinner />
+                            }) : <UiKitDefaultSpinner/>
                         }
                     </ul>
                 </div>

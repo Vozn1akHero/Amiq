@@ -82,13 +82,13 @@ namespace Amiq.DataAccess.Group
             {
                 _context.GroupEvents.Remove(groupEvent);
                 await _context.SaveChangesAsync();
-                res.Result = true;
+                res.IsBusinessException = false;
                 res.Entity = APAutoMapper.Instance.Map<DtoGroupEvent>(groupEvent);
             }
             catch (Exception ex)
             {
-                res.Result = false;
-                res.Message = ex.Message;
+                res.IsBusinessException = true;
+                res.BusinessException = ex.Message;
             }
             return res;
         }

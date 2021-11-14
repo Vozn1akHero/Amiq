@@ -8,6 +8,7 @@ export interface IPostComment {
     author: Partial<IUser>;
     createdAt: Date;
     parentCommentId: string;
+    parentCommentAuthor: Partial<IUser>;
     mainParentCommentId: string;
     children: Array<IGroupPostComment&IPostComment>;
     isRemoved: boolean;

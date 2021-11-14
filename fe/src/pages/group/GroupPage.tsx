@@ -33,6 +33,7 @@ type Props = {
     onPostCreated(data: Partial<IGroupPost>);
     onDeletePost(postId: string);
     onRemoveComment(postCommentId: string);
+    getComments(postId: string, page: number);
     match: any;
     location: any;
     history: any;
@@ -116,10 +117,11 @@ class GroupPage extends Component<Props, State> {
                                                                viewTitle={this.props.groupData.name}/>}
 
                     <div className="uk-margin-medium-top">
-                        <div className="uk-card uk-card-default uk-card-body uk-background-default">
-                            <span className="uk-card-title">Zarządzanie grupą</span>
-                            {
-                                this.props.basicAdminPermissionsAvailable && <div className="uk-margin-small-top">
+                        {
+                            this.props.basicAdminPermissionsAvailable &&
+                            <div className="uk-card uk-card-default uk-card-body uk-background-default">
+                                <span className="uk-card-title">Zarządzanie grupą</span>
+                                <div className="uk-margin-small-top">
                                     {
                                         this.props.groupDataLoaded && <div className="uk-flex uk-flex-column">
                                             <Link className="uk-margin-small-top" to={this.getSettingsLink("basic")}>
@@ -138,8 +140,7 @@ class GroupPage extends Component<Props, State> {
                                         </div>
                                     }
                                 </div>
-                            }
-                        </div>
+                            </div>}
 
                         {
                             this.props.groupParticipants.loaded && <div className="uk-margin-medium-top">
@@ -175,10 +176,12 @@ class GroupPage extends Component<Props, State> {
                                 {
                                     this.props.groupPostsLoaded && this.props.groupPosts.map((post, index) => {
                                         return <Post postId={post.postId}
+                                                     commentsCount={post.commentsCount}
                                                      postType={EnPostType.Group}
                                                      onDeletePost={this.onDeletePost}
                                                      onRemoveComment={this.props.onRemoveComment}
                                                      onCommentCreated={this.props.onCommentCreated}
+                                                     getComments={this.props.getComments}
                                                      hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
                                                      comments={post.comments}
                                                      avatarPath={Utils.getImageSrc(post.avatarPath)}

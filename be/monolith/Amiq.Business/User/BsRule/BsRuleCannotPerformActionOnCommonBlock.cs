@@ -10,19 +10,17 @@ namespace Amiq.Business.User.BsRule
     /// </summary>
     public class BsRuleCannotPerformActionOnCommonBlock : IBsRule
     {
-        private DaBlockedUser _daBlockedUser;
         private int _requestIssuerId;
         private int _userId;
 
-        public BsRuleCannotPerformActionOnCommonBlock(DaBlockedUser daBlockedUser, int requestIssuerId, int userId)
+        public BsRuleCannotPerformActionOnCommonBlock(int requestIssuerId, int userId)
         {
-            _daBlockedUser = daBlockedUser;
             _requestIssuerId = requestIssuerId;
             _userId = userId;
         }
 
         public string ErrorContent => throw new NotImplementedException();
 
-        public bool CheckBsRule() => !_daBlockedUser.OneWayBlockExists(_userId, _requestIssuerId);
+        public bool CheckBsRule() => !new DaoBlockedUser().OneWayBlockExists(_userId, _requestIssuerId);
     }
 }

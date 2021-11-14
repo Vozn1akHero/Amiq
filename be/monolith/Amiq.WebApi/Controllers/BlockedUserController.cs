@@ -10,7 +10,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class BlockedUserController : AmiqBaseController
     {
-        private BsBlockedUser _bsBlockedUser = new BsBlockedUser();
+        private BlBlockedUser _bsBlockedUser = new BlBlockedUser();
 
         [HttpGet("is-blocked/{userId}")]
         public IActionResult IsUserBlockedByAnotherUser(int userId)

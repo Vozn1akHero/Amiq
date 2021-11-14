@@ -11,6 +11,8 @@ type Props = {
     groupList: Array<IGroupCard>;
     onSearchInputChange(text:string):void;
     leaveGroup(groupId: number):void;
+    joinGroup(groupId: number):void;
+    createGroup(groupData: Pick<IGroupCard, 'name' & 'description'>):void;
     onSortDropdownOptionSelection(option: IDropdownOption):void;
     searchInputLoading: boolean;
 };
@@ -19,10 +21,6 @@ type State = {
 };
 
 class GroupsPage extends Component<Props, State> {
-    constructor(props) {
-        super(props);
-    }
-
     sortDropdownValues : Array<IDropdownOption> = [{
         id: 0,
         text: "Wszystkie"
@@ -44,7 +42,7 @@ class GroupsPage extends Component<Props, State> {
     render() {
         return (
             <div className="groups-page">
-                <GroupCreationPopup />
+                <GroupCreationPopup createGroup={this.props.createGroup} />
 
                 <legend className="uk-legend uk-margin-medium-top">Moje grupy</legend>
                 <div className="input-search">
@@ -70,6 +68,7 @@ class GroupsPage extends Component<Props, State> {
                             {
                                 return <div key={i} className="uk-margin-top">
                                     <MemoizedGroupCard leaveGroup={this.props.leaveGroup}
+                                                       joinGroup={this.props.joinGroup}
                                                        toggleGroupVisibility={this.toggleGroupVisibility}
                                                        groupCard={value} />
                                 </div>

@@ -53,7 +53,7 @@ namespace Amiq.DataAccess.User
                     }),
                     BlockedByIssuer = e.BlockedUserDestUsers.Any(i => i.DestUserId == userId && i.IssuerId == requestCreatorId),
                     IssuerBlocked = e.BlockedUserIssuers.Any(i => i.IssuerId == userId && i.DestUserId == requestCreatorId),
-                    IssuerReceivedFriendRequest = e.FriendRequestIssuers.Any(i => i.ReceiverId == userId && i.IssuerId == requestCreatorId),
+                    IssuerReceivedFriendRequest = e.FriendRequestIssuers.Any(i => i.ReceiverId == requestCreatorId && i.IssuerId == userId),
                     IssuerSentFriendRequest = e.FriendRequestReceivers.Any(i => i.IssuerId == requestCreatorId && i.ReceiverId == userId),
                     IsIssuerFriend = e.FriendshipFirstUsers.Any(d => (d.FirstUserId == userId && d.SecondUserId == requestCreatorId) || (d.FirstUserId == requestCreatorId && d.SecondUserId == userId))
                     || e.FriendshipSecondUsers.Any(d => (d.FirstUserId == userId && d.SecondUserId == requestCreatorId) || (d.FirstUserId == requestCreatorId && d.SecondUserId == userId)),

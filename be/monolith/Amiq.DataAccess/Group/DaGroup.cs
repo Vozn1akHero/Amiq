@@ -1,4 +1,5 @@
-﻿using Amiq.Contracts;
+﻿using Amiq.Common.DbOperation;
+using Amiq.Contracts;
 using Amiq.Contracts.Core;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
@@ -17,6 +18,7 @@ namespace Amiq.DataAccess.Group
     public class DaGroup
     {
         private AmiqContext _amiqContext;
+        private DaGroupParticipant _daParticipant;
 
         public DaGroup()
         {
@@ -35,11 +37,44 @@ namespace Amiq.DataAccess.Group
             return data;
         }
 
-        public async Task<IEnumerable<DtoGroup>> GetByNameAsync(string name)
+        public async Task<DtoGroupCard> CreateGroupAsync(int creatorId, DtoCreateGroup dtoCreateGroup)
         {
-            var query = _amiqContext.Groups.Where(e => e.Name.StartsWith(name));
-            var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).ToListAsync();
-            return data;
+            var entity = new Models.Models.Group
+            {
+                Name = dtoCreateGroup.Name,
+                Description = dtoCreateGroup.Description,
+                CreatedBy = creatorId
+            };
+            _amiqContext.Add(entity);
+            await _amiqContext.SaveChangesAsync();
+            await _daParticipant.JoinGroupAsync(creatorId, entity.GroupId);
+            DtoGroupCard dtoGroupCard = _amiqContext.Groups.Where(e=>e.GroupId == entity.GroupId)
+                .Select(g => new DtoGroupCard
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name,
+                    AvatarSrc = g.AvatarSrc,
+                    Description = g.Description,
+                    ParticipantsCount = g.GroupParticipants.Count,
+                    IsHidden = false,
+                    IsRequestCreatorParticipant = true
+                }).Single();
+            return dtoGroupCard;
+        }
+
+        public async Task<IEnumerable<DtoGroupCard>> GetByNameAsync(int userId, string name)
+        {
+            return await _amiqContext.Groups.AsNoTracking().Where(e => e.Name.StartsWith(name))
+                .Select(g => new DtoGroupCard
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name,
+                    AvatarSrc = g.AvatarSrc,
+                    Description = g.Description,
+                    ParticipantsCount = g.GroupParticipants.Count,
+                    IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                    IsRequestCreatorParticipant = g.GroupParticipants.Any(gp => gp.UserId == userId && gp.GroupId == g.GroupId)
+                }).ToListAsync();
         }
 
         public async Task<DtoGroup> GetGroupById(int groupId)

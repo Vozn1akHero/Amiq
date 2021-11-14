@@ -2,15 +2,20 @@ import React, {Dispatch, useEffect, useState} from 'react';
 import ProfilePage from "./ProfilePage";
 import {IUserPost} from "../../features/post/models/user-post";
 import {AuthStore} from "../../store/custom/auth/auth-store";
-import {useHistory, useParams} from "react-router-dom";
 import UserService from "features/user/user-service";
 import {IUser} from "features/user/models/user";
 import {IPostCommentCreation} from "../../features/post/models/post-comment";
-import {PostCommentService} from "../../features/post/post-comment-service";
 import {getUserFriends} from "../../store/redux/actions/userFriendActions";
 import {useDispatch, useSelector} from "react-redux";
 import {IFriendship} from "../../features/friend/friendship-models";
-import {createUserPost, deletePost, getUserPosts} from "../../store/redux/actions/postActions";
+import {
+    createUserPost,
+    createUserPostComment,
+    deletePost,
+    getUserPostComments,
+    getUserPosts,
+    removeUserPostComment
+} from "../../store/redux/actions/postActions";
 import {FriendRequestService} from "../../features/friend/friend-request-service";
 import {AxiosResponse} from "axios";
 import {BlockedUserService} from "../../features/user/blocked-user-service";
@@ -22,7 +27,6 @@ import {IdentityModel} from "../../store/custom/auth/identity-model";
 
 const ProfilePageContainer: React.FC = (props: any) => {
     const userService = new UserService();
-    const postCommentService = new PostCommentService();
     const friendRequestService = new FriendRequestService();
     const blockedUserService = new BlockedUserService();
     const friendService = new FriendService();
@@ -91,7 +95,6 @@ const ProfilePageContainer: React.FC = (props: any) => {
         const userId = props.match.params.userId;
         if (userId) {
             const isUserProfile: boolean = AuthStore.identity.userId === +userId;
-            console.log(isUserProfile)
             setIsViewerProfile(isUserProfile);
             setActualProfileId(userId);
         } else {
@@ -113,60 +116,88 @@ const ProfilePageContainer: React.FC = (props: any) => {
         })
     }
 
-    const onCommentCreated = (data: IPostCommentCreation) => {
-        postCommentService.create(data).then(res => {
-            console.log(res.data)
-        })
-    }
-
-    const onRemoveComment = (commentId: string) => {
-
-    }
-
     //#region avatar component events handling
     const sendFriendRequest = (destUserId: number) => {
         return friendRequestService.sendFriendRequest(destUserId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.CREATED) {
-                userData.issuerSentFriendRequest = true;
+                setUserData({
+                    ...userData,
+                    issuerSentFriendRequest: true
+                })
             }
         })
     }
     const rejectFriendRequest = (destUserId: number) => {
         return friendRequestService.rejectFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.OK) {
-                userData.issuerReceivedFriendRequest = false;
+                setUserData({
+                    ...userData,
+                    issuerReceivedFriendRequest: false
+                })
             }
         })
     }
     const cancelFriendRequest = (destUserId: number) => {
         return friendRequestService.cancelFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.OK) {
-                userData.issuerSentFriendRequest = false;
+                setUserData({
+                    ...userData,
+                    issuerSentFriendRequest: false
+                })
             }
         })
     }
     const acceptFriendRequest = (destUserId: number) => {
         return friendRequestService.acceptFriendRequestByDestUserId(destUserId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.OK) {
-                userData.issuerSentFriendRequest = false;
+                setUserData({
+                    ...userData,
+                    issuerReceivedFriendRequest: false,
+                    isIssuerFriend: true
+                })
             }
         })
     }
     const blockUser = (destUserId: number) => {
         return blockedUserService.blockUser(destUserId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.OK) {
-                userData.issuerBlocked = true;
+                setUserData({
+                    ...userData,
+                    blockedByIssuer: true,
+                    issuerBlocked: false
+                })
             }
         })
     }
     const removeFriend = (friendId: number) => {
         return friendService.removeFriend(friendId).then((res: AxiosResponse) => {
             if (res.status === StatusCodes.OK) {
-                userData.isIssuerFriend = false;
+                setUserData({
+                    ...userData,
+                    isIssuerFriend: false
+                })
             }
         })
     }
     //#endregion
+
+    const getPostComments = (postId: string, page: number) => {
+        dispatch(getUserPostComments(postId, page))
+    }
+
+    const removeComment= (postCommentId: string) => {
+        dispatch(removeUserPostComment(postCommentId))
+    }
+
+    const createPost = (text: string) => {
+        const newPost: Partial<IUserPost> = {
+            textContent: text,
+            author: {
+                userId: AuthStore.identity.userId
+            }
+        }
+        dispatch(createUserPost(newPost))
+    }
 
     return (
         <ProfilePage posts={userPosts}
@@ -184,8 +215,11 @@ const ProfilePageContainer: React.FC = (props: any) => {
                      rejectFriendRequest={rejectFriendRequest}
                      cancelFriendRequest={cancelFriendRequest}
                      blockUser={blockUser}
-                     removeComment={onRemoveComment}
-                     commentCreated={onCommentCreated}
+                     removeComment={removeComment}
+                     getComments={getPostComments}
+                     commentCreated={(data: IPostCommentCreation) => {
+                         dispatch(createUserPostComment(data));
+                     }}
                      postsLoaded={postsLoaded}
                      deletePost={(postId: string) => {
                          dispatch(deletePost(postId))
@@ -193,18 +227,9 @@ const ProfilePageContainer: React.FC = (props: any) => {
                      isViewerProfile={isViewerProfile}
                      userData={userData}
                      userDataLoaded={userDataLoaded}
-                     createPost={(text: string) => {
-                         const newPost: Partial<IUserPost> = {
-                             textContent: text,
-                             author: {
-                                 userId: AuthStore.identity.userId
-                             }
-                         }
-                         dispatch(createUserPost(newPost))
-                     }}
+                     createPost={createPost}
         />
     );
-
 }
 
 export default ProfilePageContainer;

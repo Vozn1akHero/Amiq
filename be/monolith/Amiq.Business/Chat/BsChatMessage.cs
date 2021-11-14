@@ -5,7 +5,6 @@ using Amiq.Contracts;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Chat;
-using Amiq.DataAccess.User;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,12 +14,11 @@ namespace Amiq.Business.Chat
     public class BsChatMessage : BusinessLayerBase
     {
         private DaChatMessage _daChatMessage = new DaChatMessage();
-        private DaBlockedUser _daBlockedUser = new DaBlockedUser();
 
         public async Task<DtoChatMessage> CreateChatMessageAsync(DtoChatMessageCreation dtoChatMessageCreation)
         {
             CheckBsRule(new ChatShouldBeAvailableForInterlocutor(dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ChatId));
-            CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(_daBlockedUser, dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ReceiverId));
+            CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(dtoChatMessageCreation.AuthorId, dtoChatMessageCreation.ReceiverId));
             return await _daChatMessage.CreateChatMessageAsync(dtoChatMessageCreation);
         }
 

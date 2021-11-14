@@ -6,8 +6,10 @@ export interface IGroupCard {
     avatarSrc: string;
     participantsCount: number;
     isHidden: boolean;
+    description: string;
     //participants: Array<IGroupParticipant>;
     subjects: Array<string>;
+    isRequestCreatorParticipant: boolean;
 }
 
 export interface IGroupParticipant {

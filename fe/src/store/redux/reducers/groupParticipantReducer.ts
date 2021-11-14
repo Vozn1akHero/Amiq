@@ -44,12 +44,13 @@ export default function(state:GroupParticipantsState = initialState, action) {
             }
         }
         case BLOCK_USER_IN_GROUP: {
+            const nextParticipantsState = state.groupParticipants.entities
+                .filter(value => value.userId !== action.payload.userId)
             return {
                 ...state,
                 groupParticipants: {
                     ...state.groupParticipants,
-                    entities: state.groupParticipants.entities
-                        .filter(value => value.groupId === action.payload.groupId && value.userId !== action.payload.userId)
+                    entities: nextParticipantsState
                 }
             }
         }
@@ -59,7 +60,7 @@ export default function(state:GroupParticipantsState = initialState, action) {
                 groupParticipants: {
                     ...state.groupParticipants,
                     entities: state.groupParticipants.entities
-                        .filter(value => value.groupId === action.payload.groupId && value.userId !== action.payload.userId)
+                        .filter(value => value.userId !== action.payload.userId)
                 }
             }
         }

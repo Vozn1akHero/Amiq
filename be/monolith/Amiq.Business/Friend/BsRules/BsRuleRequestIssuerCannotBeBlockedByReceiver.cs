@@ -9,7 +9,7 @@ namespace Amiq.Business.Friend.BsRules
 {
     public class BsRuleRequestIssuerCannotBeBlockedByReceiver : IBsRule
     {
-        public string ErrorContent => throw new NotImplementedException();
+        public string ErrorContent => "Użytkownik jest zablokowany przez innego użytkownika";
 
         public bool CheckBsRule()
         {

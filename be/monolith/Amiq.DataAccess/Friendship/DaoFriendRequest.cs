@@ -33,13 +33,36 @@ namespace Amiq.DataAccess.Friendship
         public async Task<DbOperationResult> AcceptFriendRequestAsync(Guid friendRequestId)
         {
             DbOperationResult dbOperationResult = new();
-            var entity = _amiqContext.FriendRequests.Single(e=>e.FriendRequestId==friendRequestId);
-            _amiqContext.FriendRequests.Remove(entity);
-            _amiqContext.Friendships.Add(new Models.Models.Friendship { 
-                FirstUserId = entity.ReceiverId,
-                SecondUserId = entity.IssuerId
-            });
-            await _amiqContext.SaveChangesAsync();
+            using var t = await _amiqContext.Database.BeginTransactionAsync();
+            var frEntity = _amiqContext.FriendRequests.Single(e => e.FriendRequestId == friendRequestId);
+            try
+            {
+                _amiqContext.FriendRequests.Remove(frEntity);
+                _amiqContext.Friendships.Add(new Models.Models.Friendship
+                {
+                    FirstUserId = frEntity.ReceiverId,
+                    SecondUserId = frEntity.IssuerId
+                });
+                var chatEntity = new Models.Models.Chat
+                {
+                    FirstUserId = frEntity.ReceiverId,
+                    SecondUserId = frEntity.IssuerId
+                };
+                _amiqContext.Chats.Add(chatEntity);
+                await _amiqContext.SaveChangesAsync();
+                _amiqContext.Messages.Add(new Message
+                {
+                    ChatId = chatEntity.ChatId,
+                    AuthorId = frEntity.IssuerId,
+                    TextContent = "Cześć"
+                });
+                await _amiqContext.SaveChangesAsync();
+                await t.CommitAsync();
+            } catch (Exception ex)
+            {
+                dbOperationResult.Message = ex.Message;
+                await t.RollbackAsync();
+            }
             dbOperationResult.Success = true;
             return dbOperationResult;
         }
@@ -90,6 +113,12 @@ namespace Amiq.DataAccess.Friendship
             IQueryable queryable = _amiqContext.FriendRequests.Where(e=>(e.IssuerId == fUserId && e.ReceiverId == sUserId)
                 || (e.IssuerId == sUserId && e.ReceiverId == fUserId));
             return APAutoMapper.Instance.ProjectTo<DtoFriendRequest>(queryable).Single();
+        }
+
+        public bool FriendRequestExists(int fUserId, int sUserId)
+        {
+            return _amiqContext.FriendRequests.Any(e => (e.IssuerId == fUserId && e.ReceiverId == sUserId)
+                || (e.IssuerId == sUserId && e.ReceiverId == fUserId));
         }
     }
 }

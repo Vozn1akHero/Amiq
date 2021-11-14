@@ -22,11 +22,16 @@ namespace Amiq.WebApi.Controllers
 
 
         [HttpGet("previews")]
-        //[AuthorizeChatInterlocutor]
         public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
             var previews = await _bsChatMessage.GetChatPreviewListAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
             return Ok(previews);
+        }
+
+        [HttpGet("{chatParticipantId}")]
+        public async Task<IActionResult> CanChatBeRun([FromRoute] int chatParticipantId)
+        {
+            return Ok();
         }
     }
 }

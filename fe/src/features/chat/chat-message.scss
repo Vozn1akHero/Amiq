@@ -21,4 +21,9 @@
   &--received-by-viewer {
     left: 0;
   }
+
+  &__controls{
+    position: absolute;
+    right: 0;
+  }
 }

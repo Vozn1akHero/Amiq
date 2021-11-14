@@ -1,10 +1,19 @@
 import {IGroupPost} from "../../../features/post/models/group-post";
 import {SET_GROUP_POSTS} from "../types/groupPostTypes";
-import {SET_USER_POSTS} from "../types/userPostTypes";
+import {
+    REMOVE_USER_POST_COMMENT,
+    SET_CREATED_USER_POST_COMMENT,
+    SET_USER_POST_COMMENTS,
+    SET_USER_POSTS
+} from "../types/userPostTypes";
 import {CLEAR_POSTS, DELETE_POST, GET_POSTS, SET_CREATED_POST} from "../types/postTypes";
 import {IUserPost} from "../../../features/post/models/user-post";
 import {IResponseListOf} from "../../../core/http-client/response-list-of";
-import {REMOVE_GROUP_POST_COMMENT, SET_CREATED_GROUP_POST_COMMENT} from "../types/groupPostCommentTypes";
+import {
+    REMOVE_GROUP_POST_COMMENT,
+    SET_CREATED_GROUP_POST_COMMENT,
+    SET_GROUP_POST_COMMENTS
+} from "../types/groupPostCommentTypes";
 
 type PostReducer = {
     //groupPosts: Array<IGroupPost>,
@@ -123,6 +132,74 @@ export default function(state:PostReducer = initialState, action) {
                     }
                     return value;
                 })]
+            }
+        }
+        case SET_CREATED_USER_POST_COMMENT:{
+            return {
+                ...state,
+                posts: [...state.posts.map((value) => {
+                    if(value.postId === action.payload.postId){
+                        if(action.payload.parentCommentId){
+                            value.comments = value.comments.map(comment => {
+                                if(comment.commentId === action.payload.parentCommentId){
+                                    comment.children = [...comment.children, action.payload]
+                                }
+                                return comment;
+                            })
+                        } else {
+                            const comments = value.comments == null ? [] : value.comments;
+                            value.comments = [...comments, action.payload]
+                        }
+                    }
+                    return value;
+                })]
+            }
+        }
+        case REMOVE_USER_POST_COMMENT: {
+            return {
+                ...state,
+                posts: [...state.posts.map((userPost) => {
+                    if (userPost.postId === action.payload.postId) {
+                        if (action.payload.parentCommentId) {
+                            userPost.comments = userPost.comments.map(comment => {
+                                if (comment.commentId === action.payload.parentCommentId) {
+                                    //comment.children = [...comment.children.filter(value => value.commentId !== action.payload.commentId)]
+                                    comment.children = [...comment.children.map(value => {
+                                        if(value.commentId === action.payload.commentId){
+                                            value.isRemoved = true;
+                                        }
+                                        return value;
+                                    })]
+                                }
+                                return comment;
+                            })
+                        } else {
+                            userPost.comments = userPost.comments.map(value => {
+                                if(value.commentId === action.payload.commentId){
+                                    value.isRemoved = true;
+                                }
+                                return value;
+                            })
+                        }
+                    }
+                    return userPost;
+                })]
+            }
+        }
+        case SET_USER_POST_COMMENTS: {
+            return {
+                ...state,
+                posts: state.posts.map((userPost) => {
+                    if (userPost.postId === action.payload.postId) {
+                        userPost.comments = userPost.comments ? [...userPost.comments, ...action.payload.comments] : action.payload.comments
+                    }
+                    return userPost;
+                })
+            }
+        }
+        case SET_GROUP_POST_COMMENTS: {
+            return  {
+                ...state
             }
         }
         default:

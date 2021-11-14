@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Common.DbOperation;
 using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.DataAccess.Group;
@@ -14,6 +15,11 @@ namespace Amiq.Business
     {
         private DaGroup _daGroup = new DaGroup();
         private DaGroupParticipant _daGroupParticipant = new DaGroupParticipant();
+
+        public async Task<DtoGroupCard> CreateGroupAsync(int creatorId, DtoCreateGroup dtoCreateGroup)
+        {
+            return await _daGroup.CreateGroupAsync(creatorId, dtoCreateGroup);
+        }
 
         public async Task<DtoGroupUserParams> GetGroupUserParamsAsync(int userId, int groupId)
         {
@@ -33,9 +39,9 @@ namespace Amiq.Business
             return output;
         }
 
-        public async Task<IEnumerable<DtoGroup>> GetByName(string name)
+        public async Task<IEnumerable<DtoGroupCard>> GetByName(int userId, string name)
         {
-            return await _daGroup.GetByNameAsync(name);
+            return await _daGroup.GetByNameAsync(userId, name);
         }
 
         public async Task<DtoGroup> GetGroupById(int groupId)

@@ -1,10 +1,12 @@
 ﻿using Amiq.Business.Friend.BsRules;
+using Amiq.Business.User.BsRule;
 using Amiq.Business.Utils;
 using Amiq.Common.DbOperation;
 using Amiq.Common.Enums;
 using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
 using Amiq.DataAccess.Friendship;
+using Amiq.DataAccess.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace Amiq.Business.Friend
     public class BlFriendRequest : BusinessLayerBase
     {
         private DaoFriendRequest daoFriendRequest = new DaoFriendRequest();
+        private DaoBlockedUser _daBlockedUser = new DaoBlockedUser();
 
         public async Task<IEnumerable<DtoFriendRequest>> GetFriendRequestsAsync(int userId, FriendRequestType friendRequestType)
         {
@@ -24,8 +27,8 @@ namespace Amiq.Business.Friend
 
         public async Task<DtoCreateEntityResponse> CreateFriendRequestAsync(int creatorId, DtoCreateFriendRequest createFriendRequest)
         {
-            CheckBsRule(new BsRuleRequestIssuerCannotBeBlockedByReceiver());
-            CheckBsRule(new BsRuleFriendRequestAlreadyExists());
+            CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(creatorId, createFriendRequest.ReceiverId));
+            CheckBsRule(new BsRuleFriendRequestCannotExist(creatorId, createFriendRequest.ReceiverId));
 
             return await daoFriendRequest.CreateFriendRequestAsync(creatorId, createFriendRequest);
         }

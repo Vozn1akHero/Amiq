@@ -33,15 +33,6 @@ class Chat extends Component<Props, State> {
         }
     }
 
-
-    getDifferenceBetweenDates = (t1: Date, t2: Date) : number => {
-        console.log(t1, t2)
-        let dif = new Date(t1).getTime() - new Date(t2).getTime();
-        let Seconds_from_T1_to_T2 = dif / 1000;
-        let seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-        return seconds_Between_Dates;
-    }
-
     getGroupedMessages = () => {
         let parsedChat: Array<Array<IMessage>> = []
         let previousMessage: IMessage = null;
@@ -58,7 +49,7 @@ class Chat extends Component<Props, State> {
                 previousMessage = message;
             } else if(localIndex >= 1) {
                 if(message.author.userId === previousMessage.author.userId){
-                    if(this.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED){
+                    if(Utils.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED){
                         currentGroup.push(message)
                     } else {
                         parsedChat.push(currentGroup);
@@ -115,6 +106,10 @@ class Chat extends Component<Props, State> {
         this.props.onDeleteMessages(this.state.selectedMessageIds);
     }
 
+    removeMessage = (messageId: string) => {
+
+    }
+
     render() {
         return (
             <div className="chat">
@@ -150,8 +145,9 @@ class Chat extends Component<Props, State> {
                             return group.map((value, index) => {
                                 return <ChatMessage message={value}
                                                     key={index}
-                                                    onMessageDeselection={this.onMessageDeselection}
-                                                    onMessageSelection={this.onMessageSelection}
+                                                    removeMessage={this.removeMessage}
+                                                    deselectMessage={this.onMessageDeselection}
+                                                    selectMessage={this.onMessageSelection}
                                                     isAuthorDataVisible={index === 0}
                                                     viewerId={AuthStore.identity.userId} />
                             })

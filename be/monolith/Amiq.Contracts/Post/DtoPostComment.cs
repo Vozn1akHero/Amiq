@@ -18,6 +18,7 @@ namespace Amiq.Contracts.Post
         //public DtoGroup Group { get; set; }
         //public bool IsChild { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DtoBasicUserInfo ParentCommentAuthor { get; set; }
         public Guid? ParentCommentId { get; set; }
         public Guid? MainParentCommentId { get; set; }
         //public DtoPostComment Parent { get; set; }

@@ -14,18 +14,22 @@ const GroupEventsInFrame = (props: Props) => {
         <ItemsFrameL title="Wydarzenia"
                      displayHeaderAsLink={true}
                      link={"/group/1/events"}
-                     icon="calendar"
-                     callbackText="Brak wydarzeń">
-            <div className="group-events-in-frame">
+                     icon="calendar">
+            <>
                 {
                     props.groupEvents.entries.find(e => e.id === props.groupId)?.data.loaded
-                    && props.groupEvents.entries.find(e => e.id === props.groupId).data.entities.map((value, key) => {
-                        return <div className="group-events-in-frame__item" key={key}>
-                            {value.name}
-                        </div>
-                    })
+                    && <div className="group-events-in-frame">
+                        {
+                            props.groupEvents.entries.find(e => e.id === props.groupId).data.entities.length > 0
+                                ? props.groupEvents.entries.find(e => e.id === props.groupId).data.entities.map((value, key) => {
+                                    return <div className="group-events-in-frame__item" key={key}>
+                                        {value.name}
+                                    </div>
+                                }) : <span>Brak wydarzeń</span>
+                        }
+                    </div>
                 }
-            </div>
+            </>
         </ItemsFrameL>
     );
 };

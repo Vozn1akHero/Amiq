@@ -13,9 +13,9 @@ import {connect} from "react-redux";
 import {
     createGroupPost,
     createGroupPostComment,
-    deletePost,
+    deletePost, getGroupPostComments,
     getGroupPosts,
-    removeComment
+    removeGroupPostComment
 } from "../../store/redux/actions/postActions";
 import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 import {getGroupParticipants} from "../../store/redux/actions/groupParticipantActions";
@@ -31,6 +31,7 @@ type Props = {
     createGroupPostComment(data: IGroupPostCommentCreation):void;
     removeComment(postCommentId: string):void;
     getGroupParticipants(groupId: number, page: number):void;
+    getGroupPostComments(postId: string, page: number): void;
     groupEvents: IIdBasedPersistentData<IPaginatedStoreData<IGroupEvent>>;
     groupPosts: Array<IGroupPost>;
     groupPostsLoaded: boolean;
@@ -116,6 +117,7 @@ class GroupPageContainer extends Component<Props, State> {
     render() {
         return (
             <GroupPage groupParticipants={this.props.groupParticipants}
+                       getComments={this.props.getGroupPostComments}
                        /*groupEvents={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.entities}
                        groupEventsLoaded={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.loaded}*/
                        groupEvents={this.props.groupEvents}
@@ -139,9 +141,10 @@ const mapDispatchToProps = (dispatch) => {
         deleteGroupPost: (postId: string) => dispatch(deletePost(postId)),
         createPost: (post: Partial<IGroupPost>) => dispatch(createGroupPost(post)),
         createGroupPostComment: (data: IGroupPostCommentCreation) => dispatch(createGroupPostComment(data)),
-        removeComment: (postCommentId: string) => dispatch(removeComment(postCommentId)),
+        removeComment: (postCommentId: string) => dispatch(removeGroupPostComment(postCommentId)),
         getGroupParticipants: (groupId: number, page: number) => dispatch(getGroupParticipants(groupId, page)),
         getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getGroupEvents(groupId, page, count)),
+        getGroupPostComments: (postId: string, page: number) => dispatch(getGroupPostComments(postId, page))
     }
 }
 

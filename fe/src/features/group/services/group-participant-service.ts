@@ -36,17 +36,17 @@ export class GroupParticipantService extends BaseService {
         return this.httpClient.get(this.buildApiPath("viewer-role"), null, query)
     }
 
-    blockUser(userId: number, groupId: number) {
-        return this.httpClient.post(this.buildApiPath("block"),
-            null,
-            null,
-            new HttpQueryParams().append("userId", userId).append("groupId", groupId));
-    }
-
     removeParticipant(userId: number, groupId: number) {
         return this.httpClient.post(this.buildApiPath(),
             null,
             null,
             new HttpQueryParams().append("userId", userId).append("groupId", groupId));
     }
+
+    joinGroup(groupId: number) {
+        return this.httpClient.post(this.buildApiPath("join"),
+            null,
+            new HttpParams().append("groupId", groupId));
+    }
+
 }

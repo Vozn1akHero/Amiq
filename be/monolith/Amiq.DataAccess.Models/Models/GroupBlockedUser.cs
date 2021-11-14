@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Amiq.DataAccess.Models.Models
 {
     public partial class GroupBlockedUser

@@ -53,10 +53,11 @@ class Navigation extends Component<Props, State> {
     ];
 
     loggedInUserNavigationRightSideLinks: Array<INavigationLink> = [
-        /*{
-            title: "Wyloguj",
-            anchor: Routes.getLink(Routes.logoutPageRoutes)
-        }*/
+        {
+            title: "Ustawienia",
+            uiKitIcon: "cog",
+            anchor: Routes.getSimpleLink(Routes.userSettingsRoutes)
+        }
     ]
 
     notLoggedInUserLinks: Array<INavigationLink> = [
@@ -129,7 +130,9 @@ class Navigation extends Component<Props, State> {
                                         this.loggedInUserNavigationRightSideLinks.map(((value, i) =>
                                             <li key={i}>
                                                 <Link to={value.anchor}
-                                                      style={{textTransform: "initial"}}>{value.title}</Link>
+                                                      style={{textTransform: "initial"}}>
+                                                    <span uk-icon={`icon: ${value.uiKitIcon}`}></span>
+                                                </Link>
                                             </li>))
                                     }
                                     <li>
