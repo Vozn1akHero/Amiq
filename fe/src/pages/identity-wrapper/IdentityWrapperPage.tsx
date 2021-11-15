@@ -41,7 +41,7 @@ const IdentityWrapperPage = (props: Props) => {
     return (
         <div className="identity-wrapper">
             <Switch>
-                <Redirect from="/" to={Routes.getSimpleLink(Routes.profilePageRoutes)} exact={true} />
+                <Redirect from="/" to={Routes.getRouterLink(Routes.profilePageRoutes)} exact={true} />
                 <Route path="/" render={() => <>
                     <NavigationWithRouter navRef={navigationRef} />
 
@@ -49,15 +49,15 @@ const IdentityWrapperPage = (props: Props) => {
                         <div className="uk-margin-medium-top">
                            {/* <Breadcrumb />*/}
                             <div className="page-wrapper uk-margin-medium-top">
-                                <Route component={AuthPageContainer} path={Routes.getSimpleLink(Routes.authPageRoutes)} />
-                                <Route component={JoinupPageContainer} path={Routes.getSimpleLink(Routes.registrationPageRoutes)} />
-                                <GuardedRoute component={ProfilePageContainer} path={Routes.getSimpleLink(Routes.profilePageRoutes)} />
-                                <GuardedRoute component={UserSettingsPage} path={Routes.getSimpleLink(Routes.userSettingsRoutes)} />
-                                <GuardedRoute component={FriendListPage} path={Routes.getSimpleLink(Routes.friendListPageRoutes)} />
-                                <GuardedRoute component={GroupsPageContainer} path={Routes.getSimpleLink(Routes.groupsPageRoutes)} />
-                                <GuardedRoute exact={true} component={GroupSettingsPageContainer} path={Routes.getSimpleLink(Routes.groupSettingsPageRoutes)} />
-                                <GuardedRoute component={GroupPageContainer} path={Routes.getSimpleLink(Routes.groupPageRoutes)} />
-                                <GuardedRoute component={ChatPageContainer} path={Routes.getSimpleLink(Routes.chatPageRoutes)} />
+                                <Route component={AuthPageContainer} path={Routes.getRouterLink(Routes.authPageRoutes)} />
+                                <Route component={JoinupPageContainer} path={Routes.getRouterLink(Routes.registrationPageRoutes)} />
+                                <GuardedRoute component={ProfilePageContainer} path={Routes.getRouterLink(Routes.profilePageRoutes)} />
+                                <GuardedRoute component={UserSettingsPage} path={Routes.getRouterLink(Routes.userSettingsRoutes)} />
+                                <GuardedRoute component={FriendListPage} path={Routes.getRouterLink(Routes.friendListPageRoutes)} />
+                                <GuardedRoute component={GroupsPageContainer} path={Routes.getRouterLink(Routes.groupsPageRoutes)} />
+                                <GuardedRoute exact={true} component={GroupSettingsPageContainer} path={Routes.getRouterLink(Routes.groupSettingsPageRoutes)} />
+                                <GuardedRoute component={GroupPageContainer} path={Routes.getRouterLink(Routes.groupPageRoutes)} />
+                                <GuardedRoute component={ChatPageContainer} path={Routes.getRouterLink(Routes.chatPageRoutes)} />
                                 <GuardedRoute path="/not-found" component={NotFoundPage} />
                             </div>
                         </div>

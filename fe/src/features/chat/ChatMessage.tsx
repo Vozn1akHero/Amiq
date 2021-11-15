@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, MouseEvent} from 'react';
 import {IMessage} from "./chat-models";
 import "./chat-message.scss"
 import {Utils} from "../../core/utils";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {DateUtils} from "../../assets/utils/date-utils";
 
 type State = {
     isSelected: boolean;
@@ -13,9 +14,9 @@ type Props = {
     message: IMessage;
     isAuthorDataVisible: boolean;
     viewerId: number;
-    selectMessage(messageId: string):void;
-    deselectMessage(messageId: string):void;
-    removeMessage(messageId: string):void;
+    selectMessage(messageId: string): void;
+    deselectMessage(messageId: string): void;
+    removeMessage(messageId: string): void;
 }
 
 class ChatMessage extends Component<Props, State> {
@@ -27,14 +28,16 @@ class ChatMessage extends Component<Props, State> {
         }
     }
 
-    onMessageSelection = () => {
-        this.setState({
-            isSelected: !this.state.isSelected
-        }, () => {
-            if(this.state.isSelected)
-                this.props.selectMessage(this.props.message.messageId)
-            else this.props.deselectMessage(this.props.message.messageId)
-        })
+    onMessageSelection = (e:MouseEvent) => {
+        console.log(e.currentTarget)
+        if(!e.currentTarget.classList.contains(".chat-message__controls__remove-msg"))
+            this.setState({
+                isSelected: !this.state.isSelected
+            }, () => {
+                if (this.state.isSelected)
+                    this.props.selectMessage(this.props.message.messageId)
+                else this.props.deselectMessage(this.props.message.messageId)
+            })
     }
 
     onMessageMouseOver = () => {
@@ -43,7 +46,7 @@ class ChatMessage extends Component<Props, State> {
         })
     }
 
-    onMessageMouseOut  = () => {
+    onMessageMouseOut = () => {
         this.setState({
             messageControlsVisible: false
         })
@@ -51,15 +54,15 @@ class ChatMessage extends Component<Props, State> {
 
     render() {
         return (
-            <div onClick={this.onMessageSelection}
-                 onMouseOver={this.onMessageMouseOver}
+            <div onMouseOver={this.onMessageMouseOver}
                  onMouseLeave={this.onMessageMouseOut}
                  className={`chat-message 
                     ${this.props.message.author.userId === this.props.viewerId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
                     ${this.state.isSelected ? `uk-card-default` : ``}
                     `}>
                 {
-                    this.props.isAuthorDataVisible && <Link to={`/user/${this.props.message.author.userId}`} className="uk-float-left">
+                    this.props.isAuthorDataVisible &&
+                    <Link to={`/user/${this.props.message.author.userId}`} className="uk-float-left">
                         <img className="chat-message__avatar border-radius-50"
                              src={Utils.getImageSrc(this.props.message.author.avatarPath)}
                              width="80"
@@ -67,15 +70,24 @@ class ChatMessage extends Component<Props, State> {
                              alt=""/>
                     </Link>
                 }
-                <div className={`chat-message__text-bg uk-card uk-card-default uk-card-body ${this.props.isAuthorDataVisible ? `uk-float-left uk-margin-small-left` : ``}`}>
-                    <div className={`chat-message__text`}>
-                        {
-                            this.props.message.textContent
-                        }
+                <div className="uk-flex">
+                    <div onClick={this.onMessageSelection}
+                         className={`chat-message__text-bg uk-card uk-card-default uk-card-body ${this.props.isAuthorDataVisible ? `uk-float-left uk-margin-small-left` : ``}`}>
+                        <div className={`chat-message__text`}>
+                            {
+                                this.props.message.textContent
+                            }
+                        </div>
+                    </div>
+                    <div className="uk-margin-left uk-margin-medium-top uk-text-small">
+                        {DateUtils.getViewDate(this.props.message.createdAt)}
+                    </div>
+                    <div className="uk-margin-left uk-margin-medium-top uk-text-small">
                         {
                             this.state.messageControlsVisible && <div className={`chat-message__controls`}>
-                                <button onClick={() => {this.props.removeMessage(this.props.message.messageId)}}
-                                        className="uk-icon-button uk-margin-small-right" uk-icon="trash"></button>
+                                <button onClick={() => {
+                                        this.props.removeMessage(this.props.message.messageId)
+                                    }} className="chat-message__controls__remove-msg uk-icon-button uk-margin-small-right" uk-icon="trash"></button>
                             </div>
                         }
                     </div>

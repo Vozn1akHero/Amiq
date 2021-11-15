@@ -38,6 +38,7 @@ namespace Amiq.WebApi.Controllers
         {
             dtoDeleteChatMessageRequest.IssuerId = JwtStoredUserInfo.UserId;
             var result = await _bsChatMessage.DeleteMessageAsync(dtoDeleteChatMessageRequest);
+            await _signalRChatService.DeleteMessageAsync(dtoDeleteChatMessageRequest.ChatId.ToString(), dtoDeleteChatMessageRequest.MessageId);
             return Ok(result);
         }
 

@@ -1,6 +1,6 @@
 import {
     GET_CHAT_MESSAGES,
-    GET_CHAT_PREVIEWS, MESSAGE_CREATED, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
+    GET_CHAT_PREVIEWS, MESSAGE_CREATED, REMOVE_MESSAGE_FROM_STORE, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
     SET_CHAT_PREVIEWS
 } from '../types/chatTypes';
 import {IChatPreview, IMessage} from "features/chat/chat-models";
@@ -56,6 +56,12 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 chatMessages: [...state.chatMessages.filter(value => (action.payload as Array<IMessage>).findIndex(e=>e.messageId === value.messageId) === -1)]
+            }
+        }
+        case REMOVE_MESSAGE_FROM_STORE: {
+            return {
+                ...state,
+                chatMessages: state.chatMessages.filter(message => message.messageId !== action.payload)
             }
         }
         default:

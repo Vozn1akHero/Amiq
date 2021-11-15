@@ -18,9 +18,14 @@ namespace Amiq.WebApi.SignalR
             await Clients.All.SendAsync("SendMessageAsync", message);
         }
 
-        public async Task JoinGroup(string groupName)
+        public async Task JoinGroupAsync(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public async Task RemoveFromGroupAsync(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
         }
 
         public async Task PushMessageAsync(string group, DtoChatMessage dtoChatMessage)

@@ -29,10 +29,14 @@ export default class Routes {
         return output;
     }*/
 
-    public static getSimpleLink(route: ISimpleRoute):string{
+    public static getRouterLink(route: ISimpleRoute):string{
         let output: string = "/";
         output += route.reactRouterLink;
         return output;
+    }
+
+    public static getBaseLink(route: ISimpleRoute):string{
+        return route.baseLink;
     }
 
     public static getNavRoute = (route: ISimpleRoute) => route.reactRouterLink;

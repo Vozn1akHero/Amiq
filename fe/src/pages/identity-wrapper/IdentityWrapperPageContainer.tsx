@@ -38,14 +38,14 @@ const IdentityWrapperPageContainer = () => {
             identityModel.isAuthenticated = res.status === StatusCodes.OK;
             AuthStore.configureIdentity(identityModel);
             if (!identityModel.isAuthenticated) {
-                if(pathname !== Routes.getSimpleLink(Routes.authPageRoutes)
-                    && pathname !== Routes.getSimpleLink(Routes.registrationPageRoutes)) {
-                    history.push(Routes.getSimpleLink(Routes.authPageRoutes));
+                if(pathname !== Routes.getRouterLink(Routes.authPageRoutes)
+                    && pathname !== Routes.getRouterLink(Routes.registrationPageRoutes)) {
+                    history.push(Routes.getRouterLink(Routes.authPageRoutes));
                 }
             } else {
-                if(pathname === Routes.getSimpleLink(Routes.authPageRoutes)
-                    || pathname === Routes.getSimpleLink(Routes.registrationPageRoutes)){
-                    history.push(Routes.getSimpleLink(Routes.profilePageRoutes));
+                if(pathname === Routes.getRouterLink(Routes.authPageRoutes)
+                    || pathname === Routes.getRouterLink(Routes.registrationPageRoutes)){
+                    history.push(Routes.getRouterLink(Routes.profilePageRoutes));
                 }
             }
         }).catch((error) => {
@@ -54,9 +54,9 @@ const IdentityWrapperPageContainer = () => {
                 if(error.response.status === StatusCodes.UNAUTHORIZED){
                     identityModel.isAuthenticated = false;
                     AuthStore.configureIdentity(identityModel);
-                    if(pathname !== Routes.getSimpleLink(Routes.authPageRoutes)
-                        && pathname !== Routes.getSimpleLink(Routes.registrationPageRoutes)) {
-                        history.push(Routes.getSimpleLink(Routes.authPageRoutes));
+                    if(pathname !== Routes.getRouterLink(Routes.authPageRoutes)
+                        && pathname !== Routes.getRouterLink(Routes.registrationPageRoutes)) {
+                        history.push(Routes.getRouterLink(Routes.authPageRoutes));
                     }
                 }
                 else {

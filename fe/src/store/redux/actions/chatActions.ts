@@ -2,7 +2,7 @@ import {
     CREATE_MESSAGE,
     GET_CHAT_MESSAGES,
     GET_CHAT_PREVIEWS,
-    MESSAGE_CREATED, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
+    MESSAGE_CREATED, REMOVE_MESSAGE_FROM_STORE, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
     SET_CHAT_PREVIEWS, START_REMOVING_MESSAGES
 } from "../types/chatTypes"
 import ChatService from "features/chat/chat-service";
@@ -72,6 +72,33 @@ export const deleteMessages = (messageIds: Array<string>) => (dispatch) => {
             dispatch({
                 type: REMOVE_MESSAGES,
                 payload: res.data.entities as Array<IMessage>
+            })
+        }
+    })
+}
+
+export const removeMessageFromStore = (messageId: string) => dispatch => {
+    dispatch({
+        type: REMOVE_MESSAGE_FROM_STORE,
+        payload: messageId
+    })
+}
+
+export const addMessageToStore = (message: IMessage) => dispatch => {
+    dispatch({
+        type: MESSAGE_CREATED,
+        payload: message
+    })
+}
+
+export const removeMessageById = (messageId: string, chatId: string, userId: number) => dispatch => {
+    chatMessageService.removeMessageById(
+        messageId, chatId, userId
+    ).then(res => {
+        if(res.status === StatusCodes.OK) {
+            dispatch({
+                type: REMOVE_MESSAGE_FROM_STORE,
+                payload: messageId
             })
         }
     })

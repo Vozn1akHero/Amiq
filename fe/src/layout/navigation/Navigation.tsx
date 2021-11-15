@@ -31,23 +31,23 @@ class Navigation extends Component<Props, State> {
     loggedInUserNavigationLinks: Array<INavigationLink> = [
         {
             title: "Profil",
-            anchor: Routes.getSimpleLink(Routes.myProfilePageRoutes),
+            anchor: Routes.getRouterLink(Routes.myProfilePageRoutes),
             uiKitIcon: "user"
         },
         {
             title: "Znajomi",
-            anchor: Routes.getSimpleLink(Routes.friendListPageRoutes),
+            anchor: Routes.getRouterLink(Routes.friendListPageRoutes),
             uiKitIcon: "users",
 
         },
         {
             title: "Czat",
-            anchor: Routes.getSimpleLink(Routes.chatPageRoutes),
+            anchor: Routes.getRouterLink(Routes.chatPageRoutes),
             uiKitIcon: "mail"
         },
         {
             title: "Grupy",
-            anchor: Routes.getSimpleLink(Routes.groupsPageRoutes),
+            anchor: Routes.getRouterLink(Routes.groupsPageRoutes),
             uiKitIcon: "social"
         }
     ];
@@ -56,19 +56,19 @@ class Navigation extends Component<Props, State> {
         {
             title: "Ustawienia",
             uiKitIcon: "cog",
-            anchor: Routes.getSimpleLink(Routes.userSettingsRoutes)
+            anchor: Routes.getRouterLink(Routes.userSettingsRoutes)
         }
     ]
 
     notLoggedInUserLinks: Array<INavigationLink> = [
         {
             title: "Zaloguj",
-            anchor: Routes.getSimpleLink(Routes.authPageRoutes),
+            anchor: Routes.getRouterLink(Routes.authPageRoutes),
             uiKitIcon: "sign-in"
         },
         {
             title: "Dołącz",
-            anchor: Routes.getSimpleLink(Routes.registrationPageRoutes),
+            anchor: Routes.getRouterLink(Routes.registrationPageRoutes),
             uiKitIcon: "social"
         }
     ]

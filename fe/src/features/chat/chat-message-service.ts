@@ -25,4 +25,11 @@ export default class ChatMessageService extends BaseService{
             messageIds
         });
     }
+
+    removeMessageById(messageId: string, chatId: string, userId: number) {
+        return this.httpClient.delete(this.buildApiPath(), null, null,
+            new HttpQueryParams().append("messageId", messageId)
+                .append("chatId", chatId)
+                .append("userId", userId))
+    }
 }

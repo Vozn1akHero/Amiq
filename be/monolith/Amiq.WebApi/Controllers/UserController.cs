@@ -22,5 +22,7 @@ namespace Amiq.WebApi.Controllers
             if(user == null) return NotFound();
             return Ok(user);
         }
+
+        
     }
 }

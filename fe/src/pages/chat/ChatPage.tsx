@@ -17,6 +17,7 @@ type Props = {
     onChatSelection(selectedChatId: string):void;
     onCreateMessage(message: Partial<IMessage>): void;
     onDeleteMessages(ids: Array<string>);
+    removeMessageById(messageId: string, chatId: string): void;
 }
 
 type State = {
@@ -52,6 +53,10 @@ class ChatPage extends Component<Props, State> {
 
     onDeleteMessages = (ids: Array<string>) => {
         this.props.onDeleteMessages(ids);
+    }
+
+    removeMessageById = (messageId: string, chatId: string) => {
+        this.props.removeMessageById(messageId, chatId);
     }
 
     render() {
@@ -95,6 +100,7 @@ class ChatPage extends Component<Props, State> {
                               onDeleteMessages={this.props.onDeleteMessages}
                               messages={this.props.messages}
                               onCreateMessage={this.props.onCreateMessage}
+                              removeMessageById={this.props.removeMessageById}
                               chatMessagesLoaded={this.props.chatMessagesLoaded} />
                     </div>
                 }

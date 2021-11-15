@@ -1,3 +1,5 @@
 import moment from "moment";
 
-export const getViewDate = (date: Date) => moment(date).fromNow()
+export class DateUtils {
+    static getViewDate = (date: Date) => moment(date).fromNow()
+}

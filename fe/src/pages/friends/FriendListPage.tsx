@@ -90,12 +90,12 @@ class FriendListPage extends Component<Props, State> {
                         <div>
                             <ul className="uk-child-width-expand" uk-tab="true">
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Receiver ? `uk-active` : ""}>
-                                    <a href="#" onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Receiver)}}>
+                                    <a onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Receiver)}}>
                                         Otrzymane
                                     </a>
                                 </li>
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Creator ? `uk-active` : ""}>
-                                    <a href="#" onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Creator)}} >
+                                    <a onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Creator)}} >
                                         Wysłane
                                     </a>
                                 </li>

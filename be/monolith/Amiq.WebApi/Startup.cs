@@ -124,7 +124,7 @@ namespace Amiq.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHub<ChatHub>("hub/chat");
             });
         }
     }
