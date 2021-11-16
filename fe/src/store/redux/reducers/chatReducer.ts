@@ -1,7 +1,7 @@
 import {
     GET_CHAT_MESSAGES,
     GET_CHAT_PREVIEWS, MESSAGE_CREATED, REMOVE_MESSAGE_FROM_STORE, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
-    SET_CHAT_PREVIEWS
+    SET_CHAT_PREVIEWS, UPDATE_OR_ADD_CHAT_PREVIEW
 } from '../types/chatTypes';
 import {IChatPreview, IMessage} from "features/chat/chat-models";
 
@@ -62,6 +62,24 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 chatMessages: state.chatMessages.filter(message => message.messageId !== action.payload)
+            }
+        }
+        case UPDATE_OR_ADD_CHAT_PREVIEW: {
+            const chatPreview = action.payload as IChatPreview;
+            let nextChatPreviewsState: Array<IChatPreview>;
+            if(state.chatPreviews.some(value => value.chatId === chatPreview.chatId)){
+                nextChatPreviewsState = state.chatPreviews.map(value => {
+                    if(value.chatId === chatPreview.chatId){
+                        value = chatPreview
+                    }
+                    return value;
+                })
+            } else {
+                nextChatPreviewsState = [chatPreview, ...state.chatPreviews];
+            }
+            return {
+                ...state,
+                chatPreviews: nextChatPreviewsState
             }
         }
         default:

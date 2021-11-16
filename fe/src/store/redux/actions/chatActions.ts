@@ -3,7 +3,7 @@ import {
     GET_CHAT_MESSAGES,
     GET_CHAT_PREVIEWS,
     MESSAGE_CREATED, REMOVE_MESSAGE_FROM_STORE, REMOVE_MESSAGES, SET_CHAT_MESSAGES,
-    SET_CHAT_PREVIEWS, START_REMOVING_MESSAGES
+    SET_CHAT_PREVIEWS, START_REMOVING_MESSAGES, UPDATE_OR_ADD_CHAT_PREVIEW
 } from "../types/chatTypes"
 import ChatService from "features/chat/chat-service";
 import {AxiosResponse} from "axios";
@@ -101,5 +101,12 @@ export const removeMessageById = (messageId: string, chatId: string, userId: num
                 payload: messageId
             })
         }
+    })
+}
+
+export const updateOrAddChatPreview = (chatPreview: IChatPreview) => dispatch => {
+    dispatch({
+        type: UPDATE_OR_ADD_CHAT_PREVIEW,
+        payload: chatPreview
     })
 }

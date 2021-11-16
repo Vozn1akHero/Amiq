@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, ReactElement} from 'react';
 import {IChat, IChatMessageCreation, IMessage} from "./chat-models";
 import "./chat.scss"
-import {ChatPreviewMode} from "./chat-enums";
 import ChatMessage from "./ChatMessage";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {Utils} from "../../core/utils";
 import MessageCreationForm from "./components/MessageCreationForm";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Routes} from "../../core/routing";
 import {DateUtils} from "../../assets/utils/date-utils";
+import moment from "moment";
 
 type State = {
     parsedChat: Array<Array<IMessage>>;
@@ -21,7 +21,7 @@ type Props = {
     chatMessagesLoaded: boolean;
     onDeleteMessages(ids: Array<string>);
     onCreateMessage(message: IChatMessageCreation): void;
-    removeMessageById(messageId: string, chatId: string):void;
+    removeMessageById(messageId: string, chatId: string): void;
 }
 
 class Chat extends Component<Props, State> {
@@ -34,76 +34,13 @@ class Chat extends Component<Props, State> {
         }
     }
 
-    getGroupedMessages = () => {
-        let parsedChat: Array<Array<IMessage>> = []
-        let previousMessage: IMessage = null;
-        let localIndex: number = -1;
-        const SECONDS_TO_BE_GROUPED = 30;
-        let currentGroup: Array<IMessage> = [];
-        const messages = this.props.messages;
-        console.log(messages)
-        for(let message of messages){
-            /*localIndex++;
-            if(localIndex === 0) {
-                currentGroup.push(message);
-                previousMessage = message;
-            } else if(localIndex >= 1) {
-                if(message.author.userId === previousMessage.author.userId){
-                    if(Utils.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED){
-                        currentGroup.push(message);
-                        previousMessage = message;
-                    } else {
-                        parsedChat.push(currentGroup);
-                        currentGroup = [];
-                        currentGroup.push(message)
-                        localIndex = -1;
-                        previousMessage = message;
-                    }
-                } else {
-                    parsedChat.push(currentGroup);
-                    currentGroup = [];
-                    currentGroup.push(message)
-                    localIndex = -1;
-                    previousMessage = message;
-                }
-            }*/
-
-            if(previousMessage && message.author.userId === previousMessage.author.userId){
-                if(Utils.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED){
-                    currentGroup.push(message);
-                    previousMessage = message;
-                } else {
-                    parsedChat.push(currentGroup);
-                    currentGroup = [];
-                    currentGroup.push(message)
-                    previousMessage = message;
-                }
-            } else {
-                if(currentGroup.length > 0) currentGroup = [];
-                currentGroup.push(message)
-
-                parsedChat.push(currentGroup);
-
-                previousMessage = message;
-            }
-        }
-
-        /*if(currentGroup.length > 0){
-            parsedChat.push(currentGroup);
-        }*/
-
-        console.log(parsedChat)
-
-        return parsedChat;
-    }
-
     onMessageCreationFormBlur = (content: string) => {
 
     }
 
     onMessageCreationFormSubmit = (text: string) => {
         const {chat} = this.props;
-        let data : IChatMessageCreation = {
+        let data: IChatMessageCreation = {
             receiverId: chat.interlocutor.userId,
             authorId: AuthStore.identity.userId,
             textContent: text,
@@ -133,14 +70,59 @@ class Chat extends Component<Props, State> {
     }
 
     // TODO
-    renderChat = () => {
-        let result: Array<HTMLElement>;
+    renderChat = (messages: Array<IMessage>) => {
+        let result: Array<ReactElement>;
         let previousMessage: IMessage;
         let div: HTMLDivElement;
-        this.props.messages.forEach((message, index) => {
-            let node: Array<HTMLElement>;
+        let node: Array<HTMLElement>;
+        let parsedChat: Array<Array<IMessage>> = [];
+        const SECONDS_TO_BE_GROUPED = 30;
+        let currentGroup: Array<IMessage> = [];
 
+        // dzielenie wiadomości na grupy
+        messages.forEach((message, index) => {
+            if (index > 0) previousMessage = message[index - 1];
+
+            if (index === 0) {
+                currentGroup.push(message);
+            } else if (message.author.userId === previousMessage.author.userId) {
+                if (Utils.getDifferenceBetweenDates(message.createdAt, previousMessage.createdAt) < SECONDS_TO_BE_GROUPED) {
+                    currentGroup.push(message);
+                } else {
+                    parsedChat.push(currentGroup);
+                    currentGroup = [];
+                    currentGroup.push(message);
+                }
+            } else if (message.author.userId !== previousMessage.author.userId) {
+                if (currentGroup.length > 0) {
+                    parsedChat.push(currentGroup);
+                    currentGroup = [];
+                }
+                currentGroup.push(message);
+            }
         })
+
+        //let previousSubgroupMessageCreationTime
+        const DAYS_TO_SHOW_DATE_BETWEEN_SUBGROUPS = 3 * 24 * 60 * 60;
+        parsedChat.forEach((subgroup, index) => {
+            const creationTime: Date = subgroup[0].createdAt;
+            if (DateUtils.getDifferenceBetweenDatesInDays(creationTime, moment().toDate()) > DAYS_TO_SHOW_DATE_BETWEEN_SUBGROUPS) {
+                let subgroupCreationTime: ReactElement = <div className="chat__messages__subgroup-creation-time">
+                    {moment(creationTime).format("YYYY-MM-DD")}
+                </div>;
+                result.push(subgroupCreationTime);
+                subgroup.forEach((message, messageIndex) => {
+                    result.push(<ChatMessage message={message}
+                                             key={messageIndex}
+                                             removeMessage={this.removeMessageById}
+                                             deselectMessage={this.onMessageDeselection}
+                                             selectMessage={this.onMessageSelection}
+                                             isAuthorDataVisible={messageIndex > 0}
+                                             viewerId={AuthStore.identity.userId}/>);
+                })
+            }
+        })
+
         return result;
     }
 
@@ -148,9 +130,10 @@ class Chat extends Component<Props, State> {
         return (
             <div className="chat">
                 <header className="chat__interlocutor-data">
-                    <div className="uk-grid uk-grid-medium" >
+                    <div className="uk-grid uk-grid-medium">
                         <div className="uk-width-auto uk-flex-first">
-                            <Link to={`${Routes.getBaseLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                            <Link
+                                to={`${Routes.getBaseLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
                                 <img className="border-radius-50"
                                      src={Utils.getImageSrc(this.props.chat.interlocutor.avatarPath)}
                                      width="80"
@@ -159,7 +142,8 @@ class Chat extends Component<Props, State> {
                         </div>
                         <div className="uk-width-expand">
                             <h4 className="uk-comment-title uk-margin-remove">
-                                <Link className="uk-link-text" to={`${Routes.getBaseLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
+                                <Link className="uk-link-text"
+                                      to={`${Routes.getBaseLink(Routes.profilePageRoutes)}/${this.props.chat.interlocutor.userId}`}>
                                     {this.props.chat.interlocutor.name + " " + this.props.chat.interlocutor.surname}
                                 </Link>
                             </h4>
@@ -170,9 +154,11 @@ class Chat extends Component<Props, State> {
                 <div className="chat__messages max-width uk-grid uk-width-1-1">
                     {
                         this.state.selectedMessageIds.length > 0 &&
-                            <div className="chat__controls">
-                                    <button onClick={this.deleteSelectedMessages} className="chat__remove-selected-messages-btn uk-icon-button uk-margin-small-right" uk-icon="trash"></button>
-                            </div>
+                        <div className="chat__controls">
+                            <button onClick={this.deleteSelectedMessages}
+                                    className="chat__remove-selected-messages-btn uk-icon-button uk-margin-small-right"
+                                    uk-icon="trash" />
+                        </div>
                     }
                     {/*{
                         this.getGroupedMessages().map((group) => {
@@ -187,7 +173,7 @@ class Chat extends Component<Props, State> {
                             })
                         })
                     }*/}
-                    {
+                    {/*{
                         this.props.messages.map((value, index) => {
                             return <ChatMessage message={value}
                                                 key={index}
@@ -195,13 +181,14 @@ class Chat extends Component<Props, State> {
                                                 deselectMessage={this.onMessageDeselection}
                                                 selectMessage={this.onMessageSelection}
                                                 isAuthorDataVisible={true}
-                                                viewerId={AuthStore.identity.userId} />
+                                                viewerId={AuthStore.identity.userId}/>
                         })
-                    }
+                    }*/}
+                    {this.renderChat(this.props.messages)}
                 </div>
                 <MessageCreationForm onFormBlur={this.onMessageCreationFormBlur}
                                      onSubmit={this.onMessageCreationFormSubmit}
-                                     isFocused={true} />
+                                     isFocused={true}/>
             </div>
         );
     }
