@@ -22,7 +22,7 @@ namespace Amiq.Business.Chat
             return await _daChatMessage.CreateChatMessageAsync(dtoChatMessageCreation);
         }
 
-        public async Task<IReadOnlyList<DtoChatMessage>> GetChatMessagesAsync(int requestIssuerId,
+        public async Task<DtoListResponseOf<DtoChatMessage>> GetChatMessagesAsync(int requestIssuerId,
             Guid chatId, DtoPaginatedRequest dtoPaginatedRequest)
         {
             CheckBsRule(new ChatShouldBeAvailableForInterlocutor(requestIssuerId, chatId));
@@ -31,6 +31,9 @@ namespace Amiq.Business.Chat
 
         public async Task<List<DtoChatPreview>> GetChatPreviewListAsync(int userId, DtoPaginatedRequest dtoChatPreviewListRequest)
             => await _daChatMessage.GetChatPreviewListAsync(userId, dtoChatPreviewListRequest);
+
+        public async Task<List<DtoChatPreview>> SearchForChatsAsync(int userId, string text) =>
+            await _daChatMessage.SearchForChatsAsync(userId, text);
 
         public async Task<DtoDeleteEntityResponse> DeleteMessageAsync(DtoDeleteChatMessageRequest dtoDeleteChatMessageRequest)
         {

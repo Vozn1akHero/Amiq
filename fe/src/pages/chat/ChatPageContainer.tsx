@@ -2,38 +2,36 @@ import React, {Dispatch, useEffect, useState} from 'react';
 import ChatPage from './ChatPage';
 import {IChat, IChatMessageCreation, IChatPreview, IMessage} from 'features/chat/chat-models';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getChatPreviews,
-    createMessage,
-    getChatMessages,
-    deleteMessages,
-    addMessageToStore, removeMessageFromStore
-} from "store/redux/actions/chatActions";
 import * as chatActions from "store/redux/actions/chatActions";
+import {
+    addMessageToStore, cacheChatPreviewsOnSearch,
+    createMessage,
+    deleteMessages,
+    getChatMessages,
+    getChatPreviews, getChatPreviewsFromCacheOnSearch,
+    removeMessageFromStore, searchForChats,
+    updateOrAddChatPreview
+} from "store/redux/actions/chatActions";
 import {useHistory} from "react-router-dom";
 import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import devConfig from "../../dev-config.json";
 import {AuthStore} from "../../store/custom/auth/auth-store";
+import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 
 
 const ChatPageContainer = () => {
     const chatPreviews: Array<IChatPreview> = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.chat.chatPreviews;
         }
     )
     const chatPreviewsLoaded: boolean = useSelector(
-        (state:any) => {
+        (state: any) => {
             return state.chat.chatPreviewsLoaded
         }
     )
-    const initialChatMessagesLoaded: boolean = useSelector(
-        (state:any) => {
-            return state.chat.initialChatMessagesLoaded
-        }
-    )
-    const messages: Array<IMessage> = useSelector(
-        (state:any) => {
+    const messages: IPaginatedStoreData<IMessage> = useSelector(
+        (state: any) => {
             return state.chat.chatMessages
         }
     )
@@ -44,21 +42,21 @@ const ChatPageContainer = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [isChatSelected, setIsChatSelected] = useState(false);
     const [searchInputLoading, setSearchInputLoading] = useState(false);
-    const [signalRChatHubConnection, setSignalRChatHubConnection] = useState<HubConnection>(null)
+    const [signalRChatHubConnection, setSignalRChatHubConnection] = useState<HubConnection>(null);
+    const [activeSearch, setActiveSearch] = useState(false);
 
     useEffect(() => {
         //console.log(new URLSearchParams(history.location.search).get('to'))
         setupSignalRConnection();
 
-        if(!chatPreviewsLoaded){
+        if (!chatPreviewsLoaded) {
             dispatch(getChatPreviews());
         }
     }, [])
 
-
     const setupSignalRConnection = () => {
-        const PushMessage : string = 'PushMessage';
-        const DeleteMessage : string = 'DeleteMessage';
+        const PushMessage: string = 'PushMessage';
+        const DeleteMessage: string = 'DeleteMessage';
 
         const chatHubConnection = new HubConnectionBuilder()
             .withUrl(devConfig.monolithUrl + '/hub/chat')
@@ -69,8 +67,10 @@ const ChatPageContainer = () => {
         chatHubConnection.start()
             .then(res => {
                 chatHubConnection.on(PushMessage, (message: IMessage) => {
-                    if(message.author.userId !== AuthStore.identity.userId)
-                        dispatch(addMessageToStore(message))
+                    dispatch(updateOrAddChatPreview(message));
+                    if (message.author.userId !== AuthStore.identity.userId) {
+                        dispatch(addMessageToStore(message));
+                    }
                 });
                 chatHubConnection.on(DeleteMessage, (messageId: string) => {
                     dispatch(removeMessageFromStore(messageId))
@@ -86,7 +86,7 @@ const ChatPageContainer = () => {
     }
 
     const selectChat = (chatId: string) => {
-        if(selectedChatId)
+        if (selectedChatId)
             signalRChatHubConnection.invoke("RemoveFromGroupAsync", selectedChatId)
                 .catch(ex => {
                     alert(ex);
@@ -100,7 +100,7 @@ const ChatPageContainer = () => {
         const index = chatPreviews.findIndex(value => value.chatId === chatId);
         const selectedChatPreview = chatPreviews[index];
         dispatch(getChatMessages(selectedChatPreview.chatId, 1));
-        const selectedChat:Partial<IChat> = {
+        const selectedChat: Partial<IChat> = {
             chatId: selectedChatPreview.chatId,
             interlocutor: selectedChatPreview.interlocutor
         }
@@ -111,8 +111,18 @@ const ChatPageContainer = () => {
         dispatch(deleteMessages(ids))
     }
 
-    const onSearchInputChange = e => {
-
+    const onSearchInputChange = (text: string) => {
+        const shouldSearchBeActive: boolean = text?.length>0;
+        if(!activeSearch && shouldSearchBeActive){
+            dispatch(cacheChatPreviewsOnSearch())
+        } else if(activeSearch && !shouldSearchBeActive) {
+            dispatch(getChatPreviewsFromCacheOnSearch())
+        }
+        if(!activeSearch) setActiveSearch(true);
+        setActiveSearch(shouldSearchBeActive);
+        if(shouldSearchBeActive){
+            dispatch(chatActions.searchForChats(text));
+        }
     }
 
     const removeMessageById = (messageId: string, chatId: string) => {
@@ -129,8 +139,10 @@ const ChatPageContainer = () => {
                   onCreateMessage={onCreateMessage}
                   chatPreviewsLoaded={chatPreviewsLoaded}
                   onChatSelection={selectChat}
-                  chatMessagesLoaded={initialChatMessagesLoaded}
-                  selectedChat={selectedChat} />
+                  getMoreMessages={() => {
+                      dispatch(getChatMessages(selectedChat.chatId, messages.currentPage))
+                  }}
+                  selectedChat={selectedChat}/>
     );
 }
 

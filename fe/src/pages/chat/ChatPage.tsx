@@ -5,19 +5,20 @@ import Chat from "features/chat/Chat";
 import "./chat-page.scss"
 import {ChatPreviewMode} from "../../features/chat/chat-enums";
 import SearchInput from "../../common/components/SearchInput/SearchInput";
+import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 
 type Props = {
     chats: Array<IChatPreview>;
-    messages: Array<IMessage>;
+    messages: IPaginatedStoreData<IMessage>;
     selectedChat: IChat;
     chatPreviewsLoaded: boolean;
-    chatMessagesLoaded: boolean;
     searchInputLoading: boolean;
-    onSearchInputChange(e):void;
+    onSearchInputChange(text:string):void;
     onChatSelection(selectedChatId: string):void;
     onCreateMessage(message: Partial<IMessage>): void;
     onDeleteMessages(ids: Array<string>);
     removeMessageById(messageId: string, chatId: string): void;
+    getMoreMessages():void;
 }
 
 type State = {
@@ -68,7 +69,7 @@ class ChatPage extends Component<Props, State> {
                         <div className="uk-margin-medium-top uk-margin-medium-bottom">
                             <SearchInput debounceTime={600}
                                          showSpinner={this.props.searchInputLoading}
-                                         onDebounceInputChange={(e) => this.props.onSearchInputChange(e)} />
+                                         onDebounceInputChange={this.props.onSearchInputChange} />
                         </div>
                     </div>
                     <div className={`uk-grid ${this.props.selectedChat ? `uk-child-width-1-1` : `uk-child-width-1-3`}`}>
@@ -86,6 +87,9 @@ class ChatPage extends Component<Props, State> {
                                                          writtenByIssuer={value.writtenByIssuer}
                                                          chatId={value.chatId}
                                                          onChatClick={this.onChatSelection}/>
+                                        {
+                                            this.props.selectedChat && <hr className="max-width"/>
+                                        }
                                     </div>
                                 }
                             )
@@ -101,7 +105,7 @@ class ChatPage extends Component<Props, State> {
                               messages={this.props.messages}
                               onCreateMessage={this.props.onCreateMessage}
                               removeMessageById={this.props.removeMessageById}
-                              chatMessagesLoaded={this.props.chatMessagesLoaded} />
+                              getMoreMessages={this.props.getMoreMessages} />
                     </div>
                 }
             </div>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import FoundUserCard from "features/friend/components/FoundUserCard/FoundUserCard";
 import SearchInput from "common/components/SearchInput/SearchInput";
 import {IFriendRequest, IFriendship} from "features/friend/friendship-models";
@@ -13,25 +13,28 @@ import {
 } from "store/redux/actions/friendRequestActions";
 import {connect} from "react-redux";
 import {AuthStore} from "../../store/custom/auth/auth-store";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type Props = {
     userFriendsLoaded: boolean;
     userFriends: Array<IFriendship>;
-    foundUsers: {foundFriends: Array<IFoundUser>, foundUsers: Array<IFoundUser>};
+    userFriendsLength: number;
+    userFriendsCurrentPage: number;
+    foundUsers: { foundFriends: Array<IFoundUser>, foundUsers: Array<IFoundUser> };
     searchInputLoading: boolean;
     onSearchInputChange: (text: string) => void;
     sentFriendRequestsLoaded: boolean;
     sentFriendRequests: Array<IFriendRequest>;
     receivedFriendRequestsLoaded: boolean;
     receivedFriendRequests: Array<IFriendRequest>;
-    getUserFriends(userId: number, page: number, count: number):void;
-    searchForFriends(text: string):void;
-    getReceivedFriendRequests():void;
-    getSentFriendRequests():void;
-    acceptFriendRequest(friendRequestId: string):void;
-    cancelFriendRequest(friendRequestId: string):void;
-    rejectFriendRequest(friendRequestId: string):void;
-    removeFriend(friendId: number):void;
+    getUserFriends(userId: number, page: number, count: number): void;
+    searchForFriends(text: string): void;
+    getReceivedFriendRequests(): void;
+    getSentFriendRequests(): void;
+    acceptFriendRequest(friendRequestId: string): void;
+    cancelFriendRequest(friendRequestId: string): void;
+    rejectFriendRequest(friendRequestId: string): void;
+    removeFriend(friendId: number): void;
 };
 
 type State = {
@@ -40,7 +43,7 @@ type State = {
 };
 
 class FriendListPage extends Component<Props, State> {
-    readonly USER_FRIENDS_LENGTH : number= 10;
+    readonly USER_FRIENDS_LENGTH: number = 10;
 
     constructor(props) {
         super(props);
@@ -67,7 +70,7 @@ class FriendListPage extends Component<Props, State> {
         this.setState({
             selectedFriendRequestType: friendRequestType
         })
-        if(friendRequestType === FriendRequestType.Creator && !this.props.sentFriendRequestsLoaded){
+        if (friendRequestType === FriendRequestType.Creator && !this.props.sentFriendRequestsLoaded) {
             this.props.getSentFriendRequests();
         }
     }
@@ -81,7 +84,7 @@ class FriendListPage extends Component<Props, State> {
                         <div className="uk-margin-medium-top uk-margin-medium-bottom">
                             <SearchInput debounceTime={600}
                                          showSpinner={this.props.searchInputLoading}
-                                         onDebounceInputChange={this.onSearchForUsers} />
+                                         onDebounceInputChange={this.onSearchForUsers}/>
                         </div>
                     </div>
 
@@ -90,12 +93,16 @@ class FriendListPage extends Component<Props, State> {
                         <div>
                             <ul className="uk-child-width-expand" uk-tab="true">
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Receiver ? `uk-active` : ""}>
-                                    <a onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Receiver)}}>
+                                    <a onClick={e => {
+                                        this.navigateToFriendRequestType(e, FriendRequestType.Receiver)
+                                    }}>
                                         Otrzymane
                                     </a>
                                 </li>
                                 <li className={this.state.selectedFriendRequestType === FriendRequestType.Creator ? `uk-active` : ""}>
-                                    <a onClick={e=>{this.navigateToFriendRequestType(e, FriendRequestType.Creator)}} >
+                                    <a onClick={e => {
+                                        this.navigateToFriendRequestType(e, FriendRequestType.Creator)
+                                    }}>
                                         Wysłane
                                     </a>
                                 </li>
@@ -105,8 +112,7 @@ class FriendListPage extends Component<Props, State> {
                             {
                                 this.state.selectedFriendRequestType === FriendRequestType.Receiver ?
                                     (
-                                        this.props.receivedFriendRequestsLoaded && this.props.receivedFriendRequests.map((value, i) =>
-                                            {
+                                        this.props.receivedFriendRequestsLoaded && this.props.receivedFriendRequests.map((value, i) => {
                                                 return <div key={i} className="uk-margin-top">
                                                     <FoundUserCard userId={value.creator.userId}
                                                                    name={value.creator.name}
@@ -116,15 +122,14 @@ class FriendListPage extends Component<Props, State> {
                                                                    issuerReceivedFriendRequest={true}
                                                                    onRejectFriendRequest={this.props.rejectFriendRequest}
                                                                    onAcceptFriendRequest={this.props.acceptFriendRequest}
-                                                                   key={i} />
+                                                                   key={i}/>
                                                 </div>
                                             }
                                         )
                                     )
                                     :
                                     (
-                                        this.props.sentFriendRequestsLoaded && this.props.sentFriendRequests.map((value, i) =>
-                                            {
+                                        this.props.sentFriendRequestsLoaded && this.props.sentFriendRequests.map((value, i) => {
                                                 return <div key={i} className="uk-margin-top">
                                                     <FoundUserCard userId={value.receiver.userId}
                                                                    name={value.receiver.name}
@@ -133,7 +138,7 @@ class FriendListPage extends Component<Props, State> {
                                                                    friendRequestId={value.friendRequestId}
                                                                    issuerSentFriendRequest={true}
                                                                    onCancelFriendRequest={this.props.cancelFriendRequest}
-                                                                   key={i} />
+                                                                   key={i}/>
                                                 </div>
                                             }
                                         )
@@ -144,47 +149,63 @@ class FriendListPage extends Component<Props, State> {
 
                     <div className="uk-margin-medium-top">
                         <h4 className="uk-h4">Znajomi</h4>
-                        <div className="uk-grid uk-child-width-1-3">
+                        <div>
                             {
                                 this.state.searchInputValue.length === 0 ?
-                                    (this.props.userFriendsLoaded && this.props.userFriends.map((value, i) =>
-                                        {
-                                            return <div key={i} className="uk-margin-top">
-                                                <FoundUserCard userId={value.userId}
-                                                               name={value.name}
-                                                               surname={value.surname}
-                                                               avatarPath={value.avatarPath}
-                                                               isIssuerFriend={true}
-                                                               onRemoveFriendById={this.props.removeFriend}
-                                                               key={i} />
+                                    (this.props.userFriendsLoaded &&
+                                        <InfiniteScroll dataLength={this.props.userFriendsLength}
+                                                        next={() => {
+                                                            this.props.getUserFriends(AuthStore.identity.userId,
+                                                                this.props.userFriendsCurrentPage,
+                                                                this.USER_FRIENDS_LENGTH)
+                                                        }}
+                                                        hasMore={this.props.userFriendsLength > this.props.userFriends.length}
+                                                        loader={<h3>Loading...</h3>}>
+                                            <div className="uk-grid uk-child-width-1-3">
+                                                {
+                                                    this.props.userFriends.map((value, i) => {
+                                                            return <div key={i} className="uk-margin-top">
+                                                                <FoundUserCard userId={value.userId}
+                                                                               name={value.name}
+                                                                               surname={value.surname}
+                                                                               avatarPath={value.avatarPath}
+                                                                               isIssuerFriend={true}
+                                                                               onRemoveFriendById={this.props.removeFriend}
+                                                                               key={i}/>
+                                                            </div>
+                                                        }
+                                                    )
+                                                }
                                             </div>
-                                        }
-                                    )) :  (
-                                        !this.props.searchInputLoading && this.props.foundUsers.foundFriends.map((value, i) =>
+                                        </InfiniteScroll>) : (
+                                        !this.props.searchInputLoading && <div className="uk-grid uk-child-width-1-3">
                                             {
-                                                return <div key={i} className="uk-margin-top">
-                                                    <FoundUserCard userId={value.userId}
-                                                                   name={value.name}
-                                                                   surname={value.surname}
-                                                                   avatarPath={value.avatarPath}
-                                                                   isIssuerFriend={true}
-                                                                   onRemoveFriendById={this.props.removeFriend}
-                                                                   key={i} />
-                                                </div>
+                                                this.props.foundUsers.foundFriends.map((value, i) => {
+                                                        return <div key={i} className="uk-margin-top">
+                                                            <FoundUserCard userId={value.userId}
+                                                                           name={value.name}
+                                                                           surname={value.surname}
+                                                                           avatarPath={value.avatarPath}
+                                                                           isIssuerFriend={true}
+                                                                           onRemoveFriendById={this.props.removeFriend}
+                                                                           key={i}/>
+                                                        </div>
+                                                    }
+                                                )
                                             }
-                                        )
+                                        </div>
                                     )
                             }
                         </div>
                     </div>
                 </div>
                 {
-                    !this.props.searchInputLoading && this.props.foundUsers.foundUsers.length > 0 && <div className="other-users uk-margin-large-top">
+                    !this.props.searchInputLoading && this.props.foundUsers.foundUsers.length > 0 &&
+                    <div className="other-users uk-margin-large-top">
                         <legend className="uk-legend uk-margin-medium-top">Inni użytkownicy</legend>
                         <div className="uk-grid uk-child-width-1-3">
                             {
-                                this.props.foundUsers.foundUsers.map((value, i) =>
-                                    {
+                                this.props.foundUsers.foundUsers.map((value, i) => {
                                         return <div key={i} className="uk-margin-top">
                                             <FoundUserCard
                                                 userId={value.userId}
@@ -200,7 +221,7 @@ class FriendListPage extends Component<Props, State> {
                                                 onCancelFriendRequest={this.props.cancelFriendRequest}
                                                 onRejectFriendRequest={this.props.rejectFriendRequest}
                                                 onAcceptFriendRequest={this.props.acceptFriendRequest}
-                                                key={i} />
+                                                key={i}/>
                                         </div>
                                     }
                                 )
@@ -235,6 +256,8 @@ const mapStateToProps = (state) => {
         receivedFriendRequestsLoaded: state.friendRequest.receivedFriendRequestsLoaded,
         userFriends: state.userFriend.userFriends,
         userFriendsLoaded: state.userFriend.userFriendsLoaded,
+        userFriendsLength: state.userFriend.userFriendsLength,
+        userFriendsCurrentPage: state.userFriend.userFriendsCurrentPage,
         searching: state.userFriend.searching,
         foundUsers: {
             foundFriends: state.userFriend.foundFriends,

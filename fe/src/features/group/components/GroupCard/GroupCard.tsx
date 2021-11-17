@@ -17,7 +17,6 @@ type GroupCardProps = {
 const GroupCard = (props: GroupCardProps) => {
     const groupService : GroupService = new GroupService();
     const [userParamsLoaded, setUserParamsLoaded] = useState(false);
-    //const [userParams, setUserParams] = useState(false);
     const [dropdownOptions, setDropdownOptions] = useState<Array<IDropdownOption>>([]);
     const avatarSrc = devConfig.monolithUrl + "/" + props.groupCard.avatarSrc;
 

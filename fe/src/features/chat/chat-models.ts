@@ -9,7 +9,8 @@ export interface IInterlocutor {
 export interface IMessage {
     messageId: string;
     chatId: string;
-    author: IInterlocutor;
+    author: Partial<IUser>;
+    receiver: Partial<IUser>;
     textContent: string;
     files: Array<IMedia>;
     createdAt: Date;
@@ -34,10 +35,6 @@ export interface IChat {
     chatId: string;
     interlocutor: Partial<IUser>;
     //messages: Array<IMessage>;
-}
-
-export interface IGroupedMessages {
-
 }
 
 export interface IChatMessageCreation {

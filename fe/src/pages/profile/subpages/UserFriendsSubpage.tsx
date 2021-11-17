@@ -68,14 +68,6 @@ const UserFriendsSubpage = () => {
                 next={() => {dispatch(getUserFriends(actualProfileId, userFriendsCurrentPage, USER_FRIENDS_PER_PAGE))}}
                 hasMore={userFriendsLength >= userFriends.length}
                 loader={<Fragment></Fragment>}
-                endMessage={
-                    <p style={{textAlign: 'center'}}>
-                        <b>Yay! You have seen it all</b>
-                    </p>
-                }
-                refreshFunction={() => {}}
-                pullDownToRefresh
-                pullDownToRefreshThreshold={50}
             >
             {
                 (userFriendsLoaded && userFriends.map((value, i) =>

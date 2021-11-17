@@ -17,13 +17,8 @@ namespace Amiq.DataAccess.Group
 {
     public class DaGroup
     {
-        private AmiqContext _amiqContext;
-        private DaGroupParticipant _daParticipant;
-
-        public DaGroup()
-        {
-            _amiqContext = new AmiqContext();
-        }
+        private AmiqContext _amiqContext = new AmiqContext();
+        private DaGroupParticipant _daParticipant = new DaGroupParticipant();
 
         public async Task<List<DtoGroupParticipant>> GetGroupParticipantsAsync(int groupId)
         {
@@ -43,12 +38,13 @@ namespace Amiq.DataAccess.Group
             {
                 Name = dtoCreateGroup.Name,
                 Description = dtoCreateGroup.Description,
-                CreatedBy = creatorId
+                CreatedBy = creatorId,
+                AvatarSrc = "group.jpg"
             };
             _amiqContext.Add(entity);
             await _amiqContext.SaveChangesAsync();
             await _daParticipant.JoinGroupAsync(creatorId, entity.GroupId);
-            DtoGroupCard dtoGroupCard = _amiqContext.Groups.Where(e=>e.GroupId == entity.GroupId)
+            var dtoGroupCard = _amiqContext.Groups.Where(e=>e.GroupId == entity.GroupId)
                 .Select(g => new DtoGroupCard
                 {
                     GroupId = g.GroupId,

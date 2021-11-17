@@ -1,5 +1,6 @@
 ﻿using Amiq.Business.Chat;
 using Amiq.Business.Utils;
+using Amiq.Contracts;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;
@@ -27,6 +28,7 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpGet("list-by-chat")]
+        [Produces(typeof(DtoListResponseOf<DtoChatMessage>))]
         public async Task<IActionResult> GetChatMessagesByChatId([FromQuery] Guid chatId, [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
             var res = await _bsChatMessage.GetChatMessagesAsync(JwtStoredUserInfo.UserId, chatId, dtoPaginatedRequest);

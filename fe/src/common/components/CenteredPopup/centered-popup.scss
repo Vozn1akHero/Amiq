@@ -1,7 +1,24 @@
-#centered-popup {
-  /*position: absolute;
+.centered-popup {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;*/
+  height: 100vh;
+  z-index: 1000;
+
+  &__background{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    background: rgba(0,0,0,.6);
+    transition: opacity .15s linear;
+  }
+
+  &__body{
+    width: 30%;
+    padding: 2rem;
+    background: #fff;
+    height: fit-content;
+  }
 }

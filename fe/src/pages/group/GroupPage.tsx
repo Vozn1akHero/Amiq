@@ -20,6 +20,8 @@ import {IGroupEvent} from "../../features/group/models/group-event";
 import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
 import GroupEventsInFrame from "../../features/group/components/GroupEventsInFrame/GroupEventsInFrame";
 import "./group-page.scss"
+import {ModalService} from "../../core/modal-service";
+import ChangeAvatarPopup from "../../features/user/components/ChangeAvatarPopup/ChangeAvatarPopup";
 
 type Props = {
     groupData: IGroupData;
@@ -109,11 +111,16 @@ class GroupPage extends Component<Props, State> {
         return link;
     }
 
+    openChangeAvatarPopup = () => {
+        ModalService.open(<ChangeAvatarPopup/>);
+    }
+
     render() {
         return (
             <div className="group-page uk-flex-center uk-flex">
                 <div className="group-page__first-column">
                     {this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
+                                                               onChangeAvatarBtnClick={this.openChangeAvatarPopup}
                                                                viewTitle={this.props.groupData.name}/>}
 
                     <div className="uk-margin-medium-top">

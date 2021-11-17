@@ -16,6 +16,7 @@ import {matchPath, Route, Switch, withRouter} from "react-router-dom";
 import UserFriendsSubpage from "./subpages/UserFriendsSubpage";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import UserAvatar from "../../features/user/components/UserAvatar/UserAvatar";
+import {ModalService} from "../../core/modal-service";
 
 type Props = {
     posts: Array<IUserPost>;
@@ -86,16 +87,18 @@ class ProfilePage extends Component<Props, State> {
         return match != null && match !== undefined
     }
 
+    openAvatarPopup = () => {
+        ModalService.open(<ChangeAvatarPopup/>);
+    }
 
     render() {
         return (
             <div className='profile-page uk-flex-center uk-grid uk-child-width-1-2'>
-                <ChangeAvatarPopup/>
-
                 {this.props.userDataLoaded &&
                 <>
                     <div className="uk-first-column uk-width-1-3">
                         <UserAvatar userData={this.props.userData}
+                                    changeAvatarPopup={this.openAvatarPopup}
                                     isViewerProfile={this.props.isViewerProfile}
                                     removeFriend={this.props.removeFriend}
                                     acceptFriendRequest={this.props.acceptFriendRequest}

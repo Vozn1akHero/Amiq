@@ -10,7 +10,7 @@ namespace Amiq.Contracts.Chat
         public string TextContent { get; set; }
         public DateTime CreatedAt { get; set; }
         public DtoBasicUserInfo Author { get; set; }
-        //public DtoBasicUserInfo Receiver { get; set; }
+        public DtoBasicUserInfo Receiver { get; set; }
         //public int ReceiverId { get; set; }
     }
 }

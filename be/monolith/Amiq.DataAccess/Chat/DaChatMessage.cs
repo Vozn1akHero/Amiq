@@ -1,5 +1,6 @@
 ﻿using Amiq.Contracts;
 using Amiq.Contracts.Chat;
+using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccess.Models.Models;
 using Amiq.Mapping;
@@ -30,14 +31,38 @@ namespace Amiq.DataAccess.Chat
             return mappedMsg;
         }
 
-        public async Task<List<DtoChatMessage>> GetChatMessagesAsync(Guid chatId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoChatMessage>> GetChatMessagesAsync(Guid chatId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var query = _amiqContext.Messages.Where(e => e.ChatId == chatId)
+            var result = new DtoListResponseOf<DtoChatMessage>();
+            result.Entities = await _amiqContext.Messages.Where(e => e.ChatId == chatId)
                 .OrderByDescending(e=>e.CreatedAt)
+                .Select(e=> new DtoChatMessage
+                {
+                    MessageId = e.MessageId,
+                    ChatId = e.ChatId,
+                    TextContent = e.TextContent,
+                    CreatedAt = e.CreatedAt,
+                    Author = new DtoBasicUserInfo
+                    {
+                        UserId = e.AuthorId,
+                        Name = e.Author.Name,
+                        Surname = e.Author.Name,
+                        AvatarPath = e.Author.AvatarPath
+                    },
+                    Receiver = new DtoBasicUserInfo
+                    {
+                        UserId = e.AuthorId == e.Chat.FirstUserId ? e.Chat.SecondUserId : e.Chat.FirstUserId,
+                        Name = e.AuthorId == e.Chat.FirstUserId ? e.Chat.SecondUser.Name : e.Chat.FirstUser.Name,
+                        Surname = e.AuthorId == e.Chat.FirstUserId ? e.Chat.SecondUser.Surname : e.Chat.FirstUser.Surname,
+                        AvatarPath = e.AuthorId == e.Chat.FirstUserId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
+                    }
+                })
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                .Take(dtoPaginatedRequest.Count);
-            var data = await APAutoMapper.Instance.ProjectTo<DtoChatMessage>(query).ToListAsync();
-            return data;
+                .Take(dtoPaginatedRequest.Count)
+                .ToListAsync();
+            //result.Entities = await APAutoMapper.Instance.ProjectTo<DtoChatMessage>(query).ToListAsync();
+            result.Length = await _amiqContext.Messages.Where(e => e.ChatId == chatId).CountAsync();
+            return result;
         }
 
         public async Task<List<DtoChatPreview>> GetChatMessagesAsync(DtoChatPreviewListRequest dtoPaginatedRequest)
@@ -74,6 +99,41 @@ namespace Amiq.DataAccess.Chat
                                  AvatarPath = e.Msg.Author.AvatarPath },
                             TextContent = e.Msg.TextContent,
                             Interlocutor = new Contracts.User.DtoBasicUserInfo
+                            {
+                                UserId = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.UserId : e.Chat.FirstUser.UserId,
+                                Name = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Name : e.Chat.FirstUser.Name,
+                                Surname = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Surname : e.Chat.FirstUser.Surname,
+                                AvatarPath = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.AvatarPath : e.Chat.FirstUser.AvatarPath
+                            },
+                            Date = e.Msg.CreatedAt,
+                            WrittenByIssuer = e.Msg.AuthorId == userId
+                        })
+                        .ToListAsync();
+            return data;
+        }
+
+        public async Task<List<DtoChatPreview>> SearchForChatsAsync(int userId, string text)
+        {
+            var data = await _amiqContext.Chats
+                        .Where(e => (e.FirstUserId == userId || e.SecondUserId == userId)
+                            && e.Messages != null
+                            && e.Messages.Count > 0
+                            && (e.FirstUserId == userId ? (e.SecondUser.Name + e.SecondUser.Surname).StartsWith(text)
+                                : (e.FirstUser.Name + e.FirstUser.Surname).StartsWith(text)))
+                        .Select(g => new { Msg = g.Messages.OrderByDescending(p => p.CreatedAt).First(), Chat = g })
+                        .Select(e => new DtoChatPreview
+                        {
+                            ChatId = e.Msg.ChatId,
+                            MessageId = e.Msg.MessageId,
+                            Author = new DtoBasicUserInfo
+                            {
+                                UserId = e.Msg.Author.UserId,
+                                Name = e.Msg.Author.Name,
+                                Surname = e.Msg.Author.Surname,
+                                AvatarPath = e.Msg.Author.AvatarPath
+                            },
+                            TextContent = e.Msg.TextContent,
+                            Interlocutor = new DtoBasicUserInfo
                             {
                                 UserId = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.UserId : e.Chat.FirstUser.UserId,
                                 Name = e.Chat.FirstUserId == userId ? e.Chat.SecondUser.Name : e.Chat.FirstUser.Name,

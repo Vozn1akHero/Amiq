@@ -40,7 +40,6 @@ export default function(state:PostReducer = initialState, action) {
             }
         case SET_GROUP_POSTS: {
             const data = action.payload as IResponseListOf<IGroupPost>;
-
             return {
                 ...state,
                 postsLoaded: true,

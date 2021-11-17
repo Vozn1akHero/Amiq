@@ -3,6 +3,7 @@ import "reflect-metadata";
 import {injectable} from "tsyringe";
 import moment from "moment";
 import {IMessage, IChatPreview, IChat} from "./chat-models";
+import {HttpQueryParams} from "../../core/http-client";
 
 export default class ChatService extends BaseService{
     apiModule = "chat";
@@ -19,4 +20,8 @@ export default class ChatService extends BaseService{
         //return chatsMock.find(value => value.chatId === chatId) as IChat;
         return this.httpClient.get(this.buildApiPath(this.apiModule, ""))
     }*/
+    searchForChats(text: string) {
+        return this.httpClient.get(this.buildApiPath("search"),
+            null, new HttpQueryParams().append("text", text))
+    }
 }

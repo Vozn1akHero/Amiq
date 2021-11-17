@@ -22,7 +22,7 @@ namespace Amiq.Business
             _daGroupParticipant = new DaGroupParticipant();
         }
 
-        public async Task<List<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId,
+        public async Task<DtoListResponseOf<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId,
             DtoPaginatedRequest dtoPaginatedRequest, EnGroupFilterType filterType)
         {
             if (filterType == EnGroupFilterType.All)

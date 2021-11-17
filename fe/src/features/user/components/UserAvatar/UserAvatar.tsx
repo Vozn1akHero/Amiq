@@ -11,6 +11,7 @@ type Props = {
     rejectFriendRequest(destUserId: number): void;
     cancelFriendRequest(destUserId: number): void;
     blockUser(destUserId: number): void;
+    changeAvatarPopup():void;
 }
 
 const UserAvatar = (props: Props) => {
@@ -66,6 +67,7 @@ const UserAvatar = (props: Props) => {
 
     return (
         <PageAvatar avatarSrc={props.userData.avatarPath}
+                    onChangeAvatarBtnClick={props.changeAvatarPopup}
                     isChangeAvatarBtnVisible={props.isViewerProfile}
                     userSpecifics={props.userData}
                     viewTitle={props.userData.name + " " + props.userData.surname}>

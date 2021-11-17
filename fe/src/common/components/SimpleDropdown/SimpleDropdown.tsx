@@ -48,7 +48,7 @@ class SimpleDropdown extends Component<Props, State> {
                     this.setState({
                         isOpen: true
                     })
-                }} onMouseOut={() => {
+                }} onMouseLeave={() => {
                     if (this.myVar) {
                         this.myVar();
                     }

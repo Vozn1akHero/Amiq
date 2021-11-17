@@ -1,42 +1,45 @@
 import React, {Component} from 'react';
 import "./centered-popup.scss"
+import {ModalService} from "../../../core/modal-service";
 
 type Props = {
     title: string;
     controlsVisible: boolean;
     id: string;
-    //onAccept():void;
 }
 
 class CenteredPopup extends Component<Props> {
-    container = document.getElementById("root");
+    onClickOutside = () => {
+        ModalService.close();
+    }
 
     render() {
         return (
-            <div id={this.props.id} uk-modal="true">
-                <div className="uk-modal-dialog uk-modal-body">
-                    <h2 className="uk-modal-title">{this.props.title}</h2>
-                    { this.props.children }
-                    {/*{
-                        this.props.controlsVisible && <p className="uk-text-right">
-                            <button className="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
-                            <button className="uk-button uk-button-primary uk-margin-small-left" type="button">Zaakceptuj</button>
-                        </p>
-                    }*/}
+            <div className="centered-popup">
+                <div id="centered-popup-background" className="centered-popup__background">
+                    <div className="centered-popup__body uk-margin-large-top"
+                         onMouseOver={() => {
+                             document.getElementById("centered-popup-background")
+                                 .removeEventListener("click", this.onClickOutside)
+                         }}
+                         onMouseLeave={() => {
+                             document.getElementById("centered-popup-background")
+                                 .addEventListener("click", this.onClickOutside)
+                         }}>
+                        <h2 className="uk-modal-title">{this.props.title}</h2>
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
             /*ReactDOM.createPortal(
-                <div id="centered-popup" className="uk-modal-container" uk-modal="true">
-                    <div className="uk-modal-dialog uk-modal-body">
-                        <h2 className="uk-modal-title">{this.props.title}</h2>
-                        {
-                            this.props.controlsVisible && <p className="uk-text-right">
-                                <button className="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
-                                <button className="uk-button uk-button-primary" type="button">Zaakceptuj</button>
-                            </p>
-                        }
+                <div className="centered-popup">
+                    <div className="centered-popup__background" onClick={this.onClickOutside}>
+                        <div className="centered-popup__body uk-margin-large-top">
+                            <h2 className="uk-modal-title">{this.props.title}</h2>
+                            { this.props.children }
+                        </div>
                     </div>
-                </div>, this.container)*/
+                </div>, document.getElementById("modal"))*/
         );
     }
 }

@@ -34,9 +34,10 @@ namespace Amiq.DataAccess.Group
         /// <summary>
         /// Zwraca listę grup w których bierze udział użytkownik
         /// </summary>
-        public async Task<List<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupCard>> GetUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var groups = await _amiqContextWithDebug.Groups.AsNoTracking()
+            DtoListResponseOf<DtoGroupCard> result = new();
+            result.Entities = await _amiqContextWithDebug.Groups.AsNoTracking()
                 .Where(e=>e.GroupParticipants.Any(gp => gp.UserId == userId))
                 .Select(g => new DtoGroupCard
                 {
@@ -51,8 +52,10 @@ namespace Amiq.DataAccess.Group
                 .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                 .Take(dtoPaginatedRequest.Count)
                 .ToListAsync();
-
-            return groups;
+            result.Length = await _amiqContextWithDebug.Groups.AsNoTracking()
+                .Where(e => e.GroupParticipants.Any(gp => gp.UserId == userId))
+                .CountAsync();
+            return result;
         }
 
         public async Task DeleteParticipantAsync(GroupParticipant groupParticipant)
@@ -61,62 +64,67 @@ namespace Amiq.DataAccess.Group
             await _amiqContext.SaveChangesAsync();
         }
 
-        public async Task<List<DtoGroupCard>> GetAdministeredUserGroupsByUserIdAsync(int userId,
+        public async Task<DtoListResponseOf<DtoGroupCard>> GetAdministeredUserGroupsByUserIdAsync(int userId,
             DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var groups = await (from g in _amiqContextWithDebug.Groups.AsNoTracking()
-                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
-                                   on g.GroupId equals gp.GroupId
-                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
-                                   on gp.UserId equals u.UserId
-                                   where u.UserId == userId && gp.IsAdmin
-                                    select new DtoGroupCard
-                                    {
-                                        GroupId = g.GroupId,
-                                        Name = g.Name,
-                                        AvatarSrc = g.AvatarSrc,
-                                        Description = g.Description,
-                                        ParticipantsCount = g.GroupParticipants.Count,
-                                        IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
-                                        IsRequestCreatorParticipant = gp.UserId == userId,
-                                    })
+            DtoListResponseOf<DtoGroupCard> result = new();
+            var query = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+                         join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
+                         on g.GroupId equals gp.GroupId
+                         join u in _amiqContextWithDebug.Users.AsNoTracking()
+                         on gp.UserId equals u.UserId
+                         where u.UserId == userId && gp.IsAdmin
+                         select new DtoGroupCard
+                         {
+                             GroupId = g.GroupId,
+                             Name = g.Name,
+                             AvatarSrc = g.AvatarSrc,
+                             Description = g.Description,
+                             ParticipantsCount = g.GroupParticipants.Count,
+                             IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                             IsRequestCreatorParticipant = gp.UserId == userId,
+                         });
+            result.Entities = await query
                                    .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                                    .Take(dtoPaginatedRequest.Count)
                                    .ToListAsync();
-            //List<DtoGroup> groups = await APAutoMapper.Instance.ProjectTo<DtoGroup>(dbGroups).ToListAsync();
-
-            return groups;
+            result.Length = await query.CountAsync();
+            return result;
         }
 
-        public async Task<List<DtoGroupCard>> GetNonAdministeredUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupCard>> GetNonAdministeredUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var groups = await (from g in _amiqContextWithDebug.Groups.AsNoTracking()
-                                   join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
-                                   on g.GroupId equals gp.GroupId
-                                   join u in _amiqContextWithDebug.Users.AsNoTracking()
-                                   on gp.UserId equals u.UserId
-                                   where u.UserId == userId && !gp.IsAdmin
-                                    select new DtoGroupCard
-                                    {
-                                        GroupId = g.GroupId,
-                                        Name = g.Name,
-                                        AvatarSrc = g.AvatarSrc,
-                                        Description = g.Description,
-                                        ParticipantsCount = g.GroupParticipants.Count,
-                                        IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
-                                        IsRequestCreatorParticipant = gp.UserId == userId,
-                                    })
-                                   .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
-                                   .Take(dtoPaginatedRequest.Count)
-                                   .ToListAsync();
-
-            return groups;
+            DtoListResponseOf<DtoGroupCard> result = new();
+            var query = (from g in _amiqContextWithDebug.Groups.AsNoTracking()
+                         join gp in _amiqContextWithDebug.GroupParticipants.AsNoTracking()
+                         on g.GroupId equals gp.GroupId
+                         join u in _amiqContextWithDebug.Users.AsNoTracking()
+                         on gp.UserId equals u.UserId
+                         where u.UserId == userId && !gp.IsAdmin
+                         select new DtoGroupCard
+                         {
+                             GroupId = g.GroupId,
+                             Name = g.Name,
+                             AvatarSrc = g.AvatarSrc,
+                             Description = g.Description,
+                             ParticipantsCount = g.GroupParticipants.Count,
+                             IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                             IsRequestCreatorParticipant = gp.UserId == userId,
+                         });
+            result.Entities = await query
+                            .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
+                            .Take(dtoPaginatedRequest.Count)
+                            .ToListAsync();
+            result.Length = await query.CountAsync();
+            return result;
         }
 
-        public async Task<List<DtoGroupCard>> GetHiddenUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupCard>> GetHiddenUserGroupsByUserIdAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
-            var groups = await _amiqContext.HiddenGroups.AsNoTracking()
-                                   .Where(e=>e.UserId == userId)
+            DtoListResponseOf<DtoGroupCard> result = new();
+            var query = _amiqContext.HiddenGroups.AsNoTracking()
+                                   .Where(e => e.UserId == userId);
+            result.Entities = await query
                                    .Select(g=> new DtoGroupCard
                                    {
                                        GroupId = g.GroupId,
@@ -130,8 +138,8 @@ namespace Amiq.DataAccess.Group
                                    .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                                    .Take(dtoPaginatedRequest.Count)
                                    .ToListAsync();
-
-            return groups;
+            result.Length = await query.CountAsync();
+            return result;
         }
 
         public async Task LeaveGroupAsync(int userId, int groupId)

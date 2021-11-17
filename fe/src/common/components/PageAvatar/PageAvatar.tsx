@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import "./page-avatar.scss"
 import {Utils} from "core/utils";
 import {IUser} from "features/user/models/user";
@@ -10,6 +10,7 @@ type Props = {
     isChangeAvatarBtnVisible?: boolean;
     userSpecifics?: Partial<IUser>;
     groupSpecifics?: Partial<IGroupData>;
+    onChangeAvatarBtnClick?(): void;
 }
 
 class PageAvatar extends Component<Props, any> {
@@ -21,12 +22,17 @@ class PageAvatar extends Component<Props, any> {
     render() {
         return (
             <div className="page-avatar uk-card uk-card-default uk-card-body">
-                <div className="page-avatar__avatarBg" style={{backgroundImage: "url(" + Utils.getImageSrc(this.props.avatarSrc) + ")"}}></div>
+                <div className="page-avatar__avatarBg"
+                     style={{backgroundImage: "url(" + Utils.getImageSrc(this.props.avatarSrc) + ")"}}></div>
 
                 <div className="page-avatar__img-wrap">
                     {
                         this.props.isChangeAvatarBtnVisible && <div className="page-avatar__change-avatar-btn">
-                            <a uk-toggle="target: #change-avatar-popup"
+                            <a onClick={e => {
+                                    e.preventDefault();
+                                    this.props.onChangeAvatarBtnClick();
+                                }
+                            }
                                className="uk-icon-button"
                                uk-icon="upload"/>
                         </div>
@@ -37,7 +43,8 @@ class PageAvatar extends Component<Props, any> {
                 </div>
 
                 <div className="uk-margin-medium-top page-avatar__name-wrap uk-flex">
-                    <h3 className="uk-card-title uk-margin-medium-left" style={this.nameStyles}>{this.props.viewTitle}</h3>
+                    <h3 className="uk-card-title uk-margin-medium-left"
+                        style={this.nameStyles}>{this.props.viewTitle}</h3>
                     <div className="page-avatar__controls uk-margin-small-right">
                         {
                             this.props.children

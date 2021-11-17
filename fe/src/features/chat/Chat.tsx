@@ -9,6 +9,8 @@ import {Link} from 'react-router-dom';
 import {Routes} from "../../core/routing";
 import {DateUtils} from "../../assets/utils/date-utils";
 import moment from "moment";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 
 type State = {
     parsedChat: Array<Array<IMessage>>;
@@ -17,11 +19,11 @@ type State = {
 
 type Props = {
     chat: IChat;
-    messages: Array<IMessage>;
-    chatMessagesLoaded: boolean;
+    messages: IPaginatedStoreData<IMessage>;
     onDeleteMessages(ids: Array<string>);
     onCreateMessage(message: IChatMessageCreation): void;
     removeMessageById(messageId: string, chatId: string): void;
+    getMoreMessages(): void;
 }
 
 class Chat extends Component<Props, State> {
@@ -57,7 +59,7 @@ class Chat extends Component<Props, State> {
 
     onMessageDeselection = (messageId: string) => {
         this.setState({
-            selectedMessageIds: [...this.state.selectedMessageIds.filter(value => value === messageId)]
+            selectedMessageIds: this.state.selectedMessageIds.filter(value => value !== messageId)
         })
     }
 
@@ -69,19 +71,16 @@ class Chat extends Component<Props, State> {
         this.props.removeMessageById(messageId, this.props.chat.chatId);
     }
 
-    // TODO
     renderChat = (messages: Array<IMessage>) => {
-        let result: Array<ReactElement>;
+        let result: Array<ReactElement> = [];
         let previousMessage: IMessage;
-        let div: HTMLDivElement;
-        let node: Array<HTMLElement>;
         let parsedChat: Array<Array<IMessage>> = [];
         const SECONDS_TO_BE_GROUPED = 30;
         let currentGroup: Array<IMessage> = [];
 
         // dzielenie wiadomości na grupy
         messages.forEach((message, index) => {
-            if (index > 0) previousMessage = message[index - 1];
+            if (index > 0) previousMessage = messages[index - 1];
 
             if (index === 0) {
                 currentGroup.push(message);
@@ -102,25 +101,27 @@ class Chat extends Component<Props, State> {
             }
         })
 
-        //let previousSubgroupMessageCreationTime
-        const DAYS_TO_SHOW_DATE_BETWEEN_SUBGROUPS = 3 * 24 * 60 * 60;
+        const DAYS_TO_SHOW_DATE_BETWEEN_SUBGROUPS = 31;
+        let firstIndex = 0;
         parsedChat.forEach((subgroup, index) => {
             const creationTime: Date = subgroup[0].createdAt;
             if (DateUtils.getDifferenceBetweenDatesInDays(creationTime, moment().toDate()) > DAYS_TO_SHOW_DATE_BETWEEN_SUBGROUPS) {
-                let subgroupCreationTime: ReactElement = <div className="chat__messages__subgroup-creation-time">
+                firstIndex++;
+                let subgroupCreationTime: ReactElement = <div key={firstIndex}
+                    className="chat__messages__subgroup-creation-time uk-text-small uk-text-center">
                     {moment(creationTime).format("YYYY-MM-DD")}
                 </div>;
                 result.push(subgroupCreationTime);
-                subgroup.forEach((message, messageIndex) => {
-                    result.push(<ChatMessage message={message}
-                                             key={messageIndex}
-                                             removeMessage={this.removeMessageById}
-                                             deselectMessage={this.onMessageDeselection}
-                                             selectMessage={this.onMessageSelection}
-                                             isAuthorDataVisible={messageIndex > 0}
-                                             viewerId={AuthStore.identity.userId}/>);
-                })
             }
+            subgroup.forEach((message, messageIndex) => {
+                firstIndex++;
+                result.push(<ChatMessage message={message}
+                                         key={firstIndex}
+                                         removeMessage={this.removeMessageById}
+                                         deselectMessage={this.onMessageDeselection}
+                                         selectMessage={this.onMessageSelection}
+                                         isAuthorDataVisible={messageIndex === 0} />);
+            })
         })
 
         return result;
@@ -151,40 +152,26 @@ class Chat extends Component<Props, State> {
                     </div>
                 </header>
                 <hr className="max-width"/>
-                <div className="chat__messages max-width uk-grid uk-width-1-1">
+                <div id="chat-messages" className="chat__messages">
                     {
                         this.state.selectedMessageIds.length > 0 &&
-                        <div className="chat__controls">
+                        <div className="chat__controls uk-box-shadow-small uk-padding-small">
                             <button onClick={this.deleteSelectedMessages}
+                                    uk-tooltip="Usuń wybrane"
                                     className="chat__remove-selected-messages-btn uk-icon-button uk-margin-small-right"
-                                    uk-icon="trash" />
+                                    uk-icon="trash"/>
                         </div>
                     }
-                    {/*{
-                        this.getGroupedMessages().map((group) => {
-                            return group.map((value, index) => {
-                                return <ChatMessage message={value}
-                                                    key={index}
-                                                    removeMessage={this.removeMessage}
-                                                    deselectMessage={this.onMessageDeselection}
-                                                    selectMessage={this.onMessageSelection}
-                                                    isAuthorDataVisible={index === 0}
-                                                    viewerId={AuthStore.identity.userId} />
-                            })
-                        })
-                    }*/}
-                    {/*{
-                        this.props.messages.map((value, index) => {
-                            return <ChatMessage message={value}
-                                                key={index}
-                                                removeMessage={this.removeMessageById}
-                                                deselectMessage={this.onMessageDeselection}
-                                                selectMessage={this.onMessageSelection}
-                                                isAuthorDataVisible={true}
-                                                viewerId={AuthStore.identity.userId}/>
-                        })
-                    }*/}
-                    {this.renderChat(this.props.messages)}
+                    {
+                        this.props.messages.loaded && <InfiniteScroll next={this.props.getMoreMessages}
+                                                                      style={{overflow: 'hidden'}}
+                                                                      scrollableTarget={"chat-messages"}
+                                                                      hasMore={this.props.messages.entities.length < this.props.messages.length}
+                                                                      loader={<h3>Loading...</h3>}
+                                                                      dataLength={this.props.messages.length}>
+                            {this.renderChat(this.props.messages.entities)}
+                        </InfiniteScroll>
+                    }
                 </div>
                 <MessageCreationForm onFormBlur={this.onMessageCreationFormBlur}
                                      onSubmit={this.onMessageCreationFormSubmit}

@@ -18,15 +18,17 @@ const GroupCreationPopup = (props: Props) => {
                 <Formik
                     initialValues={{name: '', description: ''}}
                     onSubmit={(values, {setSubmitting}) => {
+                        setSubmitting(true)
                         props.createGroup({
                             name: values.name,
                             description: values.description
                         });
+                        setSubmitting(false)
                     }}
                     validationSchema={GroupCreationPopupValidationSchema}
                 >
-                    {({isSubmitting, errors}) => (
-                        <Form>
+                    {({isSubmitting, errors, handleSubmit}) => (
+                        <Form onSubmit={handleSubmit}>
                             <Field name="name" className="uk-input" placeholder="Nazwa"/>
                             <ErrorMessage name="name" component="div"/>
                             <Field as="textarea" name="description" placeholder="Opis"
@@ -35,11 +37,8 @@ const GroupCreationPopup = (props: Props) => {
                             <div className="uk-margin-small-top">
                                 <CategoryInput/>
                             </div>
-                            <button className="uk-button uk-button-default uk-modal-close uk-margin-small-top">
-                                Anuluj
-                            </button>
                             <button type="submit"
-                                    className="uk-button-primary uk-button uk-margin-small-top uk-margin-small-left"
+                                    className="uk-button-primary uk-button uk-margin-small-top"
                                     disabled={isSubmitting}>
                                 Utwórz
                             </button>

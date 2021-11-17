@@ -22,8 +22,17 @@
     }
   }
 
+  &__subgroup-creation-time {
+    width: 100%;
+    height: 2rem;
+    text-align: center;
+    color: gray;
+  }
+
   &__controls {
     position: absolute;
     z-index: 1000;
+    width: 100%;
+    background: white;
   }
 }

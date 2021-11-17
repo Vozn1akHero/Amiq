@@ -4,6 +4,7 @@ import "./chat-message.scss"
 import {Utils} from "../../core/utils";
 import {Link} from 'react-router-dom';
 import {DateUtils} from "../../assets/utils/date-utils";
+import {AuthStore} from "../../store/custom/auth/auth-store";
 
 type State = {
     isSelected: boolean;
@@ -13,7 +14,6 @@ type State = {
 type Props = {
     message: IMessage;
     isAuthorDataVisible: boolean;
-    viewerId: number;
     selectMessage(messageId: string): void;
     deselectMessage(messageId: string): void;
     removeMessage(messageId: string): void;
@@ -57,7 +57,7 @@ class ChatMessage extends Component<Props, State> {
             <div onMouseOver={this.onMessageMouseOver}
                  onMouseLeave={this.onMessageMouseOut}
                  className={`chat-message 
-                    ${this.props.message.author.userId === this.props.viewerId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
+                    ${this.props.message.author.userId === AuthStore.identity.userId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
                     ${this.state.isSelected ? `uk-card-default` : ``}
                     `}>
                 {
@@ -71,7 +71,12 @@ class ChatMessage extends Component<Props, State> {
                     </Link>
                 }
                 <div className="uk-flex">
-                    <div onClick={this.onMessageSelection}
+                    <div onClick={(e: MouseEvent) => {
+                        if(this.props.message.author.userId === AuthStore.identity.userId)
+                        {
+                            this.onMessageSelection(e)
+                        }
+                    }}
                          className={`chat-message__text-bg uk-card uk-card-default uk-card-body ${this.props.isAuthorDataVisible ? `uk-float-left uk-margin-small-left` : ``}`}>
                         <div className={`chat-message__text`}>
                             {
@@ -84,7 +89,7 @@ class ChatMessage extends Component<Props, State> {
                     </div>
                     <div className="uk-margin-left uk-margin-medium-top uk-text-small">
                         {
-                            this.state.messageControlsVisible && <div className={`chat-message__controls`}>
+                            (this.state.messageControlsVisible && this.props.message.author.userId === AuthStore.identity.userId) && <div className={`chat-message__controls`}>
                                 <button onClick={() => {
                                         this.props.removeMessage(this.props.message.messageId)
                                     }} className="chat-message__controls__remove-msg uk-icon-button uk-margin-small-right" uk-icon="trash"></button>

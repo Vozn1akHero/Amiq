@@ -1,4 +1,5 @@
 ﻿using Amiq.Business;
+using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;
@@ -20,7 +21,7 @@ namespace Amiq.WebApi.Controllers
         private BsGroupParticipant _bsGroupParticipant = new BsGroupParticipant();
 
         [HttpGet("user-groups")]
-        public async Task<ActionResult<List<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] EnGroupFilterType filterType,
+        public async Task<ActionResult<DtoListResponseOf<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] EnGroupFilterType filterType,
             [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
             CancellationToken cancellationToken = default)
         {
