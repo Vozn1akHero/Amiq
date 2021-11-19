@@ -1,4 +1,5 @@
 ﻿using Amiq.DataAccess.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +8,23 @@ using System.Threading.Tasks;
 
 namespace Amiq.Workers.Notification
 {
-    public class GroupPostNotificationCreation : INotificationCreationStrategy
+    public class GroupPostNotificationCreation : NotificationCreationStrategy
     {
-        private AmiqContext _amiqContext = new AmiqContext();
-
-        public IEnumerable<DataAccess.Models.Models.Notification> Create(IEnumerable<int> userIds)
+        public override IEnumerable<DataAccess.Models.Models.Notification> Create(IEnumerable<int> userIds)
         {
             List<DataAccess.Models.Models.Notification> notifications = new();
 
             foreach(int userId in userIds)
             {
-                var mostVisitedGroups = _amiqContext.GroupVisitations
+                var mostVisitedGroups = DbContext.GroupVisitations.AsNoTracking()
                         .Where(e => e.UserId == userId)
                         .Take(5)
                         .OrderByDescending(e => e.VisitationTotalTime)
                         .ToList();
                 foreach (var mostVisitedGroup in mostVisitedGroups)
                 {
-                    var groupPosts = _amiqContext.GroupPosts
+                    var groupPosts = DbContext.GroupPosts
+                        .AsNoTracking()
                         .Where(e => e.Post.CreatedAt > mostVisitedGroup.LastVisited
                             && e.GroupId == mostVisitedGroup.GroupId)
                         .ToList();

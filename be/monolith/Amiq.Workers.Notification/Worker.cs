@@ -1,4 +1,5 @@
 using Amiq.DataAccess.Models.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Amiq.Workers.Notification
 {
@@ -7,16 +8,20 @@ namespace Amiq.Workers.Notification
         private readonly ILogger<Worker> _logger;
         private readonly AmiqContext _amiqContext;
 
-        private const int TIMEOUT = 1000;
-        private int _page = 1;
-        private const int TAKE = 50;
+        private readonly UserPostNotificationCreation _userPostNotificationCreation;
+        private readonly GroupPostNotificationCreation _groupPostNotificationCreation;
 
-        private const int MOST_VISITED_ENTITIES_COUNT = 5;
+        private const int TIMEOUT_BETWEEN_BULKS = 5000;
+        private const int TAKE_USERS = 50;
+
+        private int _page = 1;
 
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
             _amiqContext = new AmiqContext();
+            _userPostNotificationCreation = new UserPostNotificationCreation();
+            _groupPostNotificationCreation = new GroupPostNotificationCreation();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,20 +31,21 @@ namespace Amiq.Workers.Notification
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
                 //lista id u¿ytkowników
-                HashSet<int> userIds = _amiqContext.Users.Select(e => e.UserId)
-                    .Take(50)
-                    .Skip((_page - 1) * 50)
-                    .ToHashSet<int>();
-                _page++;
+                HashSet<int> userIds = _amiqContext.Users.AsNoTracking().Select(e => e.UserId)
+                    .Take(TAKE_USERS)
+                    .Skip((_page - 1) * TAKE_USERS)
+                    .ToHashSet();
 
-                //wpisy w grupie
-                foreach(int userId in userIds)
-                {
-                    List<DataAccess.Models.Models.Notification> notifications = new();
-                    
-                }
-                
-                await Task.Delay(TIMEOUT, stoppingToken);
+                //wpisy
+                var userPostNotifications = _userPostNotificationCreation.Create(userIds);
+                var groupPostsNotifications = _groupPostNotificationCreation.Create(userIds);
+
+                await _amiqContext.Notifications.AddRangeAsync(userPostNotifications);
+                await _amiqContext.Notifications.AddRangeAsync(groupPostsNotifications);
+                await _amiqContext.SaveChangesAsync();
+
+                _page++;
+                await Task.Delay(TIMEOUT_BETWEEN_BULKS, stoppingToken);
             }
         }
     }
