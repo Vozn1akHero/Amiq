@@ -30,11 +30,14 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
         public virtual DbSet<GroupPost> GroupPosts { get; set; }
         public virtual DbSet<GroupPostComment> GroupPostComments { get; set; }
+        public virtual DbSet<GroupVisitation> GroupVisitations { get; set; }
         public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NotificationQueue> NotificationQueues { get; set; }
         public virtual DbSet<NotificationType> NotificationTypes { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<TextBlock> TextBlocks { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -191,7 +194,9 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.HasIndex(e => e.Name, "IX_Group_ViewName");
 
-                entity.Property(e => e.AvatarSrc).IsUnicode(false);
+                entity.Property(e => e.AvatarSrc)
+                    .IsRequired()
+                    .IsUnicode(false);
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -392,6 +397,21 @@ namespace Amiq.DataAccess.Models.Models
                     .HasConstraintName("FK_GroupPostComment_GroupPostComment1");
             });
 
+            modelBuilder.Entity<GroupVisitation>(entity =>
+            {
+                entity.ToTable("GroupVisitation", "Activity");
+
+                entity.Property(e => e.GroupVisitationId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.LastVisited).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupVisitations)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupVisitation_Group");
+            });
+
             modelBuilder.Entity<HiddenGroup>(entity =>
             {
                 entity.ToTable("HiddenGroup", "Group");
@@ -454,6 +474,26 @@ namespace Amiq.DataAccess.Models.Models
                     .WithMany(p => p.Notifications)
                     .HasForeignKey(d => d.NotificationTypeId)
                     .HasConstraintName("FK_Notification_NotificationType");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Notification_User");
+            });
+
+            modelBuilder.Entity<NotificationQueue>(entity =>
+            {
+                entity.ToTable("NotificationQueue", "Notification");
+
+                entity.Property(e => e.NotificationQueueId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.NotificationQueues)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_NotificationQueue_User");
             });
 
             modelBuilder.Entity<NotificationType>(entity =>
@@ -483,6 +523,15 @@ namespace Amiq.DataAccess.Models.Models
                     .WithMany(p => p.Posts)
                     .HasForeignKey(d => d.EditedBy)
                     .HasConstraintName("FK_Post_User");
+            });
+
+            modelBuilder.Entity<ProfileVisitation>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("ProfileVisitation", "Activity");
+
+                entity.Property(e => e.LastVisited).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Session>(entity =>

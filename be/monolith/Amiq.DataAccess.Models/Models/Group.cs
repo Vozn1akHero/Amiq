@@ -13,6 +13,7 @@ namespace Amiq.DataAccess.Models.Models
             GroupParticipants = new HashSet<GroupParticipant>();
             GroupPostComments = new HashSet<GroupPostComment>();
             GroupPosts = new HashSet<GroupPost>();
+            GroupVisitations = new HashSet<GroupVisitation>();
             HiddenGroups = new HashSet<HiddenGroup>();
         }
 
@@ -30,6 +31,7 @@ namespace Amiq.DataAccess.Models.Models
         public virtual ICollection<GroupParticipant> GroupParticipants { get; set; }
         public virtual ICollection<GroupPostComment> GroupPostComments { get; set; }
         public virtual ICollection<GroupPost> GroupPosts { get; set; }
+        public virtual ICollection<GroupVisitation> GroupVisitations { get; set; }
         public virtual ICollection<HiddenGroup> HiddenGroups { get; set; }
     }
 }

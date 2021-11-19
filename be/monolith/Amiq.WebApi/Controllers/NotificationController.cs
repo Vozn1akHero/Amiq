@@ -12,10 +12,19 @@ using Amiq.WebApi.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Amiq.Contracts.Utils;
 using System.Threading;
+using Amiq.Business.Notification;
 
 namespace Amiq.WebApi.Controllers
 {
     public class NotificationController : AmiqBaseController
     {
+        private BlNotification _blNotification = new BlNotification();
+
+        [HttpGet]
+        public async Task<IActionResult> GetNotificationsAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
+        {
+            var notifications = await _blNotification.GetNotificationsAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
+            return Ok();
+        }
     }
 }

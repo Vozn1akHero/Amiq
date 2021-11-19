@@ -1,6 +1,5 @@
 using Amiq.Core.Auth;
 using Amiq.Mapping;
-using Amiq.WebApi.BackgroundServices;
 using Amiq.WebApi.Core;
 using Amiq.WebApi.Middlewares;
 using Amiq.WebApi.SignalR;
@@ -83,7 +82,6 @@ namespace Amiq.WebApi
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
             });
 
-            services.AddHostedService<NotificationProcessingService>();
             services.AddSignalR();
             services.ConfigureCustomServices();
         }
