@@ -1,4 +1,4 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {Dispatch, useEffect, useLayoutEffect, useState} from 'react';
 import ProfilePage from "./ProfilePage";
 import {IUserPost} from "../../features/post/models/user-post";
 import {AuthStore} from "../../store/custom/auth/auth-store";
@@ -23,6 +23,8 @@ import {StatusCodes} from "http-status-codes";
 import {FriendService} from "../../features/friend/friend-service";
 import {first} from "rxjs";
 import {IdentityModel} from "../../store/custom/auth/identity-model";
+import {IPageVisitationActivity} from "../../features/activity-tracking/models";
+import moment from "moment";
 
 
 const ProfilePageContainer: React.FC = (props: any) => {
@@ -35,6 +37,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
     const [userData, setUserData] = useState<IUser>(null);
     const [userDataLoaded, setUserDataLoaded] = useState(false);
     const [actualProfileId, setActualProfileId] = useState(null);
+    const [visitationTimeInMinutes, setVisitationTimeInMinutes] = useState(0);
 
     const EXEMPLARY_ENTITIES_LENGTH: number = 6;
     const POSTS_PER_PAGE: number = 10;
@@ -43,6 +46,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
 
     useEffect(() => {
         initProfileId();
+        startTrackingActivity();
     }, []);
 
     useEffect(() => {
@@ -56,6 +60,12 @@ const ProfilePageContainer: React.FC = (props: any) => {
             dispatch(getUserPosts(actualProfileId, 1, POSTS_PER_PAGE));
         }
     }, [actualProfileId])
+
+    useLayoutEffect(() => {
+        return () => {
+            storeTrackingActivity();
+        }
+    }, [])
 
     //#region user friends
     const userFriends: Array<IFriendship> = useSelector(
@@ -198,6 +208,49 @@ const ProfilePageContainer: React.FC = (props: any) => {
         }
         dispatch(createUserPost(newPost))
     }
+
+    //#region activity tracking
+
+    const startTrackingActivity = () => {
+        if(isViewerProfile) return;
+
+        setTimeout(() => {
+            setVisitationTimeInMinutes(visitationTimeInMinutes + 1);
+        }, 60000)
+    }
+
+    const storeTrackingActivity = () => {
+        if(isViewerProfile) return;
+
+        if(!sessionStorage.getItem("act"))
+            sessionStorage.setItem("act", JSON.stringify(""));
+
+        let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
+
+        if(!visitationState.userProfileVisitations){
+            visitationState.userProfileVisitations = [];
+        }
+
+        let profileVisitationIndex = visitationState.userProfileVisitations.findIndex(e=>e.visitedUserId === actualProfileId);
+        if(profileVisitationIndex!==-1){
+            visitationState.userProfileVisitations = visitationState.userProfileVisitations.map((value, index) => {
+                if(index === profileVisitationIndex){
+                    value.visitationTotalTime += visitationTimeInMinutes;
+                    value.lastVisited =  moment().toDate()
+                }
+                return value;
+            });
+        } else {
+            visitationState.userProfileVisitations.push({
+                visitedUserId: actualProfileId,
+                lastVisited: moment().toDate(),
+                visitationTotalTime: visitationTimeInMinutes
+            })
+        }
+
+    }
+
+    //endregion
 
     return (
         <ProfilePage posts={userPosts}

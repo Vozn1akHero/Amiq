@@ -18,8 +18,8 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class ChatController : AmiqBaseController
     {
-        private BsChat _bsChat = new BsChat();
-        private BsChatMessage _bsChatMessage = new BsChatMessage();
+        private BlChat _bsChat = new BlChat();
+        private BlChatMessage _bsChatMessage = new BlChatMessage();
 
         [HttpGet("previews")]
         public async Task<IActionResult> GetChatPreviewsAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest, 

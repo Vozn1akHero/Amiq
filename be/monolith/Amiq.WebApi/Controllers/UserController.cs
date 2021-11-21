@@ -11,7 +11,7 @@ namespace Amiq.WebApi.Controllers
 {
     public class UserController : AmiqBaseController
     {
-        private BsUser _bsUser = new BsUser();
+        private BlUser _bsUser = new BlUser();
 
         [HttpGet("{userId}")]
         [Authorize]

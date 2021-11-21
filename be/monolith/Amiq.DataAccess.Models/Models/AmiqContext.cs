@@ -35,7 +35,6 @@ namespace Amiq.DataAccess.Models.Models
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<NotificationQueue> NotificationQueues { get; set; }
-        public virtual DbSet<NotificationType> NotificationTypes { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
@@ -466,14 +465,14 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.ImageSrc).IsRequired();
 
+                entity.Property(e => e.NotificationType)
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Text)
                     .IsRequired()
                     .HasMaxLength(1000);
-
-                entity.HasOne(d => d.NotificationType)
-                    .WithMany(p => p.Notifications)
-                    .HasForeignKey(d => d.NotificationTypeId)
-                    .HasConstraintName("FK_Notification_NotificationType");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Notifications)
@@ -494,15 +493,6 @@ namespace Amiq.DataAccess.Models.Models
                     .WithMany(p => p.NotificationQueues)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_NotificationQueue_User");
-            });
-
-            modelBuilder.Entity<NotificationType>(entity =>
-            {
-                entity.ToTable("NotificationType", "Notification");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(150);
             });
 
             modelBuilder.Entity<Post>(entity =>

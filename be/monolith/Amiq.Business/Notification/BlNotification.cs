@@ -13,7 +13,7 @@ namespace Amiq.Business.Notification
 {
     public class BlNotification : BusinessLayerBase
     {
-        private DaNotification daNotification = new DaNotification();
+        private DaoNotification daNotification = new DaoNotification();
 
         public async Task<DtoListResponseOf<DtoNotification>> GetNotificationsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {

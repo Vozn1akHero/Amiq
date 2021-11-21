@@ -22,6 +22,8 @@ import GroupEventsInFrame from "../../features/group/components/GroupEventsInFra
 import "./group-page.scss"
 import {ModalService} from "../../core/modal-service";
 import ChangeAvatarPopup from "../../features/user/components/ChangeAvatarPopup/ChangeAvatarPopup";
+import {IPageVisitationActivity} from "../../features/activity-tracking/models";
+import moment from "moment";
 
 type Props = {
     groupData: IGroupData;
@@ -67,6 +69,8 @@ class GroupPage extends Component<Props, State> {
             })
         }
     }
+
+
 
     shouldSubpageBeVisible = () => {
         const {pathname} = this.props.location;
@@ -114,6 +118,8 @@ class GroupPage extends Component<Props, State> {
     openChangeAvatarPopup = () => {
         ModalService.open(<ChangeAvatarPopup/>);
     }
+
+
 
     render() {
         return (

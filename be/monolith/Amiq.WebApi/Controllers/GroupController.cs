@@ -15,7 +15,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class GroupController : AmiqBaseController
     {
-        private BsGroup bsGroup = new BsGroup();
+        private BlGroup bsGroup = new BlGroup();
 
         [HttpPost]
         public async Task<IActionResult> CreateGroupAsync([FromBody] DtoCreateGroup dtoCreateGroup)

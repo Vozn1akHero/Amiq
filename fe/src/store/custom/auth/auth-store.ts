@@ -4,8 +4,7 @@ import AuthService from "../../../core/auth/auth-service";
 import {StatusCodes} from "http-status-codes";
 
 export class AuthStore {
-    private static authService: AuthService = new AuthService();
-
+    private static _authService: AuthService = new AuthService();
     private static _isLoaded$ = new BehaviorSubject(false);
     private static _isLoading$ = new BehaviorSubject(true);
     private static _isAuthenticated$ = new BehaviorSubject<boolean>(null);
@@ -14,23 +13,12 @@ export class AuthStore {
     public static get isAuthenticated$(){
         return this._isAuthenticated$.asObservable();
     }
-
     public static get isAuthenticated():boolean{
         return this._isAuthenticated$.getValue();
     }
-
-    public static get isLoaded$(){
-        return this._isLoaded$.asObservable();
-    }
-
-    public static get isLoading$(){
-        return this._isLoading$.asObservable();
-    }
-
     public static get identity$(){
         return this._identity$.asObservable();
     }
-
     public static get identity():IdentityModel{
         return this._identity$.getValue();
     }
@@ -43,7 +31,7 @@ export class AuthStore {
     }
 
     public static authenticate = (login:string, password: string) => {
-        return AuthStore.authService.authenticate(login, password).then(res => {
+        return AuthStore._authService.authenticate(login, password).then(res => {
             if(res.status === StatusCodes.OK){
                 let identityModel = new IdentityModel();
                 identityModel.isAuthenticated = true;
@@ -55,7 +43,7 @@ export class AuthStore {
 
     public static logout = () => {
         if(AuthStore.isAuthenticated){
-            return AuthStore.authService.logout().then(res=>{
+            return AuthStore._authService.logout().then(res=>{
                 if(res.status === StatusCodes.OK){
                     let identityModel = new IdentityModel();
                     identityModel.isAuthenticated = false;

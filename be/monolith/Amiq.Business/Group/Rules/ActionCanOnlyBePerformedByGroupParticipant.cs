@@ -5,11 +5,11 @@ namespace Amiq.Business.Group.Rules
 {
     public class ActionCanOnlyBePerformedByGroupParticipant : IBsRule
     {
-        private DaGroupParticipant _daGroupParticipant;
+        private DaoGroupParticipant _daGroupParticipant;
         private int _userId;
         private int _groupId;
 
-        public ActionCanOnlyBePerformedByGroupParticipant(DaGroupParticipant daGroupParticipant, int userId, int groupId)
+        public ActionCanOnlyBePerformedByGroupParticipant(DaoGroupParticipant daGroupParticipant, int userId, int groupId)
         {
             _daGroupParticipant = daGroupParticipant;
             _userId = userId;

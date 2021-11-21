@@ -13,7 +13,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class GroupEventController:AmiqBaseController
     {
-        private BsGroupEvent bsGroupEvent = new BsGroupEvent();
+        private BlGroupEvent bsGroupEvent = new BlGroupEvent();
 
         [HttpGet("list")]
         public async Task<IActionResult> GetEventsByGroupIdAsync([FromQuery] int groupId,

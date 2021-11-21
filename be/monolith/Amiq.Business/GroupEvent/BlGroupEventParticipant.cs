@@ -14,8 +14,8 @@ namespace Amiq.Business.Group
     public class BlGroupEventParticipant : BusinessLayerBase
     {
         private DaoGroupEventParticipant _daoGroupEventParticipant = new DaoGroupEventParticipant();
-        private DaGroupEvent _daGroupEvent = new DaGroupEvent();
-        private DaGroupParticipant _daGroupParticipant = new DaGroupParticipant();
+        private DaoGroupEvent _daGroupEvent = new DaoGroupEvent();
+        private DaoGroupParticipant _daGroupParticipant = new DaoGroupParticipant();
 
         public async Task<DtoGroupEventParticipant> JoinEventAsync(int userId, Guid groupEventId)
         {

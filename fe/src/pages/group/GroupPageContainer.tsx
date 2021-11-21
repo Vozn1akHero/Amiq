@@ -22,6 +22,8 @@ import {getGroupParticipants} from "../../store/redux/actions/groupParticipantAc
 import {getGroupEvents} from "../../store/redux/actions/groupEventActions";
 import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent-data";
 import {IGroupEvent} from "../../features/group/models/group-event";
+import {IPageVisitationActivity} from "../../features/activity-tracking/models";
+import moment from "moment";
 
 type Props = {
     getGroupEvents(groupId: number, page: number, count: number):void;
@@ -46,6 +48,7 @@ type State = {
     groupDataLoaded: boolean;
     groupViewerRole: EnGroupViewerRole;
     basicAdminPermissionsAvailable: boolean;
+    visitationTimeInMinutes: number;
 }
 
 class GroupPageContainer extends Component<Props, State> {
@@ -61,6 +64,7 @@ class GroupPageContainer extends Component<Props, State> {
             groupData: null,
             groupViewerRole: null,
             basicAdminPermissionsAvailable: false,
+            visitationTimeInMinutes: 0
         }
     }
 
@@ -74,6 +78,12 @@ class GroupPageContainer extends Component<Props, State> {
                 this.props.getGroupPosts(groupId, 1);
                 this.props.getGroupEvents(groupId, 1, 10);
             })
+
+        this.startTrackingActivity();
+    }
+
+    componentWillUnmount() {
+        this.storeTrackingActivity();
     }
 
     getViewerRole = () => {
@@ -111,6 +121,44 @@ class GroupPageContainer extends Component<Props, State> {
     }
 
     getExemplaryGroupEvents = () => {
+
+    }
+
+    startTrackingActivity = () => {
+        setTimeout(() => {
+            this.setState({
+                visitationTimeInMinutes: this.state.visitationTimeInMinutes + 1
+            })
+        }, 60000)
+    }
+
+    storeTrackingActivity = () => {
+        if(!sessionStorage.getItem("act"))
+            sessionStorage.setItem("act", JSON.stringify(""));
+
+        let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
+        const{groupId} = this.props.match.params;
+
+        if(!visitationState.groupVisitations){
+            visitationState.groupVisitations = [];
+        }
+
+        let groupVisitationIndex = visitationState.groupVisitations.findIndex(e=>e.groupId === groupId);
+        if(groupVisitationIndex!==-1){
+            visitationState.groupVisitations = visitationState.groupVisitations.map((value, index) => {
+                if(index === groupVisitationIndex){
+                    value.visitationTotalTime += this.state.visitationTimeInMinutes;
+                    value.lastVisited =  moment().toDate()
+                }
+                return value;
+            });
+        } else {
+            visitationState.groupVisitations.push({
+                groupId,
+                lastVisited: moment().toDate(),
+                visitationTotalTime: this.state.visitationTimeInMinutes
+            })
+        }
 
     }
 

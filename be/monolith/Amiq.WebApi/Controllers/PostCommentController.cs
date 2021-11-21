@@ -15,7 +15,7 @@ namespace Amiq.WebApi.Controllers
 {
     public class PostCommentController : AmiqBaseController
     {
-        private BsPostComment bsPostComment = new BsPostComment();
+        private BlPostComment bsPostComment = new BlPostComment();
 
         [HttpGet("user-post-comments")]
         public async Task<IActionResult> GetUserPostCommentsAsync([FromQuery] Guid postId,

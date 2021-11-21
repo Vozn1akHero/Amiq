@@ -6,7 +6,6 @@
         /// <summary>
         /// Weryfikacja reguły biznesowej
         /// </summary>
-        /// <returns>true albo false</returns>
         bool CheckBsRule();
     }
 }

@@ -17,7 +17,7 @@ namespace Amiq.WebApi.Core.Auth
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class AuthorizeChatInterlocutor : Attribute, IAuthorizationFilter
     {
-        private BsChat _bsChat = new BsChat();
+        private BlChat _bsChat = new BlChat();
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {

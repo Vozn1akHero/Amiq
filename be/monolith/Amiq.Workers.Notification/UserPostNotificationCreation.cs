@@ -48,12 +48,20 @@ namespace Amiq.Workers.Notification
                         filteredVisitations.Add(mostVisitedProfileEntity);
                 }
 
-                var userPostsInBulk = DbContext.UserPosts.AsNoTracking()
-                        .Where(e => filteredVisitations.Select(e => e.VisitedUserId).Contains(e.UserId)
-                            && e.Post.CreatedAt > filteredVisitations.Single(d => d.VisitedUserId == e.UserId).LastVisited)
-                        .OrderBy(e=>e.UserId)
-                        .ThenByDescending(e=>e.Post.CreatedAt)
-                        .ToList();
+                if (!filteredVisitations.Any()) continue;
+
+                var userPostsInBulk = new List<UserPost>();
+                foreach (var filteredVisitation in filteredVisitations)
+                {
+                    userPostsInBulk.AddRange(DbContext.UserPosts.AsNoTracking()
+                        .Where(e => filteredVisitation.VisitedUserId == e.UserId
+                            && e.Post.CreatedAt > filteredVisitation.LastVisited)
+                        .OrderBy(e => e.UserId)
+                        .ThenByDescending(e => e.Post.CreatedAt)
+                        .Include(e => e.Post)
+                        .Include(e=>e.User)
+                        .ToList());
+                }
                 Dictionary<User, List<UserPost>> userPostsGrouped = userPostsInBulk
                     .Select((x) => new { Index = x.User, Value = x })
                     .GroupBy(e => e.Index.UserId)
@@ -65,7 +73,7 @@ namespace Amiq.Workers.Notification
                         result.Add(new DataAccess.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
-                            Text = $"Użytkownik <b>{userPosts.Key.Name + userPosts.Key.Surname}</b> dodał nowy wpis: i <b>inne</b>",
+                            Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał nowy wpis: i <b>inne</b>",
                             Link = $"/profile/{userPosts.Key.UserId}",
                             CreatedAt = DateTime.Now,
                             UserId = userId
@@ -76,7 +84,7 @@ namespace Amiq.Workers.Notification
                         result.Add(new DataAccess.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
-                            Text = $"Użytkownik <b>{userPosts.Key.Name + userPosts.Key.Surname}</b> dodał {userPosts.Value.Count} nowych wpisów",
+                            Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał {userPosts.Value.Count} nowych wpisów",
                             Link = $"/profile/{userPosts.Key.UserId}",
                             CreatedAt = DateTime.Now,
                             UserId = userId
@@ -84,36 +92,6 @@ namespace Amiq.Workers.Notification
                     }
                 }
             }
-
-            /*foreach (int userId in userIds)
-            {
-                var mostVisitedProfiles = DbContext.ProfileVisitations.AsNoTracking().Where(e => e.UserId == userId)
-                        .Take(5)
-                        .OrderByDescending(e => e.VisitationTotalTime)
-                        .ToList();
-
-                // uwzlędnienie tylko aktywnych znajomości
-                var mostVisitedProfileUserIds = mostVisitedProfiles.Select(e => e.VisitedUserId).ToHashSet();
-                var activeFriendships = DbContext.Friendships.AsNoTracking().Where(e => e.FirstUserId == userId || e.SecondUserId == userId)
-                    .Where(e => e.FirstUserId == userId ? mostVisitedProfileUserIds.Contains(e.SecondUserId) : mostVisitedProfileUserIds.Contains(e.FirstUserId))
-                    .Select(e=>new { e.FirstUserId, e.SecondUserId })
-                    .ToList();
-                var filteredVisitations = new List<ProfileVisitation>();
-                foreach(var activeFriendship in activeFriendships)
-                {
-                    var mostVisitedProfileEntity = mostVisitedProfiles.Where(e => (e.UserId == activeFriendship.FirstUserId && e.VisitedUserId == activeFriendship.SecondUserId)
-                        || (e.UserId == activeFriendship.SecondUserId && e.VisitedUserId == activeFriendship.FirstUserId)).SingleOrDefault();
-                    if (mostVisitedProfileEntity != null)
-                        filteredVisitations.Add(mostVisitedProfileEntity);
-                }
-
-                var userPostsInBulk = DbContext.UserPosts.AsNoTracking()
-                        .Where(e => filteredVisitations.Select(e=>e.VisitedUserId).Contains(e.UserId)
-                            && e.Post.CreatedAt > filteredVisitations.Single(d=>d.VisitedUserId==e.UserId).LastVisited)
-                        .ToList();
-
-                
-            }*/
 
             return result;
         }

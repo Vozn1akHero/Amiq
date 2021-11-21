@@ -5,10 +5,10 @@ namespace Amiq.Business.Auth.Rules
 {
     public class EmailShouldBeUniqueBsRule : IBsRule
     {
-        private IDaAuth _daAuth;
+        private IDaoAuth _daAuth;
         private string _email;
 
-        public EmailShouldBeUniqueBsRule(IDaAuth daAuth, string email)
+        public EmailShouldBeUniqueBsRule(IDaoAuth daAuth, string email)
         {
             _daAuth = daAuth;
             _email = email;

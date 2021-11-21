@@ -15,7 +15,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class GroupPostController : AmiqBaseController
     {
-        private BsGroupPost bsGroupPost = new BsGroupPost();
+        private BlGroupPost bsGroupPost = new BlGroupPost();
 
         [HttpGet("list")]
         public async Task<IActionResult> GetPostsByGroupIdAsync([FromQuery] DtoGroupPostRequest dtoGroupPostRequest, 

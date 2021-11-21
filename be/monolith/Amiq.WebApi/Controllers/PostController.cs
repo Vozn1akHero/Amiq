@@ -15,7 +15,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class PostController : AmiqBaseController
     {
-        private BsPost bsPost = new BsPost();
+        private BlPost bsPost = new BlPost();
 
         [HttpDelete("{postId}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid postId)

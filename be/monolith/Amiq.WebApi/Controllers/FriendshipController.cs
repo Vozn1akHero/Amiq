@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class FriendshipController : AmiqBaseController
     {
-        private FriendshipBsService _bsFriend = new FriendshipBsService();
+        private BlFriendship _bsFriend = new BlFriendship();
 
         [HttpGet("friend-list/{userId}")]
         [Produces(typeof(DtoListResponseOf<DtoFriend>))]

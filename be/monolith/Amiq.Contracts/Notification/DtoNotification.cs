@@ -11,6 +11,6 @@ namespace Amiq.Contracts.Notification
         public string ImageSrc { get; set; }
         public string Link { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DtoNotificationType NotificationType { get; set; }
+        public string NotificationType { get; set; }
     }
 }

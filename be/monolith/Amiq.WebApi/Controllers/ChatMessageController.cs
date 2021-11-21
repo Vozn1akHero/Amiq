@@ -19,7 +19,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class ChatMessageController : AmiqBaseController
     {
-        private BsChatMessage _bsChatMessage = new BsChatMessage();
+        private BlChatMessage _bsChatMessage = new BlChatMessage();
         private ISignalRChatService _signalRChatService;
 
         public ChatMessageController(ISignalRChatService signalRChatService)

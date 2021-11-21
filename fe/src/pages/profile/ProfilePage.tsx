@@ -91,6 +91,8 @@ class ProfilePage extends Component<Props, State> {
         ModalService.open(<ChangeAvatarPopup/>);
     }
 
+
+
     render() {
         return (
             <div className='profile-page uk-flex-center uk-grid uk-child-width-1-2'>

@@ -6,7 +6,7 @@ namespace Amiq.Business.Chat.BsRules
 {
     public class ChatShouldBeAvailableForInterlocutor : IBsRule
     {
-        private DaChat _daChat = new DaChat();
+        private DaoChat _daChat = new DaoChat();
         private int _issuerId;
         private Guid _chatId;
 

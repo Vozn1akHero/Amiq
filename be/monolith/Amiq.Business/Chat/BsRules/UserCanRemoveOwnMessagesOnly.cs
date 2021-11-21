@@ -10,11 +10,11 @@ namespace Amiq.Business.Chat.BsRules
     {
         public string ErrorContent => "Użytkownik może usuwać tylko własne wiadomości";
 
-        private DaChatMessage _daChatMessage;
+        private DaoChatMessage _daChatMessage;
         private int _issuerId;
         private IEnumerable<Guid> _messageIds;
 
-        public UserCanRemoveOwnMessagesOnlyAsync(DaChatMessage daChatMessage, int issuerId, IEnumerable<Guid> messageIds)
+        public UserCanRemoveOwnMessagesOnlyAsync(DaoChatMessage daChatMessage, int issuerId, IEnumerable<Guid> messageIds)
         {
             _daChatMessage = daChatMessage ?? throw new ArgumentException(nameof(daChatMessage));
             _issuerId = issuerId;

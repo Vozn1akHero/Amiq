@@ -8,13 +8,11 @@ import {IIdBasedPersistentData, IIdBasedPersistentDataEntry} from "../base/id-ba
 type GroupEventState = {
     groupEvents: IIdBasedPersistentData<IPaginatedStoreData<IGroupEvent>>
 }
-
 const initialState : GroupEventState = {
     groupEvents: {
         entries: []
     }
 }
-
 export default function(state:GroupEventState = initialState, action) {
     switch (action.type) {
         case SET_GROUP_EVENTS:

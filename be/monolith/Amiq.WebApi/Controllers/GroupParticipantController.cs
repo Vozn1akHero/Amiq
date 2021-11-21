@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
     [Authorize]
     public class GroupParticipantController : AmiqBaseController
     {
-        private BsGroupParticipant _bsGroupParticipant = new BsGroupParticipant();
+        private BlGroupParticipant _bsGroupParticipant = new BlGroupParticipant();
 
         [HttpGet("user-groups")]
         public async Task<ActionResult<DtoListResponseOf<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] EnGroupFilterType filterType,

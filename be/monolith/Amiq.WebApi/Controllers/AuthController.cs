@@ -18,7 +18,7 @@ namespace Amiq.WebApi.Controllers
 {
     public class AuthController : AmiqBaseController
     {
-        private BsAuth _bsAuth = new BsAuth();
+        private BlAuth _bsAuth = new BlAuth();
 
         [HttpPost("authenticate")]
         public ActionResult<DtoUserAuthenticationResult> Authenticate([FromBody] DtoUserAuthentication dtoUserAuthentication)

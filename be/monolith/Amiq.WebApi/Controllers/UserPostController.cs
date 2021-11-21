@@ -16,7 +16,7 @@ namespace Amiq.WebApi.Controllers
     [Route("api/user-post")]
     public class UserPostController : AmiqBaseController
     {
-        private BsUserPost bsUserPost = new BsUserPost();
+        private BlUserPost bsUserPost = new BlUserPost();
 
         [HttpGet("list/{userId}")]
         public async Task<IActionResult> GetPostsByUserId([FromRoute] int userId, [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
