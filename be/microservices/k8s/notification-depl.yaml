@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: groupservice
+  template:
+    metadata:
+      labels:
+        app: groupservice
+    spec:
+      containers:
+        - name: groupservice
+          image: groupservice
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: group-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: groupservice
+  ports:
+    - name: groupservice
+      protocol: TCP
+      port: 80
+      targetPort: 80

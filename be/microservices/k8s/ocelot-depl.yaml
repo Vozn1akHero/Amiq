@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocelot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocelotservice
+  template:
+    metadata:
+      labels:
+        app: ocelotservice
+    spec:
+      containers:
+        - name: ocelotservice
+          image: ocelotservice
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocelot-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: ocelotservice
+  ports:
+    - name: ocelotservice
+      protocol: TCP
+      port: 80
+      targetPort: 80

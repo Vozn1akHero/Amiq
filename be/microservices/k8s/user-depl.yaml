@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+        - name: userservice
+          image: userservice
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: userservice
+  ports:
+    - name: userservice
+      protocol: TCP
+      port: 80
+      targetPort: 80
