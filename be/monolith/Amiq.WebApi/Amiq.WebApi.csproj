@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Amiq.Business\Amiq.Business.csproj" />
+    <ProjectReference Include="..\Amiq.BusinessLayer\Amiq.BusinessLayer.csproj" />
     <ProjectReference Include="..\Amiq.Contracts\Amiq.Contracts.csproj" />
-    <ProjectReference Include="..\Amiq.Modules\Amiq.Mapping.csproj" />
+    <ProjectReference Include="..\Amiq.Mapping\Amiq.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

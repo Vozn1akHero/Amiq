@@ -5,13 +5,13 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.WebApi", "Amiq.WebApi.csproj", "{40269A4B-73F1-427E-B702-A5BEF713F078}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Business", "..\Amiq.Business\Amiq.Business.csproj", "{39D7B4F9-3757-489A-A0F6-12B58DE311FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.BusinessLayer", "..\Amiq.BusinessLayer\Amiq.BusinessLayer.csproj", "{39D7B4F9-3757-489A-A0F6-12B58DE311FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Mapping", "..\Amiq.Modules\Amiq.Mapping.csproj", "{2B716365-7EF8-434C-9389-AC6012696A0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Mapping", "..\Amiq.Mapping\Amiq.Mapping.csproj", "{2B716365-7EF8-434C-9389-AC6012696A0A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.DataAccess.Models", "..\Amiq.DataAccess.Models\Amiq.DataAccess.Models.csproj", "{85F6F903-8548-4B5C-B977-53A21202C225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.DataAccessLayer.Models", "..\Amiq.DataAccessLayer.Models\Amiq.DataAccessLayer.Models.csproj", "{85F6F903-8548-4B5C-B977-53A21202C225}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.DataAccess", "..\Amiq.DataAccess\Amiq.DataAccess.csproj", "{34FE2912-A0E0-4E8D-BD6B-4C091D7FA959}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.DataAccessLayer", "..\Amiq.DataAccessLayer\Amiq.DataAccessLayer.csproj", "{34FE2912-A0E0-4E8D-BD6B-4C091D7FA959}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Contracts", "..\Amiq.Contracts\Amiq.Contracts.csproj", "{5A22AE53-6FFD-49FB-B6F2-2FD6A97A8F42}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.FakeDataGenerator", ".
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{621A11D4-6D2E-4C23-B268-9905A9625439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Workers.Notification", "..\Amiq.Workers.Notification\Amiq.Workers.Notification.csproj", "{FD2F489A-6DDF-478E-8A71-DE94299E6501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Workers.Notification", "..\Amiq.Workers.Notification\Amiq.Workers.Notification.csproj", "{FD2F489A-6DDF-478E-8A71-DE94299E6501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

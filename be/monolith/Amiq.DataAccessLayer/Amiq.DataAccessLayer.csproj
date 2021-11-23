@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Amiq.Contracts\Amiq.Contracts.csproj" />
-    <ProjectReference Include="..\Amiq.DataAccess.Models\Amiq.DataAccess.Models.csproj" />
-    <ProjectReference Include="..\Amiq.Modules\Amiq.Mapping.csproj" />
+    <ProjectReference Include="..\Amiq.DataAccessLayer.Models\Amiq.DataAccessLayer.Models.csproj" />
+    <ProjectReference Include="..\Amiq.Mapping\Amiq.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
