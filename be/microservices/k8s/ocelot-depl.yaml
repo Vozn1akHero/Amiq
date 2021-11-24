@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ocelotservice
-          image: ocelotservice
+          image: amiq-ocelot-gateway
           imagePullPolicy: Never
 ---
 apiVersion: v1

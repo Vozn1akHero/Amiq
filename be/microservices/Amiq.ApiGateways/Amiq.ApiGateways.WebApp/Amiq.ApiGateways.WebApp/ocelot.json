@@ -1,16 +1,28 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/WeatherForecast",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 40129
+          "Host": "post-clusterip-srv",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/post",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "chat-clusterip-srv",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/chat",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
   ],
   "GlobalConfiguration": {
