@@ -14,6 +14,8 @@ import {
     SET_CREATED_GROUP_POST_COMMENT,
     SET_GROUP_POST_COMMENTS
 } from "../types/groupPostCommentTypes";
+import {IPost} from "../../../features/post/models/post";
+import {IGroupPostComment, IPostComment} from "../../../features/post/models/post-comment";
 
 type PostReducer = {
     //groupPosts: Array<IGroupPost>,
@@ -186,19 +188,27 @@ export default function(state:PostReducer = initialState, action) {
             }
         }
         case SET_USER_POST_COMMENTS: {
+            const comments = action.payload.comments as IResponseListOf<IPostComment>;
             return {
                 ...state,
                 posts: state.posts.map((userPost) => {
                     if (userPost.postId === action.payload.postId) {
-                        userPost.comments = userPost.comments ? [...userPost.comments, ...action.payload.comments] : action.payload.comments
+                        userPost.comments = userPost.comments ? [...userPost.comments, ...comments.entities] : comments.entities
                     }
                     return userPost;
                 })
             }
         }
         case SET_GROUP_POST_COMMENTS: {
+            const comments = action.payload.comments as IResponseListOf<IGroupPostComment>;
             return  {
-                ...state
+                ...state,
+                posts: state.posts.map((groupPost) => {
+                    if (groupPost.postId === action.payload.postId) {
+                        groupPost.comments = groupPost.comments ? [...groupPost.comments, ...comments.entities] : comments.entities
+                    }
+                    return groupPost;
+                })
             }
         }
         default:

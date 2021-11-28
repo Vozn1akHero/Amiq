@@ -2,7 +2,7 @@
 using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Group;
+using Amiq.DataAccessLayer.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq;

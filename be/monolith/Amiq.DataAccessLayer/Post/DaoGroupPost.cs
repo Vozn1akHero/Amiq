@@ -3,8 +3,8 @@ using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
-using Amiq.DataAccess.Models;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,22 +13,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Amiq.DataAccess.Post
+namespace Amiq.DataAccessLayer.Post
 {
     public class DaoGroupPost
     {
         private AmiqContext _amiqContext = new AmiqContext();
         private AmiqContextWithDebugLogging _amiqContextWithDebugLogging = new AmiqContextWithDebugLogging();
 
-        public async Task<DtoGroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<DtoGroupPost> CreateAsync(DtoCreateGroupPost dtoCreateGroupPost)
         {
             var entity = new GroupPost
             {
-                GroupId = dtoGroupPost.GroupId,
-                AuthorId = dtoGroupPost.Author.UserId,
+                GroupId = dtoCreateGroupPost.GroupId,
+                AuthorId = dtoCreateGroupPost.Author.UserId,
+                VisibleAsCreatedByAdmin = dtoCreateGroupPost.CreateAsAdmin,
                 Post = new Models.Models.Post
                 {
-                    TextContent = dtoGroupPost.TextContent
+                    TextContent = dtoCreateGroupPost.TextContent
                 }
             };
             _amiqContext.GroupPosts.Add(entity);
@@ -57,8 +58,8 @@ namespace Amiq.DataAccess.Post
         public async Task<DtoListResponseOf<DtoGroupPost>> GetGroupPostsAsync(DtoGroupPostRequest dtoGroupPostRequest)
         {
             DtoListResponseOf<DtoGroupPost> result = new();
-            const int TAKE = 5;
-            const int PAGE = 1;
+/*            const int TAKE = 5;
+            const int PAGE = 1;*/
 
             result.Length = await _amiqContextWithDebugLogging.GroupPosts.AsNoTracking()
                 .Where(e => e.GroupId == dtoGroupPostRequest.GroupId).CountAsync();
@@ -71,7 +72,7 @@ namespace Amiq.DataAccess.Post
                          .Take(dtoGroupPostRequest.Count);
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroupPost>(query).ToListAsync();
             
-            foreach (var item in data)
+            /*foreach (var item in data)
             {
                 if(item.CommentsCount > 0)
                 {
@@ -84,9 +85,9 @@ namespace Amiq.DataAccess.Post
                     item.Comments = comments;
                     item.HasMoreCommentsThanRecent = item.CommentsCount > item.Comments.Count;
                 }
-            }
+            }*/
 
-            result.Entities = data;
+            result.Entities = data; 
             return result;
         }
     }

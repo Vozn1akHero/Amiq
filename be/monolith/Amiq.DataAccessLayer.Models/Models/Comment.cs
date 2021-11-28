@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Amiq.DataAccess.Models.Models
+namespace Amiq.DataAccessLayer.Models.Models
 {
     /// <summary>
     /// Id grupy, jeśli komentarz został stworzony przez administratora grupy

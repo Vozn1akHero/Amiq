@@ -1,4 +1,4 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.DataAccessLayer.Models.Models;
 using System.Transactions;
 
 namespace Amiq.FakeDataGenerator

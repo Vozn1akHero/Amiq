@@ -2,7 +2,7 @@
 using Amiq.Contracts;
 using Amiq.Contracts.Notification;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Notification;
+using Amiq.DataAccessLayer.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;

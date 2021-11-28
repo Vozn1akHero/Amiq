@@ -16,7 +16,6 @@ type Props = {
     commentsCount: number;
     deleteBtnVisible: boolean;
     publishCommentAsAdminOptionVisible: boolean;
-    //comments: Array<IPostComment>;
     comments: Array<IGroupPostComment | IPostComment>;
     hasMoreCommentsThanPassed: boolean;
     postType: EnPostType;
@@ -30,7 +29,7 @@ type Props = {
 type State = {
     isCommentCreationFormVisible: boolean;
     isCommentCreationFormFocused: boolean;
-    responseCreationRunningEntity: { commentId: string; }
+    responseCreationRunningEntity: Partial<IGroupPostComment & IPostComment>;
     showComments: boolean;
     currentCommentsPage: number;
 }
@@ -106,9 +105,9 @@ class Post extends Component<Props, State> {
         this.props.onCommentCreated(finalEntity);
     }
 
-    onCommentReplyClick = (commentId: string) => {
+    onCommentReplyClick = (comment: Partial<IGroupPostComment & IPostComment>) => {
         this.setState({
-            responseCreationRunningEntity: {commentId}
+            responseCreationRunningEntity: comment
         });
         this.handleReply();
     }
@@ -124,7 +123,7 @@ class Post extends Component<Props, State> {
         this.props.onDeletePost(this.props.postId);
     }
 
-    showComments = (e:MouseEvent) => {
+    showComments = (e: MouseEvent) => {
         e.preventDefault();
         this.props.getComments(this.props.postId, this.state.currentCommentsPage);
         this.setState({
@@ -133,12 +132,11 @@ class Post extends Component<Props, State> {
         })
     }
 
-    getMoreComments = (e:MouseEvent) => {
+    getMoreComments = (e: MouseEvent) => {
         e.preventDefault();
         this.props.getComments(this.props.postId, this.state.currentCommentsPage);
         this.setState({
-            showComments: true,
-            currentCommentsPage: this.state.currentCommentsPage+1
+            currentCommentsPage: this.state.currentCommentsPage + 1
         })
     }
 
@@ -171,24 +169,32 @@ class Post extends Component<Props, State> {
                     <div className="uk-comment-body">
                         <p>{this.props.text}</p>
                     </div>
-                    <a onClick={this.showComments} className="uk-icon-button uk-text-decoration-none">
-                        <span uk-icon="comment"></span>
-                        <span>{this.props.commentsCount}</span>
-                    </a>
+                    <div className="post__controls uk-flex uk-margin-top">
+                        <a onClick={this.showComments}
+                           className="uk-margin-small uk-text-decoration-none uk-display-block">
+                            <span uk-icon="comment"></span>
+                            <span className="uk-margin-small-left">{this.props.commentsCount}</span>
+                        </a>
+                    </div>
                 </article>
                 {
                     this.state.showComments && <>
                         {
-                            this.props.comments && this.props.comments.map((value, index) => {
-                                return <Comment onReplyClick={this.onCommentReplyClick}
-                                                onRemoveComment={this.props.onRemoveComment}
-                                                comment={value}
-                                                key={index}/>
-                            })
-                        }
-                        {
-                            this.props.hasMoreCommentsThanPassed &&
-                            <button className="get-more-children-btn">Wyświetl więcej</button>
+                            this.props.comments && <>
+                                {
+                                    this.props.comments.map((value, index) => {
+                                        return <Comment onReplyClick={this.onCommentReplyClick}
+                                                        onRemoveComment={this.props.onRemoveComment}
+                                                        comment={value}
+                                                        key={index}/>
+                                    })
+                                }
+                                {
+                                    this.props.commentsCount > this.props.comments.length &&
+                                    <button className="get-more-children-btn"
+                                            onClick={this.getMoreComments}>Wyświetl więcej</button>
+                                }
+                            </>
                         }
                         {this.state.isCommentCreationFormVisible &&
                         <div ref={this.postCreationFormRef} className="comment-creation-form-wrap uk-margin-medium-top">

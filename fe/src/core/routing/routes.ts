@@ -86,6 +86,12 @@ export default class Routes {
         };
     }
 
+    public static get groupEventRoutes(): ISimpleRoute {
+        return {
+            reactRouterLink: "group/:groupId/event/:eventId"
+        }
+    }
+
     public static get groupSettingsPageRoutes() : ISimpleRoute{
         return {
             reactRouterLink: "group-settings/:groupId",

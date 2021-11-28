@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Group;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

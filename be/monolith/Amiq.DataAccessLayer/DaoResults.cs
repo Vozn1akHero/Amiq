@@ -1,4 +1,4 @@
-﻿namespace Amiq.DataAccess
+﻿namespace Amiq.DataAccessLayer
 {
     internal static class DaoResults
     {

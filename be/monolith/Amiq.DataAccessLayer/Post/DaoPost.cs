@@ -1,7 +1,7 @@
 ﻿using Amiq.Contracts;
 using Amiq.Contracts.Post;
-using Amiq.DataAccess.Models;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Post
+namespace Amiq.DataAccessLayer.Post
 {
     public class DaoPost
     {

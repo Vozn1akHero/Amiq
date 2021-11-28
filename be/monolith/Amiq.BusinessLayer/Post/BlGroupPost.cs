@@ -1,8 +1,8 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts;
 using Amiq.Contracts.Post;
-using Amiq.DataAccess.Models.Models;
-using Amiq.DataAccess.Post;
+using Amiq.DataAccessLayer.Models.Models;
+using Amiq.DataAccessLayer.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,9 @@ namespace Amiq.Business.Post
     {
         private DaoGroupPost _daGroupPost = new DaoGroupPost();
 
-        public async Task<DtoGroupPost> CreateAsync(DtoGroupPost dtoGroupPost)
+        public async Task<DtoGroupPost> CreateAsync(DtoCreateGroupPost dtoCreateGroupPost)
         {
-            return await _daGroupPost.CreateAsync(dtoGroupPost);
+            return await _daGroupPost.CreateAsync(dtoCreateGroupPost);
         }
 
         public async Task EditAsync(DtoEditGroupPostRequest dtoEditGroupPostRequest)

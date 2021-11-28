@@ -1,6 +1,6 @@
 ﻿using Amiq.Common.DbOperation;
 using Amiq.Contracts.Group;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using AutoMapper.QueryableExtensions;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Group
+namespace Amiq.DataAccessLayer.Group
 {
     public class DaoGroupEventParticipant
     {

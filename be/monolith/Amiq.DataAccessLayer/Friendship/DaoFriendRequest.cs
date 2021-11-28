@@ -2,7 +2,7 @@
 using Amiq.Common.Enums;
 using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Friendship
+namespace Amiq.DataAccessLayer.Friendship
 {
     public class DaoFriendRequest
     {

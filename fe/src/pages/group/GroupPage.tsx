@@ -3,7 +3,7 @@ import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
 import {IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
 import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
-import {IGroupPost} from "../../features/post/models/group-post";
+import {ICreateGroupPost, IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
 import {AuthStore} from "../../store/custom/auth/auth-store";
@@ -22,8 +22,6 @@ import GroupEventsInFrame from "../../features/group/components/GroupEventsInFra
 import "./group-page.scss"
 import {ModalService} from "../../core/modal-service";
 import ChangeAvatarPopup from "../../features/user/components/ChangeAvatarPopup/ChangeAvatarPopup";
-import {IPageVisitationActivity} from "../../features/activity-tracking/models";
-import moment from "moment";
 
 type Props = {
     groupData: IGroupData;
@@ -34,7 +32,7 @@ type Props = {
     groupEvents: IIdBasedPersistentData<IPaginatedStoreData<IGroupEvent>>;
     groupParticipants: IPaginatedStoreData<IGroupParticipant>;
     onCommentCreated(data: IGroupPostCommentCreation);
-    onPostCreated(data: Partial<IGroupPost>);
+    onPostCreated(data: ICreateGroupPost);
     onDeletePost(postId: string);
     onRemoveComment(postCommentId: string);
     getComments(postId: string, page: number);
@@ -71,7 +69,6 @@ class GroupPage extends Component<Props, State> {
     }
 
 
-
     shouldSubpageBeVisible = () => {
         const {pathname} = this.props.location;
         const match = matchPath(pathname, {
@@ -89,15 +86,15 @@ class GroupPage extends Component<Props, State> {
         });
         if (match) {
             const subroute = this.subrotes.filter(e => e === match.path);
-
         }
         console.log(match)
     }
 
-    onPostCreated = (text: string) => {
+    onPostCreated = (value: { text: string, createAsAdmin?: boolean }) => {
         const {groupData} = this.props;
-        const post: Partial<IGroupPost> = {
-            textContent: text,
+        const post: ICreateGroupPost = {
+            textContent: value.text,
+            createAsAdmin: value.createAsAdmin,
             groupId: groupData.groupId,
             author: {
                 userId: AuthStore.identity.userId
@@ -119,12 +116,44 @@ class GroupPage extends Component<Props, State> {
         ModalService.open(<ChangeAvatarPopup/>);
     }
 
+    parseGroupPosts = (posts: Array<IGroupPost>) => {
+        return posts.map((post, index) => {
+            const authorLink = post.visibleAsCreatedByAdmin ? "/group/" + post.groupId : "/profile/" + post.author.userId;
+            const viewName = post.visibleAsCreatedByAdmin ? post.groupName : post.author.name + " " + post.author.surname;
+            const avatarPath = post.visibleAsCreatedByAdmin ? Utils.getImageSrc(post.avatarPath) : Utils.getImageSrc(post.author.avatarPath);
 
+            return <Post postId={post.postId}
+                         commentsCount={post.commentsCount}
+                         postType={EnPostType.Group}
+                         onDeletePost={this.onDeletePost}
+                         onRemoveComment={this.props.onRemoveComment}
+                         onCommentCreated={this.props.onCommentCreated}
+                         getComments={this.props.getComments}
+                         hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
+                         comments={post.comments}
+                         avatarPath={avatarPath}
+                         text={post.textContent}
+                         authorLink={authorLink}
+                         createdAt={post.createdAt}
+                         viewName={viewName}
+                         publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
+                         deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
+                         key={index}/>
+        })
+    }
+
+    onGroupEventClickInFrame = (eventId: string) => {
+        this.setState({
+            showSubpageSwitch: true
+        })
+        const route = `/group/${this.props.groupData.groupId}/event/${eventId}`;
+        this.props.history.push(route);
+    }
 
     render() {
         return (
-            <div className="group-page uk-flex-center uk-flex">
-                <div className="group-page__first-column">
+            <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
+                <div className="uk-first-column uk-width-1-3">
                     {this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
                                                                onChangeAvatarBtnClick={this.openChangeAvatarPopup}
                                                                viewTitle={this.props.groupData.name}/>}
@@ -163,7 +192,9 @@ class GroupPage extends Component<Props, State> {
 
                         <div className="uk-margin-medium-top">
                             <GroupEventsInFrame groupId={this.props.match.params.groupId}
-                                                groupEvents={this.props.groupEvents}/>
+                                                groupEvents={this.props.groupEvents}
+                                                onGroupEventClick={this.onGroupEventClickInFrame}
+                            />
                         </div>
                     </div>
                 </div>
@@ -186,27 +217,7 @@ class GroupPage extends Component<Props, State> {
                                     <PostCreationForm handleSubmit={this.onPostCreated}
                                                       publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}/>
                                 </div>
-                                {
-                                    this.props.groupPostsLoaded && this.props.groupPosts.map((post, index) => {
-                                        return <Post postId={post.postId}
-                                                     commentsCount={post.commentsCount}
-                                                     postType={EnPostType.Group}
-                                                     onDeletePost={this.onDeletePost}
-                                                     onRemoveComment={this.props.onRemoveComment}
-                                                     onCommentCreated={this.props.onCommentCreated}
-                                                     getComments={this.props.getComments}
-                                                     hasMoreCommentsThanPassed={post.hasMoreCommentsThanRecent}
-                                                     comments={post.comments}
-                                                     avatarPath={Utils.getImageSrc(post.avatarPath)}
-                                                     text={post.textContent}
-                                                     authorLink={"/group/" + post.groupId}
-                                                     createdAt={post.createdAt}
-                                                     viewName={post.groupName}
-                                                     publishCommentAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}
-                                                     deleteBtnVisible={this.props.basicAdminPermissionsAvailable}
-                                                     key={index}/>
-                                    })
-                                }
+                                {this.props.groupPostsLoaded && this.parseGroupPosts(this.props.groupPosts)}
                             </div>
                         </>
                     }

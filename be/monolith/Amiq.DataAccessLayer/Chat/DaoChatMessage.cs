@@ -2,7 +2,7 @@
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Data.SqlClient;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Chat
+namespace Amiq.DataAccessLayer.Chat
 {
     public class DaoChatMessage
     {

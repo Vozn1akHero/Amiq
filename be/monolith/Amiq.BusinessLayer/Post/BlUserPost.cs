@@ -1,8 +1,8 @@
 ﻿using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
-using Amiq.DataAccess.Post;
+using Amiq.DataAccessLayer.Models.Models;
+using Amiq.DataAccessLayer.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;

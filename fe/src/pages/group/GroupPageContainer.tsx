@@ -4,7 +4,7 @@ import {EnGroupViewerRole, IGroupData, IGroupParticipant, IGroupViewer} from "..
 import {GroupService} from "../../features/group/services/group-service";
 import {StatusCodes} from "http-status-codes";
 import {GroupPostService} from "../../features/post/group-post-service";
-import {IGroupPost} from "../../features/post/models/group-post";
+import {ICreateGroupPost, IGroupPost} from "../../features/post/models/group-post";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {GroupParticipantService} from "../../features/group/services/group-participant-service";
 import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
@@ -29,7 +29,7 @@ type Props = {
     getGroupEvents(groupId: number, page: number, count: number):void;
     getGroupPosts(groupId: number, page: number):void;
     deleteGroupPost(postId: string):void;
-    createPost(post: Partial<IGroupPost>):void;
+    createPost(post: ICreateGroupPost):void;
     createGroupPostComment(data: IGroupPostCommentCreation):void;
     removeComment(postCommentId: string):void;
     getGroupParticipants(groupId: number, page: number):void;
@@ -139,6 +139,13 @@ class GroupPageContainer extends Component<Props, State> {
         let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
         const{groupId} = this.props.match.params;
 
+        if(!visitationState){
+            visitationState = {
+                userProfileVisitations: [],
+                groupVisitations: []
+            }
+        }
+
         if(!visitationState.groupVisitations){
             visitationState.groupVisitations = [];
         }
@@ -159,15 +166,12 @@ class GroupPageContainer extends Component<Props, State> {
                 visitationTotalTime: this.state.visitationTimeInMinutes
             })
         }
-
     }
 
     render() {
         return (
             <GroupPage groupParticipants={this.props.groupParticipants}
                        getComments={this.props.getGroupPostComments}
-                       /*groupEvents={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.entities}
-                       groupEventsLoaded={this.props.groupEvents?.entries?.find(e=>e.id===this.props.match.params.groupId).data.loaded}*/
                        groupEvents={this.props.groupEvents}
                        onRemoveComment={this.props.removeComment}
                        onDeletePost={this.props.deleteGroupPost}
@@ -187,12 +191,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getGroupPosts: (groupId: number, page: number) => dispatch(getGroupPosts(groupId, page)),
         deleteGroupPost: (postId: string) => dispatch(deletePost(postId)),
-        createPost: (post: Partial<IGroupPost>) => dispatch(createGroupPost(post)),
+        createPost: (post: ICreateGroupPost) => dispatch(createGroupPost(post)),
         createGroupPostComment: (data: IGroupPostCommentCreation) => dispatch(createGroupPostComment(data)),
         removeComment: (postCommentId: string) => dispatch(removeGroupPostComment(postCommentId)),
         getGroupParticipants: (groupId: number, page: number) => dispatch(getGroupParticipants(groupId, page)),
         getGroupEvents: (groupId: number, page: number, count: number) => dispatch(getGroupEvents(groupId, page, count)),
-        getGroupPostComments: (postId: string, page: number) => dispatch(getGroupPostComments(postId, page))
+        getGroupPostComments: (postId: string, page: number) => dispatch(getGroupPostComments(postId, page, 10))
     }
 }
 

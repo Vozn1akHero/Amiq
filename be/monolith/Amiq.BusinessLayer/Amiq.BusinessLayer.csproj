@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Amiq.DataAccessLayer.Models\Amiq.DataAccessLayer.Models.csproj" />
     <ProjectReference Include="..\Amiq.DataAccessLayer\Amiq.DataAccessLayer.csproj" />
   </ItemGroup>
 

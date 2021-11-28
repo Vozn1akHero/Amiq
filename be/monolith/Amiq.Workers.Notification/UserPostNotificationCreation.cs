@@ -1,4 +1,4 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,9 @@ namespace Amiq.Workers.Notification
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        public override IEnumerable<DataAccess.Models.Models.Notification> Create(IEnumerable<int> userIds)
+        public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<int> userIds)
         {
-            List<DataAccess.Models.Models.Notification> result = new();
+            List<DataAccessLayer.Models.Models.Notification> result = new();
 
             var mostVisitedProfilesInBulk = DbContext.ProfileVisitations.AsNoTracking().Where(e => userIds.Contains(e.UserId)).OrderBy(e=>e.UserId).ToList();
             Dictionary<int, List<ProfileVisitation>> mostVisitedProfilesGrouped = mostVisitedProfilesInBulk
@@ -70,7 +70,7 @@ namespace Amiq.Workers.Notification
                 foreach(KeyValuePair<User, List<UserPost>> userPosts in userPostsGrouped){
                     if(userPosts.Value.Count > 0 && userPosts.Value.Count <= 2)
                     {
-                        result.Add(new DataAccess.Models.Models.Notification
+                        result.Add(new DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał nowy wpis: i <b>inne</b>",
@@ -81,7 +81,7 @@ namespace Amiq.Workers.Notification
                     }
                     else if(userPosts.Value.Count > 2)
                     {
-                        result.Add(new DataAccess.Models.Models.Notification
+                        result.Add(new DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał {userPosts.Value.Count} nowych wpisów",

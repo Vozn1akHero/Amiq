@@ -1,6 +1,6 @@
 ﻿using Amiq.Business.Post;
 using Amiq.Contracts.Post;
-using Amiq.DataAccess.Post;
+using Amiq.DataAccessLayer.Post;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

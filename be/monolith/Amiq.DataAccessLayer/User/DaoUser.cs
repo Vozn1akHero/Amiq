@@ -1,6 +1,7 @@
-﻿using Amiq.Contracts.User;
+﻿using Amiq.Contracts;
+using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.User
+namespace Amiq.DataAccessLayer.User
 {
     public class DaoUser
     {
@@ -62,6 +63,7 @@ namespace Amiq.DataAccess.User
             return result;
         }
 
+        
 
         public async Task<IEnumerable<DtoUserSearchResult>> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
         {

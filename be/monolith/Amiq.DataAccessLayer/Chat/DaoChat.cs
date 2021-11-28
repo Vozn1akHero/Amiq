@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Chat;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Chat
+namespace Amiq.DataAccessLayer.Chat
 {
     public class DaoChat
     {

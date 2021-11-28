@@ -1,9 +1,12 @@
 ﻿using Amiq.Business.Auth.Rules;
 using Amiq.Business.Utils;
+using Amiq.BusinessLayer.Auth.BsRules;
+using Amiq.Common.DbOperation;
 using Amiq.Contracts;
 using Amiq.Contracts.Auth;
-using Amiq.DataAccess.Auth;
+using Amiq.DataAccessLayer.Auth;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Amiq.Business.Auth
 {
@@ -14,6 +17,50 @@ namespace Amiq.Business.Auth
         public BlAuth()
         {
             _daAuth = new DaoAuth();
+        }
+
+        public DbOperationResult ChangePassword(int userId, DtoChangeUserPassword dtoChangeUserPassword)
+        {
+            DbOperationResult result = new();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(dtoChangeUserPassword.OldPassword))
+                {
+                    string hashedPassedOldPassword = BCrypt.Net.BCrypt.HashPassword(dtoChangeUserPassword.OldPassword);
+                    CheckBsRule(new BsRuleOldPasswordMustBeCorrectToBeChanged(_daAuth, userId, hashedPassedOldPassword));
+                    string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(dtoChangeUserPassword.NewPassword);
+                    _daAuth.ChangeUserPassword(userId, hashedNewPassword);
+                }
+            }
+            catch (BsRuleIsBrokenException bsRuleBrokenException)
+            {
+                result.Success = false;
+                result.Message = bsRuleBrokenException.Message;
+            }
+
+            return result;
+        }
+
+        public DbOperationResult ChangeEmail(int userId, string email)
+        {
+            DbOperationResult result = new();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(email))
+                {
+                    CheckBsRule(new EmailShouldBeUniqueBsRule(_daAuth, email));
+                    _daAuth.ChangeUserEmail(userId, email);
+                }
+            }
+            catch (BsRuleIsBrokenException bsRuleBrokenException)
+            {
+                result.Success = false;
+                result.Message = bsRuleBrokenException.Message;
+            }
+
+            return result;
         }
 
         public DtoUserRegistartionResult Register(DtoUserRegistration dtoUserRegistration)

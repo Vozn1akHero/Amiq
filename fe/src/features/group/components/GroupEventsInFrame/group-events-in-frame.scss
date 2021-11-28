@@ -1,0 +1,10 @@
+.group-events-in-frame{
+  &__item {
+    display: flex;
+  }
+
+  &__event-avatar{
+    width: 5rem;
+    height: 5rem;
+  }
+}

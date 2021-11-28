@@ -1,6 +1,6 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Models.Models;
-using Amiq.DataAccess.Post;
+using Amiq.DataAccessLayer.Models.Models;
+using Amiq.DataAccessLayer.Post;
 using System;
 using System.Linq;
 

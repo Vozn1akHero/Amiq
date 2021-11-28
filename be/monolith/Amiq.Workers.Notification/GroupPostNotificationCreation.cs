@@ -1,4 +1,4 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace Amiq.Workers.Notification
 {
     public class GroupPostNotificationCreation : NotificationCreationStrategy
     {
-        public override IEnumerable<DataAccess.Models.Models.Notification> Create(IEnumerable<int> userIds)
+        public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<int> userIds)
         {
-            List<DataAccess.Models.Models.Notification> notifications = new();
+            List<DataAccessLayer.Models.Models.Notification> notifications = new();
 
             foreach(int userId in userIds)
             {
@@ -32,7 +32,7 @@ namespace Amiq.Workers.Notification
                     if(groupPosts.Count > 0 && groupPosts.Count <= 2)
                     {
                         foreach(var post in groupPosts)
-                            notifications.Add(new DataAccess.Models.Models.Notification {
+                            notifications.Add(new DataAccessLayer.Models.Models.Notification {
                                 ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                                 Text = $"W grupie <b>{mostVisitedGroup.Group.Name}</b> pojawił się wpis: {post.Post.TextContent.Substring(0, 30)}...",
                                 Link = $"/group/{mostVisitedGroup.GroupId}",
@@ -42,7 +42,7 @@ namespace Amiq.Workers.Notification
                     }
                     else if(groupPosts.Count > 2)
                     {
-                        notifications.Add(new DataAccess.Models.Models.Notification
+                        notifications.Add(new DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                             Text = $"W grupie <b>{mostVisitedGroup.Group.Name}</b> pojawiło się {groupPosts.Count} wpisów",

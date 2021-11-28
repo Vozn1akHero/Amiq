@@ -36,7 +36,7 @@ type Props = {
     rejectFriendRequest(destUserId: number): void;
     cancelFriendRequest(destUserId: number): void;
     blockUser(destUserId: number): void;
-    createPost(text: string);
+    createPost(value: {text: string});
     deletePost(postId: string);
     commentCreated(data: IPostCommentCreation);
     removeComment(postCommentId: string);
@@ -117,11 +117,11 @@ class ProfilePage extends Component<Props, State> {
                                                              userFriendsLoaded={this.props.userFriendsLoaded}
                                                              userFriends={this.props.userFriends.slice(0, 6)}/>
 
-                                <div className="uk-margin-medium-top">
+                                {/*<div className="uk-margin-medium-top">
                                     <ItemsFrameL title="Linki"
                                                  icon="world"
                                                  items={[]}/>
-                                </div>
+                                </div>*/}
                             </div>
                         }
                     </div>

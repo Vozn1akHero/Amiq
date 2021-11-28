@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Group;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 
 namespace Amiq.Mapping.Group
 {

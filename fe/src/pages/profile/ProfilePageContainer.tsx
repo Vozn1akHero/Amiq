@@ -192,16 +192,16 @@ const ProfilePageContainer: React.FC = (props: any) => {
     //#endregion
 
     const getPostComments = (postId: string, page: number) => {
-        dispatch(getUserPostComments(postId, page))
+        dispatch(getUserPostComments(postId, page, 10))
     }
 
     const removeComment= (postCommentId: string) => {
         dispatch(removeUserPostComment(postCommentId))
     }
 
-    const createPost = (text: string) => {
+    const createPost = (value:{text: string}) => {
         const newPost: Partial<IUserPost> = {
-            textContent: text,
+            textContent: value.text,
             author: {
                 userId: AuthStore.identity.userId
             }
@@ -226,6 +226,13 @@ const ProfilePageContainer: React.FC = (props: any) => {
             sessionStorage.setItem("act", JSON.stringify(""));
 
         let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
+
+        if(!visitationState){
+            visitationState = {
+                userProfileVisitations: [],
+                groupVisitations: []
+            }
+        }
 
         if(!visitationState.userProfileVisitations){
             visitationState.userProfileVisitations = [];

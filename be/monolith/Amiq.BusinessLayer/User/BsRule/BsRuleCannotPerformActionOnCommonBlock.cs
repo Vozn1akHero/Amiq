@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.User;
+using Amiq.DataAccessLayer.User;
 using System;
 
 namespace Amiq.Business.User.BsRule

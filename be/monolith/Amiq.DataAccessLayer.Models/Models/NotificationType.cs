@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Amiq.DataAccess.Models.Models
+namespace Amiq.DataAccessLayer.Models.Models
 {
     public partial class NotificationType
     {

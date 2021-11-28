@@ -1,4 +1,4 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Debug;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Models
+namespace Amiq.DataAccessLayer.Models
 {
     public sealed class AmiqContextWithDebugLogging : AmiqContext
     {

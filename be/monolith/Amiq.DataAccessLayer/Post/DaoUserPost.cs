@@ -3,7 +3,7 @@ using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Post
+namespace Amiq.DataAccessLayer.Post
 {
     public class DaoUserPost
     {
@@ -26,26 +26,7 @@ namespace Amiq.DataAccess.Post
                 .OrderByDescending(e=>e.Post.CreatedAt)
                 .Include(e=>e.Post)
                 .Include(e=>e.Post.Comments);
-
-            var data = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
-
-            /*foreach (var item in data)
-            {
-                if (item.CommentsCount > 0)
-                {
-                    var recentCommentsQuery = _amiqContext.Comments.AsNoTracking()
-                        .Where(e => !e.ParentId.HasValue)
-                        .Include(e => e.Author)
-                        .Paginate(PAGE, TAKE)
-                        .OrderByDescending(e => e.CreatedAt);
-                    var comments = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(recentCommentsQuery).ToListAsync();
-                    item.Comments = comments;
-                    item.HasMoreCommentsThanRecent = item.CommentsCount > item.Comments.Count;
-                }
-            }*/
-
-            result.Entities = data;
-
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
             return result;
         }
 

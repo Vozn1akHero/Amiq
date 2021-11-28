@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.User;
+using Amiq.Contracts.User;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,6 @@ namespace Amiq.WebApi.Controllers
             return Ok(user);
         }
 
-        
+       
     }
 }

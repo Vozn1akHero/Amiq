@@ -2,22 +2,35 @@ import React, {Component} from 'react';
 import "./post-creation-form.scss"
 
 type Props = {
-    handleSubmit(text: string):void;
+    handleSubmit(value: {text: string, createAsAdmin?: boolean }):void;
     publishAsAdminOptionVisible:boolean;
+
 }
 
-class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean, value: string}> {
+class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean, isCreateAsAdminChecked?:boolean, value: string}> {
     constructor(props) {
         super(props);
         this.state = {
             isCreateButtonVisible: false,
-            value: ""
+            value: "",
+            isCreateAsAdminChecked: true
         }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.handleSubmit(this.state.value);
+
+        let post: {text: string, createAsAdmin?: boolean } = {
+            text: this.state.value
+        }
+        if(this.props.publishAsAdminOptionVisible){
+            post = {
+                ...post,
+                createAsAdmin: this.state.isCreateAsAdminChecked
+            }
+        }
+
+        this.props.handleSubmit(post);
     }
 
     render() {
@@ -44,7 +57,14 @@ class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean,
                 </fieldset>
                 {
                     this.props.publishAsAdminOptionVisible && this.state.isCreateButtonVisible && <div className="comment-as-group-admin-wrap">
-                        <label><input className="uk-checkbox" type="checkbox"/> jako administrator</label>
+                        <label><input className="uk-checkbox"
+                                      checked={this.state.isCreateAsAdminChecked}
+                                      onClick={()=>{
+                                          this.setState({
+                                              isCreateAsAdminChecked: !this.state.isCreateAsAdminChecked
+                                          })
+                                      }}
+                                      type="checkbox" /> jako administrator</label>
                     </div>
                 }
                 {

@@ -6,7 +6,8 @@ import moment from "moment";
 
 type Props = {
     comment: Partial<IGroupPostComment & IPostComment>;
-    onReplyClick(commentId: string): void;
+    //onReplyClick(commentId: string): void;
+    onReplyClick(comment: Partial<IGroupPostComment & IPostComment>): void;
     onRemoveComment(postCommentId: string);
 }
 
@@ -49,7 +50,8 @@ class Comment extends Component<Props> {
                                 <div className="uk-position-top-right uk-position-small uk-hidden-hover">
                                     <a onClick={e => {
                                         e.preventDefault();
-                                        this.props.onReplyClick(this.props.comment.commentId);
+                                        //this.props.onReplyClick(this.props.comment.commentId);
+                                        this.props.onReplyClick(this.props.comment);
                                     }}
                                        uk-icon="reply"
                                        className="uk-icon-link"/>
@@ -71,7 +73,7 @@ class Comment extends Component<Props> {
                     this.props.comment.children && <ul className="children comment--list">
                         {
                             this.props.comment.children.map((value, index) => {
-                                return <li key={index} className="child  uk-margin-small-top">
+                                return <li key={index} className="child uk-margin-small-top">
                                     <article className="uk-comment uk-comment-primary uk-visible-toggle">
                                         <header className="uk-comment-header uk-position-relative">
                                             <div className="uk-grid uk-grid-medium uk-flex-middle">
@@ -100,7 +102,7 @@ class Comment extends Component<Props> {
                                                     className="uk-position-top-right uk-position-small uk-hidden-hover">
                                                     <a onClick={e => {
                                                         e.preventDefault();
-                                                        this.props.onReplyClick(value.commentId);
+                                                        this.props.onReplyClick(value);
                                                     }}
                                                        uk-icon="reply"
                                                        className="uk-icon-link"/>

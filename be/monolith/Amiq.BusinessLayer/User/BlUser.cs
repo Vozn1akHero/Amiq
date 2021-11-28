@@ -1,7 +1,8 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Contracts;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.User;
+using Amiq.DataAccessLayer.User;
 using Amiq.Mapping;
 using System;
 using System.Collections.Generic;

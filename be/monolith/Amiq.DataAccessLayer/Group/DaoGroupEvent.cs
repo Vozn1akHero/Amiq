@@ -2,7 +2,7 @@
 using Amiq.Contracts;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Group
+namespace Amiq.DataAccessLayer.Group
 {
     public class DaoGroupEvent
     {

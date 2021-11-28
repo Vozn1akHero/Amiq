@@ -102,9 +102,10 @@ namespace Amiq.WebApi
             app.UseRouting();
 
             app.UseCors(x => x
-                .WithOrigins("http://localhost:3000", "http://localhost:8080")
+                //.WithOrigins("http://localhost:3000", "http://localhost:8080")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
                 .AllowCredentials());
 
             app.UseAuthentication();

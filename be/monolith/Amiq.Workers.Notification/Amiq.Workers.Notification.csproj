@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Amiq.DataAccess.Models\Amiq.DataAccess.Models.csproj" />
+    <ProjectReference Include="..\Amiq.DataAccessLayer.Models\Amiq.DataAccessLayer.Models.csproj" />
+    <ProjectReference Include="..\Amiq.DataAccessLayer\Amiq.DataAccessLayer.csproj" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Friendship
+namespace Amiq.DataAccessLayer.Friendship
 {
     public class DaoFriendship
     {

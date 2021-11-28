@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Amiq.DataAccess.Models.Models
+namespace Amiq.DataAccessLayer.Models.Models
 {
     public partial class AmiqContext : DbContext
     {
@@ -345,6 +345,10 @@ namespace Amiq.DataAccess.Models.Models
 
                 entity.Property(e => e.GroupPostId).HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.VisibleAsCreatedByAdmin)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.AuthorId)
@@ -522,6 +526,8 @@ namespace Amiq.DataAccess.Models.Models
                 entity.ToTable("ProfileVisitation", "Activity");
 
                 entity.Property(e => e.LastVisited).HasColumnType("datetime");
+
+                entity.Property(e => e.ProfileVisitationId).HasDefaultValueSql("(newid())");
             });
 
             modelBuilder.Entity<Session>(entity =>

@@ -1,8 +1,9 @@
 ﻿using Amiq.Common;
 using Amiq.Common.Enums;
+using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,36 +13,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Post
+namespace Amiq.DataAccessLayer.Post
 {
     public class DaoPostComment
     {
         private AmiqContext _amiqContext = new AmiqContext();
 
-        public async Task<IEnumerable<DtoPostComment>> GetUserPostCommentAsync(Guid postId, DtoPaginatedRequest paginatedRequest)
+        public async Task<DtoListResponseOf<DtoPostComment>> GetUserPostCommentAsync(Guid postId, DtoPaginatedRequest paginatedRequest)
         {
-            IQueryable commentsQuery = _amiqContext
+            var result = new DtoListResponseOf<DtoPostComment>();
+
+            var commentsQuery = _amiqContext
                     .Comments
-                    .Where(e => e.PostId == postId && !e.ParentId.HasValue)
+                    .Where(e => e.PostId == postId && !e.ParentId.HasValue && !e.IsRemoved)
                     .Paginate(paginatedRequest.Page, paginatedRequest.Count)
                     .OrderByDescending(e => e.CreatedAt);
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(commentsQuery).ToListAsync();
+            result.Length = await _amiqContext
+                    .Comments
+                    .Where(e => e.PostId == postId && !e.ParentId.HasValue && !e.IsRemoved)
+                    .CountAsync();
 
-            var commentsDto = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(commentsQuery).ToListAsync();
-
-            return commentsDto;
+            return result;
         }
 
-        public async Task<IEnumerable<DtoGroupPostComment>> GetGroupPostCommentsAsync(Guid postId, DtoPaginatedRequest paginatedRequest)
+        public async Task<DtoListResponseOf<DtoGroupPostComment>> GetGroupPostCommentsAsync(Guid postId, DtoPaginatedRequest paginatedRequest)
         {
+            DtoListResponseOf<DtoGroupPostComment> result = new();
+
             IQueryable commentsQuery = _amiqContext
                     .GroupPostComments
-                    .Where(e => e.Comment.PostId == postId && !e.Comment.ParentId.HasValue)
+                    .Where(e => e.Comment.PostId == postId && !e.Comment.ParentId.HasValue && !e.Comment.IsRemoved)
                     .Paginate(paginatedRequest.Page, paginatedRequest.Count)
                     .OrderByDescending(e => e.Comment.CreatedAt);
+            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(commentsQuery).ToListAsync();
+            result.Length = await _amiqContext
+                    .GroupPostComments
+                    .Where(e => e.Comment.PostId == postId && !e.Comment.ParentId.HasValue && !e.Comment.IsRemoved)
+                    .CountAsync();
 
-            var groupComments = await APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(commentsQuery).ToListAsync();
-
-            return groupComments;
+            return result;
         }
 
         public Comment GetEntityById(Guid postCommentId) {
@@ -95,11 +106,6 @@ namespace Amiq.DataAccess.Post
             var entity = GetEntityById(postCommentId);
             if (entity != null)
             {
-                /*if (entity.MainParentId.HasValue)
-                {
-                    var children = _amiqContext.Comments.Where(e => e.ParentId == postCommentId);
-                }*/
-                //_amiqContext.Comments.Remove(entity);
                 entity.IsRemoved = true;
                 await _amiqContext.SaveChangesAsync();
             }

@@ -20,6 +20,22 @@ namespace Amiq.WebApi.Controllers
     {
         private BlAuth _bsAuth = new BlAuth();
 
+        [HttpPut("change-password")]
+        [Authorize]
+        public IActionResult ChangePassword([FromBody] DtoChangeUserPassword dtoChangeUserPassword)
+        {
+            var result = _bsAuth.ChangePassword(JwtStoredUserInfo.UserId, dtoChangeUserPassword);
+            return Ok(result);
+        }
+
+        [HttpPut("change-email")]
+        [Authorize]
+        public IActionResult ChangeEmail([FromBody] string email)
+        {
+            var result = _bsAuth.ChangeEmail(JwtStoredUserInfo.UserId, email);
+            return Ok(result);
+        }
+
         [HttpPost("authenticate")]
         public ActionResult<DtoUserAuthenticationResult> Authenticate([FromBody] DtoUserAuthentication dtoUserAuthentication)
         {

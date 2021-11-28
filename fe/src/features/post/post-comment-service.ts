@@ -5,20 +5,20 @@ import {IGroupPostCommentCreation, IPostComment, IPostCommentCreation} from "./m
 export class PostCommentService extends BaseService {
     apiModule = "post-comment"
 
-    getPostComments(postId: string, page){
+    getPostComments(postId: string, page:number, count: number){
         const queryParams = new HttpQueryParams()
             .append("postId", postId)
-            .append("count", 20)
+            .append("count", count)
             .append("page", page);
         return this.httpClient.get(this.buildApiPath("user-post-comments"), null, queryParams);
     }
 
-    getGroupPostComments(postId: string, page){
+    getGroupPostComments(postId: string, page: number, count: number){
         const params = new HttpParams()
             .append("postId", postId);
         const queryParams = new HttpQueryParams()
             .append("commentType", 20)
-            .append("count", 20)
+            .append("count", count)
             .append("page", page);
         return this.httpClient.get(this.buildApiPath("group-post-comments"), params, queryParams);
     }

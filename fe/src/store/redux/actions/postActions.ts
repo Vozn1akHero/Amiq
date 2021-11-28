@@ -1,6 +1,6 @@
 import {UserPostService} from "../../../features/post/user-post-service";
 import {GroupPostService} from "../../../features/post/group-post-service";
-import {IGroupPost} from "../../../features/post/models/group-post";
+import {ICreateGroupPost, IGroupPost} from "../../../features/post/models/group-post";
 import {GET_GROUP_POSTS, SET_GROUP_POSTS} from "../types/groupPostTypes";
 import {
     GET_USER_POSTS,
@@ -82,11 +82,10 @@ export const removeUserPostComment = (postCommentId: string) => (dispatch) => {
     })
 }
 
-export const getUserPostComments = (postId: string, page: number) => dispatch => {
-    postCommentService.getPostComments(postId, page).then(res => {
+export const getUserPostComments = (postId: string, page: number, count: number) => dispatch => {
+    postCommentService.getPostComments(postId, page, count).then(res => {
         if (res.status === StatusCodes.OK) {
-            const comments = res.data as IPostComment[];
-            console.log(comments)
+            const comments = res.data as IResponseListOf<IPostComment>;
             dispatch({
                 type: SET_USER_POST_COMMENTS,
                 payload: {
@@ -98,10 +97,10 @@ export const getUserPostComments = (postId: string, page: number) => dispatch =>
     })
 }
 
-export const getGroupPostComments = (postId: string, page: number) => dispatch => {
-    postCommentService.getPostComments(postId, page).then(res => {
+export const getGroupPostComments = (postId: string, page: number, count: number) => dispatch => {
+    postCommentService.getPostComments(postId, page, count).then(res => {
         if (res.status === StatusCodes.OK) {
-            const comments = res.data as IGroupPostComment[];
+            const comments = res.data as IResponseListOf<IGroupPostComment>;
             dispatch({
                 type: SET_GROUP_POST_COMMENTS,
                 payload: {
@@ -129,7 +128,7 @@ export const getGroupPosts = (groupId: number, page: number) => (dispatch) => {
     })
 }
 
-export const createGroupPost = (data: Partial<IGroupPost>) => dispatch => {
+export const createGroupPost = (data: ICreateGroupPost) => dispatch => {
     dispatch({
         type: CREATE_POST
     })

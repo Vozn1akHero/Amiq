@@ -3,7 +3,7 @@ using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
-using Amiq.DataAccess.Group;
+using Amiq.DataAccessLayer.Group;
 using Amiq.Mapping;
 using System;
 using System.Collections.Generic;

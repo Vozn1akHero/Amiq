@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Auth;
+using Amiq.DataAccessLayer.Auth;
 
 namespace Amiq.Business.Auth.Rules
 {

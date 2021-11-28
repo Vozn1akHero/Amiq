@@ -22,7 +22,7 @@ const GroupEventSubpage = () => {
 
     useEffect(() => {
         getEvent();
-    }, []);
+    }, [groupEventId]);
 
     const getEvent = () => {
         groupEventService.getGroupEventById(groupEventId).then(res => {

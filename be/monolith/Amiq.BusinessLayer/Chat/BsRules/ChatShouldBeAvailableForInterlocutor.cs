@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Chat;
+using Amiq.DataAccessLayer.Chat;
 using System;
 
 namespace Amiq.Business.Chat.BsRules

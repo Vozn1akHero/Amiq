@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.User;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.User
+namespace Amiq.DataAccessLayer.User
 {
     public class DaoBlockedUser
     {

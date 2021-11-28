@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Chat;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using AutoMapper;
 using System;
 

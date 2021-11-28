@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Post;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 
 namespace Amiq.Mapping.Post
 {

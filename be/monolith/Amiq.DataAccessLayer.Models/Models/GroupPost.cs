@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Amiq.DataAccess.Models.Models
+namespace Amiq.DataAccessLayer.Models.Models
 {
     public partial class GroupPost
     {
@@ -9,6 +9,7 @@ namespace Amiq.DataAccess.Models.Models
         public Guid PostId { get; set; }
         public int GroupId { get; set; }
         public int AuthorId { get; set; }
+        public bool? VisibleAsCreatedByAdmin { get; set; }
 
         public virtual User Author { get; set; }
         public virtual Group Group { get; set; }

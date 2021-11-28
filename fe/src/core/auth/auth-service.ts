@@ -23,4 +23,13 @@ export default class AuthService extends BaseService {
     logout() {
         return this.httpClient.post(this.buildApiPath("logout"));
     }
+
+    changePassword(oldPassword: string, newPassword: string){
+        return this.httpClient.put(this.buildApiPath("change-password"),
+            {oldPassword, newPassword});
+    }
+
+    changeEmail(email:string){
+        return this.httpClient.put(this.buildApiPath("change-email"), {email});
+    }
 }

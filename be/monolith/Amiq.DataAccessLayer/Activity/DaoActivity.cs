@@ -1,12 +1,12 @@
 ﻿using Amiq.Contracts.Activity;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Activity
+namespace Amiq.DataAccessLayer.Activity
 {
     public class DaoActivity
     {

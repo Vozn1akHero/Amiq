@@ -1,6 +1,6 @@
 import {BaseService} from "core/base-service";
 import {HttpQueryParams} from "core/http-client";
-import {IGroupPost} from "./models/group-post";
+import {ICreateGroupPost, IGroupPost} from "./models/group-post";
 
 export class GroupPostService extends BaseService {
     apiModule = "group-post";
@@ -14,7 +14,7 @@ export class GroupPostService extends BaseService {
         return this.httpClient.get(this.buildApiPath("list"), null, queryParams);
     }
 
-    create(groupPost: Partial<IGroupPost>){
+    create(groupPost: ICreateGroupPost){
         return this.httpClient.post(this.apiModule, groupPost);
     }
 }

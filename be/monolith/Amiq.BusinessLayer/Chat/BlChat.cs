@@ -1,7 +1,7 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.Chat;
-using Amiq.DataAccess.Chat;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Chat;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

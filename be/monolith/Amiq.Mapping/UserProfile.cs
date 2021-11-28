@@ -1,6 +1,6 @@
 ﻿using Amiq.Contracts.Core;
 using Amiq.Contracts.User;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 
 namespace Amiq.Mapping
 {

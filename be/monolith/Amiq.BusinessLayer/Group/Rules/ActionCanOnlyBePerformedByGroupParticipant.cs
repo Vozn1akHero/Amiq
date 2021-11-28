@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Group;
+using Amiq.DataAccessLayer.Group;
 
 namespace Amiq.Business.Group.Rules
 {

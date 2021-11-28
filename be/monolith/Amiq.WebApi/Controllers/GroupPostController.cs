@@ -35,9 +35,9 @@ namespace Amiq.WebApi.Controllers
 
         [HttpPost]
         [AuthorizeGroupAdmin]
-        public async Task<IActionResult> CreateGroupPostAsync([FromBody] DtoGroupPost dtoGroupPost)
+        public async Task<IActionResult> CreateGroupPostAsync([FromBody] DtoCreateGroupPost dtoCreateGroupPost)
         {
-            var entity = await bsGroupPost.CreateAsync(dtoGroupPost);
+            var entity = await bsGroupPost.CreateAsync(dtoCreateGroupPost);
             return CreatedAtAction(nameof(CreateGroupPostAsync), entity);
         }
 

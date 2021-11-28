@@ -1,7 +1,7 @@
 ﻿using Amiq.Contracts.Auth;
 using Amiq.Contracts.User;
-using Amiq.DataAccess.Models;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Auth
+namespace Amiq.DataAccessLayer.Auth
 {
     public class DaoAuth : IDaoAuth
     {
@@ -64,6 +64,31 @@ namespace Amiq.DataAccess.Auth
         public bool EmailExists(string email)
         {
             return _amiqContext.Users.Any(e=> e.Email.Equals(email));
+        }
+
+        public bool IsPasswordCorrect(int userId, string password)
+        {
+            var user = _amiqContext.Users.AsNoTracking().SingleOrDefault(e=>e.UserId == userId);
+            if (user != null)
+            {
+                string currentPass = user.Password;
+                return currentPass.Equals(password);
+            }
+            return false;
+        }
+
+        public void ChangeUserPassword(int userId, string encryptedPassword)
+        {
+            var user = _amiqContext.Users.Find(userId);
+            user.Password = encryptedPassword;
+            _amiqContext.SaveChanges();
+        }
+
+        public void ChangeUserEmail(int userId, string email)
+        {
+            var user = _amiqContext.Users.Find(userId);
+            user.Password = email;
+            _amiqContext.SaveChanges();
         }
     }
 }

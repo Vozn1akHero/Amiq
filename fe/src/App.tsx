@@ -52,12 +52,12 @@ class App extends Component<any, State> {
         this.modalComponentSub.unsubscribe();
 
         const pageVisitationActivityStr = sessionStorage.getItem("act");
-        if(pageVisitationActivityStr) {
+        /*if(pageVisitationActivityStr) {
             const pageVisitationActivity = JSON.parse(pageVisitationActivityStr);
             this.activityTrackingService.create(pageVisitationActivity).then(res=>{
 
             })
-        }
+        }*/
     }
 
     render() {

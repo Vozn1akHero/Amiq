@@ -3,7 +3,7 @@ using Amiq.Contracts;
 using Amiq.Contracts.Core;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.User;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Data.SqlClient.DataClassification;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Amiq.DataAccess.Group
+namespace Amiq.DataAccessLayer.Group
 {
     public class DaoGroup
     {

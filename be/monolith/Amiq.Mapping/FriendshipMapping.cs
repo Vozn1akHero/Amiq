@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Friendship;
-using Amiq.DataAccess.Models.Models;
+using Amiq.DataAccessLayer.Models.Models;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

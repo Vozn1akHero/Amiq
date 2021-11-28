@@ -1,4 +1,4 @@
-﻿using Amiq.DataAccess.Models.Models;
+﻿using Amiq.DataAccessLayer.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +16,6 @@ namespace Amiq.Workers.Notification
             DbContext = new AmiqContext();
         }
 
-        public abstract IEnumerable<DataAccess.Models.Models.Notification> Create(IEnumerable<int> userIds);
+        public abstract IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<int> userIds);
     }
 }

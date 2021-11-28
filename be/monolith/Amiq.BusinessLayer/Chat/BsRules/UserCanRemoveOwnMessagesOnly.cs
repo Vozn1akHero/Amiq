@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Chat;
+using Amiq.DataAccessLayer.Chat;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

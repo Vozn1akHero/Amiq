@@ -1,5 +1,5 @@
 ﻿using Amiq.Business.Utils;
-using Amiq.DataAccess.Friendship;
+using Amiq.DataAccessLayer.Friendship;
 
 namespace Amiq.Business.Friend.BsRules
 {

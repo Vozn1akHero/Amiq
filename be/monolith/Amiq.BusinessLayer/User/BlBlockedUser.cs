@@ -2,8 +2,8 @@
 using Amiq.Business.User.BsRule;
 using Amiq.Business.Utils;
 using Amiq.Contracts.User;
-using Amiq.DataAccess.Models.Models;
-using Amiq.DataAccess.User;
+using Amiq.DataAccessLayer.Models.Models;
+using Amiq.DataAccessLayer.User;
 using System.Linq;
 using System.Threading.Tasks;
 

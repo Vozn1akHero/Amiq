@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Activity;
-using Amiq.DataAccess.Activity;
+using Amiq.DataAccessLayer.Activity;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
