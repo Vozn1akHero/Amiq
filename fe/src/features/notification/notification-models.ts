@@ -2,6 +2,6 @@ export interface INotification {
     notificationId: string;
     text: string;
     createdAt: Date;
-    photoSrc: string;
+    imageSrc: string;
     link: string;
 }

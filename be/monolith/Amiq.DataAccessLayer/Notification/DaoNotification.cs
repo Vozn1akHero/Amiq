@@ -36,9 +36,8 @@ namespace Amiq.DataAccessLayer.Notification
                     Link = e.Link,
                     CreatedAt = e.CreatedAt,
                     NotificationType = e.NotificationType
-                })
-                .Paginate(dtoPaginatedRequest.Page, dtoPaginatedRequest.Count);
-            result.Entities = await query.ToListAsync();
+                });
+            result.Entities = await query.Paginate(dtoPaginatedRequest.Page, dtoPaginatedRequest.Count).ToListAsync();
             result.Length = await query.CountAsync();
             return result;
         }

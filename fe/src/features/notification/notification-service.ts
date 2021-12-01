@@ -4,9 +4,9 @@ import {HttpQueryParams} from "../../core/http-client";
 export class NotificationService extends  BaseService {
     apiModule = "notification";
 
-    getAll(page: number, length: number){
+    getAll(page: number, count: number){
         return this.httpClient.get(this.apiModule, null, new HttpQueryParams()
             .append("page", page)
-            .append("length", length))
+            .append("count", count))
     }
 }

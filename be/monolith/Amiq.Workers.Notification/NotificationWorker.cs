@@ -35,7 +35,7 @@ namespace Amiq.Workers.Notification
                 HashSet<int> userIds = new HashSet<int> { 6 };
 
                 //wpisy
-                //var userPostNotifications = _userPostNotificationCreation.Create(userIds);
+                var userPostNotifications = _userPostNotificationCreation.Create(userIds);
                 var groupPostsNotifications = _groupPostNotificationCreation.Create(userIds);
 
                 //await _amiqContext.Notifications.AddRangeAsync(userPostNotifications);

@@ -1,5 +1,16 @@
 {
   "Version": 1,
-  "ProjectMap": {},
-  "NextColorIndex": 0
+  "ProjectMap": {
+    "32b5c77b-2d15-4870-ac49-8ed197390eaa": {
+      "ProjectGuid": "32b5c77b-2d15-4870-ac49-8ed197390eaa",
+      "DisplayName": "Amiq.Services.Group",
+      "ColorIndex": 0
+    },
+    "5f1894bd-104c-4320-b7c4-193b4e2dbf30": {
+      "ProjectGuid": "5f1894bd-104c-4320-b7c4-193b4e2dbf30",
+      "DisplayName": "Amiq.Services.Group.DataAccessLayer.Models",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
 }

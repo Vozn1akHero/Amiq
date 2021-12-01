@@ -6,7 +6,7 @@ import GroupPageContainer from "pages/group/GroupPageContainer";
 import ChatPageContainer from "pages/chat/ChatPageContainer";
 import AuthPageContainer from "pages/auth/AuthPageContainer";
 import ProfilePageContainer from "pages/profile/ProfilePageContainer";
-import NavigationWithRouter from "../../layout/navigation/Navigation";
+import {Navigation} from "../../layout/navigation/Navigation";
 import {Observable} from "rxjs";
 import JoinupPageContainer from "../joinup/JoinupPageContainer";
 import Footer from "layout/footer/Footer";
@@ -16,7 +16,6 @@ import NotFoundPage from "../not-found/NotFoundPage";
 import GroupSettingsPageContainer from "../group-settings/GroupSettingsPageContainer";
 import FriendListPage from "../friends/FriendListPage";
 import UserSettingsPage from "../user-settings/UsetSettingsPage";
-import Breadcrumb from "../../common/components/Breadcrumb/Breadcrumb";
 
 type Props = {
     isAuthenticated$: Observable<boolean>;
@@ -43,7 +42,7 @@ const IdentityWrapperPage = (props: Props) => {
             <Switch>
                 <Redirect from="/" to={Routes.getRouterLink(Routes.profilePageRoutes)} exact={true} />
                 <Route path="/" render={() => <>
-                    <NavigationWithRouter navRef={navigationRef} />
+                    <Navigation navRef={navigationRef} />
 
                     <div className="main-content" ref={mainContentRef}>
                         <div className="uk-margin-medium-top">

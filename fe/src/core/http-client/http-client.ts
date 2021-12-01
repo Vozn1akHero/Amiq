@@ -29,15 +29,9 @@ export class HttpClient {
         axiosRequestConfig.url = path;
         axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "get";
-
-        if(queryParams)
-            axiosRequestConfig.params = queryParams.toObject();
-
+        if(queryParams) axiosRequestConfig.params = queryParams.toObject();
         axiosRequestConfig.withCredentials = true;
-
-        const res = this.instance.request<any, AxiosResponse<T>>(axiosRequestConfig);
-
-        return res;
+        return this.instance.request<any, AxiosResponse<T>>(axiosRequestConfig);
     }
 
     public post(path: string, data?: any, params?: HttpParams, queryParams?: HttpQueryParams) :  Promise<AxiosResponse>{
@@ -45,13 +39,8 @@ export class HttpClient {
         axiosRequestConfig.url = path;
         axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "post";
-
-        if(queryParams)
-            axiosRequestConfig.params = queryParams.toObject();
-
+        if(queryParams) axiosRequestConfig.params = queryParams.toObject();
         if(data !== null) axiosRequestConfig.data = data;
-
-        //return axios.request(axiosRequestConfig);
         return this.instance.request(axiosRequestConfig);
     }
 
@@ -60,7 +49,6 @@ export class HttpClient {
         axiosRequestConfig.url = path;
         axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
         axiosRequestConfig.method = "delete";
-
         if(queryParams)
             axiosRequestConfig.params = queryParams.toObject();
 

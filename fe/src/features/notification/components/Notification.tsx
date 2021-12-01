@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {INotification} from "../notification-models";
 import "./notification.scss"
 import moment from "moment";
+import {Utils} from "../../../core/utils";
 
 type Props = {
     notification: INotification;
@@ -13,32 +14,38 @@ type State = {
 }
 
 class Notification extends Component<Props, State> {
+    /*getLink = (base: string) => {
+        return
+    }
+    */
+
     render() {
         return (
-            <div className="notification uk-margin-small-top uk-margin-small-bottom">
-                <article className="uk-comment uk-visible-toggle" >
-                    <header className="uk-comment-header uk-position-relative">
-                        <div className="uk-grid uk-grid-medium uk-flex-middle >" >
-                            <div className="uk-width-auto uk-flex-first">
-                                <Link to={this.props.notification.link ? this.props.notification.link : ""}>
-                                    <img className="notification__image border-radius-50" src={this.props.notification.photoSrc}
+            <Link to={this.props.notification.link} className="uk-link-text">
+                <div className="notification uk-card uk-card-default uk-card-body uk-background-default">
+                    <article className="uk-comment uk-visible-toggle" >
+                        <header className="uk-comment-header uk-position-relative">
+                            <div className="uk-grid uk-grid-medium uk-flex-middle >" >
+                                <div className="uk-width-auto uk-flex-first">
+                                    <img className="notification__image border-radius-50"
+                                         src={Utils.getImageSrc(this.props.notification.imageSrc)}
                                          alt=""/>
-                                </Link>
+                                </div>
+                                <div className="uk-width-expand">
+                                    <p className="uk-comment-meta uk-margin-remove-top">
+                                        {moment(this.props.notification.createdAt).fromNow()}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="uk-width-expand">
-                                <p className="uk-comment-meta uk-margin-remove-top">
-                                    <a className="uk-link-reset" href="#">{moment(this.props.notification.createdAt).fromNow()}</a>
-                                </p>
-                            </div>
+                        </header>
+                        <div className="uk-comment-body">
+                            <p>
+                                {this.props.notification.text}
+                            </p>
                         </div>
-                    </header>
-                    <div className="uk-comment-body">
-                        <p>
-                            {this.props.notification.text}
-                        </p>
-                    </div>
-                </article>
-            </div>
+                    </article>
+                </div>
+            </Link>
         );
     }
 }

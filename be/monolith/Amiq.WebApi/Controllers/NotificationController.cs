@@ -24,7 +24,7 @@ namespace Amiq.WebApi.Controllers
         public async Task<IActionResult> GetNotificationsAsync([FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
             var notifications = await _blNotification.GetNotificationsAsync(JwtStoredUserInfo.UserId, dtoPaginatedRequest);
-            return Ok();
+            return Ok(notifications);
         }
     }
 }
