@@ -1,6 +1,5 @@
-﻿using Amiq.Contracts.Auth;
-using Amiq.WebApi.Core;
-using Amiq.WebApi.Core.Auth;
+﻿using Amiq.ApiGateways.WebApp.Contracts.Auth;
+using Amiq.ApiGateways.WebApp.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Core.Auth
+namespace Amiq.ApiGateways.WebApp.Core.Auth
 {
     internal struct JwtRegisteredClaimNamesEx
     {
@@ -81,9 +80,7 @@ namespace Amiq.Core.Auth
         {
             DtoJwtStoredUserInfo result = new();
             var tokenHandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key"));
-            string publicKey = StaticContextConfigurationProvider.GetAppSetting("Jwt:PublicKey");
-            var key = Encoding.ASCII.GetBytes(publicKey);
+            var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:PublicKey"));
             tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
