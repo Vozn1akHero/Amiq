@@ -67,7 +67,7 @@ class GroupsPageContainer extends Component<any, State> {
     }
 
     leaveGroup = (groupId: number) => {
-        this.groupParticipant.leaveGroup(AuthStore.identity.userId, groupId).then(res => {
+        this.groupParticipant.leaveGroup(groupId).then(res => {
             if (res.status === StatusCodes.OK) {
                 this.setState({
                     groups: {

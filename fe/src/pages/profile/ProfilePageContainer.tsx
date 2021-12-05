@@ -189,6 +189,19 @@ const ProfilePageContainer: React.FC = (props: any) => {
             }
         })
     }
+
+    const onAvatarChangeSubmit = (file: File) => {
+        userService.changeAvatar(file).then(res => {
+            if(res.status === StatusCodes.OK){
+                setUserData({
+                    ...userData,
+                    avatarPath: res.data.entity.avatarPath
+                })
+                window.location.reload();
+            }
+        })
+
+    }
     //#endregion
 
     const getPostComments = (postId: string, page: number) => {
@@ -288,6 +301,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
                      userData={userData}
                      userDataLoaded={userDataLoaded}
                      createPost={createPost}
+                     onAvatarChangeSubmit={onAvatarChangeSubmit}
         />
     );
 }

@@ -12,23 +12,22 @@ namespace Amiq.Services.Group.Controllers
         private BlGroup bsGroup = new BlGroup();
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroupAsync([FromBody] DtoCreateGroup dtoCreateGroup)
+        public async Task<IActionResult> CreateGroupAsync(int userId, [FromBody] DtoCreateGroup dtoCreateGroup)
         {
-            DtoGroupCard group = await bsGroup.CreateGroupAsync(JwtStoredUserInfo.UserId, dtoCreateGroup);
+            DtoGroupCard group = await bsGroup.CreateGroupAsync(userId, dtoCreateGroup);
             return CreatedAtAction(nameof(CreateGroupAsync), group);
         }
 
         [HttpPost("drop")]
-        [AuthorizeMainGroupAdmin]
         public async Task<IActionResult> DropGroup([FromBody] DtoDropGroupRequest dtoDropGroupRequest)
         {
             return await Task.FromResult(Ok());
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetByName([FromQuery] string name)
+        public async Task<IActionResult> GetByName(int userId, [FromQuery] string name)
         {
-            var data = await bsGroup.GetByName(JwtStoredUserInfo.UserId, name);
+            var data = await bsGroup.GetByName(userId, name);
             return Ok(data);
         }
 
@@ -48,9 +47,9 @@ namespace Amiq.Services.Group.Controllers
         }
 
         [HttpGet("user-params/{groupId}")]
-        public async Task<IActionResult> GetGroupUserParamsAsync([FromRoute] int groupId)
+        public async Task<IActionResult> GetGroupUserParamsAsync(int userId, [FromRoute] int groupId)
         {
-            var result = await bsGroup.GetGroupUserParamsAsync(JwtStoredUserInfo.UserId, groupId);
+            var result = await bsGroup.GetGroupUserParamsAsync(userId, groupId);
             return Ok(result);
         }
     }

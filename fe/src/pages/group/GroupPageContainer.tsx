@@ -115,6 +115,21 @@ class GroupPageContainer extends Component<Props, State> {
         })
     }
 
+    changeGroupAvatar = (file: File) => {
+        this.groupService.changeGroupAvatar(this.state.groupData.groupId, file).then(res => {
+            if(res.status === StatusCodes.OK){
+                const {avatarSrc} = res.data.entity as IGroupData;
+                this.setState({
+                    groupData: {
+                        ...this.state.groupData,
+                        avatarSrc
+                    }
+                })
+                window.location.reload();
+            }
+        })
+    }
+
     createComment = (data: IGroupPostCommentCreation) => {
         data.groupId = this.state.groupData.groupId;
         this.props.createGroupPostComment(data);
@@ -178,10 +193,12 @@ class GroupPageContainer extends Component<Props, State> {
                        onPostCreated={this.props.createPost}
                        onCommentCreated={this.createComment}
                        basicAdminPermissionsAvailable={this.state.basicAdminPermissionsAvailable}
+                       groupViewerRole={this.state.groupViewerRole}
                        groupData={this.state.groupData}
                        groupPosts={this.props.groupPosts}
                        groupPostsLoaded={this.props.groupPostsLoaded}
                        groupDataLoaded={this.state.groupDataLoaded}
+                       onAvatarChangeSubmit={this.changeGroupAvatar}
             />
         );
     }

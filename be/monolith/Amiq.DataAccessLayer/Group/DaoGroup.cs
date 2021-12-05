@@ -78,20 +78,49 @@ namespace Amiq.DataAccessLayer.Group
             var query = _amiqContext.Groups.Where(e => e.GroupId == groupId);
             var data = await APAutoMapper.Instance.ProjectTo<DtoGroup>(query).SingleOrDefaultAsync();
             return data;
+            /*return _amiqContext.Groups.Where(e => e.GroupId == groupId)
+                .Select(e => new DtoGroup { 
+                
+                });*/
         }
 
-        public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
+        public DtoEditEntityResponse Edit(DtoEditGroupData dtoEditGroupDataRequest)
         {
             DtoEditEntityResponse result = new();
-            var group = _amiqContext.Groups.SingleOrDefault(e => e.GroupId == dtoEditGroupDataRequest.GroupId);
+            var group = _amiqContext.Groups
+                .Include(g => g.GroupDescriptionBlocks)
+                .ThenInclude(g=>g.TextBlock)
+                .SingleOrDefault(e => e.GroupId == dtoEditGroupDataRequest.GroupId);
             try
             {
                 if (group != null)
                 {
                     group.Name = dtoEditGroupDataRequest.Name;
-                    group.AvatarSrc = dtoEditGroupDataRequest.AvatarSrc;
                     group.Description = dtoEditGroupDataRequest.Description;
-                    await _amiqContext.SaveChangesAsync();
+
+                    foreach (var groupDescriptionBlock in group.GroupDescriptionBlocks)
+                    {
+                        var passedBlock = dtoEditGroupDataRequest
+                            .DescriptionBlocks
+                            .Where(e=> e.TextBlockId != Guid.Empty)
+                            .SingleOrDefault(e => e.TextBlockId == groupDescriptionBlock.TextBlockId);
+                        if (passedBlock!=null)
+                        {
+                            groupDescriptionBlock.TextBlock.Header = passedBlock.Header;
+                            groupDescriptionBlock.TextBlock.Content = passedBlock.Content;
+                        }
+                    }
+
+                    foreach(var descriptionBlock in dtoEditGroupDataRequest.DescriptionBlocks.Where(e => e.TextBlockId == Guid.Empty))
+                        group.GroupDescriptionBlocks.Add(new GroupDescriptionBlock { 
+                            GroupId = group.GroupId,
+                            TextBlock = new TextBlock { 
+                                Header = descriptionBlock.Header,
+                                Content = descriptionBlock.Content
+                            }
+                        });
+                    _amiqContext.Entry(group).State = EntityState.Modified;
+                    _amiqContext.SaveChanges();
                     result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
                     result.Result = true;
                 }
@@ -100,6 +129,17 @@ namespace Amiq.DataAccessLayer.Group
                 result.Result = false;
                 result.Message = ex.Message;
             }
+            return result;
+        }
+
+        public DtoEditEntityResponse ChangeGroupAvatar(int groupId, string avatarPath)
+        {
+            DtoEditEntityResponse result = new();
+            var group = _amiqContext.Groups.Find(groupId);
+            group.AvatarSrc = avatarPath;
+            _amiqContext.SaveChanges();
+            result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
+            result.Result = true;
             return result;
         }
     }

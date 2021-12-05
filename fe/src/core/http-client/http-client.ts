@@ -70,4 +70,27 @@ export class HttpClient {
 
         return this.instance.request(axiosRequestConfig);
     }
+
+    public uploadFile(path: string, options: {
+        file: File, params?: HttpParams, queryParams?: HttpQueryParams
+    }): Promise<AxiosResponse> {
+        const {file, params, queryParams} = options;
+        let axiosRequestConfig : AxiosRequestConfig = {};
+        axiosRequestConfig.url = path;
+        axiosRequestConfig.url += params != null ? "/" + params.toStrParams() : "";
+        axiosRequestConfig.method = "post";
+        axiosRequestConfig.headers = {
+            "Content-Type": "multipart/form-data"
+        }
+
+        if(queryParams)
+            axiosRequestConfig.params = queryParams.toObject();
+
+        const content = new FormData();
+        content.append("file", file);
+
+        axiosRequestConfig.data = content;
+
+        return this.instance.request(axiosRequestConfig);
+    }
 }

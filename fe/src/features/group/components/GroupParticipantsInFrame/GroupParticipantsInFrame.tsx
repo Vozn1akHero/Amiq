@@ -8,7 +8,7 @@ import {IPaginatedStoreData} from "../../../../store/redux/base/paginated-store-
 import {IGroupParticipant} from "../../models/group-models";
 
 type Props = {
-    //items: Array<IUserInFrame>;
+    groupId: number;
     groupParticipants: IPaginatedStoreData<IGroupParticipant>;
 }
 
@@ -33,12 +33,10 @@ class GroupParticipantsInFrame extends Component<Props> {
             <div className="group-participants-in-frame">
                 <ItemsFrameL title="Uczestnicy"
                              displayHeaderAsLink={true}
-                             link={"/group/1/participants"}
+                             link={`/group/${this.props.groupId}/participants`}
                              icon="users">
                     {
-                        this.props.groupParticipants.loaded &&
-
-                        this.props.groupParticipants.entities.length > 0 ?
+                        this.props.groupParticipants.loaded && this.props.groupParticipants.entities.length > 0 ?
                             <div className="group-participants-in-frame__items">
                                 {this.getConvertedParticipantsToFrameItem().map((value, index) =>
                                     <Link key={index} to={value.link}>

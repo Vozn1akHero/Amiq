@@ -41,6 +41,7 @@ type Props = {
     commentCreated(data: IPostCommentCreation);
     removeComment(postCommentId: string);
     getMorePosts(): void;
+    onAvatarChangeSubmit(file: File):void;
     match: any;
     location: any;
     history: any;
@@ -88,10 +89,14 @@ class ProfilePage extends Component<Props, State> {
     }
 
     openAvatarPopup = () => {
-        ModalService.open(<ChangeAvatarPopup/>);
+        ModalService.open(<ChangeAvatarPopup avatarSrc={this.props.userData.avatarPath}
+                                             pageTitle={this.props.userData.name + " " + this.props.userData.surname}
+                                             onSubmit={(file:File) => {
+                                                 this.props.onAvatarChangeSubmit(file);
+                                                 ModalService.close();
+                                             }}
+        />);
     }
-
-
 
     render() {
         return (

@@ -11,6 +11,7 @@ type Props = {
     userSpecifics?: Partial<IUser>;
     groupSpecifics?: Partial<IGroupData>;
     onChangeAvatarBtnClick?(): void;
+    //asBlob?:boolean;
 }
 
 class PageAvatar extends Component<Props, any> {
@@ -19,11 +20,23 @@ class PageAvatar extends Component<Props, any> {
         marginTop: "15px"
     }
 
+    /*getBg = () => {
+        if(this.props.asBlob){
+            return "url(" + this.props.avatarSrc + ")";
+        } else {
+            return "url(" + Utils.getImageSrc(this.props.avatarSrc) + ")";
+        }
+    }
+
+    getAvatar = () => {
+        return this.props.asBlob ? this.props.avatarSrc : Utils.getImageSrc(this.props.avatarSrc);
+    }*/
+
     render() {
         return (
             <div className="page-avatar uk-card uk-card-default uk-card-body">
                 <div className="page-avatar__avatarBg"
-                     style={{backgroundImage: "url(" + Utils.getImageSrc(this.props.avatarSrc) + ")"}}></div>
+                     style={{backgroundImage: "url(" + this.props.avatarSrc + ")"}}></div>
 
                 <div className="page-avatar__img-wrap">
                     {
@@ -38,7 +51,7 @@ class PageAvatar extends Component<Props, any> {
                         </div>
                     }
                     <img className="page-avatar__img"
-                         src={Utils.getImageSrc(this.props.avatarSrc)}
+                         src={this.props.avatarSrc}
                          alt=""/>
                 </div>
 

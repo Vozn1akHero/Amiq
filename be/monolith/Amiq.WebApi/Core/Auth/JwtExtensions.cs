@@ -82,8 +82,8 @@ namespace Amiq.Core.Auth
             DtoJwtStoredUserInfo result = new();
             var tokenHandler = new JwtSecurityTokenHandler();
             //var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key"));
-            string publicKey = StaticContextConfigurationProvider.GetAppSetting("Jwt:PublicKey");
-            var key = Encoding.ASCII.GetBytes(publicKey);
+            //string publicKey = StaticContextConfigurationProvider.GetAppSetting("Jwt:PublicKey");
+            //var key = Encoding.ASCII.GetBytes(publicKey);
             tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;

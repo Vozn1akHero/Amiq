@@ -50,10 +50,13 @@ const GroupBasicSettingsSubpage = (props:Props) => {
         <div className="group-basic-settings">
             <Formik
                 initialValues={{name, description}}
-                onSubmit={(values, {setSubmitting}) => {
+                onSubmit={(values:Partial<IGroupData>, {setSubmitting}) => {
                     setSubmitting(true);
                     const dto: Partial<IGroupData> = {
-                        name, description
+                        groupId: props.groupData.groupId,
+                        name: values.name,
+                        description: values.description,
+                        descriptionBlocks
                     };
                     groupService.edit(dto).then(res => {
                         if(res.status === StatusCodes.OK){
@@ -86,7 +89,7 @@ const GroupBasicSettingsSubpage = (props:Props) => {
                             <div className="group-basic-settings__description-blocks uk-margin-small-top">
                                 {
                                     descriptionBlocks.map((value, index) => {
-                                        return <div className="uk-card uk-card-default uk-card-body">
+                                        return <div key={index} className="uk-card uk-card-default uk-card-body">
                                             <input defaultValue={value.header}
                                                    className="uk-input"
                                                    placeholder="Tytuł"

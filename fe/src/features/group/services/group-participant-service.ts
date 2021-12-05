@@ -13,11 +13,10 @@ export class GroupParticipantService extends BaseService {
         return this.httpClient.get(this.buildApiPath("user-groups"), null, queryParams)
     }
 
-    leaveGroup(userId: number, groupId: number) {
+    leaveGroup(groupId: number) {
         const queryParams = new HttpQueryParams();
-        queryParams.append("userId", userId.toString());
-        queryParams.append("groupId", groupId.toString());
-        return this.httpClient.delete(this.buildApiPath("leave"))
+        queryParams.append("groupId", groupId);
+        return this.httpClient.delete(this.buildApiPath("leave"), null, null, queryParams)
     }
 
     getGroupParticipantsByGroupId(groupId: number, page: number) {

@@ -49,9 +49,14 @@ namespace Amiq.Business
             return await _daGroup.GetGroupById(groupId);
         }
 
-        public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
+        public DtoEditEntityResponse Edit(DtoEditGroupData dtoEditGroupDataRequest)
         {
-            return await _daGroup.EditAsync(dtoEditGroupDataRequest);
+            return _daGroup.Edit(dtoEditGroupDataRequest);
+        }
+
+        public DtoEditEntityResponse ChangeGroupAvatar(int groupId, string avatarPath)
+        {
+            return _daGroup.ChangeGroupAvatar(groupId, avatarPath);
         }
     }
 }

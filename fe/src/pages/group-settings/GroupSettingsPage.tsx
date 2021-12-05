@@ -8,6 +8,7 @@ import UiKitDefaultSpinner from "../../common/components/UIKitDefaultSpinner/UIK
 import GroupEventsSettings from "./subpages/GroupEventsSettingsSubpage";
 import "./group-settings-page.scss"
 import {Routes} from "../../core/routing";
+import {Utils} from "../../core/utils";
 
 type Props = {
     match: any;
@@ -100,7 +101,7 @@ class GroupSettingsPage extends Component<Props, State> {
                     <div className="max-width">
                         {
                             this.props.basicGroupDataLoaded ? <PageAvatar viewTitle={this.props.basicGroupData.name}
-                                                                          avatarSrc={this.props.basicGroupData.avatarSrc} /> : <UiKitDefaultSpinner />
+                                                                          avatarSrc={Utils.getImageSrc(this.props.basicGroupData.avatarSrc)} /> : <UiKitDefaultSpinner />
                         }
                     </div>
                 </div>

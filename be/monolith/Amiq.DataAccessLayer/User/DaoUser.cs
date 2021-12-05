@@ -63,7 +63,16 @@ namespace Amiq.DataAccessLayer.User
             return result;
         }
 
-        
+        public DtoEditEntityResponse ChangeAvatar(int userId, string generatedFileName)
+        {
+            var dtoEditEntityResponse = new DtoEditEntityResponse();
+            var user = _amiqContext.Users.Find(userId);
+            user.AvatarPath = generatedFileName;
+            _amiqContext.SaveChanges();
+            dtoEditEntityResponse.Entity = APAutoMapper.Instance.Map<DtoBasicUserInfo>(user);
+            dtoEditEntityResponse.Result = true;
+            return dtoEditEntityResponse;
+        }
 
         public async Task<IEnumerable<DtoUserSearchResult>> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
         {

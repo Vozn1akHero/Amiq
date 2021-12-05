@@ -191,7 +191,7 @@ class Post extends Component<Props, State> {
                                 }
                                 {
                                     this.props.commentsCount > this.props.comments.length &&
-                                    <button className="get-more-children-btn"
+                                    <button className="post__comments__get-more-children-btn uk-button-default"
                                             onClick={this.getMoreComments}>Wyświetl więcej</button>
                                 }
                             </>

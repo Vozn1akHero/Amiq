@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PageAvatar from "common/components/PageAvatar/PageAvatar";
 import {IUser} from "../../models/user";
+import {Utils} from "../../../../core/utils";
 
 type Props = {
     userData: IUser;
@@ -66,7 +67,7 @@ const UserAvatar = (props: Props) => {
     }
 
     return (
-        <PageAvatar avatarSrc={props.userData.avatarPath}
+        <PageAvatar avatarSrc={Utils.getImageSrc(props.userData.avatarPath)}
                     onChangeAvatarBtnClick={props.changeAvatarPopup}
                     isChangeAvatarBtnVisible={props.isViewerProfile}
                     userSpecifics={props.userData}

@@ -98,7 +98,7 @@ export const getUserPostComments = (postId: string, page: number, count: number)
 }
 
 export const getGroupPostComments = (postId: string, page: number, count: number) => dispatch => {
-    postCommentService.getPostComments(postId, page, count).then(res => {
+    postCommentService.getGroupPostComments(postId, page, count).then(res => {
         if (res.status === StatusCodes.OK) {
             const comments = res.data as IResponseListOf<IGroupPostComment>;
             dispatch({

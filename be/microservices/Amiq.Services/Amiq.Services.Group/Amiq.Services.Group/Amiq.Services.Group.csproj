@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Amiq.Services.BusinessLayer\Amiq.Services.BusinessLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Base\" />
-  </ItemGroup>
-
 </Project>

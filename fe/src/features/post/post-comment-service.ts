@@ -14,13 +14,12 @@ export class PostCommentService extends BaseService {
     }
 
     getGroupPostComments(postId: string, page: number, count: number){
-        const params = new HttpParams()
-            .append("postId", postId);
         const queryParams = new HttpQueryParams()
+            .append("postId", postId)
             .append("commentType", 20)
             .append("count", count)
             .append("page", page);
-        return this.httpClient.get(this.buildApiPath("group-post-comments"), params, queryParams);
+        return this.httpClient.get(this.buildApiPath("group-post-comments"), null, queryParams);
     }
 
     delete(postCommentId: string){

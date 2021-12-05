@@ -59,7 +59,7 @@ class PostCreationForm extends Component<Props, {isCreateButtonVisible: boolean,
                     this.props.publishAsAdminOptionVisible && this.state.isCreateButtonVisible && <div className="comment-as-group-admin-wrap">
                         <label><input className="uk-checkbox"
                                       checked={this.state.isCreateAsAdminChecked}
-                                      onClick={()=>{
+                                      onChange={()=>{
                                           this.setState({
                                               isCreateAsAdminChecked: !this.state.isCreateAsAdminChecked
                                           })

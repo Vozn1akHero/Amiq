@@ -21,7 +21,7 @@ namespace Amiq.Services.Group.Controllers
         {
             if (cancellationToken.IsCancellationRequested)
             {
-                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
+                return new StatusCodeResult(499);
             }
             var data = await bsGroupEvent.GetAllGroupEventsAsync(groupId, dtoPaginatedRequest);
             return Ok(data);
@@ -29,9 +29,9 @@ namespace Amiq.Services.Group.Controllers
 
         [HttpGet("{groupEventId}")]
         [Produces(typeof(DtoGroupEvent))]
-        public IActionResult GetEventById(Guid groupEventId)
+        public IActionResult GetEventById(int userId, Guid groupEventId)
         {
-            var data = bsGroupEvent.GetEventByIdAsync(JwtStoredUserInfo.UserId, groupEventId);
+            var data = bsGroupEvent.GetEventByIdAsync(userId, groupEventId);
             return Ok(data);
         }
 

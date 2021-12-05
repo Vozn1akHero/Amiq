@@ -31,7 +31,7 @@ namespace Amiq.DataAccessLayer.Post
             result.Entities = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(commentsQuery).ToListAsync();
             result.Length = await _amiqContext
                     .Comments
-                    .Where(e => e.PostId == postId && !e.ParentId.HasValue && !e.IsRemoved)
+                    .Where(e => e.PostId == postId && !e.IsRemoved)
                     .CountAsync();
 
             return result;
@@ -48,8 +48,8 @@ namespace Amiq.DataAccessLayer.Post
                     .OrderByDescending(e => e.Comment.CreatedAt);
             result.Entities = await APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(commentsQuery).ToListAsync();
             result.Length = await _amiqContext
-                    .GroupPostComments
-                    .Where(e => e.Comment.PostId == postId && !e.Comment.ParentId.HasValue && !e.Comment.IsRemoved)
+                    .Comments
+                    .Where(e => e.PostId == postId && !e.IsRemoved)
                     .CountAsync();
 
             return result;

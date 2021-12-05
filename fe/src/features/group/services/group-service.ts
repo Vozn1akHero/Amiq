@@ -28,4 +28,11 @@ export class GroupService extends BaseService {
         return this.httpClient.get(this.buildApiPath("user-params"),
             new HttpParams().append("groupId", groupId))
     }
+
+    changeGroupAvatar(groupId: number, file: File){
+        return this.httpClient.uploadFile(this.buildApiPath("change-avatar"), {
+            file,
+            params: new HttpParams().append("groupId", groupId)
+        });
+    }
 }

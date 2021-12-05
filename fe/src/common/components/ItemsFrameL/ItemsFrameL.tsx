@@ -12,9 +12,9 @@ type Props = {
     children?: React.ReactNode,
 };
 export const ItemsFrameL = (props: Props) => {
-    useEffect(() => {
+    /*useEffect(() => {
         console.log(props.children)
-    }, [props.children])
+    }, [props.children])*/
 
     return (
         <div className="uk-card uk-card-default uk-card-body items-frame-l">

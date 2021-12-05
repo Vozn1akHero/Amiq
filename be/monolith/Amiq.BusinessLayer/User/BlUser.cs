@@ -33,6 +33,11 @@ namespace Amiq.Business.User
             return user;
         }
 
+        public DtoEditEntityResponse ChangeAvatar(int userId, string generatedFileName)
+        {
+            return _daUser.ChangeAvatar(userId, generatedFileName);
+        }
+
         public async Task<IEnumerable<DtoUserSearchResult>> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
         {
             return await _daUser.SearchAsync(issuerId, text, paginatedRequest);

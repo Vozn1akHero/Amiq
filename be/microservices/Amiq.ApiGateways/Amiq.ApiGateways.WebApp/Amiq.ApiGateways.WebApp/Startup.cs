@@ -1,3 +1,4 @@
+using Amiq.ApiGateways.WebApp.Middlewares;
 using CacheManager.Core;
 using CacheManager.Core.Logging;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,8 @@ namespace Amiq.ApiGateways.WebApp
             });
 
             app.UseOcelot().Wait();
+
+            app.UseMiddleware<UserRequestContextMiddleware>();
         }
     }
 }

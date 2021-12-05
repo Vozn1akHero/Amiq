@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import PostCreationForm from "features/post/PostCreationForm";
 import Post from "features/post/Post";
-import {IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
-import PageAvatar from "../../common/components/PageAvatar/PageAvatar";
+import {EnGroupViewerRole, IGroupData, IGroupParticipant} from "../../features/group/models/group-models";
 import {ICreateGroupPost, IGroupPost} from "../../features/post/models/group-post";
 import {Utils} from "../../core/utils";
 import {IGroupPostCommentCreation} from "../../features/post/models/post-comment";
@@ -22,6 +20,8 @@ import GroupEventsInFrame from "../../features/group/components/GroupEventsInFra
 import "./group-page.scss"
 import {ModalService} from "../../core/modal-service";
 import ChangeAvatarPopup from "../../features/user/components/ChangeAvatarPopup/ChangeAvatarPopup";
+import GroupAvatar from "../../features/group/components/GroupAvatar/GroupAvatar";
+import PostCreationForm from "../../features/post/PostCreationForm";
 
 type Props = {
     groupData: IGroupData;
@@ -36,10 +36,11 @@ type Props = {
     onDeletePost(postId: string);
     onRemoveComment(postCommentId: string);
     getComments(postId: string, page: number);
+    onAvatarChangeSubmit(file:File):void;
     match: any;
     location: any;
     history: any;
-    //groupViewerRole: EnGroupViewerRole;
+    groupViewerRole: EnGroupViewerRole;
 }
 
 type State = {
@@ -113,7 +114,12 @@ class GroupPage extends Component<Props, State> {
     }
 
     openChangeAvatarPopup = () => {
-        ModalService.open(<ChangeAvatarPopup/>);
+        ModalService.open(<ChangeAvatarPopup avatarSrc={this.props.groupData.avatarSrc}
+                                             pageTitle={this.props.groupData.name}
+                                             onSubmit={file => {
+                                                 this.props.onAvatarChangeSubmit(file);
+                                                 ModalService.close();
+                                                }} />);
     }
 
     parseGroupPosts = (posts: Array<IGroupPost>) => {
@@ -150,13 +156,22 @@ class GroupPage extends Component<Props, State> {
         this.props.history.push(route);
     }
 
+    canCreatePost = () => {
+        return this.props.groupViewerRole !== EnGroupViewerRole.Guest
+            && this.props.groupViewerRole !== EnGroupViewerRole.Blocked;
+    }
+
     render() {
         return (
             <div className="group-page uk-flex-center uk-grid uk-child-width-1-2">
                 <div className="uk-first-column uk-width-1-3">
-                    {this.props.groupDataLoaded && <PageAvatar avatarSrc={this.props.groupData.avatarSrc}
-                                                               onChangeAvatarBtnClick={this.openChangeAvatarPopup}
-                                                               viewTitle={this.props.groupData.name}/>}
+                    {
+                        this.props.groupDataLoaded &&
+                            <GroupAvatar avatarSrc={this.props.groupData.avatarSrc}
+                                         openChangeAvatarPopup={this.openChangeAvatarPopup}
+                                         isChangeAvatarBtnVisible={this.props.basicAdminPermissionsAvailable}
+                                         groupName={this.props.groupData.name} />
+                    }
 
                     <div className="uk-margin-medium-top">
                         {
@@ -186,7 +201,8 @@ class GroupPage extends Component<Props, State> {
 
                         {
                             this.props.groupParticipants.loaded && <div className="uk-margin-medium-top">
-                                <GroupParticipantsInFrame groupParticipants={this.props.groupParticipants}/>
+                                <GroupParticipantsInFrame groupId={this.props.match.params.groupId}
+                                                          groupParticipants={this.props.groupParticipants}/>
                             </div>
                         }
 
@@ -213,10 +229,12 @@ class GroupPage extends Component<Props, State> {
                             </div>
 
                             <div className="uk-margin-large-top">
-                                <div className="uk-margin-medium-bottom">
-                                    <PostCreationForm handleSubmit={this.onPostCreated}
-                                                      publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}/>
-                                </div>
+                                {
+                                    this.canCreatePost() && <div className="uk-margin-medium-bottom">
+                                        <PostCreationForm handleSubmit={this.onPostCreated}
+                                                          publishAsAdminOptionVisible={this.props.basicAdminPermissionsAvailable}/>
+                                    </div>
+                                }
                                 {this.props.groupPostsLoaded && this.parseGroupPosts(this.props.groupPosts)}
                             </div>
                         </>
