@@ -6,11 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Amiq.Services.Group.Contracts;
 using Amiq.Services.Group.Contracts.Utils;
+using Amiq.Services.Group.Base;
 
 namespace Amiq.Services.Group.Controllers
 {
-    [Authorize]
-    public class GroupEventController: ControllerBase
+    //[Authorize]
+    public class GroupEventController: AmiqGroupBaseController
     {
         private BlGroupEvent bsGroupEvent = new BlGroupEvent();
 

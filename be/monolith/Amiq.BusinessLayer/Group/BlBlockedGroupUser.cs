@@ -1,10 +1,7 @@
 ﻿using Amiq.Business.Utils;
 using Amiq.Contracts.Group;
 using Amiq.DataAccessLayer.Group;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Amiq.Business.Group

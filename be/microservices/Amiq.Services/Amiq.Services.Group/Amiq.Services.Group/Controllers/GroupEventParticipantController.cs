@@ -4,10 +4,11 @@ using System;
 using System.Threading.Tasks;
 using Amiq.Services.Group.Contracts;
 using Amiq.Services.Group.Contracts.Utils;
+using Amiq.Services.Group.Base;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class GroupEventParticipantController : ControllerBase
+    public class GroupEventParticipantController : AmiqGroupBaseController
     {
         private BlGroupEventParticipant _blGroupEventParticipant = new BlGroupEventParticipant();
 

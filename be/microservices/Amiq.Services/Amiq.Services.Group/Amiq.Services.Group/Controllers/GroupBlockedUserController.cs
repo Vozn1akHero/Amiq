@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Amiq.Services.Group.Contracts;
 using Amiq.Services.Group.Contracts.Utils;
+using Amiq.Services.Group.Base;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class GroupBlockedUserController : ControllerBase
+    public class GroupBlockedUserController : AmiqGroupBaseController
     {
         private BlBlockedGroupUser _blBlockedGroupUser = new BlBlockedGroupUser();
 

@@ -136,10 +136,13 @@ namespace Amiq.DataAccessLayer.Group
         {
             DtoEditEntityResponse result = new();
             var group = _amiqContext.Groups.Find(groupId);
-            group.AvatarSrc = avatarPath;
-            _amiqContext.SaveChanges();
-            result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
-            result.Result = true;
+            if (group != null)
+            {
+                group.AvatarSrc = avatarPath;
+                _amiqContext.SaveChanges();
+                result.Entity = APAutoMapper.Instance.Map<DtoGroup>(group);
+                result.Result = true;
+            }
             return result;
         }
     }

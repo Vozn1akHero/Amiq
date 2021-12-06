@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Amiq.Services.Group.Contracts;
 using Amiq.Services.Group.Contracts.Utils;
+using Amiq.Services.Group.Base;
 
 namespace Amiq.Services.Group.Controllers
 {
-    [Authorize]
-    public class GroupController : ControllerBase
+    //[Authorize]
+    public class GroupController : AmiqGroupBaseController
     {
         private BlGroup bsGroup = new BlGroup();
 

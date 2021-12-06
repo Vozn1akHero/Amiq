@@ -4,6 +4,7 @@ using CacheManager.Core.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.Cache.CacheManager;
@@ -19,10 +20,17 @@ namespace Amiq.ApiGateways.WebApp
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOcelot()
-                .AddCacheManager(settings => settings.WithDictionaryHandle());
+            /*services.AddOcelot()
+                .AddCacheManager(settings => settings.WithDictionaryHandle());*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

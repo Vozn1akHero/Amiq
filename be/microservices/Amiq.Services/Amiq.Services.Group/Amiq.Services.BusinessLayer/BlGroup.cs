@@ -25,12 +25,6 @@ namespace Amiq.Services.BusinessLayer
             return await _daGroupParticipant.GetGroupUserParamsAsync(userId, groupId);
         }
 
-        public DtoGroup GetGroupDataById(int groupId)
-        {
-            var group = new DtoGroup();
-            return group;
-        }
-
         public async Task<IEnumerable<DtoGroup>> GetParticipatedGroupByUserId(int userId)
         {
             var output = new List<DtoGroup>();
@@ -51,6 +45,11 @@ namespace Amiq.Services.BusinessLayer
         public async Task<DtoEditEntityResponse> EditAsync(DtoEditGroupDataRequest dtoEditGroupDataRequest)
         {
             return await _daGroup.EditAsync(dtoEditGroupDataRequest);
+        }
+
+        public DtoEditEntityResponse ChangeGroupAvatar(int groupId, string avatarPath)
+        {
+            return _daGroup.ChangeGroupAvatar(groupId, avatarPath);
         }
     }
 }

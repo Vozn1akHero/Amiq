@@ -26,12 +26,6 @@ namespace Amiq.Business
             return await _daGroupParticipant.GetGroupUserParamsAsync(userId, groupId);
         }
 
-        public DtoGroup GetGroupDataById(int groupId)
-        {
-            var group = new DtoGroup();
-            return group;
-        }
-
         public async Task<IEnumerable<DtoGroup>> GetParticipatedGroupByUserId(int userId)
         {
             var output = new List<DtoGroup>();

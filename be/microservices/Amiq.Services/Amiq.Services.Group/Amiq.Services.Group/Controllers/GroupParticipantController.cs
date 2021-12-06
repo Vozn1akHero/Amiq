@@ -4,11 +4,12 @@ using Amiq.Services.BusinessLayer;
 using Amiq.Services.Group.Contracts;
 using Amiq.Services.Group.Contracts.Utils;
 using Amiq.Services.Group.Contracts.Enums;
+using Amiq.Services.Group.Base;
 
 namespace Amiq.Services.Group.Controllers
 {
-    [Authorize]
-    public class GroupParticipantController : ControllerBase
+    //[Authorize]
+    public class GroupParticipantController : AmiqGroupBaseController
     {
         private BlGroupParticipant _bsGroupParticipant = new BlGroupParticipant();
 
@@ -55,7 +56,6 @@ namespace Amiq.Services.Group.Controllers
         }
 
         [HttpGet("viewer-role")]
-        [Authorize]
         public async Task<IActionResult> GetGroupRoleAsync([FromQuery] int userId, [FromQuery] int groupId)
         {
             var res = await _bsGroupParticipant.GetGroupViewerByUserIdAsync(userId, groupId);
@@ -63,7 +63,6 @@ namespace Amiq.Services.Group.Controllers
         }
 
         [HttpGet("list/{groupId}")]
-        [Authorize]
         public async Task<IActionResult> GetParticipantsAsync([FromRoute] int groupId, [FromQuery] DtoPaginatedRequest dtoPaginatedRequest)
         {
             var res = await _bsGroupParticipant.GetGroupParticipantsAsync(groupId, dtoPaginatedRequest);

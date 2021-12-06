@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Amiq.ApiGateways.WebApp/Amiq.ApiGateways.WebApp.csproj", "Amiq.ApiGateways.WebApp/"]
+COPY ["Amiq.ApiGateways.WebApp.csproj", "Amiq.ApiGateways.WebApp/"]
 RUN dotnet restore "Amiq.ApiGateways.WebApp/Amiq.ApiGateways.WebApp.csproj"
 COPY . .
 WORKDIR "/src/Amiq.ApiGateways.WebApp"
