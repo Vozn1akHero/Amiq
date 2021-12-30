@@ -1,29 +1,45 @@
-﻿using Amiq.Business.User;
-using Amiq.Contracts.User;
-using Amiq.WebApi.Base;
-using Microsoft.AspNetCore.Authorization;
+﻿using Amiq.Services.User.BusinessLayer;
+using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.HttpClients;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Amiq.WebApi.Controllers
+namespace Amiq.Services.User.Controllers
 {
-    public class UserController : AmiqBaseController
+    [Route("api/user")]
+    public class UserController : ControllerBase
     {
+        private FriendshipService _friendshipService;
         private BlUser _bsUser = new BlUser();
 
+        public UserController(FriendshipService friendshipService)
+        {
+            _friendshipService = friendshipService;
+        }
+
         [HttpGet("{userId}")]
-        [Authorize]
         public async Task<IActionResult> GetUserByIdAsync(int userId)
         {
-            var user = await _bsUser.GetUserByIdAsync(JwtStoredUserInfo.UserId, userId);
-            //var user = await _bsUser.GetUserByIdAsync(1, userId);
-            if(user == null) return NotFound();
+            string requestCreatorId = HttpContext.Request.Headers["Amiq-UserId"];
+            var user = await _bsUser.GetUserByIdAsync(int.Parse(requestCreatorId), userId);
+            if (user == null) return NotFound();
+
+            var friendshipStatus = _friendshipService.GetFriendshipStatusBetweenUsers(requestCreatorId, userId);
+            user.IsIssuerFriend = friendshipStatus.IsIssuerFriend;
+            user.IssuerReceivedFriendRequest = friendshipStatus.IssuerReceivedFriendRequest;
+            user.IssuerSentFriendRequest = friendshipStatus.IssuerSentFriendRequest;
+
             return Ok(user);
         }
 
-       
-    }
+        [HttpGet("basic-user-data/{userId}")]
+        [Produces(typeof(DtoBasicUserInfo))]
+        public async Task<IActionResult> GetBasicUserDataByIdAsync(int userId)
+        {
+            //string requestCreatorId = HttpContext.Request.Headers["Amiq-UserId"];
+            var user = await _bsUser.GetBasicUserDataByIdAsync(userId);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+
+     }
 }

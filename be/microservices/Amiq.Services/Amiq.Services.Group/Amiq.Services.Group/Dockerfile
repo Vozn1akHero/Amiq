@@ -5,9 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Amiq.Services.Group.csproj", "Amiq.Services.Group/"]
+COPY ./ .
 RUN dotnet restore "Amiq.Services.Group/Amiq.Services.Group.csproj"
-COPY . .
 WORKDIR "/src/Amiq.Services.Group"
 RUN dotnet build "Amiq.Services.Group.csproj" -c Release -o /app/build
 

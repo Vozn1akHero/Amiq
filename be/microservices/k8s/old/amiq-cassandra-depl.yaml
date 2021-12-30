@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amiq-cassandra-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amiq-cassandra
+  template:
+    metadata:
+      labels:
+        app: amiq-cassandra
+    spec:
+      containers:
+        - name: cassandra
+          image: cassandra-latest
+          ports:
+            - containerPort: 1412
+          volumeMounts:
+            - mountPath: /var/lib/cassandra
+              name: amiqcassandradb
+      volumes:
+        - name: amiqcassandradb
+          persistentVolumeClaim:
+            claimName: cassandra-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amiq-cassandra-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: amiq-cassandra
+  ports:
+    - name: amiq-cassandra
+      protocol: TCP
+      port: 1412
+      targetPort: 1412
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amiq-cassandra-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: amiq-cassandra
+  ports:
+    - protocol: TCP
+      port: 1412
+      targetPort: 1412

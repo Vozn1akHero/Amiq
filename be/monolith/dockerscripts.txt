@@ -1,0 +1,7 @@
+docker build -t amiq-webapi -f Amiq.WebApi/Dockerfile .
+
+docker run -d -p 8080:80 --name amiq-webapi-app amiq-webapi
+
+docker run -d -p 8081:80 --name amiq-webapi-app --network host amiq-webapi
+
+db: docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=123dimon" -p 1433:1433 --name sql1 -h sql1 -d mcr.microsoft.com/mssql/server:2019-latest

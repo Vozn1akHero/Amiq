@@ -1,6 +1,4 @@
-﻿using Amiq.Common.Enums;
-
-namespace Amiq.Services.Friendship.Common.Enums
+﻿namespace Amiq.Services.Friendship.Common.Enums
 {
     public enum EnSex
     {

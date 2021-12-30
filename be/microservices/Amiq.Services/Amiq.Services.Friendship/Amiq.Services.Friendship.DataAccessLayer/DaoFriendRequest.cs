@@ -20,14 +20,21 @@ namespace Amiq.Services.Friendship.DataAccessLayer
 
         public async Task<IEnumerable<DtoFriendRequest>> GetFriendRequestsAsync(int userId, FriendRequestType friendRequestType)
         {
-            Expression<Func<FriendRequest, bool>> whereBody = null;
+            Expression<Func<FriendRequest, bool>> whereBody = e => e.IssuerId == userId;
+
             if (friendRequestType == FriendRequestType.Creator)
                 whereBody = e => e.IssuerId == userId;
             else if (friendRequestType == FriendRequestType.Receiver)
                 whereBody = e => e.ReceiverId == userId;
-            IQueryable query = _amiqContext.FriendRequests.Where(whereBody);
+            /*IQueryable query = _amiqContext.FriendRequests.Where(whereBody);
             var result = await AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(query).ToListAsync();
-            return result;
+            return result;*/
+            return await _amiqContext.FriendRequests.Where(whereBody).Select(e => new DtoFriendRequest
+            {
+                FriendRequestId = e.FriendRequestId,
+                IssuerId = e.IssuerId,
+                ReceiverId = e.ReceiverId
+            }).ToListAsync();
         }
 
         public async Task<DbOperationResult> AcceptFriendRequestAsync(Guid friendRequestId)
@@ -43,7 +50,9 @@ namespace Amiq.Services.Friendship.DataAccessLayer
                     FirstUserId = frEntity.ReceiverId,
                     SecondUserId = frEntity.IssuerId
                 });
-                var chatEntity = new Models.Models.Chat
+
+                // TODO (broker)
+                /*var chatEntity = new Models.Models.Chat
                 {
                     FirstUserId = frEntity.ReceiverId,
                     SecondUserId = frEntity.IssuerId
@@ -55,8 +64,9 @@ namespace Amiq.Services.Friendship.DataAccessLayer
                     ChatId = chatEntity.ChatId,
                     AuthorId = frEntity.IssuerId,
                     TextContent = "Cześć"
-                });
-                await _amiqContext.SaveChangesAsync();
+                });*/
+                //await _amiqContext.SaveChangesAsync();
+
                 await t.CommitAsync();
             }
             catch (Exception ex)
@@ -99,7 +109,7 @@ namespace Amiq.Services.Friendship.DataAccessLayer
             _amiqContext.FriendRequests.Add(entity);
             await _amiqContext.SaveChangesAsync();
             var newFriendRequestQuery = _amiqContext.FriendRequests.Where(e => e.FriendRequestId == entity.FriendRequestId);
-            var newFriendRequest = await APAutoMapper.Instance.ProjectTo<DtoFriendRequest>(newFriendRequestQuery).SingleAsync();
+            var newFriendRequest = await AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(newFriendRequestQuery).SingleAsync();
             createEntityResponse.Result = true;
             createEntityResponse.Entity = newFriendRequest;
             return createEntityResponse;
@@ -112,9 +122,17 @@ namespace Amiq.Services.Friendship.DataAccessLayer
 
         public DtoFriendRequest GetFriendRequestByUserIds(int fUserId, int sUserId)
         {
-            IQueryable queryable = _amiqContext.FriendRequests.Where(e => e.IssuerId == fUserId && e.ReceiverId == sUserId
+            /*IQueryable queryable = _amiqContext.FriendRequests.Where(e => e.IssuerId == fUserId && e.ReceiverId == sUserId
                 || e.IssuerId == sUserId && e.ReceiverId == fUserId);
-            return APAutoMapper.Instance.ProjectTo<DtoFriendRequest>(queryable).Single();
+            return AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(queryable).Single();*/
+            return _amiqContext.FriendRequests.AsNoTracking().Where(e => e.IssuerId == fUserId && e.ReceiverId == sUserId
+                || e.IssuerId == sUserId && e.ReceiverId == fUserId)
+                .Select(e => new DtoFriendRequest { 
+                    FriendRequestId = e.FriendRequestId,
+                    IssuerId = e.IssuerId,
+                    ReceiverId = e.ReceiverId
+                })
+                .Single();
         }
 
         public bool FriendRequestExists(int fUserId, int sUserId)

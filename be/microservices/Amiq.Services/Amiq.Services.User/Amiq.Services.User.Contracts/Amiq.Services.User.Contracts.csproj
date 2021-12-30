@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Amiq.Services.User.Common\Amiq.Services.User.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -38,7 +38,7 @@ namespace Amiq.Core.Auth
         public static AccessToken GenerateJSONWebToken(DtoJwtBase jwtBase)
         {
             AccessToken accessToken = new();
-            accessToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+            accessToken.ExpiresAt = DateTime.UtcNow.AddDays(21);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key"));
             var tokenDescriptor = new SecurityTokenDescriptor

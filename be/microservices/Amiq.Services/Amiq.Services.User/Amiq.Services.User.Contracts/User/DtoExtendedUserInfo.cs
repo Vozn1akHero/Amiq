@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Services.User.Contracts.User
 {
+#pragma warning disable CS8618
     public class DtoExtendedUserInfo
     {
         public int UserId { get; set; }
@@ -22,4 +23,6 @@ namespace Amiq.Services.User.Contracts.User
         public bool IssuerSentFriendRequest { get; set; }
         public bool IsIssuerFriend { get; set; }
     }
+#pragma warning restore CS8618
 }
+

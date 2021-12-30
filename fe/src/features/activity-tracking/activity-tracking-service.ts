@@ -1,4 +1,5 @@
-import {BaseService} from "../../core/base-service";
+
+import { BaseService } from "core/base-service";
 import {IPageVisitationActivity} from "./models";
 
 export class ActivityTrackingService extends BaseService {

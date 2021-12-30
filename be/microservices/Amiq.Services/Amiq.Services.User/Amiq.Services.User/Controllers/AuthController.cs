@@ -1,38 +1,29 @@
-﻿using Amiq.WebApi.Base;
-using Amiq.Contracts;
-using Amiq.Contracts.Auth;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Amiq.Business.Auth;
-using Microsoft.AspNetCore.Http;
-using Amiq.Core.Auth;
-using Amiq.Common.Enums;
+﻿using Amiq.Services.User.Base;
+using Amiq.Services.User.BusinessLayer;
+using Amiq.Services.User.Common.Enums;
+using Amiq.Services.User.Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Amiq.Contracts.User;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Amiq.WebApi.Controllers
+namespace Amiq.Services.User.Controllers
 {
     public class AuthController : AmiqBaseController
     {
         private BlAuth _bsAuth = new BlAuth();
 
         [HttpPut("change-password")]
-        [Authorize]
+        //[Authorize]
         public IActionResult ChangePassword([FromBody] DtoChangeUserPassword dtoChangeUserPassword)
         {
-            var result = _bsAuth.ChangePassword(JwtStoredUserInfo.UserId, dtoChangeUserPassword);
+            var result = _bsAuth.ChangePassword(JwtStoredUserId, dtoChangeUserPassword);
             return Ok(result);
         }
 
         [HttpPut("change-email")]
-        [Authorize]
+        //[Authorize]
         public IActionResult ChangeEmail([FromBody] string email)
         {
-            var result = _bsAuth.ChangeEmail(JwtStoredUserInfo.UserId, email);
+            var result = _bsAuth.ChangeEmail(JwtStoredUserId, email);
             return Ok(result);
         }
 
@@ -42,18 +33,21 @@ namespace Amiq.WebApi.Controllers
             try
             {
                 DtoUserAuthenticationResult result = _bsAuth.Authenticate(dtoUserAuthentication);
-                if (result.Success)
+                /*if (result.Success)
                 {
                     var jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase);
-                    Response.Cookies.Append("token", jwt.Token, new CookieOptions { 
+                    Response.Cookies.Append("token", jwt.Token, new CookieOptions
+                    {
                         HttpOnly = true,
                         //IsEssential = true,
                         //SameSite = SameSiteMode.None,
                         //Secure = true,
                     });
-                }
+                }*/
                 return result.Success ? Ok(result) : new ForbidResult();
-            } catch (Exception ex) {
+            }
+            catch (Exception)
+            {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
@@ -66,13 +60,15 @@ namespace Amiq.WebApi.Controllers
                 dtoUserRegistration.Sex = EnumExtensions.TryMapStrValueToAltValue(typeof(EnSex), dtoUserRegistration.Sex);
                 var userRegistartionResult = _bsAuth.Register(dtoUserRegistration);
                 return Ok(userRegistartionResult);
-            } catch {
+            }
+            catch
+            {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpPost("logout")]
-        [Authorize]
+        //[Authorize]
         public IActionResult Logout()
         {
             HttpContext.Response.Cookies.Delete("token");
@@ -80,10 +76,10 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpGet("validate-credentials")]
-        [Authorize]
+        //[Authorize]
         public IActionResult ValidateCredentials()
         {
-            return Ok(JwtStoredUserInfo);
+            return Ok(JwtStoredUserId);
         }
     }
 }

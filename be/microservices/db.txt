@@ -1,2 +1,2 @@
-localhost,1433
+localhost,1433 / host.docker.internal,1433
 sa 123dimon

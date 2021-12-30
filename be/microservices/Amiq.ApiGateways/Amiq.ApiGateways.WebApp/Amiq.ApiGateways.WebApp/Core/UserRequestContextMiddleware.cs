@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Amiq.ApiGateways.WebApp.Middlewares
+namespace Amiq.ApiGateways.WebApp.Core
 {
-    public class UserRequestContextMiddleware 
+    public class UserRequestContextMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<UserRequestContextMiddleware> _logger;
@@ -21,7 +21,8 @@ namespace Amiq.ApiGateways.WebApp.Middlewares
 
             string token = context.Request.Cookies["token"];
 
-            if (!string.IsNullOrEmpty(token)) {
+            if (!string.IsNullOrEmpty(token))
+            {
                 if (JwtExtensions.ValidateToken(token))
                 {
                     var dataFromToken = JwtExtensions.GetJwtStoredUserInfo(token);
@@ -29,7 +30,7 @@ namespace Amiq.ApiGateways.WebApp.Middlewares
                 }
             }
 
-            await this._next(context);
+            await _next(context);
         }
     }
 }

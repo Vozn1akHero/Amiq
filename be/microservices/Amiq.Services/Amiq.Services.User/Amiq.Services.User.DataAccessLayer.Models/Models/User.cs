@@ -7,6 +7,8 @@ namespace Amiq.Services.User.DataAccessLayer.Models.Models
     {
         public User()
         {
+            BlockedUserDestUsers = new HashSet<BlockedUser>();
+            BlockedUserIssuers = new HashSet<BlockedUser>();
             UserDescriptionBlocks = new HashSet<UserDescriptionBlock>();
         }
 
@@ -21,6 +23,8 @@ namespace Amiq.Services.User.DataAccessLayer.Models.Models
         public string? AvatarPath { get; set; }
         public string? ShortDescription { get; set; }
 
+        public virtual ICollection<BlockedUser> BlockedUserDestUsers { get; set; }
+        public virtual ICollection<BlockedUser> BlockedUserIssuers { get; set; }
         public virtual ICollection<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
     }
 }

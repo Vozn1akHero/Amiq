@@ -15,7 +15,7 @@ Write-Host "Scaffolding dbcontext into project";
 dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.0
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 6.0.0
 mkdir Models
-dotnet ef dbcontext scaffold "data source=localhost;Database=Amiq_Friendship;MultipleActiveResultSets=True;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --project Amiq.Services.Friendship.DataAccessLayer.Models.csproj --context AmiqFriendshipContext
+dotnet ef dbcontext scaffold "Server=host.docker.internal,1423;Database=Amiq_Friendship;User Id=sa;Password=123Dimon!!!;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --project Amiq.Services.Friendship.DataAccessLayer.Models.csproj --context AmiqFriendshipContext
 Write-Host "Done scaffolding dbcontext into temp project"; 
 New-Item -ErrorAction Ignore -ItemType directory -Path "$workingDir/Models";
 Move-Item ./Models/* "$workingDir/Models" -force;

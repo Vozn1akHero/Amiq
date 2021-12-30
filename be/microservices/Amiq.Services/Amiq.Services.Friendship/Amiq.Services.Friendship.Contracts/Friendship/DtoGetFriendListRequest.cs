@@ -1,5 +1,4 @@
-﻿using Amiq.Common.DbOperation;
-using Amiq.Services.Friendship.Contracts.Utils;
+﻿using Amiq.Services.Friendship.Contracts.Utils;
 
 namespace Amiq.Services.Friendship.Contracts.Friendship
 {

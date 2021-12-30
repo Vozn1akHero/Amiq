@@ -1,6 +1,5 @@
-﻿using Amiq.DataAccessLayer.Friendship;
-using Amiq.Services.Friendship.BusinessLayer.Utils;
-using System;
+﻿using Amiq.Services.Friendship.BusinessLayer.Utils;
+using Amiq.Services.Friendship.DataAccessLayer;
 
 namespace Amiq.Services.Friendship.BusinessLayer.BsRules
 {

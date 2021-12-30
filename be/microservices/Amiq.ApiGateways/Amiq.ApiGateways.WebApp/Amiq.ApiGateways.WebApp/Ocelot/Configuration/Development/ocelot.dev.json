@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 14540
+          "Host": "host.docker.internal",
+          "Port": 49153
         }
       ],
       "UpstreamPathTemplate": "/amiq-group/{everything}",

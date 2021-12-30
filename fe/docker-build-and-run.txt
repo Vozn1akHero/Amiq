@@ -1,0 +1,3 @@
+npm build
+docker build -f Dockerfile -t amiq-fe .
+docker run -it --net=amiq_monolith_network --name amiq-fe-app -p 4001:80 amiq-fe

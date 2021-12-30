@@ -41,22 +41,23 @@ namespace Amiq.DataAccessLayer.Friendship
             return result;
         }
 
-        public async Task<IEnumerable<DtoFriend>> SearchForUserFriendsAsync(int issuerId, DtoPaginatedRequest request, string searchText)
+        public async Task<IEnumerable<DtoFriend>> SearchForUserFriendsAsync(int requestCreatorId,
+            DtoPaginatedRequest request, string searchText)
         {
             return await (from fr in _amiqContext.Friendships.AsNoTracking()
                           join u1 in _amiqContext.Users.AsNoTracking()
                           on fr.FirstUserId equals u1.UserId
                           join u2 in _amiqContext.Users.AsNoTracking()
                           on fr.SecondUserId equals u2.UserId
-                          where ((fr.FirstUserId == issuerId || fr.SecondUserId == issuerId) 
-                            && (u1.UserId == issuerId ? (u2.Name + " " + u2.Surname).ToUpper().StartsWith(searchText.ToUpper()) 
+                          where ((fr.FirstUserId == requestCreatorId || fr.SecondUserId == requestCreatorId) 
+                            && (u1.UserId == requestCreatorId ? (u2.Name + " " + u2.Surname).ToUpper().StartsWith(searchText.ToUpper()) 
                             : (u1.Name + " " + u1.Surname).ToUpper().StartsWith(searchText.ToUpper())))
                           select new DtoFriend
                           {
-                              UserId = fr.FirstUserId != issuerId ? fr.FirstUserId : fr.SecondUserId,
-                              Name = u1.UserId == issuerId ? u2.Name : u1.Name,
-                              Surname = u1.UserId == issuerId ? u2.Surname : u1.Surname,
-                              AvatarPath = u1.UserId == issuerId ? u2.AvatarPath : u1.AvatarPath
+                              UserId = fr.FirstUserId != requestCreatorId ? fr.FirstUserId : fr.SecondUserId,
+                              Name = u1.UserId == requestCreatorId ? u2.Name : u1.Name,
+                              Surname = u1.UserId == requestCreatorId ? u2.Surname : u1.Surname,
+                              AvatarPath = u1.UserId == requestCreatorId ? u2.AvatarPath : u1.AvatarPath
                           })
                           .Skip((request.Page - 1) * request.Count)
                           .Take(request.Count)

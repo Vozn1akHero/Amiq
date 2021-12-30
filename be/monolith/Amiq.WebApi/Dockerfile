@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY . .
+COPY ./ .
 RUN dotnet restore "Amiq.WebApi/Amiq.WebApi.csproj"
 WORKDIR "/src/Amiq.WebApi"
 RUN dotnet build "Amiq.WebApi.csproj" -c Release -o /app/build

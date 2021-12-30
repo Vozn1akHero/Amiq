@@ -1,4 +1,4 @@
-using Amiq.ApiGateways.WebApp.Middlewares;
+using Amiq.ApiGateways.WebApp.Core;
 using CacheManager.Core;
 using CacheManager.Core.Logging;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +31,7 @@ namespace Amiq.ApiGateways.WebApp
         {
             /*services.AddOcelot()
                 .AddCacheManager(settings => settings.WithDictionaryHandle());*/
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,8 +8,5 @@ namespace Amiq.Services.Friendship.DataAccessLayer.Models.Models
         public Guid FriendshipId { get; set; }
         public int FirstUserId { get; set; }
         public int SecondUserId { get; set; }
-
-        public virtual User FirstUser { get; set; } = null!;
-        public virtual User SecondUser { get; set; } = null!;
     }
 }

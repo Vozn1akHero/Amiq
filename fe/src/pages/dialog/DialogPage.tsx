@@ -11,7 +11,7 @@ export class DialogPage extends React.Component<Props, State> {
     render() {
         return (
             <div>
-
+                
             </div>
         );
     };

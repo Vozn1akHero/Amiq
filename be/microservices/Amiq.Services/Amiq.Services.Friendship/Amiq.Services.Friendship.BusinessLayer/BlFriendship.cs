@@ -1,4 +1,5 @@
 ﻿using Amiq.Services.Friendship.BusinessLayer.Utils;
+using Amiq.Services.Friendship.Common.DbOperation;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.Contracts.Utils;
 using Amiq.Services.Friendship.DataAccessLayer;
@@ -33,12 +34,12 @@ namespace Amiq.Services.Friendship.BusinessLayer
             DtoFriendSearchResult result = new();
             var foundFriends = await _daFriendship.SearchForUserFriendsAsync(issuerId, paginatedRequest, text);
             result.FoundFriends = foundFriends;
-            if (foundFriends.Count() < paginatedRequest.Count)
+            /*if (foundFriends.Count() < paginatedRequest.Count)
             {
                 var bsUser = new BlUser();
                 var foundUsers = await bsUser.SearchAsync(issuerId, text, paginatedRequest);
                 result.FoundUsers = foundUsers;
-            }
+            }*/
             return result;
         }
 
@@ -46,5 +47,8 @@ namespace Amiq.Services.Friendship.BusinessLayer
         {
             return _daFriendship.RemoveFriend(userId, friendId);
         }
+
+        public DtoFriendshipStatus GetFriendshipStatus(int requestUserId, int userId)
+        => _daFriendship.GetFriendshipStatus(requestUserId, userId);
     }
 }

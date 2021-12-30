@@ -1,0 +1,71 @@
+﻿using Amiq.Services.Friendship.Base;
+using Amiq.Services.Friendship.BusinessLayer;
+using Amiq.Services.Friendship.Common.Enums;
+using Amiq.Services.Friendship.Contracts.Friendship;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Amiq.Services.Friendship.Controllers
+{
+    public class FriendRequestController : AmiqBaseController
+    {
+        private BlFriendRequest _bsFriendRequest = new BlFriendRequest();
+
+        [HttpGet("friend-requests")]
+        public async Task<IActionResult> GetFriendRequestList([FromQuery] string friendRequestType)
+        {
+            FriendRequestType enFriendRequestType = EnumExtensions.GetValueByAlt<FriendRequestType>(friendRequestType);
+            var data = await _bsFriendRequest.GetFriendRequestsAsync(JwtStoredUserId, enFriendRequestType);
+            return Ok(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] DtoCreateFriendRequest dtoCreateFriendRequest)
+        {
+            var result = await _bsFriendRequest.CreateFriendRequestAsync(JwtStoredUserId, dtoCreateFriendRequest);
+            return CreatedAtAction(nameof(Create), result);
+        }
+
+        [HttpPost("accept-friend-request/{friendRequestId}")]
+        public async Task<IActionResult> AcceptFriendRequest([FromRoute] Guid friendRequestId)
+        {
+            var result = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserId, friendRequestId);
+            return Ok(result);
+        }
+
+        [HttpPost("accept-friend-request-by-dest-user/{destUserId}")]
+        public async Task<IActionResult> AcceptFriendRequestByDestUserId([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserId, destUserId);
+            return Ok(result);
+        }
+
+        [HttpPost("cancel-friend-request/{friendRequestId}")]
+        public async Task<IActionResult> CancelFriendRequest([FromRoute] Guid friendRequestId)
+        {
+            var result = await _bsFriendRequest.CancelFriendRequestAsync(JwtStoredUserId, friendRequestId);
+            return Ok(result);
+        }
+
+        [HttpPost("cancel-friend-request-by-dest-user/{destUserId}")]
+        public async Task<IActionResult> CancelFriendRequestByDestUserId([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.CancelFriendRequestAsync(JwtStoredUserId, destUserId);
+            return Ok(result);
+        }
+
+        [HttpPost("reject-friend-request/{friendRequestId}")]
+        public async Task<IActionResult> RejectFriendRequest([FromRoute] Guid friendRequestId)
+        {
+            var result = await _bsFriendRequest.RejectFriendRequestAsync(JwtStoredUserId, friendRequestId);
+            return Ok(result);
+        }
+
+        [HttpPost("reject-friend-request-by-dest-user/{destUserId}")]
+        public async Task<IActionResult> RejectFriendRequestByDestUserId([FromRoute] int destUserId)
+        {
+            var result = await _bsFriendRequest.RejectFriendRequestAsync(JwtStoredUserId, destUserId);
+            return Ok(result);
+        }
+
+    }
+}

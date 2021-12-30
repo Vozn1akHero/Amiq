@@ -1,16 +1,14 @@
 ﻿using Amiq.Services.User.BusinessLayer.Utils;
-using Amiq.Contracts;
-using Amiq.Contracts.User;
-using Amiq.Contracts.Utils;
-using Amiq.DataAccessLayer.User;
-using Amiq.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.Contracts.Utils;
+using Amiq.Services.User.DataAccessLayer;
 
-namespace Amiq.Services.User.BusinessLayer.User
+namespace Amiq.Services.User.BusinessLayer
 {
     public class BlUser : BusinessLayerBase
     {
@@ -25,11 +23,7 @@ namespace Amiq.Services.User.BusinessLayer.User
         public async Task<DtoExtendedUserInfo> GetUserByIdAsync(int requestIssuerId, int userId)
         {
             var user = await _daUser.GetUserByIdAsync(requestIssuerId, userId);
-            //if (user == null) return null;
-            //var result = APAutoMapper.Instance.Map<DtoExtendedUserInfo>(user);
             user.UserDescriptionBlocks = await GetUserDescriptionAsync(userId);
-            /*result.IsBlockedByRequestCreator = _blockedUser.IsUserBlockedByAnotherUser(requestIssuerId, userId);
-            result.IsFriendRequestSentByRequestCreator = */
             return user;
         }
 
@@ -37,5 +31,8 @@ namespace Amiq.Services.User.BusinessLayer.User
         {
             return await _daUser.SearchAsync(issuerId, text, paginatedRequest);
         }
+
+        public async Task<DtoBasicUserInfo> GetBasicUserDataByIdAsync(int userId)
+            => await _daUser.GetBasicUserDataByIdAsync(userId);
     }
 }

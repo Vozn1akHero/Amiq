@@ -1,8 +1,7 @@
 ﻿using Amiq.Services.User.BusinessLayer.Utils;
-using Amiq.DataAccessLayer.User;
-using System;
+using Amiq.Services.User.DataAccessLayer;
 
-namespace Amiq.Services.User.BusinessLayer.User.BsRule
+namespace Amiq.Services.User.BusinessLayer.BsRule
 {
     /// <summary>
     /// Reguła sprawdzająca czy użytkownik jest zablokowany przez innego 

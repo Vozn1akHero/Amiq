@@ -1,24 +1,15 @@
-﻿using Amiq.Business.Friend.BsRules;
-using Amiq.Business.User.BsRule;
-using Amiq.Common.DbOperation;
-using Amiq.Common.Enums;
-using Amiq.Contracts.Friendship;
-using Amiq.DataAccessLayer.Friendship;
-using Amiq.DataAccessLayer.User;
-using Amiq.Services.Friendship.BusinessLayer.Utils;
+﻿using Amiq.Services.Friendship.BusinessLayer.Utils;
+using Amiq.Services.Friendship.Common.DbOperation;
+using Amiq.Services.Friendship.Common.Enums;
+using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.Contracts.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Amiq.Services.Friendship.DataAccessLayer;
 
 namespace Amiq.Services.Friendship.BusinessLayer
 {
     public class BlFriendRequest : BusinessLayerBase
     {
         private DaoFriendRequest daoFriendRequest = new DaoFriendRequest();
-        private DaoBlockedUser _daBlockedUser = new DaoBlockedUser();
 
         public async Task<IEnumerable<DtoFriendRequest>> GetFriendRequestsAsync(int userId, FriendRequestType friendRequestType)
         {
@@ -27,8 +18,8 @@ namespace Amiq.Services.Friendship.BusinessLayer
 
         public async Task<DtoCreateEntityResponse> CreateFriendRequestAsync(int creatorId, DtoCreateFriendRequest createFriendRequest)
         {
-            CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(creatorId, createFriendRequest.ReceiverId));
-            CheckBsRule(new BsRuleFriendRequestCannotExist(creatorId, createFriendRequest.ReceiverId));
+            /*CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(creatorId, createFriendRequest.ReceiverId));
+            CheckBsRule(new BsRuleFriendRequestCannotExist(creatorId, createFriendRequest.ReceiverId));*/
 
             return await daoFriendRequest.CreateFriendRequestAsync(creatorId, createFriendRequest);
         }
@@ -46,14 +37,14 @@ namespace Amiq.Services.Friendship.BusinessLayer
 
         public async Task<DbOperationResult> CancelFriendRequestAsync(int userId, Guid friendRequestId)
         {
-            CheckBsRule(new BsRuleFriendRequestCanBeCancelledByCreator(daoFriendRequest, userId, friendRequestId));
+            //CheckBsRule(new BsRuleFriendRequestCanBeCancelledByCreator(daoFriendRequest, userId, friendRequestId));
             return await daoFriendRequest.CancelFriendRequestAsync(friendRequestId);
         }
 
         public async Task<DbOperationResult> CancelFriendRequestAsync(int userId, int destUserId)
         {
             var friendRequest = daoFriendRequest.GetFriendRequestByUserIds(userId, destUserId);
-            CheckBsRule(new BsRuleFriendRequestCanBeCancelledByCreator(daoFriendRequest, userId, friendRequest.FriendRequestId));
+            //CheckBsRule(new BsRuleFriendRequestCanBeCancelledByCreator(daoFriendRequest, userId, friendRequest.FriendRequestId));
             return await daoFriendRequest.CancelFriendRequestAsync(friendRequest.FriendRequestId);
         }
 

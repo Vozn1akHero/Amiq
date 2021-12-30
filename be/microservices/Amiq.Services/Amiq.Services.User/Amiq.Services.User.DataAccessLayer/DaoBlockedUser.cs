@@ -1,14 +1,8 @@
-﻿using Amiq.Contracts.User;
-using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Services.User.Contracts.User;
 using Amiq.Services.User.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Amiq.DataAccessLayer.User
+namespace Amiq.Services.User.DataAccessLayer
 {
     public class DaoBlockedUser
     {
@@ -17,7 +11,8 @@ namespace Amiq.DataAccessLayer.User
         public async Task<IEnumerable<DtoBlockedUser>> GetBlockedUsersByUserIdAsync(int userId)
         {
             return await _amiqContext.BlockedUsers.Where(e => e.IssuerId == userId)
-                .Select(e=>new DtoBlockedUser {
+                .Select(e => new DtoBlockedUser
+                {
                     UserId = e.DestUserId,
                     Name = e.DestUser.Name,
                     Surname = e.DestUser.Surname
@@ -29,7 +24,7 @@ namespace Amiq.DataAccessLayer.User
         {
             var record = _amiqContext.BlockedUsers.SingleOrDefault(e => e.IssuerId == dtoUserBlockRequest.IssuerId
                 && e.DestUserId == dtoUserBlockRequest.DestUserId);
-            if(record != null)
+            if (record != null)
             {
                 _amiqContext.Remove(record);
                 await _amiqContext.SaveChangesAsync();
@@ -61,7 +56,7 @@ namespace Amiq.DataAccessLayer.User
 
         public bool OneWayBlockExists(int issuerId, int userId)
         {
-            return _amiqContext.BlockedUsers.Any(e => (e.IssuerId == issuerId && e.DestUserId == userId) 
+            return _amiqContext.BlockedUsers.Any(e => e.IssuerId == issuerId && e.DestUserId == userId
             || e.IssuerId == userId && e.DestUserId == issuerId);
         }
 

@@ -1,13 +1,9 @@
-﻿using Amiq.Services.User.BusinessLayer.Friend.BsRules;
-using Amiq.Services.User.BusinessLayer.User.BsRule;
+﻿using Amiq.Services.User.BusinessLayer.BsRule;
 using Amiq.Services.User.BusinessLayer.Utils;
-using Amiq.Contracts.User;
-using Amiq.DataAccessLayer.Models.Models;
-using Amiq.DataAccessLayer.User;
-using System.Linq;
-using System.Threading.Tasks;
+using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.DataAccessLayer;
 
-namespace Amiq.Services.User.BusinessLayer.User
+namespace Amiq.Services.User.BusinessLayer
 {
     public class BlBlockedUser : BusinessLayerBase
     {
@@ -21,7 +17,9 @@ namespace Amiq.Services.User.BusinessLayer.User
         public void BlockUser(DtoUserBlockRequest dtoUserBlockRequest)
         {
             CheckBsRule(new BsRuleCannotPerformActionOnCommonBlock(dtoUserBlockRequest.IssuerId, dtoUserBlockRequest.DestUserId));
-            CheckBsRule(new BsRuleFriendRequestCannotExist(dtoUserBlockRequest.IssuerId, dtoUserBlockRequest.DestUserId));
+
+            //TODO
+            //CheckBsRule(new BsRuleFriendRequestCannotExist(dtoUserBlockRequest.IssuerId, dtoUserBlockRequest.DestUserId));
 
             _daBlockedUser.BlockUser(dtoUserBlockRequest);
         }

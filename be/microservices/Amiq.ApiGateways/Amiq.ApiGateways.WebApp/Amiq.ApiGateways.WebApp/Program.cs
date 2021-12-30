@@ -1,18 +1,23 @@
-using Amiq.ApiGateways.WebApp.Middlewares;
+using Amiq.ApiGateways.WebApp.Cache.Redis;
+using Amiq.ApiGateways.WebApp.Core;
+using Amiq.ApiGateways.WebApp.Core.Auth;
+using Amiq.ApiGateways.WebApp.HttpClients;
+using Amiq.ApiGateways.WebApp.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Ocelot.Cache.CacheManager;
 
 namespace Amiq.ApiGateways.WebApp
 {
@@ -59,24 +64,69 @@ namespace Amiq.ApiGateways.WebApp
                     })//.UseStartup<Startup>();
                     .ConfigureServices(services =>
                     {
+                        services.AddCors();
+
+                        services.AddControllers(opts =>
+                        {
+                            opts.SuppressAsyncSuffixInActionNames = false;
+                        });
+                        
+                        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                            .AddJwtBearer(options =>
+                            {
+                                options.RequireHttpsMetadata = false;
+                                options.SaveToken = true;
+                                options.TokenValidationParameters = JwtExtensions.JwtValidationParameters;
+                                options.Events = new JwtBearerEvents
+                                {
+                                    OnMessageReceived = context =>
+                                    {
+                                        context.Token = context.Request.Cookies["token"];
+                                        return Task.CompletedTask;
+                                    }
+                                };
+                            });
+                        services.Configure<JsonOptions>(opts => {
+                            opts.SerializerOptions.IgnoreNullValues = true;
+                            opts.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                        });
+
+                        services.AddRouting(options => {
+                            options.LowercaseUrls = true;
+                        });
+                        services.AddControllers(options =>
+                        {
+                            options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+                        });
+
                         services.AddOcelot()
                             .AddCacheManager(settings => settings.WithDictionaryHandle());
+                        
+                        services.AddSingleton<UserCacheService>();
+
+                        services.AddHttpClient<UserService>();
                     })
                     .Configure(app =>
                     {
                         app.UseRouting();
 
+                        app.UseCors(x => x
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .SetIsOriginAllowed(origin => true)
+                            .AllowCredentials());
+
+                        app.UseAuthentication();
+                        app.UseAuthorization();
+
+                        app.UseMiddleware<UserRequestContextMiddleware>();
+
                         app.UseEndpoints(endpoints =>
                         {
-                            endpoints.MapGet("/", async context =>
-                            {
-                                await context.Response.WriteAsync("Hello World!");
-                            });
+                            endpoints.MapControllers();
                         });
 
                         app.UseOcelot().Wait();
-
-                        //app.UseMiddleware<UserRequestContextMiddleware>();
                     })
                     .UseIIS()
                     .UseIISIntegration();

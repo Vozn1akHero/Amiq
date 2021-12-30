@@ -48,7 +48,10 @@ namespace Amiq.DataAccessLayer.Models.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("data source=localhost;Database=Amiq;MultipleActiveResultSets=True;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("data source=localhost;Database=Amiq;MultipleActiveResultSets=True;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=amiq-mssql-db;Database=Amiq;User Id=sa;Password=123Dimon!!!;MultipleActiveResultSets=True;");
+                //optionsBuilder.UseSqlServer("Server=host.docker.internal,1433;Database=Amiq;User Id=sa;Password=123dimon;");
+                optionsBuilder.UseSqlServer("Server=host.docker.internal,1423;Database=Amiq;User Id=sa;Password=123Dimon!!!;");
             }
         }
 

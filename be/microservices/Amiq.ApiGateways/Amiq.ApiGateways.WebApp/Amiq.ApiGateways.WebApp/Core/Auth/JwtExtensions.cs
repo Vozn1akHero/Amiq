@@ -80,7 +80,7 @@ namespace Amiq.ApiGateways.WebApp.Core.Auth
         {
             DtoJwtStoredUserInfo result = new();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:PublicKey"));
+            
             tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;

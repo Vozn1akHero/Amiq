@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  amiq-webapi-app:
+    build:
+      dockerfile: "Amiq.WebApi/Dockerfile"
+      context: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - "amiq-webapi-db"
+  amiq-webapi-db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "123dimon"
+      ACCEPT_EULA: "Y"
