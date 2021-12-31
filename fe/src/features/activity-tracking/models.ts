@@ -13,4 +13,5 @@ export interface IProfileVisitation {
 export interface IPageVisitationActivity {
     groupVisitations: Array<IGroupVisitation>;
     userProfileVisitations: Array<IProfileVisitation>;
+    //lastRequestTime?: Date;
 }

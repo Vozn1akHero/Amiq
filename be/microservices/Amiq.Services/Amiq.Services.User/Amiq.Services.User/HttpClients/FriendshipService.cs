@@ -4,13 +4,13 @@ namespace Amiq.Services.User.HttpClients
 {
     public class FriendshipService
     {
-        //private const string FRIENDSHIP_SERVICE = "http://friendship-clusterip-srv/api/";
-        private const string FRIENDSHIP_SERVICE = "http://localhost:49643";
         private HttpClient _httpClient;
+        private IConfiguration _configuration;
 
-        public FriendshipService(HttpClient httpClient)
+        public FriendshipService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public DtoFriendshipStatus GetFriendshipStatusBetweenUsers(string requestCreatorId, int sUserId)
@@ -18,7 +18,7 @@ namespace Amiq.Services.User.HttpClients
             DtoFriendshipStatus friendshipStatus = null;
 
             _httpClient.DefaultRequestHeaders.Add("Amiq-UserId", requestCreatorId);
-            var responseTask = _httpClient.GetAsync($"{FRIENDSHIP_SERVICE}/api/friendship/friendship-status/{sUserId}");
+            var responseTask = _httpClient.GetAsync($"{_configuration.GetValue<string>("Services:FriendshipService")}/api/friendship/friendship-status/{sUserId}");
             responseTask.Wait();
 
             var result = responseTask.Result;

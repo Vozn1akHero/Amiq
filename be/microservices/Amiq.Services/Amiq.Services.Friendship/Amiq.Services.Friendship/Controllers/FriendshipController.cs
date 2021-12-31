@@ -2,6 +2,7 @@
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.Contracts.Utils;
+using Amiq.Services.Friendship.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -13,6 +14,13 @@ namespace Amiq.Services.Friendship.Controllers
     public class FriendshipController : AmiqBaseController
     {
         private BlFriendship _bsFriend = new BlFriendship();
+        
+        private UserService _userService;
+
+        public FriendshipController(UserService userService)
+        {
+            _userService = userService;
+        }
 
         [HttpGet("friend-list/{userId}")]
         [Produces(typeof(DtoListResponseOf<DtoFriend>))]
@@ -27,8 +35,22 @@ namespace Amiq.Services.Friendship.Controllers
                 return new StatusCodeResult(499);
             }
             dtoFriendListRequest.IssuerId = userId;
-            var data = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
-            return Ok(data);
+
+            var friendList = await _bsFriend.GetUserFriendListAsync(dtoFriendListRequest);
+            
+            /*foreach (var friend in friendList.Entities)
+            {
+                var userData = await _userService.GetUserByIdAsync(friend.UserId);
+                if(userData == null)
+                {
+                    return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+                }
+                friend.Name = userData.Name;
+                friend.Surname = userData.Surname;
+                friend.AvatarPath = userData.AvatarPath;
+            }*/
+
+            return Ok(friendList);
         }
 
         [HttpGet("search")]

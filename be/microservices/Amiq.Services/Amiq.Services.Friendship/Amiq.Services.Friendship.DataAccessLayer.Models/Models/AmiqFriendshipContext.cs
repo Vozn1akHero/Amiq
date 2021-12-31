@@ -18,6 +18,7 @@ namespace Amiq.Services.Friendship.DataAccessLayer.Models.Models
 
         public virtual DbSet<FriendRequest> FriendRequests { get; set; } = null!;
         public virtual DbSet<Friendship> Friendships { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +40,18 @@ namespace Amiq.Services.Friendship.DataAccessLayer.Models.Models
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Issuer)
+                    .WithMany(p => p.FriendRequestIssuers)
+                    .HasForeignKey(d => d.IssuerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FriendRequest_Issuer");
+
+                entity.HasOne(d => d.Receiver)
+                    .WithMany(p => p.FriendRequestReceivers)
+                    .HasForeignKey(d => d.ReceiverId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FriendRequest_Receiver");
             });
 
             modelBuilder.Entity<Friendship>(entity =>
@@ -46,6 +59,29 @@ namespace Amiq.Services.Friendship.DataAccessLayer.Models.Models
                 entity.ToTable("Friendship", "Friendship");
 
                 entity.Property(e => e.FriendshipId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.FirstUser)
+                    .WithMany(p => p.FriendshipFirstUsers)
+                    .HasForeignKey(d => d.FirstUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_User");
+
+                entity.HasOne(d => d.SecondUser)
+                    .WithMany(p => p.FriendshipSecondUsers)
+                    .HasForeignKey(d => d.SecondUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_User1");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User", "User");
+
+                entity.Property(e => e.UserId).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).HasMaxLength(150);
+
+                entity.Property(e => e.Surname).HasMaxLength(150);
             });
 
             OnModelCreatingPartial(modelBuilder);

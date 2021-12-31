@@ -7,7 +7,7 @@ import store from "./store/redux/store";
 import moment from "moment";
 import 'moment/locale/pl'
 import {ModalService} from "./core/modal-service";
-import {Subscription} from "rxjs";
+import {Subscription, timer} from "rxjs";
 import {ActivityTrackingService} from "./features/activity-tracking/activity-tracking-service";
 import {StatusCodes} from "http-status-codes";
 
@@ -20,6 +20,7 @@ class App extends Component<any, State> {
     isOpenSub: Subscription;
     modalComponentSub: Subscription;
     activityTrackingService : ActivityTrackingService;
+    activityTimerSub: Subscription;
 
     constructor(props) {
         super(props);
@@ -32,6 +33,7 @@ class App extends Component<any, State> {
 
     componentDidMount() {
         this.subscribeToModalService();
+        this.storeActivity();
     }
 
     subscribeToModalService() {
@@ -47,17 +49,35 @@ class App extends Component<any, State> {
         })
     }
 
-    componentWillUnmount() {
-        this.isOpenSub.unsubscribe();
-        this.modalComponentSub.unsubscribe();
+    storeActivity(){
+        const source = timer(60000);
+        this.activityTimerSub = source.subscribe(val => {
+            const pageVisitationActivityStr = sessionStorage.getItem("act");
+            if(pageVisitationActivityStr) {
+                const pageVisitationActivity = JSON.parse(pageVisitationActivityStr);
+                this.activityTrackingService.create(pageVisitationActivity).then(res=>{
+                    if(res.status === StatusCodes.OK){
+                        console.log("activity saved")
+                    }
+                })
+            }
+        });
+    }
 
-        const pageVisitationActivityStr = sessionStorage.getItem("act");
-        /*if(pageVisitationActivityStr) {
+    componentWillUnmount() {
+        /*const pageVisitationActivityStr = sessionStorage.getItem("act");
+        if(pageVisitationActivityStr) {
             const pageVisitationActivity = JSON.parse(pageVisitationActivityStr);
             this.activityTrackingService.create(pageVisitationActivity).then(res=>{
-
+                if(res.status === StatusCodes.OK){
+                    console.log("activity saved")
+                }
             })
         }*/
+
+        this.isOpenSub.unsubscribe();
+        this.modalComponentSub.unsubscribe();
+        this.activityTimerSub.unsubscribe();
     }
 
     render() {

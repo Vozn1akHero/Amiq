@@ -30,9 +30,9 @@ namespace Amiq.Services.Group.Controllers
 
         [HttpGet("{groupEventId}")]
         [Produces(typeof(DtoGroupEvent))]
-        public IActionResult GetEventById(int userId, Guid groupEventId)
+        public IActionResult GetEventById(Guid groupEventId)
         {
-            var data = bsGroupEvent.GetEventByIdAsync(userId, groupEventId);
+            var data = bsGroupEvent.GetEventByIdAsync(JwtStoredUserId, groupEventId);
             return Ok(data);
         }
 

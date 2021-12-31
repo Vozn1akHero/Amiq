@@ -1,4 +1,6 @@
-﻿using Amiq.Services.User.Base;
+﻿using Amiq.Services.User.Amqp;
+using Amiq.Services.User.Amqp.IntegrationEvents;
+using Amiq.Services.User.Base;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Common.Enums;
 using Amiq.Services.User.Contracts.Auth;
@@ -57,9 +59,21 @@ namespace Amiq.Services.User.Controllers
         {
             try
             {
-                dtoUserRegistration.Sex = EnumExtensions.TryMapStrValueToAltValue(typeof(EnSex), dtoUserRegistration.Sex);
-                var userRegistartionResult = _bsAuth.Register(dtoUserRegistration);
-                return Ok(userRegistartionResult);
+                //dtoUserRegistration.Sex = EnumExtensions.TryMapStrValueToAltValue(typeof(EnSex), dtoUserRegistration.Sex);
+                //var userRegistartionResult = _bsAuth.Register(dtoUserRegistration);
+
+                //UserAmqpSender.Send(EnUserAmqpEvent.USER_CREATED.ToString(), userRegistartionResult.BasicUserInfo);
+                var @event = new UserModificationEvent(
+                    1,
+                    "TEST2",
+                    "Test2",
+                    "user.jpg"
+                );
+                @event.EventName = "UserModificationEvent";
+                RabbitMQPublisher.Publish(@event);
+
+                //return Ok(userRegistartionResult);
+                return Ok();
             }
             catch
             {

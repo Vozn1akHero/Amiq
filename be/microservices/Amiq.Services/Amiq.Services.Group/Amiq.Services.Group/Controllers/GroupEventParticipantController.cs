@@ -13,16 +13,16 @@ namespace Amiq.Services.Group.Controllers
         private BlGroupEventParticipant _blGroupEventParticipant = new BlGroupEventParticipant();
 
         [HttpPost("join/{groupEventId}")]
-        public async Task<IActionResult> JoinEventAsync(int userId, Guid groupEventId)
+        public async Task<IActionResult> JoinEventAsync(Guid groupEventId)
         {
-            var result = await _blGroupEventParticipant.JoinEventAsync(userId, groupEventId);
+            var result = await _blGroupEventParticipant.JoinEventAsync(JwtStoredUserId, groupEventId);
             return Ok(result);
         }
 
         [HttpDelete("leave/{groupEventId}")]
-        public async Task<IActionResult> LeaveEventAsync(int userId, Guid groupEventId)
+        public async Task<IActionResult> LeaveEventAsync(Guid groupEventId)
         {
-            await _blGroupEventParticipant.LeaveGroupAsync(userId, groupEventId);
+            await _blGroupEventParticipant.LeaveGroupAsync(JwtStoredUserId, groupEventId);
             return Ok();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Amiq.Contracts.Activity;
 using Amiq.DataAccessLayer.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,10 @@ namespace Amiq.DataAccessLayer.Activity
             var visitedGroupIds = dtoCreateActivityInBulk.GroupVisitations.Select(e=>e.GroupId).ToList();
             var visitedProfileIds = dtoCreateActivityInBulk.ProfileVisitations.Select(e=>e.VisitedUserId).ToList();
 
-            var existingVisitedGroups = _amiqContext.GroupVisitations
+            var existingVisitedGroups = _amiqContext.GroupVisitations.AsNoTracking()
                 .Where(e=>e.UserId == userId && visitedGroupIds.Contains(e.GroupId))
                 .ToList();
-            var existingVisitedProfiles = _amiqContext.ProfileVisitations
+            var existingVisitedProfiles = _amiqContext.ProfileVisitations.AsNoTracking()
                 .Where(e => e.UserId == userId && visitedGroupIds.Contains(e.VisitedUserId))
                 .ToList();
 

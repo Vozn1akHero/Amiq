@@ -236,7 +236,13 @@ const ProfilePageContainer: React.FC = (props: any) => {
         if(isViewerProfile) return;
 
         if(!sessionStorage.getItem("act"))
-            sessionStorage.setItem("act", JSON.stringify(""));
+        {
+            const obj : IPageVisitationActivity = {groupVisitations: [],
+                userProfileVisitations: [],
+                //lastRequestTime: moment().toDate()
+            };
+            sessionStorage.setItem("act", JSON.stringify(obj));
+        }
 
         let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
 

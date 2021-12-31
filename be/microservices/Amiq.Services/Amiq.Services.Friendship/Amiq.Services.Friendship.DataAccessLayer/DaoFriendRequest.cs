@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Amiq.Services.Friendship.Common.Enums;
 using Amiq.Services.Friendship.Mapping;
+using Amiq.Services.Friendship.Contracts.User;
 
 namespace Amiq.Services.Friendship.DataAccessLayer
 {
@@ -108,10 +109,16 @@ namespace Amiq.Services.Friendship.DataAccessLayer
             };
             _amiqContext.FriendRequests.Add(entity);
             await _amiqContext.SaveChangesAsync();
-            var newFriendRequestQuery = _amiqContext.FriendRequests.Where(e => e.FriendRequestId == entity.FriendRequestId);
-            var newFriendRequest = await AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(newFriendRequestQuery).SingleAsync();
+            /*var newFriendRequestQuery = _amiqContext.FriendRequests.Where(e => e.FriendRequestId == entity.FriendRequestId);
+            var newFriendRequest = await AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(newFriendRequestQuery).SingleAsync();*/
             createEntityResponse.Result = true;
-            createEntityResponse.Entity = newFriendRequest;
+            createEntityResponse.Entity = _amiqContext.FriendRequests.Where(e => e.FriendRequestId == entity.FriendRequestId)
+                .Select(e=> new DtoFriendRequest { 
+                    Creator = new DtoBasicUserInfo { 
+                       // UserId = e.
+                    }
+                })
+                .Single();
             return createEntityResponse;
         }
 

@@ -20,8 +20,9 @@ namespace Amiq.WebApi.Controllers
 
         [HttpGet("{userId}")]
         [Authorize]
-        public async Task<IActionResult> GetUserByIdAsync(int userId)
+        public async Task<IActionResult> GetUserByIdAsync(int userId, [FromQuery] bool fromProfile)
         {
+
             var user = await _blUser.GetUserByIdAsync(JwtStoredUserInfo.UserId, userId);
             //var user = await _bsUser.GetUserByIdAsync(1, userId);
             if(user == null) return NotFound();

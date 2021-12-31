@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amiq.Services.Friendship.DataAccessLayer.Models.Models;
+using AutoMapper;
 
 namespace Amiq.Services.Friendship.Mapping
 {
@@ -6,7 +7,7 @@ namespace Amiq.Services.Friendship.Mapping
     {
         public FriendshipMapping()
         {
-           
+            
         }
     }
 }

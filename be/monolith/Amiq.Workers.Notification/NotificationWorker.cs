@@ -23,28 +23,28 @@ namespace Amiq.Workers.Notification
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            stoppingToken.ThrowIfCancellationRequested();
 
-                //lista id u¿ytkowników
-                /*HashSet<int> userIds = _amiqContext.Users.AsNoTracking().Select(e => e.UserId)
-                    .Take(TAKE_USERS)
-                    .Skip((_page - 1) * TAKE_USERS)
-                    .ToHashSet();*/
-                HashSet<int> userIds = new HashSet<int> { 6 };
+            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                //wpisy
-                var userPostNotifications = _userPostNotificationCreation.Create(userIds);
-                var groupPostsNotifications = _groupPostNotificationCreation.Create(userIds);
+            //lista id u¿ytkowników
+            /*HashSet<int> userIds = _amiqContext.Users.AsNoTracking().Select(e => e.UserId)
+                .Take(TAKE_USERS)
+                .Skip((_page - 1) * TAKE_USERS)
+                .ToHashSet();*/
+            HashSet<int> userIds = new HashSet<int> { 6 };
 
-                //await _amiqContext.Notifications.AddRangeAsync(userPostNotifications);
-                //await _amiqContext.Notifications.AddRangeAsync(groupPostsNotifications);
-                //await _amiqContext.SaveChangesAsync();
+            //wpisy
+            var userPostNotifications = _userPostNotificationCreation.Create(userIds);
+            var groupPostsNotifications = _groupPostNotificationCreation.Create(userIds);
 
-                _page++;
-                await Task.Delay(TIMEOUT_BETWEEN_BULKS, stoppingToken);
-            }
+            //await _amiqContext.Notifications.AddRangeAsync(userPostNotifications);
+            //await _amiqContext.Notifications.AddRangeAsync(groupPostsNotifications);
+            //await _amiqContext.SaveChangesAsync();
+
+            _page++;
+
+            await Task.Delay(TIMEOUT_BETWEEN_BULKS, stoppingToken);
         }
     }
 }

@@ -149,9 +149,17 @@ class GroupPageContainer extends Component<Props, State> {
 
     storeTrackingActivity = () => {
         if(!sessionStorage.getItem("act"))
-            sessionStorage.setItem("act", JSON.stringify(""));
+        {
+            const obj : IPageVisitationActivity = {
+                groupVisitations: [],
+                userProfileVisitations: [],
+                //lastRequestTime: moment().toDate()
+            };
+            sessionStorage.setItem("act", JSON.stringify(obj));
+        }
 
         let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
+
         const{groupId} = this.props.match.params;
 
         if(!visitationState){

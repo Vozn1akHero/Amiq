@@ -7,6 +7,6 @@ namespace Amiq.Services.Group.Base
     [Route("api/[controller]")]
     public class AmiqGroupBaseController : ControllerBase
     {
-        public int UserId => int.Parse(HttpContext.Request.Headers["Amiq-UserId"]);
+        public int JwtStoredUserId => int.Parse(HttpContext.Request.Headers["Amiq-UserId"]);
     }
 }

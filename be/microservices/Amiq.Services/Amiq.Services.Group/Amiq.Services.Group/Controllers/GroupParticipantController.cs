@@ -14,7 +14,7 @@ namespace Amiq.Services.Group.Controllers
         private BlGroupParticipant _bsGroupParticipant = new BlGroupParticipant();
 
         [HttpGet("user-groups")]
-        public async Task<ActionResult<DtoListResponseOf<DtoGroup>>> GetUserGroupsByUserIdAsync(int userId, [FromQuery] EnGroupFilterType filterType,
+        public async Task<ActionResult<DtoListResponseOf<DtoGroup>>> GetUserGroupsByUserIdAsync([FromQuery] EnGroupFilterType filterType,
             [FromQuery] DtoPaginatedRequest dtoPaginatedRequest,
             CancellationToken cancellationToken = default)
         {
@@ -23,7 +23,7 @@ namespace Amiq.Services.Group.Controllers
                 return new StatusCodeResult(499);
             }
 
-            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(userId, dtoPaginatedRequest, filterType);
+            var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(JwtStoredUserId, dtoPaginatedRequest, filterType);
             return Ok(groups);
         }
 
@@ -35,16 +35,16 @@ namespace Amiq.Services.Group.Controllers
         }
 
         [HttpDelete("leave")]
-        public async Task<IActionResult> LeaveGroupAsync(int userId, [FromQuery] int groupId)
+        public async Task<IActionResult> LeaveGroupAsync([FromQuery] int groupId)
         {
-            await _bsGroupParticipant.LeaveGroupAsync(userId, groupId);
+            await _bsGroupParticipant.LeaveGroupAsync(JwtStoredUserId, groupId);
             return Ok();
         }
 
         [HttpPost("join/{groupId}")]
-        public async Task<IActionResult> JoinGroupAsync(int userId, [FromRoute] int groupId)
+        public async Task<IActionResult> JoinGroupAsync([FromRoute] int groupId)
         {
-            await _bsGroupParticipant.JoinGroupAsync(userId, groupId);
+            await _bsGroupParticipant.JoinGroupAsync(JwtStoredUserId, groupId);
             return Ok();
         }
 

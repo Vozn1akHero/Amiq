@@ -9,5 +9,8 @@ namespace Amiq.Services.Friendship.DataAccessLayer.Models.Models
         public int IssuerId { get; set; }
         public int ReceiverId { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public virtual User Issuer { get; set; } = null!;
+        public virtual User Receiver { get; set; } = null!;
     }
 }

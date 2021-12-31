@@ -2,7 +2,9 @@
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Common.Enums;
 using Amiq.Services.Friendship.Contracts.Friendship;
+using Amiq.Services.Friendship.HttpClients;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Amiq.Services.Friendship.Controllers
 {
@@ -10,12 +12,40 @@ namespace Amiq.Services.Friendship.Controllers
     {
         private BlFriendRequest _bsFriendRequest = new BlFriendRequest();
 
+        private UserService _userService;
+
+        public FriendRequestController(UserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpGet("friend-requests")]
         public async Task<IActionResult> GetFriendRequestList([FromQuery] string friendRequestType)
         {
             FriendRequestType enFriendRequestType = EnumExtensions.GetValueByAlt<FriendRequestType>(friendRequestType);
-            var data = await _bsFriendRequest.GetFriendRequestsAsync(JwtStoredUserId, enFriendRequestType);
-            return Ok(data);
+
+            var friendRequests = await _bsFriendRequest.GetFriendRequestsAsync(JwtStoredUserId, enFriendRequestType);
+
+            foreach (var friendRequest in friendRequests)
+            {
+                var receiver = await _userService.GetUserByIdAsync(friendRequest.ReceiverId);
+                var creator = await _userService.GetUserByIdAsync(friendRequest.IssuerId);
+
+                if (receiver == null || creator == null)
+                {
+                    return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+                }
+
+                friendRequest.Receiver.Name = receiver.Name;
+                friendRequest.Receiver.Surname = receiver.Surname;
+                friendRequest.Receiver.AvatarPath = receiver.AvatarPath;
+
+                friendRequest.Creator.Name = creator.Name;
+                friendRequest.Creator.Surname = creator.Surname;
+                friendRequest.Creator.AvatarPath = creator.AvatarPath;
+            }
+
+            return Ok(friendRequests);
         }
 
         [HttpPost]

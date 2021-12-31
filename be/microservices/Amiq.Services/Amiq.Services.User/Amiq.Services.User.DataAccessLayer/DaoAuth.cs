@@ -27,11 +27,17 @@ namespace Amiq.Services.User.DataAccessLayer
                 _amiqContext.Users.Add(user);
                 _amiqContext.SaveChanges();
             }
-            catch (DbUpdateException e)
+            catch (DbUpdateException)
             {
                 rsUserRegistartionResult.Success = false;
             }
             rsUserRegistartionResult.Success = true;
+            rsUserRegistartionResult.BasicUserInfo = new DtoBasicUserInfo { 
+                UserId = user.UserId,
+                Name = user.Name,
+                Surname = user.Surname,
+                AvatarPath = user.AvatarPath
+            };
             return rsUserRegistartionResult;
         }
 

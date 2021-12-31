@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.31717.71
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification", "Amiq.Services.Notification.csproj", "{D1D3788F-7809-4FE8-9362-EC25A55237B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification", "Amiq.Services.Notification\Amiq.Services.Notification.csproj", "{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D1D3788F-7809-4FE8-9362-EC25A55237B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1D3788F-7809-4FE8-9362-EC25A55237B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1D3788F-7809-4FE8-9362-EC25A55237B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1D3788F-7809-4FE8-9362-EC25A55237B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {092EB5EE-10CD-49AF-AB79-C427E3EB0B57}
+		SolutionGuid = {871E4AFD-2BE0-428C-ABBE-8C74EDACF97B}
 	EndGlobalSection
 EndGlobal

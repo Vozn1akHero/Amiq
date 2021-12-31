@@ -22,6 +22,8 @@ builder.Services.AddRouting(options => {
     options.LowercaseUrls = true;
 });
 
+AmiqGroupAutoMapper.Initialize();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
