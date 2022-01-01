@@ -17,8 +17,8 @@ namespace Amiq.DataAccessLayer.Models.Models
         public bool IsAdmin { get; set; }
         public bool? IsParticipantVisible { get; set; }
 
-        public virtual Group Group { get; set; }
-        public virtual User User { get; set; }
+        public virtual Group Group { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
         public virtual ICollection<GroupEventParticipant> GroupEventParticipants { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  amiq-webapi-app-lb1:
+    build:
+      dockerfile: "Amiq.WebApi/Dockerfile"
+      context: .
+    ports:
+      - "8081:80"
+    environment:
+      - DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+  amiq-webapi-app-lb2:
+    build:
+      dockerfile: "Amiq.WebApi/Dockerfile"
+      context: .
+    ports:
+      - "8082:80"
+    environment:
+      - DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+  nginx:
+    build: ./nginx
+    ports:
+      - "8083:80"
+    depends_on:
+      - amiq-webapi-app-lb1
+      - amiq-webapi-app-lb2

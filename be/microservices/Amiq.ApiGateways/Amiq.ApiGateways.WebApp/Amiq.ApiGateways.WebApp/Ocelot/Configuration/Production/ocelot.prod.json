@@ -54,9 +54,20 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "group-clusterip-srv",
-          "Port": 80
+          "Port": 81
+        },
+        {
+          "Host": "group-clusterip-srv",
+          "Port": 82
+        },
+        {
+          "Host": "group-clusterip-srv",
+          "Port": 83
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "UpstreamPathTemplate": "/group/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }

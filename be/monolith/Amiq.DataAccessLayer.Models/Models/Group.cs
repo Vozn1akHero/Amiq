@@ -18,13 +18,13 @@ namespace Amiq.DataAccessLayer.Models.Models
         }
 
         public int GroupId { get; set; }
-        public string Name { get; set; }
-        public string AvatarSrc { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = null!;
+        public string AvatarSrc { get; set; } = null!;
+        public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public int CreatedBy { get; set; }
 
-        public virtual User CreatedByNavigation { get; set; }
+        public virtual User CreatedByNavigation { get; set; } = null!;
         public virtual ICollection<GroupBlockedUser> GroupBlockedUsers { get; set; }
         public virtual ICollection<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
         public virtual ICollection<GroupEvent> GroupEvents { get; set; }

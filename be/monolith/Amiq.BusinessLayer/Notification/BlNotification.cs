@@ -1,4 +1,5 @@
 ﻿using Amiq.Business.Utils;
+using Amiq.Common.DbOperation;
 using Amiq.Contracts;
 using Amiq.Contracts.Notification;
 using Amiq.Contracts.Utils;
@@ -20,9 +21,8 @@ namespace Amiq.Business.Notification
             return await daNotification.GetNotificationsAsync(userId, dtoPaginatedRequest);
         }
 
-        public async Task CreateNotificationsForUserAsync()
-        {
+        public async Task<DtoNotReadNotificationsExistResult> AnyNotReadExistAsync(int userId) => await daNotification.AnyNotReadExistAsync(userId);
 
-        }
+        public async Task<DbOperationResult> SetAllReadAsync(int userId) => await daNotification.SetAllReadAsync(userId);
     }
 }

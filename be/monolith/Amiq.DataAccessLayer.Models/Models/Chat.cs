@@ -14,8 +14,8 @@ namespace Amiq.DataAccessLayer.Models.Models
         public int FirstUserId { get; set; }
         public int SecondUserId { get; set; }
 
-        public virtual User FirstUser { get; set; }
-        public virtual User SecondUser { get; set; }
+        public virtual User FirstUser { get; set; } = null!;
+        public virtual User SecondUser { get; set; } = null!;
         public virtual ICollection<Message> Messages { get; set; }
     }
 }

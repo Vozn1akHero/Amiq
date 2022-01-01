@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: group-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: groupservice
@@ -16,6 +16,9 @@ spec:
         - name: groupservice
           image: amiqservicesgroup
           imagePullPolicy: Never
+          env:
+            - name: DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE
+              value: 'false'
 ---
 apiVersion: v1
 kind: Service
@@ -26,7 +29,15 @@ spec:
   selector:
     app: groupservice
   ports:
-    - name: groupservice
+    - name: groupservice-1
       protocol: TCP
-      port: 80
+      port: 81
+      targetPort: 80
+    - name: groupservice-2
+      protocol: TCP
+      port: 82
+      targetPort: 80
+    - name: groupservice-3
+      protocol: TCP
+      port: 83
       targetPort: 80

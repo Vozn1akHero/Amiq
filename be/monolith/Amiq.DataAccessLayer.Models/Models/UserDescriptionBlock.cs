@@ -9,7 +9,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         public int UserId { get; set; }
         public Guid TextBlockId { get; set; }
 
-        public virtual TextBlock TextBlock { get; set; }
-        public virtual User User { get; set; }
+        public virtual TextBlock TextBlock { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

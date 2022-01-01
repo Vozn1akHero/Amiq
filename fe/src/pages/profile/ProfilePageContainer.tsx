@@ -237,7 +237,8 @@ const ProfilePageContainer: React.FC = (props: any) => {
 
         if(!sessionStorage.getItem("act"))
         {
-            const obj : IPageVisitationActivity = {groupVisitations: [],
+            const obj : IPageVisitationActivity = {
+                groupVisitations: [],
                 userProfileVisitations: [],
                 //lastRequestTime: moment().toDate()
             };
@@ -274,6 +275,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
             })
         }
 
+        sessionStorage.setItem("act", JSON.stringify(visitationState));
     }
 
     //endregion

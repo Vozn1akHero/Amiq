@@ -10,6 +10,7 @@ import {ModalService} from "./core/modal-service";
 import {Subscription, timer} from "rxjs";
 import {ActivityTrackingService} from "./features/activity-tracking/activity-tracking-service";
 import {StatusCodes} from "http-status-codes";
+import {IPageVisitationActivity} from "./features/activity-tracking/models";
 
 type State = {
     modal: React.ReactElement;
@@ -19,7 +20,7 @@ type State = {
 class App extends Component<any, State> {
     isOpenSub: Subscription;
     modalComponentSub: Subscription;
-    activityTrackingService : ActivityTrackingService;
+    activityTrackingService : ActivityTrackingService = new ActivityTrackingService();
     activityTimerSub: Subscription;
 
     constructor(props) {
@@ -51,10 +52,12 @@ class App extends Component<any, State> {
 
     storeActivity(){
         const source = timer(60000);
+        //const source = timer(1000);
         this.activityTimerSub = source.subscribe(val => {
             const pageVisitationActivityStr = sessionStorage.getItem("act");
             if(pageVisitationActivityStr) {
-                const pageVisitationActivity = JSON.parse(pageVisitationActivityStr);
+                const pageVisitationActivity : IPageVisitationActivity = JSON.parse(pageVisitationActivityStr);
+                console.log(pageVisitationActivity)
                 this.activityTrackingService.create(pageVisitationActivity).then(res=>{
                     if(res.status === StatusCodes.OK){
                         console.log("activity saved")

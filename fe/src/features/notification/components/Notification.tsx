@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, ReactElement} from 'react';
 import { Link } from 'react-router-dom';
 import {INotification} from "../notification-models";
 import "./notification.scss"
@@ -14,11 +14,6 @@ type State = {
 }
 
 class Notification extends Component<Props, State> {
-    /*getLink = (base: string) => {
-        return
-    }
-    */
-
     render() {
         return (
             <Link to={this.props.notification.link} className="uk-link-text">
@@ -40,7 +35,7 @@ class Notification extends Component<Props, State> {
                         </header>
                         <div className="uk-comment-body">
                             <p>
-                                {this.props.notification.text}
+                                <div dangerouslySetInnerHTML={{__html: `${this.props.notification.text}`}} />
                             </p>
                         </div>
                     </article>

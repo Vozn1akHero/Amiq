@@ -144,7 +144,7 @@ class GroupPageContainer extends Component<Props, State> {
             this.setState({
                 visitationTimeInMinutes: this.state.visitationTimeInMinutes + 1
             })
-        }, 60000)
+        }, 10000)
     }
 
     storeTrackingActivity = () => {
@@ -189,6 +189,8 @@ class GroupPageContainer extends Component<Props, State> {
                 visitationTotalTime: this.state.visitationTimeInMinutes
             })
         }
+
+        sessionStorage.setItem("act", JSON.stringify(visitationState));
     }
 
     render() {

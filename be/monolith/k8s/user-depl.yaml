@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolith-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: monolithservice
+  template:
+    metadata:
+      labels:
+        app: monolithservice
+    spec:
+      containers:
+        - name: monolithservice
+          image: amiq-webapi
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monolith-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: monolithservice
+  ports:
+    - name: monolithservice
+      protocol: TCP
+      port: 80
+      targetPort: 80

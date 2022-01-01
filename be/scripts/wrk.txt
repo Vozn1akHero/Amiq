@@ -2,6 +2,9 @@
 
 2) docker run --rm  -v pwd:/data williamyeh/wrk -s script.lua -t12 -c400 -d30s --latency http://localhost:10709/api/test
 
-docker run --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://host.docker.internal:10709/api/test
+docker run --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://host.docker.internal:10709/api/test -H "token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwianRpIjoiMzRlMWQyYjEtMTc0ZC00ZTkzLTkwMTctOTU4YTBhMzU2YTIzIiwiZW1haWwiOiJzdHJpbmcxQGdtYWlsLmNvbSIsInVzZXJOYW1lIjoiU3RyaW5nIiwidXNlclN1cm5hbWUiOiJTdHJpbmdvd2ljeiIsIm5iZiI6MTY0MDgxNTc0NSwiZXhwIjoxNjQyNjMwMTQ1LCJpYXQiOjE2NDA4MTU3NDV9.xmkU0wTVKlPxQl9_r_qGxCw1y2YJPTQzPsETZ5K-Dmo; Path : /; Domain : .host.docker.internal; HttpOnly;"
 
 docker run --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://172.17.0.1:8081/api/test -- works for connection between containers
+
+
+docker run --rm williamyeh/wrk -H "Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwianRpIjoiMzRlMWQyYjEtMTc0ZC00ZTkzLTkwMTctOTU4YTBhMzU2YTIzIiwiZW1haWwiOiJzdHJpbmcxQGdtYWlsLmNvbSIsInVzZXJOYW1lIjoiU3RyaW5nIiwidXNlclN1cm5hbWUiOiJTdHJpbmdvd2ljeiIsIm5iZiI6MTY0MDgxNTc0NSwiZXhwIjoxNjQyNjMwMTQ1LCJpYXQiOjE2NDA4MTU3NDV9.xmkU0wTVKlPxQl9_r_qGxCw1y2YJPTQzPsETZ5K-Dmo; Path=/; Domain=.host.docker.internal; HttpOnly;" -t1 -c1 -d1s --timeout 2s http://host.docker.internal:8080/api/group/1

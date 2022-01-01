@@ -10,7 +10,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         public Guid GroupParticipantId { get; set; }
         public DateTime JoinedAt { get; set; }
 
-        public virtual GroupEvent GroupEvent { get; set; }
-        public virtual GroupParticipant GroupParticipant { get; set; }
+        public virtual GroupEvent GroupEvent { get; set; } = null!;
+        public virtual GroupParticipant GroupParticipant { get; set; } = null!;
     }
 }

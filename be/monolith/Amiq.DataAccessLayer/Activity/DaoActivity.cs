@@ -18,8 +18,8 @@ namespace Amiq.DataAccessLayer.Activity
             var groupVisitations = new List<GroupVisitation>();
             var profileVisitations = new List<ProfileVisitation>();
 
-            var visitedGroupIds = dtoCreateActivityInBulk.GroupVisitations.Select(e=>e.GroupId).ToList();
-            var visitedProfileIds = dtoCreateActivityInBulk.ProfileVisitations.Select(e=>e.VisitedUserId).ToList();
+            var visitedGroupIds = dtoCreateActivityInBulk.GroupVisitations?.Select(e=>e.GroupId).ToList();
+            var visitedProfileIds = dtoCreateActivityInBulk.UserProfileVisitations?.Select(e=>e.VisitedUserId).ToList();
 
             var existingVisitedGroups = _amiqContext.GroupVisitations.AsNoTracking()
                 .Where(e=>e.UserId == userId && visitedGroupIds.Contains(e.GroupId))
@@ -40,7 +40,7 @@ namespace Amiq.DataAccessLayer.Activity
                     VisitationTotalTime = nextVisitationTotalTime
                 });
             }
-            foreach (var dtoProfileVisitation in dtoCreateActivityInBulk.ProfileVisitations)
+            foreach (var dtoProfileVisitation in dtoCreateActivityInBulk.UserProfileVisitations)
             {
                 var existingVisitedProfile = existingVisitedProfiles.SingleOrDefault(e => e.VisitedUserId == dtoProfileVisitation.VisitedUserId);
                 long nextVisitationTotalTime = existingVisitedProfile != null ? existingVisitedProfile.VisitationTotalTime + dtoProfileVisitation.VisitationTotalTime

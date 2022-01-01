@@ -1,6 +1,6 @@
 docker build -t amiq-webapi -f Amiq.WebApi/Dockerfile .
 
-docker run -d -p 8080:80 --name amiq-webapi-app amiq-webapi
+docker run -d -p 8080:80 -e DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false --name amiq-webapi-app amiq-webapi
 
 docker run -d -p 8081:80 --name amiq-webapi-app --network host amiq-webapi
 

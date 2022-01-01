@@ -11,6 +11,6 @@ namespace Amiq.DataAccessLayer.Models.Models
         public DateTime LastVisited { get; set; }
         public long VisitationTotalTime { get; set; }
 
-        public virtual Group Group { get; set; }
+        public virtual Group Group { get; set; } = null!;
     }
 }

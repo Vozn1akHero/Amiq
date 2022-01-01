@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Amiq.BusinessLayer\Amiq.BusinessLayer.csproj" />
     <ProjectReference Include="..\Amiq.Contracts\Amiq.Contracts.csproj" />
     <ProjectReference Include="..\Amiq.Mapping\Amiq.Mapping.csproj" />
+    <ProjectReference Include="..\Amiq.Workers.Notification\Amiq.Workers.Notification.csproj" />
   </ItemGroup>
 
 </Project>

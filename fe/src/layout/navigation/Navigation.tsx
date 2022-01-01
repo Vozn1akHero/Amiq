@@ -6,6 +6,8 @@ import {Routes} from "core/routing";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {NotificationList} from "../../features/notification/components/NotificationList";
 import {useClickOutside} from "../../core/hooks/useClickOutside";
+import {NotificationService} from "../../features/notification/notification-service";
+import {StatusCodes} from "http-status-codes";
 
 
 type Props = {
@@ -15,8 +17,11 @@ type Props = {
 export const Navigation = (props: Props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [isNotificationListVisible, setIsNotificationListVisible] = useState(false);
+    const [isNewNotificationsIconVisible, setIsNewNotificationsIconVisible] = useState(false);
 
     const history = useHistory();
+
+    const notificationService = new NotificationService();
 
     const loggedInUserNavigationLinks: Array<INavigationLink> = [
         {
@@ -64,14 +69,32 @@ export const Navigation = (props: Props) => {
     ]
 
     useEffect(() => {
-        AuthStore.isAuthenticated$.subscribe(value => {
-            setIsAuthenticated(value)
+        AuthStore.isAuthenticated$.subscribe(isAuthenticated => {
+            setIsAuthenticated(isAuthenticated);
+
+            if(isAuthenticated){
+                notificationService.anyNotReadExist().then(res => {
+                    if(res.status === StatusCodes.OK){
+                        const data: any = res.data;
+                        const exist: boolean = data.result;
+                        setIsNewNotificationsIconVisible(exist);
+                    }
+                })
+            }
         });
     }, [])
 
     const onBellClick = e => {
         e.preventDefault();
         setIsNotificationListVisible(!isNotificationListVisible)
+
+        if(isNewNotificationsIconVisible){
+            notificationService.setAllNotificationsAsRead().then(res => {
+                if(res.status === StatusCodes.OK){
+                    setIsNewNotificationsIconVisible(false);
+                }
+            })
+        }
     }
 
     const onLogoutClick = e => {
@@ -113,7 +136,8 @@ export const Navigation = (props: Props) => {
                         </div>
                         <div className="uk-margin-medium-right uk-navbar-right">
                             <ul className="uk-navbar-nav">
-                                <li>
+                                <li className={isNewNotificationsIconVisible ? `uk-position-relative` : ``}>
+                                    {isNewNotificationsIconVisible && <div className="navigation__new-entries-icon-overlay"></div>}
                                     <a onClick={onBellClick}
                                        className="uk-icon-link"
                                        uk-tooltip="Powiadomienia"

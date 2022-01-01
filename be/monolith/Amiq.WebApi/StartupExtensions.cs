@@ -1,6 +1,7 @@
 ﻿using Amiq.WebApi.Core.Files;
 using Amiq.WebApi.Middlewares;
 using Amiq.WebApi.SignalR;
+using Amiq.Workers.Notification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,7 @@ namespace Amiq.WebApi
         {
             services.AddScoped<ISignalRChatService, SignalRChatService>();
             services.AddSingleton<ILocalFileStorage, LocalFilesStorage>();
+            services.AddHostedService<NotificationWorker>();
         }
     }
 }

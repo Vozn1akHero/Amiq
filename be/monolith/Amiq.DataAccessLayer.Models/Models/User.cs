@@ -32,15 +32,15 @@ namespace Amiq.DataAccessLayer.Models.Models
         }
 
         public int UserId { get; set; }
-        public string Login { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Password { get; set; }
+        public string Login { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Surname { get; set; } = null!;
+        public string Password { get; set; } = null!;
         public DateTime Birthdate { get; set; }
-        public string Sex { get; set; }
-        public string Email { get; set; }
-        public string AvatarPath { get; set; }
-        public string ShortDescription { get; set; }
+        public string Sex { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string? AvatarPath { get; set; }
+        public string? ShortDescription { get; set; }
 
         public virtual ICollection<BlockedUser> BlockedUserDestUsers { get; set; }
         public virtual ICollection<BlockedUser> BlockedUserIssuers { get; set; }

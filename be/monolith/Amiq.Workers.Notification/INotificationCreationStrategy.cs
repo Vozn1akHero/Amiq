@@ -16,6 +16,6 @@ namespace Amiq.Workers.Notification
             DbContext = new AmiqContext();
         }
 
-        public abstract IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<int> userIds);
+        public abstract IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users);
     }
 }

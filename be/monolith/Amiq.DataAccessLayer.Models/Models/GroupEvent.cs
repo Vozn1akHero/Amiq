@@ -12,17 +12,17 @@ namespace Amiq.DataAccessLayer.Models.Models
 
         public Guid GroupEventId { get; set; }
         public int GroupId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public DateTime Date { get; set; }
-        public string AvatarSrc { get; set; }
+        public string AvatarSrc { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public int CreatedBy { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public bool IsCancelled { get; set; }
         public bool IsHidden { get; set; }
 
-        public virtual User CreatedByNavigation { get; set; }
-        public virtual Group Group { get; set; }
+        public virtual User CreatedByNavigation { get; set; } = null!;
+        public virtual Group Group { get; set; } = null!;
         public virtual ICollection<GroupEventParticipant> GroupEventParticipants { get; set; }
     }
 }

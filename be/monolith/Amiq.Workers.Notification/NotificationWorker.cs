@@ -32,11 +32,17 @@ namespace Amiq.Workers.Notification
                 .Take(TAKE_USERS)
                 .Skip((_page - 1) * TAKE_USERS)
                 .ToHashSet();*/
-            HashSet<int> userIds = new HashSet<int> { 6 };
+            //HashSet<int> userIds = new HashSet<int> { 6 };
+            var users = new List<UserNotificationsQueue> { 
+                new UserNotificationsQueue {
+                    UserId = 6,
+                    NotificationGroupId = Guid.NewGuid()
+                }
+            };
 
             //wpisy
-            var userPostNotifications = _userPostNotificationCreation.Create(userIds);
-            var groupPostsNotifications = _groupPostNotificationCreation.Create(userIds);
+            var userPostNotifications = _userPostNotificationCreation.Create(users);
+            var groupPostsNotifications = _groupPostNotificationCreation.Create(users);
 
             //await _amiqContext.Notifications.AddRangeAsync(userPostNotifications);
             //await _amiqContext.Notifications.AddRangeAsync(groupPostsNotifications);

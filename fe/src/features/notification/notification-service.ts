@@ -9,4 +9,12 @@ export class NotificationService extends  BaseService {
             .append("page", page)
             .append("count", count))
     }
+
+    anyNotReadExist(){
+        return this.httpClient.get(this.buildApiPath("any-not-read-exist"));
+    }
+
+    setAllNotificationsAsRead(){
+        return this.httpClient.put(this.buildApiPath("set-all-read"));
+    }
 }

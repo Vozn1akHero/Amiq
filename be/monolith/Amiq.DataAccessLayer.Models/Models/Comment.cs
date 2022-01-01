@@ -16,7 +16,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         }
 
         public Guid CommentId { get; set; }
-        public string TextContent { get; set; }
+        public string TextContent { get; set; } = null!;
         public Guid PostId { get; set; }
         public int AuthorId { get; set; }
         public Guid? ParentId { get; set; }
@@ -26,10 +26,10 @@ namespace Amiq.DataAccessLayer.Models.Models
         public Guid? MainParentId { get; set; }
         public bool IsRemoved { get; set; }
 
-        public virtual User Author { get; set; }
-        public virtual Comment MainParent { get; set; }
-        public virtual Comment Parent { get; set; }
-        public virtual Post Post { get; set; }
+        public virtual User Author { get; set; } = null!;
+        public virtual Comment? MainParent { get; set; }
+        public virtual Comment? Parent { get; set; }
+        public virtual Post Post { get; set; } = null!;
         public virtual ICollection<GroupPostComment> GroupPostComments { get; set; }
         public virtual ICollection<Comment> InverseMainParent { get; set; }
         public virtual ICollection<Comment> InverseParent { get; set; }

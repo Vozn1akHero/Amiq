@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Amiq.Common.DbOperation;
 
 namespace Amiq.DataAccessLayer.Notification
 {
@@ -21,9 +22,11 @@ namespace Amiq.DataAccessLayer.Notification
         {
             DtoListResponseOf<DtoNotification> result = new();
             IQueryable<DtoNotification> query = _amiqContext.Notifications.Where(e => e.UserId == userId)
+                .OrderByDescending(e=>e.CreatedAt)
                 .Select(e => new DtoNotification
                 {
                     NotificationId = e.NotificationId,
+                    NotificationGroupId = e.NotificationGroupId,
                     User = new DtoBasicUserInfo
                     {
                         UserId = e.UserId,
@@ -35,10 +38,36 @@ namespace Amiq.DataAccessLayer.Notification
                     ImageSrc = e.ImageSrc,
                     Link = e.Link,
                     CreatedAt = e.CreatedAt,
-                    NotificationType = e.NotificationType
+                    NotificationType = e.NotificationType,
+                    IsRead = e.IsRead
                 });
             result.Entities = await query.Paginate(dtoPaginatedRequest.Page, dtoPaginatedRequest.Count).ToListAsync();
             result.Length = await query.CountAsync();
+            return result;
+        }
+
+        public async Task<DbOperationResult> SetAllReadAsync(int userId)
+        {
+            DbOperationResult dbOperationResult = new();
+
+            var entries = _amiqContext.Notifications.Where(e => e.UserId == userId);
+            foreach(var entry in entries)
+            {
+                entry.IsRead = true;
+            }
+            await _amiqContext.SaveChangesAsync();
+            dbOperationResult.Success = true;
+
+            return dbOperationResult;
+        }
+
+        public async Task<DtoNotReadNotificationsExistResult> AnyNotReadExistAsync(int userId)
+        {
+            DtoNotReadNotificationsExistResult result = new();
+
+            result.Count = await _amiqContext.Notifications.CountAsync(e => e.UserId == userId && !e.IsRead);
+            result.Result = result.Count > 0;
+
             return result;
         }
 

@@ -10,7 +10,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         public int ReceiverId { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public virtual User Issuer { get; set; }
-        public virtual User Receiver { get; set; }
+        public virtual User Issuer { get; set; } = null!;
+        public virtual User Receiver { get; set; } = null!;
     }
 }

@@ -16,41 +16,37 @@ namespace Amiq.DataAccessLayer.Models.Models
         {
         }
 
-        public virtual DbSet<BlockedUser> BlockedUsers { get; set; }
-        public virtual DbSet<Chat> Chats { get; set; }
-        public virtual DbSet<ChildToParrentComment> ChildToParrentComments { get; set; }
-        public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<FriendRequest> FriendRequests { get; set; }
-        public virtual DbSet<Friendship> Friendships { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; }
-        public virtual DbSet<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; }
-        public virtual DbSet<GroupEvent> GroupEvents { get; set; }
-        public virtual DbSet<GroupEventParticipant> GroupEventParticipants { get; set; }
-        public virtual DbSet<GroupParticipant> GroupParticipants { get; set; }
-        public virtual DbSet<GroupPost> GroupPosts { get; set; }
-        public virtual DbSet<GroupPostComment> GroupPostComments { get; set; }
-        public virtual DbSet<GroupVisitation> GroupVisitations { get; set; }
-        public virtual DbSet<HiddenGroup> HiddenGroups { get; set; }
-        public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<Notification> Notifications { get; set; }
-        public virtual DbSet<NotificationQueue> NotificationQueues { get; set; }
-        public virtual DbSet<Post> Posts { get; set; }
-        public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; }
-        public virtual DbSet<Session> Sessions { get; set; }
-        public virtual DbSet<TextBlock> TextBlocks { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserDescriptionBlock> UserDescriptionBlocks { get; set; }
-        public virtual DbSet<UserPost> UserPosts { get; set; }
+        public virtual DbSet<BlockedUser> BlockedUsers { get; set; } = null!;
+        public virtual DbSet<Chat> Chats { get; set; } = null!;
+        public virtual DbSet<Comment> Comments { get; set; } = null!;
+        public virtual DbSet<FriendRequest> FriendRequests { get; set; } = null!;
+        public virtual DbSet<Friendship> Friendships { get; set; } = null!;
+        public virtual DbSet<Group> Groups { get; set; } = null!;
+        public virtual DbSet<GroupBlockedUser> GroupBlockedUsers { get; set; } = null!;
+        public virtual DbSet<GroupDescriptionBlock> GroupDescriptionBlocks { get; set; } = null!;
+        public virtual DbSet<GroupEvent> GroupEvents { get; set; } = null!;
+        public virtual DbSet<GroupEventParticipant> GroupEventParticipants { get; set; } = null!;
+        public virtual DbSet<GroupParticipant> GroupParticipants { get; set; } = null!;
+        public virtual DbSet<GroupPost> GroupPosts { get; set; } = null!;
+        public virtual DbSet<GroupPostComment> GroupPostComments { get; set; } = null!;
+        public virtual DbSet<GroupVisitation> GroupVisitations { get; set; } = null!;
+        public virtual DbSet<HiddenGroup> HiddenGroups { get; set; } = null!;
+        public virtual DbSet<Message> Messages { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
+        public virtual DbSet<NotificationQueue> NotificationQueues { get; set; } = null!;
+        public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; } = null!;
+        public virtual DbSet<Session> Sessions { get; set; } = null!;
+        public virtual DbSet<TextBlock> TextBlocks { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserDescriptionBlock> UserDescriptionBlocks { get; set; } = null!;
+        public virtual DbSet<UserPost> UserPosts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("data source=localhost;Database=Amiq;MultipleActiveResultSets=True;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer("Server=amiq-mssql-db;Database=Amiq;User Id=sa;Password=123Dimon!!!;MultipleActiveResultSets=True;");
-                //optionsBuilder.UseSqlServer("Server=host.docker.internal,1433;Database=Amiq;User Id=sa;Password=123dimon;");
                 optionsBuilder.UseSqlServer("Server=host.docker.internal,1423;Database=Amiq;User Id=sa;Password=123Dimon!!!;");
             }
         }
@@ -97,15 +93,6 @@ namespace Amiq.DataAccessLayer.Models.Models
                     .HasConstraintName("FK_Chat_User1");
             });
 
-            modelBuilder.Entity<ChildToParrentComment>(entity =>
-            {
-                entity.HasKey(e => e.ChildToParentCommentId);
-
-                entity.ToTable("ChildToParrentComment", "Post");
-
-                entity.Property(e => e.ChildToParentCommentId).HasDefaultValueSql("(newsequentialid())");
-            });
-
             modelBuilder.Entity<Comment>(entity =>
             {
                 entity.ToTable("Comment", "Post");
@@ -120,9 +107,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.EditedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.TextContent)
-                    .IsRequired()
-                    .HasMaxLength(250);
+                entity.Property(e => e.TextContent).HasMaxLength(250);
 
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.Comments)
@@ -196,9 +181,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.HasIndex(e => e.Name, "IX_Group_ViewName");
 
-                entity.Property(e => e.AvatarSrc)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.AvatarSrc).IsUnicode(false);
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -206,9 +189,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.Description).HasMaxLength(500);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(150);
+                entity.Property(e => e.Name).HasMaxLength(150);
 
                 entity.HasOne(d => d.CreatedByNavigation)
                     .WithMany(p => p.Groups)
@@ -266,9 +247,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.GroupEventId).HasDefaultValueSql("(newsequentialid())");
 
-                entity.Property(e => e.AvatarSrc)
-                    .IsRequired()
-                    .IsUnicode(false);
+                entity.Property(e => e.AvatarSrc).IsUnicode(false);
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -278,9 +257,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.Description).HasMaxLength(500);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(200);
+                entity.Property(e => e.Name).HasMaxLength(200);
 
                 entity.HasOne(d => d.CreatedByNavigation)
                     .WithMany(p => p.GroupEvents)
@@ -377,7 +354,6 @@ namespace Amiq.DataAccessLayer.Models.Models
                 entity.Property(e => e.GroupPostCommentId).HasDefaultValueSql("(newsequentialid())");
 
                 entity.Property(e => e.AuthorVisibilityType)
-                    .IsRequired()
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasDefaultValueSql("('U')");
@@ -447,9 +423,7 @@ namespace Amiq.DataAccessLayer.Models.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.TextContent)
-                    .IsRequired()
-                    .HasMaxLength(250);
+                entity.Property(e => e.TextContent).HasMaxLength(250);
 
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.Messages)
@@ -470,16 +444,11 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.NotificationId).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.ImageSrc).IsRequired();
-
                 entity.Property(e => e.NotificationType)
-                    .IsRequired()
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Text)
-                    .IsRequired()
-                    .HasMaxLength(1000);
+                entity.Property(e => e.Text).HasMaxLength(1000);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Notifications)
@@ -562,9 +531,7 @@ namespace Amiq.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.Content).HasMaxLength(350);
 
-                entity.Property(e => e.Header)
-                    .IsRequired()
-                    .HasMaxLength(150);
+                entity.Property(e => e.Header).HasMaxLength(150);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -583,27 +550,22 @@ namespace Amiq.DataAccessLayer.Models.Models
                 entity.Property(e => e.Birthdate).HasColumnType("date");
 
                 entity.Property(e => e.Email)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Login)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Name)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Sex)
-                    .IsRequired()
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .IsFixedLength();
@@ -611,7 +573,6 @@ namespace Amiq.DataAccessLayer.Models.Models
                 entity.Property(e => e.ShortDescription).HasMaxLength(400);
 
                 entity.Property(e => e.Surname)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
             });

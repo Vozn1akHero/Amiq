@@ -9,7 +9,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         public Guid PostId { get; set; }
         public int UserId { get; set; }
 
-        public virtual Post Post { get; set; }
-        public virtual User User { get; set; }
+        public virtual Post Post { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

@@ -31,7 +31,6 @@ export const NotificationList = (props:Props) => {
         getNotifications();
     }, [])
 
-
     const getNotifications = () => {
         notificationService.getAll(notificationsState.page, notificationsCount).then((res:AxiosResponse) => {
             if(res.status === StatusCodes.OK){
@@ -47,6 +46,7 @@ export const NotificationList = (props:Props) => {
 
     return (
         <div className="notification-list uk-card uk-card-default uk-card-body uk-width-1-2@m" ref={props.notifRef}>
+            <legend className="uk-legend uk-margin-bottom">Powiadomienia</legend>
             <ul className="uk-list">
                 {
                     notificationsState.notifications.map((value, index)  => {
@@ -55,6 +55,8 @@ export const NotificationList = (props:Props) => {
                         </li>
                     })
                 }
+                <button className="uk-button-link"
+                        onClick={getNotifications}>Wyświetl więcej</button>
             </ul>
         </div>
     );

@@ -18,10 +18,11 @@ namespace Amiq.Workers.Notification
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<int> userIds)
+        public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
             List<DataAccessLayer.Models.Models.Notification> result = new();
 
+            List<int> userIds = users.Select(e=>e.UserId).ToList();
             var mostVisitedProfilesInBulk = DbContext.ProfileVisitations.AsNoTracking().Where(e => userIds.Contains(e.UserId)).OrderBy(e=>e.UserId).ToList();
             Dictionary<int, List<ProfileVisitation>> mostVisitedProfilesGrouped = mostVisitedProfilesInBulk
                 .Select((x) => new { Index = x.UserId, Value = x })
@@ -32,6 +33,7 @@ namespace Amiq.Workers.Notification
             foreach (var userProfileVisitations in mostVisitedProfilesGrouped)
             {
                 int userId = userProfileVisitations.Key;
+                Guid notificationGroupId = users.Single(e => e.UserId == userId).NotificationGroupId;
                 var mostVisitedProfileUserIds = userProfileVisitations.Value.Select(e => e.VisitedUserId).ToHashSet();
 
                 // uwzlędnienie tylko aktywnych znajomości
@@ -73,6 +75,7 @@ namespace Amiq.Workers.Notification
                         result.Add(new DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
+                            NotificationGroupId = notificationGroupId,
                             Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał nowy wpis: i <b>inne</b>",
                             Link = $"/profile/{userPosts.Key.UserId}",
                             CreatedAt = DateTime.Now,
@@ -84,6 +87,7 @@ namespace Amiq.Workers.Notification
                         result.Add(new DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
+                            NotificationGroupId = notificationGroupId,
                             Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał {userPosts.Value.Count} nowych wpisów",
                             Link = $"/profile/{userPosts.Key.UserId}",
                             CreatedAt = DateTime.Now,

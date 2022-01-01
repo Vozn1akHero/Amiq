@@ -38,7 +38,6 @@ namespace Amiq.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -47,10 +46,12 @@ namespace Amiq.WebApi
             {
                 opts.SuppressAsyncSuffixInActionNames = false;
             });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Amiq", Version = "v1" });
             });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -66,12 +67,10 @@ namespace Amiq.WebApi
                         }
                     };
                 });
+
             services.Configure<JsonOptions>(opts => {
                 opts.JsonSerializerOptions.IgnoreNullValues = true;
                 opts.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-                //opts.JsonSerializerOptions.MaxDepth = 0;
-                //opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler;
-                //opts.JsonSerializerOptions.ReferenceHandler = PreserveReferencesHandling.Objects;
             });
             
             services.AddRouting(options => {

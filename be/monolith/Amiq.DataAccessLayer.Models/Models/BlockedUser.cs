@@ -9,7 +9,7 @@ namespace Amiq.DataAccessLayer.Models.Models
         public int IssuerId { get; set; }
         public int DestUserId { get; set; }
 
-        public virtual User DestUser { get; set; }
-        public virtual User Issuer { get; set; }
+        public virtual User DestUser { get; set; } = null!;
+        public virtual User Issuer { get; set; } = null!;
     }
 }
