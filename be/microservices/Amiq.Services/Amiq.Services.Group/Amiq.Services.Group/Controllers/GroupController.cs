@@ -1,21 +1,18 @@
 ﻿using Amiq.Services.BusinessLayer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Amiq.Services.Group.Contracts;
-using Amiq.Services.Group.Contracts.Utils;
 using Amiq.Services.Group.Base;
+using Amiq.Services.Group.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    //[Authorize]
     public class GroupController : AmiqGroupBaseController
     {
-        private BlGroup bsGroup = new BlGroup();
+        private BlGroup _blGroup = new BlGroup();
 
         [HttpPost]
         public async Task<IActionResult> CreateGroupAsync([FromBody] DtoCreateGroup dtoCreateGroup)
         {
-            DtoGroupCard group = await bsGroup.CreateGroupAsync(JwtStoredUserId, dtoCreateGroup);
+            DtoGroupCard group = await _blGroup.CreateGroupAsync(JwtStoredUserId, dtoCreateGroup);
             return CreatedAtAction(nameof(CreateGroupAsync), group);
         }
 
@@ -28,14 +25,18 @@ namespace Amiq.Services.Group.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
-            var data = await bsGroup.GetByName(JwtStoredUserId, name);
+            var data = await _blGroup.GetByName(JwtStoredUserId, name);
             return Ok(data);
         }
 
         [HttpGet("{groupId}")]
-        public async Task<IActionResult> GetGroupById(int groupId)
+        public async Task<IActionResult> GetGroupById(int groupId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var data = await bsGroup.GetGroupById(groupId);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(499);
+            }
+            var data = await _blGroup.GetGroupById(groupId);
             if(data == null) return NotFound();
             return Ok(data);
         }
@@ -43,14 +44,14 @@ namespace Amiq.Services.Group.Controllers
         [HttpPut("edit")]
         public async Task<IActionResult> EditBasicDataAsync([FromBody] DtoEditGroupDataRequest dtoEditGroupDataRequest)
         {
-            var result = await bsGroup.EditAsync(dtoEditGroupDataRequest);
+            var result = await _blGroup.EditAsync(dtoEditGroupDataRequest);
             return Ok(result);
         }
 
         [HttpGet("user-params/{groupId}")]
         public async Task<IActionResult> GetGroupUserParamsAsync([FromRoute] int groupId)
         {
-            var result = await bsGroup.GetGroupUserParamsAsync(JwtStoredUserId, groupId);
+            var result = await _blGroup.GetGroupUserParamsAsync(JwtStoredUserId, groupId);
             return Ok(result);
         }
     }

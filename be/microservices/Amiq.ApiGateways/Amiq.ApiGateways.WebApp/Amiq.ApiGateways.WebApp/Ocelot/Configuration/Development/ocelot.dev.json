@@ -9,7 +9,7 @@
           "Port": 14541
         }
       ],
-      "UpstreamPathTemplate": "/amiq-post/{everything}",
+      "UpstreamPathTemplate": "/post/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
@@ -21,7 +21,19 @@
           "Port": 14542
         }
       ],
-      "UpstreamPathTemplate": "/amiq-chat/{everything}",
+      "UpstreamPathTemplate": "/chat/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 14540
+        }
+      ],
+      "UpstreamPathTemplate": "/group/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
@@ -33,25 +45,8 @@
           "Port": 49153
         }
       ],
-      "UpstreamPathTemplate": "/amiq-group/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "host.docker.internal",
-          "Port": 49153
-        }
-      ],
-      "UpstreamPathTemplate": "/amiq-user/{everything}",
+      "UpstreamPathTemplate": "/user/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
-  ],
-  "GlobalConfiguration": {
-    "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration",
-    "UseServiceDiscovery": false
-  }
+  ]
 }

@@ -1,5 +1,6 @@
 ﻿using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Amiq.WebApi.Controllers
 {
@@ -8,7 +9,7 @@ namespace Amiq.WebApi.Controllers
         [HttpGet]
         public IActionResult DefGet()
         {
-            return Ok(1);
+            return Ok(Environment.MachineName);
         }
     }
 }

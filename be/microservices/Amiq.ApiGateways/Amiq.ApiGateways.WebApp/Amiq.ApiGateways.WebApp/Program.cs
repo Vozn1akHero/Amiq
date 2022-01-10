@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Polly;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -36,8 +37,8 @@ namespace Amiq.ApiGateways.WebApp
                     {
                         config
                             .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                            .AddJsonFile("appsettings.json", true, true)
-                            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
+                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
                         var ocelotConfigurationPath = Path.Combine(hostingContext.HostingEnvironment.ContentRootPath,
                             "Ocelot", "Configuration");
@@ -100,7 +101,10 @@ namespace Amiq.ApiGateways.WebApp
                         });
 
                         services.AddOcelot()
-                            .AddCacheManager(settings => settings.WithDictionaryHandle());
+                            //.AddCacheManager(settings => settings.WithDictionaryHandle())
+                            //.AddPolly()
+                            ;
+
                         
                         services.AddSingleton<UserCacheService>();
 
@@ -120,6 +124,7 @@ namespace Amiq.ApiGateways.WebApp
                         app.UseAuthorization();
 
                         app.UseMiddleware<UserRequestContextMiddleware>();
+                        //app.UseMiddleware<RequestCancellationMiddleware>();
 
                         app.UseEndpoints(endpoints =>
                         {
@@ -128,8 +133,9 @@ namespace Amiq.ApiGateways.WebApp
 
                         app.UseOcelot().Wait();
                     })
-                    .UseIIS()
-                    .UseIISIntegration();
+                    //.UseIIS()
+                    //.UseIISIntegration()
+                    ;
                 });
     }
 }

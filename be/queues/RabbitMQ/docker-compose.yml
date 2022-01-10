@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+    rabbitmq3:
+        container_name: "amiq-rabbitmq"
+        image: rabbitmq:3-management
+        environment:
+            - RABBITMQ_DEFAULT_USER=sa
+            - RABBITMQ_DEFAULT_PASS=123dimon
+        ports:
+            - '5672:5672'
+            - '15672:15672'

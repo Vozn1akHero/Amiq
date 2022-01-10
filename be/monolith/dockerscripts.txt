@@ -5,3 +5,18 @@ docker run -d -p 8080:80 -e DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false --nam
 docker run -d -p 8081:80 --name amiq-webapi-app --network host amiq-webapi
 
 db: docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=123dimon" -p 1433:1433 --name sql1 -h sql1 -d mcr.microsoft.com/mssql/server:2019-latest
+
+lb: docker run -d -p 8081:80 -e DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false -m 2g --cpus=2 --name amiq-webapi-app-1 amiq-webapi
+docker run -d -p 8082:80 -e DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false --name amiq-webapi-app-2 amiq-webapi
+docker build -t amiq-nginx -f ./nginx/Dockerfile ./nginx
+docker run -d -p 8083:80 --name amiq-nginx-1 amiq-nginx
+
+haproxy: docker run -d -p 9911:8083 -v "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg" --name amiq-haproxy-1 haproxy:1.7.1
+
+docker build -f haproxy.Dockerfile -t amiq-haproxy .
+docker run -d -p 9911:80 --name amiq-haproxy-1 amiq-haproxy
+
+docker run -d -p 8081:80 -e DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false -m 2g --cpus=".25" --name amiq-webapi-app-1 amiq-webapi
+
+k8s: kubectl apply -f .\monolith-depl.yaml
+kubectl delete deployment monolith-deployment

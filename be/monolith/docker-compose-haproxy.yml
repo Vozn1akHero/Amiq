@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  load_balancer:
+    image: haproxy:1.7.1
+    volumes:
+      - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+    ports:
+      - "9911:8083"

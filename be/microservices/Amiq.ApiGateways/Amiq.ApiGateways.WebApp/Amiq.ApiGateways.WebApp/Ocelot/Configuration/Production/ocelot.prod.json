@@ -54,27 +54,18 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "group-clusterip-srv",
-          "Port": 81
-        },
-        {
-          "Host": "group-clusterip-srv",
-          "Port": 82
-        },
-        {
-          "Host": "group-clusterip-srv",
-          "Port": 83
+          "Port": 80
         }
       ],
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      },
       "UpstreamPathTemplate": "/group/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
   ],
-  "GlobalConfiguration": {
-    "RequestIdKey": "OcRequestId",
-    "AdministrationPath": "/administration",
-    "UseServiceDiscovery": false
+  "RateLimitOptions": {
+    "ClientWhitelist": [],
+    "EnableRateLimiting": false,
+    "Period": "1s",
+    "PeriodTimespan": 1,
+    "Limit": 15000
   }
 }

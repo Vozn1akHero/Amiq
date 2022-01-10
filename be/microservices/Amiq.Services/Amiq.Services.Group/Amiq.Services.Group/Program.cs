@@ -5,6 +5,13 @@ AmiqGroupAutoMapper.Initialize();
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.ConfigureAppConfiguration((hostingContext, config) => {
+    config
+        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: false);
+});
+
 builder.Services.AddCors();
 
 builder.Services.AddControllers(opts =>

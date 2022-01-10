@@ -22,6 +22,11 @@ namespace Amiq.WebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+                    config.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: false);
                 });
     }
 }

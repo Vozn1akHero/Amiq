@@ -7,4 +7,7 @@ docker run --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://host.docker.inte
 docker run --rm williamyeh/wrk -t2 -c5 -d5s --timeout 2s http://172.17.0.1:8081/api/test -- works for connection between containers
 
 
+microservices: 
+docker run --rm williamyeh/wrk -H "Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwianRpIjoiODA4MDc4MTYtYzYwMC00YWM0LThkNDUtOGNmM2E5OTc5MzEwIiwiZW1haWwiOiJzdHJpbmcxQGdtYWlsLmNvbSIsInVzZXJOYW1lIjoiRG15dHJvIiwidXNlclN1cm5hbWUiOiJWb3puaWFjaHVrIiwibmJmIjoxNjQxNDc3NTgzLCJleHAiOjE2NDMyOTE5ODMsImlhdCI6MTY0MTQ3NzU4M30.UNuMsAIzG8VbbG9m0bshHvo4i4Ow280jHw21gwW9QRY; Path=/; Domain=.host.docker.internal; HttpOnly;" -t16 -c400 -d5s --timeout 2s http://host.docker.internal:32060/group/group/1
+monolith: 
 docker run --rm williamyeh/wrk -H "Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwianRpIjoiMzRlMWQyYjEtMTc0ZC00ZTkzLTkwMTctOTU4YTBhMzU2YTIzIiwiZW1haWwiOiJzdHJpbmcxQGdtYWlsLmNvbSIsInVzZXJOYW1lIjoiU3RyaW5nIiwidXNlclN1cm5hbWUiOiJTdHJpbmdvd2ljeiIsIm5iZiI6MTY0MDgxNTc0NSwiZXhwIjoxNjQyNjMwMTQ1LCJpYXQiOjE2NDA4MTU3NDV9.xmkU0wTVKlPxQl9_r_qGxCw1y2YJPTQzPsETZ5K-Dmo; Path=/; Domain=.host.docker.internal; HttpOnly;" -t1 -c1 -d1s --timeout 2s http://host.docker.internal:8080/api/group/1
