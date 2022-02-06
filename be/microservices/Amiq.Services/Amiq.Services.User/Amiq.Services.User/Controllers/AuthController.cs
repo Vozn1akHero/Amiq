@@ -65,7 +65,7 @@ namespace Amiq.Services.User.Controllers
                 //UserAmqpSender.Send(EnUserAmqpEvent.USER_CREATED.ToString(), userRegistartionResult.BasicUserInfo);
                 var @event = new UserModificationEvent(
                     1,
-                    "TEST2",
+                    "TEST5",
                     "Test2",
                     "user.jpg"
                 );

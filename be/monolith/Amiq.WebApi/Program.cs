@@ -25,8 +25,8 @@ namespace Amiq.WebApi
                 })
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
-                    config.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: false);
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
                 });
     }
 }

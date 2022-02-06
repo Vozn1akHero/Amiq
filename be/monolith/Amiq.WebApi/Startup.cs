@@ -42,11 +42,6 @@ namespace Amiq.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            
-            services.AddControllers(opts =>
-            {
-                opts.SuppressAsyncSuffixInActionNames = false;
-            });
 
             services.AddSwaggerGen(c =>
             {
@@ -79,6 +74,7 @@ namespace Amiq.WebApi
             });
             services.AddControllers(options =>
             {
+                options.SuppressAsyncSuffixInActionNames = false;
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
             });
             services.Configure<ForwardedHeadersOptions>(options =>

@@ -1,5 +1,6 @@
 ﻿using Amiq.Contracts.User;
 using System;
+using System.Collections.Generic;
 
 namespace Amiq.Contracts.Chat
 {

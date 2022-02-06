@@ -11,7 +11,7 @@ export interface IProfileVisitation {
 }
 
 export interface IPageVisitationActivity {
-    groupVisitations: Array<IGroupVisitation>;
-    userProfileVisitations: Array<IProfileVisitation>;
+    groupVisitations?: Array<IGroupVisitation>;
+    userProfileVisitations?: Array<IProfileVisitation>;
     //lastRequestTime?: Date;
 }

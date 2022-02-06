@@ -1,23 +1,22 @@
-﻿using Amiq.Services.Friendship.Contracts.Friendship;
-using Amiq.Services.Friendship.DataAccessLayer.Models.Models;
-using Amiq.Services.Friendship.Common.DbOperation;
-using Amiq.Services.Friendship.Contracts.Utils;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Friendship.Common.DbOperation;
 using Amiq.Services.Friendship.Common.Enums;
-using Amiq.Services.Friendship.Mapping;
+using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.Contracts.User;
+using Amiq.Services.Friendship.Contracts.Utils;
+using Amiq.Services.Friendship.DataAccessLayer.Models.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Amiq.Services.Friendship.DataAccessLayer
 {
     public class DaoFriendRequest
     {
         private AmiqFriendshipContext _amiqContext = new AmiqFriendshipContext();
+
+        public async Task<FriendRequest> GetFriendRequestByIdAsync(Guid friendRequestId)
+        {
+            return await _amiqContext.FriendRequests.SingleAsync(e=>e.FriendRequestId == friendRequestId);
+        }
 
         public async Task<IEnumerable<DtoFriendRequest>> GetFriendRequestsAsync(int userId, FriendRequestType friendRequestType)
         {
@@ -66,7 +65,8 @@ namespace Amiq.Services.Friendship.DataAccessLayer
                     AuthorId = frEntity.IssuerId,
                     TextContent = "Cześć"
                 });*/
-                //await _amiqContext.SaveChangesAsync();
+                
+                await _amiqContext.SaveChangesAsync();
 
                 await t.CommitAsync();
             }

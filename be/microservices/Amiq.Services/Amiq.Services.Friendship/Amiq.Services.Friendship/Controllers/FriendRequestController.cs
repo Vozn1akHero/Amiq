@@ -1,7 +1,10 @@
-﻿using Amiq.Services.Friendship.Base;
+﻿using Amiq.Services.Friendship.Amqp;
+using Amiq.Services.Friendship.Amqp.IntegrationEvents;
+using Amiq.Services.Friendship.Base;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Common.Enums;
 using Amiq.Services.Friendship.Contracts.Friendship;
+using Amiq.Services.Friendship.DataAccessLayer;
 using Amiq.Services.Friendship.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,6 +14,7 @@ namespace Amiq.Services.Friendship.Controllers
     public class FriendRequestController : AmiqBaseController
     {
         private BlFriendRequest _bsFriendRequest = new BlFriendRequest();
+        private DaoFriendRequest _daoFriendRequest = new DaoFriendRequest();
 
         private UserService _userService;
 
@@ -59,6 +63,13 @@ namespace Amiq.Services.Friendship.Controllers
         public async Task<IActionResult> AcceptFriendRequest([FromRoute] Guid friendRequestId)
         {
             var result = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserId, friendRequestId);
+
+            if (result.Success)
+            {
+                var createdEntity = await _daoFriendRequest.GetFriendRequestByIdAsync(friendRequestId);
+                RabbitMQPublisher.Publish(new FriendshipRequestAccepted(createdEntity.IssuerId, createdEntity.ReceiverId));
+            }
+
             return Ok(result);
         }
 

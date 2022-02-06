@@ -24,6 +24,7 @@ import {IIdBasedPersistentData} from "../../store/redux/base/id-based-persistent
 import {IGroupEvent} from "../../features/group/models/group-event";
 import {IPageVisitationActivity} from "../../features/activity-tracking/models";
 import moment from "moment";
+import {ActivityTrackingFacade} from "../../features/activity-tracking/activity-tracking-facade";
 
 type Props = {
     getGroupEvents(groupId: number, page: number, count: number):void;
@@ -140,7 +141,7 @@ class GroupPageContainer extends Component<Props, State> {
     }
 
     startTrackingActivity = () => {
-        setTimeout(() => {
+        setInterval(() => {
             this.setState({
                 visitationTimeInMinutes: this.state.visitationTimeInMinutes + 1
             })
@@ -148,49 +149,8 @@ class GroupPageContainer extends Component<Props, State> {
     }
 
     storeTrackingActivity = () => {
-        if(!sessionStorage.getItem("act"))
-        {
-            const obj : IPageVisitationActivity = {
-                groupVisitations: [],
-                userProfileVisitations: [],
-                //lastRequestTime: moment().toDate()
-            };
-            sessionStorage.setItem("act", JSON.stringify(obj));
-        }
-
-        let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
-
         const{groupId} = this.props.match.params;
-
-        if(!visitationState){
-            visitationState = {
-                userProfileVisitations: [],
-                groupVisitations: []
-            }
-        }
-
-        if(!visitationState.groupVisitations){
-            visitationState.groupVisitations = [];
-        }
-
-        let groupVisitationIndex = visitationState.groupVisitations.findIndex(e=>e.groupId === groupId);
-        if(groupVisitationIndex!==-1){
-            visitationState.groupVisitations = visitationState.groupVisitations.map((value, index) => {
-                if(index === groupVisitationIndex){
-                    value.visitationTotalTime += this.state.visitationTimeInMinutes;
-                    value.lastVisited =  moment().toDate()
-                }
-                return value;
-            });
-        } else {
-            visitationState.groupVisitations.push({
-                groupId,
-                lastVisited: moment().toDate(),
-                visitationTotalTime: this.state.visitationTimeInMinutes
-            })
-        }
-
-        sessionStorage.setItem("act", JSON.stringify(visitationState));
+        ActivityTrackingFacade.storeGroupActivity(groupId, this.state.visitationTimeInMinutes);
     }
 
     render() {

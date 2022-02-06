@@ -25,6 +25,7 @@ import {first} from "rxjs";
 import {IdentityModel} from "../../store/custom/auth/identity-model";
 import {IPageVisitationActivity} from "../../features/activity-tracking/models";
 import moment from "moment";
+import {ActivityTrackingFacade} from "../../features/activity-tracking/activity-tracking-facade";
 
 
 const ProfilePageContainer: React.FC = (props: any) => {
@@ -235,47 +236,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
     const storeTrackingActivity = () => {
         if(isViewerProfile) return;
 
-        if(!sessionStorage.getItem("act"))
-        {
-            const obj : IPageVisitationActivity = {
-                groupVisitations: [],
-                userProfileVisitations: [],
-                //lastRequestTime: moment().toDate()
-            };
-            sessionStorage.setItem("act", JSON.stringify(obj));
-        }
-
-        let visitationState = JSON.parse(sessionStorage.getItem("act")) as IPageVisitationActivity;
-
-        if(!visitationState){
-            visitationState = {
-                userProfileVisitations: [],
-                groupVisitations: []
-            }
-        }
-
-        if(!visitationState.userProfileVisitations){
-            visitationState.userProfileVisitations = [];
-        }
-
-        let profileVisitationIndex = visitationState.userProfileVisitations.findIndex(e=>e.visitedUserId === actualProfileId);
-        if(profileVisitationIndex!==-1){
-            visitationState.userProfileVisitations = visitationState.userProfileVisitations.map((value, index) => {
-                if(index === profileVisitationIndex){
-                    value.visitationTotalTime += visitationTimeInMinutes;
-                    value.lastVisited =  moment().toDate()
-                }
-                return value;
-            });
-        } else {
-            visitationState.userProfileVisitations.push({
-                visitedUserId: actualProfileId,
-                lastVisited: moment().toDate(),
-                visitationTotalTime: visitationTimeInMinutes
-            })
-        }
-
-        sessionStorage.setItem("act", JSON.stringify(visitationState));
+        ActivityTrackingFacade.storeProfileActivity(actualProfileId, visitationTimeInMinutes);
     }
 
     //endregion

@@ -80,5 +80,13 @@ namespace Amiq.Services.Friendship.Controllers
             var result = _bsFriend.GetFriendshipStatus(JwtStoredUserId, userId);
             return Ok(result);
         }
+
+        [HttpGet("pb-friendship-status")]
+        [Produces(typeof(DtoFriendshipStatus))]
+        public IActionResult GetFriendshipStatus(int fUserId, int sUserId)
+        {
+            var result = _bsFriend.GetFriendshipStatus(fUserId, sUserId);
+            return Ok(result);
+        }
     }
 }

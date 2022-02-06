@@ -5,7 +5,7 @@ import devConfig from "dev-config.json"
 
 export class HttpClient {
     instance = axios.create({
-        baseURL: devConfig.monolithUrl + "/api/",
+        baseURL: HttpClient.getBaseURL(1),
         withCredentials: true,
     });
 
@@ -22,6 +22,15 @@ export class HttpClient {
             response.headers['request-duration'] = milliseconds
             return response
         })*/
+    }
+
+    private static getBaseURL(arch: number):string {
+        if(arch===1){
+            return devConfig.monolithUrl + "/api/";
+        }
+        else {
+
+        }
     }
 
     public get<T>(path: string, params?: HttpParams, queryParams?: HttpQueryParams) : Promise<AxiosResponse<T>>{

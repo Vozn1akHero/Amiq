@@ -1,4 +1,5 @@
-﻿using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Common.Enums;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Amiq.Workers.Notification
 
                 var mostVisitedGroups = DbContext.GroupVisitations.AsNoTracking()
                         .Where(e => e.UserId == userId)
+                        .Include(e=>e.Group)
                         .Take(5)
                         .OrderByDescending(e => e.VisitationTotalTime)
                         .ToList();
@@ -33,6 +35,7 @@ namespace Amiq.Workers.Notification
                         .AsNoTracking()
                         .Where(e => e.Post.CreatedAt > mostVisitedGroup.LastVisited
                             && e.GroupId == mostVisitedGroup.GroupId)
+                        .Include(e=>e.Post)
                         .ToList();
 
                     if(groupPosts.Count > 0 && groupPosts.Count <= 2)
@@ -41,7 +44,8 @@ namespace Amiq.Workers.Notification
                             notifications.Add(new DataAccessLayer.Models.Models.Notification {
                                 ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                                 NotificationGroupId = notificationGroupId,
-                                Text = $"W grupie <b>{mostVisitedGroup.Group.Name}</b> pojawił się wpis: {post.Post.TextContent.Substring(0, 30)}...",
+                                Text = $"W grupie {mostVisitedGroup.Group.Name} pojawił się wpis: {new string(post.Post.TextContent.Take(30).ToArray())}...",
+                                NotificationType = EnNotificationType.GP.ToString(),
                                 Link = $"/group/{mostVisitedGroup.GroupId}",
                                 CreatedAt = DateTime.Now,
                                 UserId = userId
@@ -53,8 +57,9 @@ namespace Amiq.Workers.Notification
                         {
                             ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                             NotificationGroupId = notificationGroupId,
-                            Text = $"W grupie <b>{mostVisitedGroup.Group.Name}</b> pojawiło się {groupPosts.Count} wpisów",
+                            Text = $"W grupie {mostVisitedGroup.Group.Name} pojawiło się {groupPosts.Count} wpisów",
                             Link = $"/group/{mostVisitedGroup.GroupId}",
+                            NotificationType = EnNotificationType.GP.ToString(),
                             CreatedAt = DateTime.Now,
                             UserId = userId
                         });;

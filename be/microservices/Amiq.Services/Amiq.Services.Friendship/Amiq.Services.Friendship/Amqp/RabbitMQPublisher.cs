@@ -1,10 +1,9 @@
-﻿using Amiq.Services.User.Amqp.IntegrationEvents;
-using Amiq.Services.User.Contracts.User;
+﻿using Amiq.Services.Friendship.Amqp.IntegrationEvents;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace Amiq.Services.User.Amqp
+namespace Amiq.Services.Friendship.Amqp
 {
     public sealed class RabbitMQPublisher : IDisposable
     {
@@ -44,8 +43,8 @@ namespace Amiq.Services.User.Amqp
 
         public void Dispose()
         {
-            RabbitMQPublisher._channel.Close();
-            RabbitMQPublisher._connection.Close();
+            _channel.Close();
+            _connection.Close();
         }
     }
 }

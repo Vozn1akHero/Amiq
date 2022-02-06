@@ -51,9 +51,9 @@ class App extends Component<any, State> {
     }
 
     storeActivity(){
-        const source = timer(60000);
+        const source = timer(5000);
         //const source = timer(1000);
-        this.activityTimerSub = source.subscribe(val => {
+        this.activityTimerSub = source.subscribe(() => {
             const pageVisitationActivityStr = sessionStorage.getItem("act");
             if(pageVisitationActivityStr) {
                 const pageVisitationActivity : IPageVisitationActivity = JSON.parse(pageVisitationActivityStr);
@@ -68,16 +68,6 @@ class App extends Component<any, State> {
     }
 
     componentWillUnmount() {
-        /*const pageVisitationActivityStr = sessionStorage.getItem("act");
-        if(pageVisitationActivityStr) {
-            const pageVisitationActivity = JSON.parse(pageVisitationActivityStr);
-            this.activityTrackingService.create(pageVisitationActivity).then(res=>{
-                if(res.status === StatusCodes.OK){
-                    console.log("activity saved")
-                }
-            })
-        }*/
-
         this.isOpenSub.unsubscribe();
         this.modalComponentSub.unsubscribe();
         this.activityTimerSub.unsubscribe();

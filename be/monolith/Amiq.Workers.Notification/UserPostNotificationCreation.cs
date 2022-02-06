@@ -1,4 +1,5 @@
-﻿using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Common.Enums;
+using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -76,8 +77,9 @@ namespace Amiq.Workers.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             NotificationGroupId = notificationGroupId,
-                            Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał nowy wpis: i <b>inne</b>",
+                            Text = $"Użytkownik {userPosts.Key.Name + " " + userPosts.Key.Surname} dodał nowy wpis: i inne",
                             Link = $"/profile/{userPosts.Key.UserId}",
+                            NotificationType = EnNotificationType.UP.ToString(),
                             CreatedAt = DateTime.Now,
                             UserId = userId
                         });
@@ -88,8 +90,9 @@ namespace Amiq.Workers.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             NotificationGroupId = notificationGroupId,
-                            Text = $"Użytkownik <b>{userPosts.Key.Name + " " + userPosts.Key.Surname}</b> dodał {userPosts.Value.Count} nowych wpisów",
+                            Text = $"Użytkownik {userPosts.Key.Name + " " + userPosts.Key.Surname} dodał {userPosts.Value.Count} nowych wpisów",
                             Link = $"/profile/{userPosts.Key.UserId}",
+                            NotificationType = EnNotificationType.UP.ToString(),
                             CreatedAt = DateTime.Now,
                             UserId = userId
                         });

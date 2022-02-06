@@ -65,18 +65,6 @@ namespace Amiq.DataAccessLayer.Chat
             return result;
         }
 
-        public async Task<List<DtoChatPreview>> GetChatMessagesAsync(DtoChatPreviewListRequest dtoPaginatedRequest)
-        {
-            var previews = new List<DtoChatPreview>();
-            previews = await (from c in _amiqContext.Chats.AsNoTracking()
-                              join m in _amiqContext.Messages.AsNoTracking()
-                              on c.ChatId equals m.ChatId
-                              select new DtoChatPreview {
-                                
-                              }).ToListAsync();
-            return previews;
-        }
-
         /// <summary>
         /// Zwraca listę ostatnich wiadomości w czatach
         /// </summary>
