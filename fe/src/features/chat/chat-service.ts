@@ -4,10 +4,11 @@ import {injectable} from "tsyringe";
 import moment from "moment";
 import {IMessage, IChatPreview, IChat} from "./chat-models";
 import {HttpQueryParams} from "../../core/http-client";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export default class ChatService extends BaseService{
     apiModule = "chat";
-
+    service = ServicesDictionary.Chat
     /*getChatsByUserId(userId: string){
         return chatPreviewsMock;
     }*/

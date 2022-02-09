@@ -86,14 +86,10 @@ namespace Amiq.Services.User.DataAccessLayer
                         Surname = e.Surname,
                         AvatarPath = e.AvatarPath,
                         BlockedByIssuer = e.BlockedUserDestUsers.Any(i => i.IssuerId == issuerId),
-                        IssuerBlocked = e.BlockedUserIssuers.Any(i => i.DestUserId == issuerId),
-                        /*IssuerReceivedFriendRequest = e.FriendRequestIssuers.Any(i => i.ReceiverId == issuerId),
-                        IssuerSentFriendRequest = e.FriendRequestReceivers.Any(i => i.IssuerId == issuerId),
-                        IsIssuerFriend = e.FriendshipFirstUsers.Any(e => e.SecondUserId == issuerId) || e.FriendshipSecondUsers.Any(e => e.FirstUserId == issuerId),*/
+                        IssuerBlocked = e.BlockedUserIssuers.Any(i => i.DestUserId == issuerId)
                     })
                     .Skip((paginatedRequest.Page - 1) * paginatedRequest.Count)
                     .Take(paginatedRequest.Count);
-                //var result = await APAutoMapper.Instance.ProjectTo<DtoUserInfo>(query).ToListAsync();
                 return result;
             });
         }

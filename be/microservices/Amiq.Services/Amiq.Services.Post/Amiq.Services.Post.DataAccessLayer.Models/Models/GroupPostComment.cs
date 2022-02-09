@@ -19,6 +19,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
         public Guid? ParentId { get; set; }
 
         public virtual Comment Comment { get; set; } = null!;
+        public virtual Group Group { get; set; } = null!;
         public virtual GroupPostComment? MainParent { get; set; }
         public virtual GroupPostComment? Parent { get; set; }
         public virtual ICollection<GroupPostComment> InverseMainParent { get; set; }

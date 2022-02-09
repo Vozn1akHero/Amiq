@@ -1,7 +1,4 @@
-﻿using Amiq.Contracts.Group;
-using Amiq.Contracts.User;
-using System;
-using System.Collections.Generic;
+﻿using Amiq.Services.Post.Contracts.User;
 
 namespace Amiq.Services.Post.Contracts.Post
 {

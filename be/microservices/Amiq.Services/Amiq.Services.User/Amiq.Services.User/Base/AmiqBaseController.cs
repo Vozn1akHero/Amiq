@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
 namespace Amiq.Services.User.Base
@@ -30,6 +31,15 @@ namespace Amiq.Services.User.Base
 
         //protected DtoJwtStoredUserInfo JwtStoredUserInfo => (DtoJwtStoredUserInfo)HttpContext.Items["user"];
 
-        protected int JwtStoredUserId => int.Parse(HttpContext.Request.Headers["Amiq-UserId"]);
+        protected int? JwtStoredUserId
+        {
+            get {
+                string? val = HttpContext.Request.Headers.GetCommaSeparatedValues("Amiq-UserId").FirstOrDefault();
+                if (!string.IsNullOrEmpty(val))
+                    return int.Parse(val);
+                else 
+                    return null;
+            }
+        }
     }
 }

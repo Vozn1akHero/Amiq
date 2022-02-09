@@ -1,8 +1,10 @@
 import {BaseService} from "core/base-service";
 import {HttpParams, HttpQueryParams} from "../../core/http-client";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export class BlockedUserService extends BaseService {
     apiModule = "blocked-user";
+    service = ServicesDictionary.User
 
     getBlockedUsers(page: number, count: number){
         return this.httpClient.get(this.buildApiPath("list"), null,

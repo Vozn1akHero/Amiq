@@ -1,8 +1,10 @@
 import {HttpParams} from "core/http-client";
 import {BaseService} from "core/base-service";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export default class UserService extends BaseService{
     apiModule = "user";
+    service = ServicesDictionary.User
 
     getById(userId: number){
         let params = new HttpParams()

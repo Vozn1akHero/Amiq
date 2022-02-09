@@ -51,6 +51,12 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
 
                 entity.Property(e => e.TextContent).HasMaxLength(250);
 
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.AuthorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Comment_User");
+
                 entity.HasOne(d => d.MainParent)
                     .WithMany(p => p.InverseMainParent)
                     .HasForeignKey(d => d.MainParentId)
@@ -86,6 +92,18 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.GroupPosts)
+                    .HasForeignKey(d => d.AuthorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPost_User");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupPosts)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPost_Group");
+
                 entity.HasOne(d => d.Post)
                     .WithMany(p => p.GroupPosts)
                     .HasForeignKey(d => d.PostId)
@@ -107,6 +125,12 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
                     .WithMany(p => p.GroupPostComments)
                     .HasForeignKey(d => d.CommentId)
                     .HasConstraintName("FK_GroupPostComment_Comment");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupPostComments)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupPostComment_Group");
 
                 entity.HasOne(d => d.MainParent)
                     .WithMany(p => p.InverseMainParent)
@@ -160,6 +184,12 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
                     .WithMany(p => p.UserPosts)
                     .HasForeignKey(d => d.PostId)
                     .HasConstraintName("FK_UserPost_Post");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserPosts)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserPost_User");
             });
 
             OnModelCreatingPartial(modelBuilder);

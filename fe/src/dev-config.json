@@ -1,3 +1,5 @@
 {
-  "monolithUrl": "http://localhost:10709"
+  "monolithUrl": "http://localhost:10709",
+  "microservicesUrl": "http://localhost:14039",
+  "useMicroservices": true
 }

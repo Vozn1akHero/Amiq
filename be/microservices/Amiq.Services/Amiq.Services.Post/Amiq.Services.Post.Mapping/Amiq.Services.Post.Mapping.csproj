@@ -10,4 +10,9 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Amiq.Services.Post.Contracts\Amiq.Services.Post.Contracts.csproj" />
+    <ProjectReference Include="..\Amiq.Services.Post.DataAccessLayer.Models\Amiq.Services.Post.DataAccessLayer.Models.csproj" />
+  </ItemGroup>
+
 </Project>

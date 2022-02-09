@@ -1,7 +1,10 @@
 import HttpClient from "./http-client";
+import ArgumentNullException from "./exceptions/argument-null-exception";
+import devConfig from "dev-config.json"
 
 export class BaseService {
     protected apiModule: string;
+    protected service: string;
 
     protected readonly httpClient : HttpClient;
 
@@ -10,10 +13,17 @@ export class BaseService {
     }
 
     protected buildApiPath(method: string = null): string{
-        if(method) {
-            return this.apiModule.concat("/", method);
-        } else {
-            return this.apiModule;
+        if(devConfig.useMicroservices){
+            if(!this.service) throw new ArgumentNullException("service");
+
+            return this.service + "/" + this.apiModule + (method && "/" + method);
+        }
+        else {
+            if (method) {
+                return this.apiModule.concat("/api/", method);
+            } else {
+                return this.apiModule.concat("/api/");
+            }
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
         public int AuthorId { get; set; }
         public bool? VisibleAsCreatedByAdmin { get; set; }
 
+        public virtual User Author { get; set; } = null!;
+        public virtual Group Group { get; set; } = null!;
         public virtual Post Post { get; set; } = null!;
     }
 }

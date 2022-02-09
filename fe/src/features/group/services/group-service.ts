@@ -1,9 +1,11 @@
 import {BaseService} from "core/base-service";
 import {HttpParams, HttpQueryParams} from "core/http-client";
 import {IGroupCard, IGroupData} from "../models/group-models";
+import {ServicesDictionary} from "../../../core/dictionaries/modules-dictionary";
 
 export class GroupService extends BaseService {
     apiModule = "group";
+    service = ServicesDictionary.Group
 
     create(group: Pick<IGroupCard, 'name' & 'description'>){
         return this.httpClient.post(this.buildApiPath(), group);

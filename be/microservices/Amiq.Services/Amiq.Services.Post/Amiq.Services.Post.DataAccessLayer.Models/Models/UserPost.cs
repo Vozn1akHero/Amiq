@@ -10,5 +10,6 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
         public int UserId { get; set; }
 
         public virtual Post Post { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

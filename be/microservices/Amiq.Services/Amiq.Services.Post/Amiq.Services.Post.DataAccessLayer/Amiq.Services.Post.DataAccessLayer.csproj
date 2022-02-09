@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Amiq.Services.Post.Common\Amiq.Services.Post.Common.csproj" />
     <ProjectReference Include="..\Amiq.Services.Post.Contracts\Amiq.Services.Post.Contracts.csproj" />
     <ProjectReference Include="..\Amiq.Services.Post.DataAccessLayer.Models\Amiq.Services.Post.DataAccessLayer.Models.csproj" />
     <ProjectReference Include="..\Amiq.Services.Post.Mapping\Amiq.Services.Post.Mapping.csproj" />

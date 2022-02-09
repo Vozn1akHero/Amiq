@@ -62,8 +62,15 @@ namespace Amiq.Services.Friendship.Controllers
             {
                 return new StatusCodeResult(499);
             }
-            var data = await _bsFriend.SearchAsync(JwtStoredUserId, paginatedRequest, text);
-            return Ok(data);
+
+            var searchResult = await _bsFriend.SearchAsync(JwtStoredUserId, paginatedRequest, text);
+
+            if(searchResult.FoundFriends.Count() < paginatedRequest.Count)
+            {
+                searchResult.FoundUsers = await _userService.SearchAsync(JwtStoredUserId, text, paginatedRequest);
+            }
+
+            return Ok(searchResult);
         }
 
         [HttpDelete("{friendId}")]
@@ -88,5 +95,6 @@ namespace Amiq.Services.Friendship.Controllers
             var result = _bsFriend.GetFriendshipStatus(fUserId, sUserId);
             return Ok(result);
         }
+
     }
 }

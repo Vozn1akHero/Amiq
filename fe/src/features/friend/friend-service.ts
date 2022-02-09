@@ -2,10 +2,12 @@ import {BaseService} from "core/base-service";
 import "reflect-metadata";
 import {injectable} from "tsyringe";
 import {HttpParams, HttpQueryParams} from "../../core/http-client";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 @injectable()
 export class FriendService extends BaseService{
     apiModule = "friendship"
+    service = ServicesDictionary.Friendship
 
     getFriendsByUserId(userId: number, page: number, count: number){
         let params = new HttpParams().append("userId", userId);

@@ -1,9 +1,11 @@
 import {BaseService} from "../base-service";
 import {DtoRegister} from "./dto-register";
 import {DtoLogin} from "./dto-login";
+import {ServicesDictionary} from "../dictionaries/modules-dictionary";
 
 export default class AuthService extends BaseService {
     apiModule : string = "auth";
+    service = ServicesDictionary.User;
 
     validateCredentials() {
         return this.httpClient.get<any>(this.buildApiPath("validate-credentials"));

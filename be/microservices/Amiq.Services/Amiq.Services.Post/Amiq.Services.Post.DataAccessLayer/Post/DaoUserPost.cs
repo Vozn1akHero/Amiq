@@ -1,20 +1,15 @@
-﻿using Amiq.Common;
-using Amiq.Contracts.Post;
-using Amiq.Contracts.User;
-using Amiq.DataAccessLayer.Models.Models;
-using Amiq.Mapping;
+﻿using Amiq.Services.Post.Common;
+using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.Contracts.Utils;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
+using Amiq.Services.Post.Mapping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Services.Post.DataAccessLayer.Post
 {
     public class DaoUserPost
     {
-        private AmiqContext _amiqContext = new AmiqContext();
+        private AmiqPostContext _amiqContext = new AmiqPostContext();
 
         public async Task<DtoListResponseOf<DtoUserPost>> GetUserPostsAsync(int userId, DtoPaginatedRequest dtoPaginatedRequest)
         {
@@ -25,7 +20,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                 .OrderByDescending(e => e.Post.CreatedAt)
                 .Include(e => e.Post)
                 .Include(e => e.Post.Comments);
-            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
+            result.Entities = await AmiqPostAutoMapper.Instance.ProjectTo<DtoUserPost>(query).ToListAsync();
             return result;
         }
 
@@ -43,8 +38,8 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
 
         public async Task<DtoUserPost> CreateAsync(int issuerId, DtoPostCreation dtoPost)
         {
-            var userPost = APAutoMapper.Instance.Map<UserPost>(dtoPost);
-            var post = APAutoMapper.Instance.Map<Models.Models.Post>(dtoPost);
+            var userPost = AmiqPostAutoMapper.Instance.Map<UserPost>(dtoPost);
+            var post = AmiqPostAutoMapper.Instance.Map<Models.Models.Post>(dtoPost);
             userPost.UserId = issuerId;
             _amiqContext.Posts.Add(post);
             await _amiqContext.SaveChangesAsync();
@@ -75,7 +70,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                  Comments = new List<DtoPostComment>()
              }).First();*/
 
-            return APAutoMapper.Instance
+            return AmiqPostAutoMapper.Instance
                 .ProjectTo<DtoUserPost>(_amiqContext.UserPosts.Where(e => e.PostId == userPost.PostId))
                 .Single();
         }

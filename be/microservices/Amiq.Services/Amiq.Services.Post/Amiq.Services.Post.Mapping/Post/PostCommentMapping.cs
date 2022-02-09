@@ -1,9 +1,10 @@
-﻿using Amiq.Contracts.Post;
-using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Services.Post.Contracts.Post;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
+using AutoMapper;
 
 namespace Amiq.Services.Post.Mapping.Post
 {
-    public class PostCommentMapping : APProfile
+    public class PostCommentMapping : Profile
     {
         public PostCommentMapping()
         {

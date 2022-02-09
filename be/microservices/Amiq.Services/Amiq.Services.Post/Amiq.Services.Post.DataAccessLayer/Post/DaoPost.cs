@@ -1,19 +1,12 @@
-﻿using Amiq.Contracts.Post;
-using Amiq.DataAccessLayer.Models;
-using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.Contracts.Utils;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
 
 namespace Amiq.Services.Post.DataAccessLayer.Post
 {
     public class DaoPost
     {
-        private AmiqContext _amiqContext = new AmiqContext();
+        private AmiqPostContext _amiqContext = new AmiqPostContext();
 
         public async Task<DtoDeleteEntityResponse> DeleteByPostIdAsync(Guid postId)
         {

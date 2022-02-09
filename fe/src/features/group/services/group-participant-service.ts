@@ -1,8 +1,10 @@
 import {BaseService} from "../../../core/base-service";
 import {HttpParams, HttpQueryParams} from "../../../core/http-client";
+import {ServicesDictionary} from "../../../core/dictionaries/modules-dictionary";
 
 export class GroupParticipantService extends BaseService {
     apiModule = "group-participant"
+    service = ServicesDictionary.Group
 
     getUserGroups(page: number, filterType: number){
         const count: number = 10;

@@ -1,9 +1,11 @@
 import {BaseService} from "core/base-service";
 import {HttpParams, HttpQueryParams} from "core/http-client";
 import {IGroupPostCommentCreation, IPostComment, IPostCommentCreation} from "./models/post-comment";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export class PostCommentService extends BaseService {
     apiModule = "post-comment"
+    service = ServicesDictionary.Post
 
     getPostComments(postId: string, page:number, count: number){
         const queryParams = new HttpQueryParams()

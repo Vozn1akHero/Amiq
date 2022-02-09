@@ -26,6 +26,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
         public Guid? MainParentId { get; set; }
         public bool IsRemoved { get; set; }
 
+        public virtual User Author { get; set; } = null!;
         public virtual Comment? MainParent { get; set; }
         public virtual Comment? Parent { get; set; }
         public virtual Post Post { get; set; } = null!;

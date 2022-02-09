@@ -7,7 +7,10 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
     {
         public User()
         {
+            Comments = new HashSet<Comment>();
+            GroupPosts = new HashSet<GroupPost>();
             Posts = new HashSet<Post>();
+            UserPosts = new HashSet<UserPost>();
         }
 
         public int UserId { get; set; }
@@ -15,6 +18,9 @@ namespace Amiq.Services.Post.DataAccessLayer.Models.Models
         public string Surname { get; set; } = null!;
         public string AvatarPath { get; set; } = null!;
 
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<GroupPost> GroupPosts { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 import {BaseService} from "../../core/base-service";
 import {IMessage} from "./chat-models";
 import {HttpQueryParams} from "../../core/http-client";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export default class ChatMessageService extends BaseService{
     apiModule = "chat-message"
+    service = ServicesDictionary.Chat
 
     getMessagesByChatId(chatId: string, page: number) {
         const queryParams = new HttpQueryParams()

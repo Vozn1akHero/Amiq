@@ -1,13 +1,7 @@
-﻿using Amiq.Business.Utils;
-using Amiq.Contracts;
-using Amiq.Contracts.Post;
-using Amiq.DataAccessLayer.Models.Models;
-using Amiq.DataAccessLayer.Post;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Post.BusinessLayer.Utils;
+using Amiq.Services.Post.Contracts.Post;
+using Amiq.Services.Post.Contracts.Utils;
+using Amiq.Services.Post.DataAccessLayer.Post;
 
 namespace Amiq.Services.Post.BusinessLayer.Post
 {

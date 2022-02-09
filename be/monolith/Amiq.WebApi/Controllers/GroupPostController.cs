@@ -34,7 +34,7 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpPost]
-        [AuthorizeGroupAdmin]
+        //[AuthorizeGroupAdmin]
         public async Task<IActionResult> CreateGroupPostAsync([FromBody] DtoCreateGroupPost dtoCreateGroupPost)
         {
             var entity = await bsGroupPost.CreateAsync(dtoCreateGroupPost);
@@ -42,7 +42,7 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpPatch("edit")]
-        [AuthorizeGroupAdmin]
+        //[AuthorizeGroupAdmin]
         public async Task<IActionResult> EditAsync([FromBody] DtoEditGroupPostRequest dtoEditGroupPostRequest)
         {
             await bsGroupPost.EditAsync(dtoEditGroupPostRequest);

@@ -1,5 +1,7 @@
 ﻿using Amiq.Services.Friendship.Cache.Redis;
 using Amiq.Services.Friendship.Contracts.User;
+using Amiq.Services.Friendship.Contracts.Utils;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Amiq.Services.Friendship.HttpClients
 {
@@ -30,6 +32,27 @@ namespace Amiq.Services.Friendship.HttpClients
             {
 
                 return await result.Content.ReadFromJsonAsync<DtoBasicUserInfo>();
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<DtoUserSearchResult>?> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
+        {
+            _httpClient.DefaultRequestHeaders.Add("Amiq-UserId", issuerId.ToString());
+
+            var uri = QueryHelpers.AddQueryString($"{_configuration.GetValue<string>("Services:UserService")}/api/user/search", new Dictionary<string, string?>()
+            {
+                ["text"] = text,
+                ["page"] = paginatedRequest.Page.ToString(),
+                ["count"] = paginatedRequest.Count.ToString()
+            });
+
+            var res = await _httpClient.GetAsync(uri);
+
+            if (res.IsSuccessStatusCode)
+            {
+                return await res.Content.ReadFromJsonAsync<List<DtoUserSearchResult>>();
             }
 
             return null;

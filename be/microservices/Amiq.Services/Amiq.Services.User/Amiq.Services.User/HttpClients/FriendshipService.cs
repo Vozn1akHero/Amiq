@@ -1,4 +1,6 @@
 ﻿using Amiq.Services.User.Contracts.Friendship;
+using System.Text;
+using System.Text.Json;
 
 namespace Amiq.Services.User.HttpClients
 {
@@ -32,5 +34,20 @@ namespace Amiq.Services.User.HttpClients
 
             return friendshipStatus;
         }
+
+        /*public async Task<IEnumerable<DtoFriendshipStatus>?> GetFriendshipsForUserAsync(string requestCreatorId, IEnumerable<int> userIds)
+        {
+            _httpClient.DefaultRequestHeaders.Add("Amiq-UserId", requestCreatorId);
+
+            var res = await _httpClient.PostAsync($"{_configuration.GetValue<string>("Services:FriendshipService")}/api/friendship/pb-friendship-status",
+                new StringContent(JsonSerializer.Serialize(new { UserIds = userIds}), Encoding.UTF8, "application/json"));
+
+            if (res.IsSuccessStatusCode)
+            {
+               return await res.Content.ReadFromJsonAsync<List<DtoFriendshipStatus>>();
+            }
+
+            return null;
+        }*/
     }
 }

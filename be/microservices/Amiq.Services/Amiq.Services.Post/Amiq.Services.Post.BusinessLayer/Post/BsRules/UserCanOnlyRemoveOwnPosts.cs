@@ -1,8 +1,5 @@
-﻿using Amiq.Business.Utils;
-using Amiq.DataAccessLayer.Models.Models;
-using Amiq.DataAccessLayer.Post;
-using System;
-using System.Linq;
+﻿using Amiq.Services.Post.BusinessLayer.Utils;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
 
 namespace Amiq.Services.Post.BusinessLayer.Post.BsRules
 {
@@ -10,11 +7,11 @@ namespace Amiq.Services.Post.BusinessLayer.Post.BsRules
     {
         public string ErrorContent => throw new NotImplementedException();
 
-        private AmiqContext _amiqContext;
+        private AmiqPostContext _amiqContext;
         private int _userId;
         private Guid _postId;
 
-        public UserCanOnlyRemoveOwnPosts(AmiqContext amiqContext, int userId, Guid postId)
+        public UserCanOnlyRemoveOwnPosts(AmiqPostContext amiqContext, int userId, Guid postId)
         {
             _amiqContext = amiqContext;
             _userId = userId;

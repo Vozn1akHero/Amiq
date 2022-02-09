@@ -1,22 +1,15 @@
-﻿using Amiq.Common;
-using Amiq.Common.Enums;
-using Amiq.Contracts.Post;
-using Amiq.DataAccessLayer.Models.Models;
-using Amiq.Mapping;
+﻿using Amiq.Services.Post.Common;
+using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.Contracts.Utils;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
+using Amiq.Services.Post.Mapping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Services.Post.DataAccessLayer.Post
 {
     public class DaoPostComment
     {
-        private AmiqContext _amiqContext = new AmiqContext();
+        private AmiqPostContext _amiqContext = new AmiqPostContext();
 
         public async Task<DtoListResponseOf<DtoPostComment>> GetUserPostCommentAsync(Guid postId, DtoPaginatedRequest paginatedRequest)
         {
@@ -27,7 +20,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                     .Where(e => e.PostId == postId && !e.ParentId.HasValue && !e.IsRemoved)
                     .Paginate(paginatedRequest.Page, paginatedRequest.Count)
                     .OrderByDescending(e => e.CreatedAt);
-            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoPostComment>(commentsQuery).ToListAsync();
+            result.Entities = await AmiqPostAutoMapper.Instance.ProjectTo<DtoPostComment>(commentsQuery).ToListAsync();
             result.Length = await _amiqContext
                     .Comments
                     .Where(e => e.PostId == postId && !e.IsRemoved)
@@ -45,7 +38,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                     .Where(e => e.Comment.PostId == postId && !e.Comment.ParentId.HasValue && !e.Comment.IsRemoved)
                     .Paginate(paginatedRequest.Page, paginatedRequest.Count)
                     .OrderByDescending(e => e.Comment.CreatedAt);
-            result.Entities = await APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(commentsQuery).ToListAsync();
+            result.Entities = await AmiqPostAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(commentsQuery).ToListAsync();
             result.Length = await _amiqContext
                     .Comments
                     .Where(e => e.PostId == postId && !e.IsRemoved)
@@ -74,7 +67,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
             await _amiqContext.AddAsync(entity);
             await _amiqContext.SaveChangesAsync();
             IQueryable createdCommentQuery = _amiqContext.Comments.Where(e => e.CommentId == entity.CommentId);
-            DtoPostComment res = APAutoMapper.Instance.ProjectTo<DtoPostComment>(createdCommentQuery).Single();
+            DtoPostComment res = AmiqPostAutoMapper.Instance.ProjectTo<DtoPostComment>(createdCommentQuery).Single();
             return res;
         }
 
@@ -98,7 +91,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
             _amiqContext.GroupPostComments.Add(entity);
             await _amiqContext.SaveChangesAsync();
             IQueryable createdCommentQuery = _amiqContext.GroupPostComments.Where(e => e.CommentId == entity.CommentId);
-            var groupPostComment = APAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(createdCommentQuery).Single();
+            var groupPostComment = AmiqPostAutoMapper.Instance.ProjectTo<DtoGroupPostComment>(createdCommentQuery).Single();
             return groupPostComment;
         }
 
@@ -110,7 +103,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                 entity.IsRemoved = true;
                 await _amiqContext.SaveChangesAsync();
             }
-            return APAutoMapper.Instance.Map<DtoPostComment>(entity);
+            return AmiqPostAutoMapper.Instance.Map<DtoPostComment>(entity);
         }
 
         public async Task<DtoPostComment> EditAsync(Guid postCommentId, string text)
@@ -122,7 +115,7 @@ namespace Amiq.Services.Post.DataAccessLayer.Post
                 _amiqContext.Update(entity);
                 await _amiqContext.SaveChangesAsync();
             }
-            return APAutoMapper.Instance.Map<DtoPostComment>(entity);
+            return AmiqPostAutoMapper.Instance.Map<DtoPostComment>(entity);
         }
     }
 }

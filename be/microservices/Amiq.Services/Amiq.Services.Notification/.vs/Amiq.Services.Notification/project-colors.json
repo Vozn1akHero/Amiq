@@ -5,7 +5,32 @@
       "ProjectGuid": "ab304748-00f8-4d43-9bab-a2c4f9a7a08e",
       "DisplayName": "Amiq.Services.Notification",
       "ColorIndex": 0
+    },
+    "a674d492-23d1-412b-9c3e-cdb8c1dc5317": {
+      "ProjectGuid": "a674d492-23d1-412b-9c3e-cdb8c1dc5317",
+      "DisplayName": "Amiq.Services.Notification.DataAccessLayer.Models",
+      "ColorIndex": 1
+    },
+    "6d2db9b3-46aa-4b7e-b265-e0b5357d3c7e": {
+      "ProjectGuid": "6d2db9b3-46aa-4b7e-b265-e0b5357d3c7e",
+      "DisplayName": "Amiq.Services.Notification.DataAccessLayer",
+      "ColorIndex": 2
+    },
+    "4b518051-d1f4-4d95-9a16-43fd0c087253": {
+      "ProjectGuid": "4b518051-d1f4-4d95-9a16-43fd0c087253",
+      "DisplayName": "Amiq.Services.Notification.BusinessLayer",
+      "ColorIndex": 3
+    },
+    "36f1bf94-2d5f-4b47-9306-31e05298f4ab": {
+      "ProjectGuid": "36f1bf94-2d5f-4b47-9306-31e05298f4ab",
+      "DisplayName": "Amiq.Services.Notification.Common",
+      "ColorIndex": 4
+    },
+    "94808065-eddd-47e3-baca-0b7b7300dfb7": {
+      "ProjectGuid": "94808065-eddd-47e3-baca-0b7b7300dfb7",
+      "DisplayName": "Amiq.Services.Notification.Contracts",
+      "ColorIndex": 5
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 6
 }

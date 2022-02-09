@@ -5,15 +5,20 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User", "Amiq.Services.User\Amiq.Services.User.csproj", "{A6DED68A-60A7-412C-8A0B-632B73E6ADD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.User.DataAccessLayer.Models", "Amiq.Services.User.DataAccessLayer.Models\Amiq.Services.User.DataAccessLayer.Models.csproj", "{BCEBE227-C785-47DE-8C0D-2A493FB1AD01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User.DataAccessLayer.Models", "Amiq.Services.User.DataAccessLayer.Models\Amiq.Services.User.DataAccessLayer.Models.csproj", "{BCEBE227-C785-47DE-8C0D-2A493FB1AD01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.User.DataAccessLayer", "Amiq.Services.User.DataAccessLayer\Amiq.Services.User.DataAccessLayer.csproj", "{D23DE437-A7F8-4218-BF74-542E60308861}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User.DataAccessLayer", "Amiq.Services.User.DataAccessLayer\Amiq.Services.User.DataAccessLayer.csproj", "{D23DE437-A7F8-4218-BF74-542E60308861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.User.BusinessLayer", "Amiq.Services.User.BusinessLayer\Amiq.Services.User.BusinessLayer.csproj", "{292CA63E-33D9-4A91-BC38-D45084AD5C12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User.BusinessLayer", "Amiq.Services.User.BusinessLayer\Amiq.Services.User.BusinessLayer.csproj", "{292CA63E-33D9-4A91-BC38-D45084AD5C12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.User.Contracts", "Amiq.Services.User.Contracts\Amiq.Services.User.Contracts.csproj", "{1F5FA612-7798-4A13-895A-286AB2AD3C08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User.Contracts", "Amiq.Services.User.Contracts\Amiq.Services.User.Contracts.csproj", "{1F5FA612-7798-4A13-895A-286AB2AD3C08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.User.Common", "Amiq.Services.User.Common\Amiq.Services.User.Common.csproj", "{BA2282B5-E6CB-4B10-B2CA-ADA38E9D267B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User.Common", "Amiq.Services.User.Common\Amiq.Services.User.Common.csproj", "{BA2282B5-E6CB-4B10-B2CA-ADA38E9D267B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59CD3AE2-6BBF-419D-BCAA-7F2442947A00}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

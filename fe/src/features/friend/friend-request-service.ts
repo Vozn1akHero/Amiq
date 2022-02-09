@@ -1,9 +1,11 @@
 import {BaseService} from "../../core/base-service";
 import {HttpParams, HttpQueryParams} from "../../core/http-client";
 import {FriendRequestType} from "./friend-request-type";
+import {ServicesDictionary} from "../../core/dictionaries/modules-dictionary";
 
 export class FriendRequestService extends BaseService {
     apiModule = "friend-request"
+    service = ServicesDictionary.Friendship
 
     getFriendRequests(friendRequestType: FriendRequestType) {
         let friendRequestTypeStr: string = friendRequestType.toString();

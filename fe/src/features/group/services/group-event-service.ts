@@ -1,9 +1,11 @@
 import {BaseService} from "core/base-service";
 import {HttpParams, HttpQueryParams} from "core/http-client";
 import {IGroupEvent} from "../models/group-event";
+import {ServicesDictionary} from "../../../core/dictionaries/modules-dictionary";
 
 export class GroupEventService extends BaseService {
     apiModule = "group-event";
+    service = ServicesDictionary.Group
 
     getGroupEvents(groupId: number, page: number, count: number) {
         const query = new HttpQueryParams()

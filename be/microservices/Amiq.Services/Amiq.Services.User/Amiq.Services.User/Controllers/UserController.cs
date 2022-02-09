@@ -1,12 +1,14 @@
-﻿using Amiq.Services.User.BusinessLayer;
+﻿using Amiq.Services.User.Base;
+using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.Contracts.Utils;
 using Amiq.Services.User.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.User.Controllers
 {
     [Route("api/user")]
-    public class UserController : ControllerBase
+    public class UserController : AmiqBaseController
     {
         private FriendshipService _friendshipService;
         private BlUser _bsUser = new BlUser();
@@ -35,11 +37,22 @@ namespace Amiq.Services.User.Controllers
         [Produces(typeof(DtoBasicUserInfo))]
         public async Task<IActionResult> GetBasicUserDataByIdAsync(int userId)
         {
-            //string requestCreatorId = HttpContext.Request.Headers["Amiq-UserId"];
             var user = await _bsUser.GetBasicUserDataByIdAsync(userId);
             if (user == null) return NotFound();
             return Ok(user);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchAsync([FromQuery] string text,
+            [FromQuery] DtoPaginatedRequest paginatedRequest,
+            CancellationToken cancellationToken = default)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return new StatusCodeResult(499);
+            }
+            var res = await _bsUser.SearchAsync(JwtStoredUserId, text, paginatedRequest);
+            return Ok(res);
+        }
      }
 }

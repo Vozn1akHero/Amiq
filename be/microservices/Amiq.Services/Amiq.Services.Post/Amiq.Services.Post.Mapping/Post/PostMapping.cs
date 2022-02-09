@@ -1,12 +1,10 @@
-﻿using Amiq.Contracts.Post;
-using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Services.Post.Contracts.Post;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
 using AutoMapper;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Amiq.Services.Post.Mapping.Post
 {
-    public class PostMapping : APProfile
+    public class PostMapping : Profile
     {
         public PostMapping()
         {
@@ -36,9 +34,14 @@ namespace Amiq.Services.Post.Mapping.Post
                 //.ForMember(e => e.RecentComments, dest => dest.MapFrom(i => i.Post.Comments.Where(e => !e.ParentId.HasValue).OrderByDescending(e => e.CreatedAt).Take(5)))
                 ;
 
-            CreateTwoWayMap<DtoPostCreation, UserPost>();
-            CreateTwoWayMap<DtoPostCreation, GroupPost>();
-            CreateTwoWayMap<DtoPostCreation, DataAccessLayer.Models.Models.Post>();
+            CreateMap<DtoPostCreation, UserPost>();
+            CreateMap<UserPost, DtoPostCreation>();
+
+            CreateMap<DtoPostCreation, GroupPost>();
+            CreateMap<GroupPost, DtoPostCreation>();
+
+            CreateMap<DtoPostCreation, DataAccessLayer.Models.Models.Post>();
+            CreateMap<DataAccessLayer.Models.Models.Post, DtoPostCreation>();
         }
     }
 }

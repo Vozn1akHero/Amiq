@@ -5,7 +5,7 @@ import devConfig from "dev-config.json"
 
 export class HttpClient {
     instance = axios.create({
-        baseURL: HttpClient.getBaseURL(1),
+        baseURL: HttpClient.getBaseURL(2),
         withCredentials: true,
     });
 
@@ -25,11 +25,11 @@ export class HttpClient {
     }
 
     private static getBaseURL(arch: number):string {
-        if(arch===1){
-            return devConfig.monolithUrl + "/api/";
+        if(arch === 1){
+            return devConfig.monolithUrl //+ "/api/";
         }
-        else {
-
+        else if(arch === 2) {
+            return devConfig.microservicesUrl;
         }
     }
 

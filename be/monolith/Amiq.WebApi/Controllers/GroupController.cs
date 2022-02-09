@@ -29,7 +29,7 @@ namespace Amiq.WebApi.Controllers
         }
 
         [HttpPost("drop")]
-        [AuthorizeMainGroupAdmin]
+        //[AuthorizeMainGroupAdmin]
         public async Task<IActionResult> DropGroup([FromBody] DtoDropGroupRequest dtoDropGroupRequest)
         {
             return await Task.FromResult(Ok());
