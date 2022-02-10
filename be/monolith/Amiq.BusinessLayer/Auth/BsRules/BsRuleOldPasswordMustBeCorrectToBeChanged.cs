@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Auth;
 using System;
 

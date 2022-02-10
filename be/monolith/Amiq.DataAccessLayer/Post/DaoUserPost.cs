@@ -1,5 +1,4 @@
 ﻿using Amiq.Common;
-using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;

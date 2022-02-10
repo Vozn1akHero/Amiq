@@ -1,7 +1,6 @@
 ﻿using Amiq.Business.Chat.BsRules;
 using Amiq.Business.User.BsRule;
-using Amiq.Business.Utils;
-using Amiq.Contracts;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Chat;
@@ -9,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Chat
+namespace Amiq.BusinessLayer.Chat
 {
     public class BlChatMessage : BusinessLayerBase
     {

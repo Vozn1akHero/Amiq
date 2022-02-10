@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Group;
+﻿using Amiq.BusinessLayer.Group;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

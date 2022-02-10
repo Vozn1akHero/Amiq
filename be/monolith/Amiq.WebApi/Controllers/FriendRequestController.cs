@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Friend;
+﻿using Amiq.BusinessLayer.Friend;
 using Amiq.Common.Enums;
 using Amiq.Contracts.Friendship;
 using Amiq.WebApi.Base;

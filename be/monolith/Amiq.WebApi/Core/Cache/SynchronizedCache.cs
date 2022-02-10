@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Amiq.Core.Cache
+namespace Amiq.WebApi.Core.Cache
 {
     public class SynchronizedCache
     {

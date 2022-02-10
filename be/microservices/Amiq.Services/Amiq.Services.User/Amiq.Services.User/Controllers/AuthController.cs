@@ -1,9 +1,9 @@
-﻿using Amiq.Services.User.Amqp;
-using Amiq.Services.User.Amqp.IntegrationEvents;
+﻿using Amiq.Services.User.Amqp.IntegrationEvents;
 using Amiq.Services.User.Base;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Common.Enums;
 using Amiq.Services.User.Contracts.Auth;
+using Amiq.Services.User.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +17,7 @@ namespace Amiq.Services.User.Controllers
         //[Authorize]
         public IActionResult ChangePassword([FromBody] DtoChangeUserPassword dtoChangeUserPassword)
         {
-            var result = _bsAuth.ChangePassword(JwtStoredUserId, dtoChangeUserPassword);
+            var result = _bsAuth.ChangePassword(JwtStoredUserId.Value, dtoChangeUserPassword);
             return Ok(result);
         }
 
@@ -25,7 +25,7 @@ namespace Amiq.Services.User.Controllers
         //[Authorize]
         public IActionResult ChangeEmail([FromBody] string email)
         {
-            var result = _bsAuth.ChangeEmail(JwtStoredUserId, email);
+            var result = _bsAuth.ChangeEmail(JwtStoredUserId.Value, email);
             return Ok(result);
         }
 

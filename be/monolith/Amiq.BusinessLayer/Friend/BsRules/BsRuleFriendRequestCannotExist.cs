@@ -1,7 +1,7 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Friendship;
 
-namespace Amiq.Business.Friend.BsRules
+namespace Amiq.BusinessLayer.Friend.BsRules
 {
     public class BsRuleFriendRequestCannotExist : IBsRule
     {

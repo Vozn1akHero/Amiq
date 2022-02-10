@@ -1,6 +1,5 @@
 ﻿using Amiq.Common;
 using Amiq.Common.Enums;
-using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Models.Models;

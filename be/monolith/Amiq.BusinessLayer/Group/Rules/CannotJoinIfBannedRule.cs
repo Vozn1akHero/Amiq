@@ -1,11 +1,11 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Group.Rules
+namespace Amiq.BusinessLayer.Group.Rules
 {
     public class CannotJoinIfBannedRule : IBsRule
     {

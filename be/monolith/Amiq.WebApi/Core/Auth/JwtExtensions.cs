@@ -1,6 +1,5 @@
 ﻿using Amiq.Contracts.Auth;
 using Amiq.WebApi.Core;
-using Amiq.WebApi.Core.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Core.Auth
+namespace Amiq.WebApi.Core.Auth
 {
     internal struct JwtRegisteredClaimNamesEx
     {
@@ -23,8 +22,9 @@ namespace Amiq.Core.Auth
     public class JwtExtensions
     {
         public static TokenValidationParameters JwtValidationParameters
-        { 
-            get => new TokenValidationParameters {
+        {
+            get => new TokenValidationParameters
+            {
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
@@ -70,7 +70,8 @@ namespace Amiq.Core.Auth
             {
                 tokenHandler.ValidateToken(token, JwtValidationParameters, out SecurityToken validatedToken);
                 return validatedToken != null;
-            } catch (SecurityTokenExpiredException)
+            }
+            catch (SecurityTokenExpiredException)
             {
                 return false;
             }
@@ -91,11 +92,11 @@ namespace Amiq.Core.Auth
             string name = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNamesEx.UserName).Value;
             string surname = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNamesEx.UserSurname).Value;
             string email = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-            
+
             result.UserId = userId;
             result.Email = email;
             result.UserName = name;
-            result.UserSurname = surname;   
+            result.UserSurname = surname;
 
             return result;
         }

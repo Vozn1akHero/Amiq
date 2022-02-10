@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Post;
+﻿using Amiq.BusinessLayer.Post;
 using Amiq.Common.Enums;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;

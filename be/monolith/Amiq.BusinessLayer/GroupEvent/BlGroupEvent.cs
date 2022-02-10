@@ -1,5 +1,4 @@
-﻿using Amiq.Business.Utils;
-using Amiq.Contracts;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Group;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Group
+namespace Amiq.BusinessLayer.GroupEvent
 {
     public class BlGroupEvent : BusinessLayerBase
     {

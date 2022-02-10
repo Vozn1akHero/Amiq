@@ -1,5 +1,4 @@
-﻿using Amiq.Contracts;
-using Amiq.Contracts.Group;
+﻿using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business
+namespace Amiq.BusinessLayer.Group
 {
     public class BlGroupParticipant
     {

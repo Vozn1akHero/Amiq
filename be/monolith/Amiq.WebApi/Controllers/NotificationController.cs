@@ -12,8 +12,8 @@ using Amiq.WebApi.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Amiq.Contracts.Utils;
 using System.Threading;
-using Amiq.Business.Notification;
 using Amiq.Contracts.Notification;
+using Amiq.BusinessLayer.Notification;
 
 namespace Amiq.WebApi.Controllers
 {

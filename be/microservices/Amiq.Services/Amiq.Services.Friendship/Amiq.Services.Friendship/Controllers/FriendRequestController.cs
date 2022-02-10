@@ -1,11 +1,11 @@
-﻿using Amiq.Services.Friendship.Amqp;
-using Amiq.Services.Friendship.Amqp.IntegrationEvents;
+﻿using Amiq.Services.Friendship.Amqp.IntegrationEvents;
 using Amiq.Services.Friendship.Base;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Common.Enums;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.DataAccessLayer;
 using Amiq.Services.Friendship.HttpClients;
+using Amiq.Services.Friendship.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

@@ -1,6 +1,6 @@
-using Amiq.Services.Friendship.Amqp;
 using Amiq.Services.Friendship.Cache.Redis;
 using Amiq.Services.Friendship.HttpClients;
+using Amiq.Services.Friendship.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +30,6 @@ app.UseCors(x => x
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
-
-//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

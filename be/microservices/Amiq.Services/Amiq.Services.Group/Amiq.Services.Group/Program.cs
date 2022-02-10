@@ -1,3 +1,4 @@
+using Amiq.Services.Friendship.Amqp;
 using Amiq.Services.Group.Mapping;
 using Microsoft.AspNetCore.Http.Json;
 
@@ -30,6 +31,8 @@ builder.Services.AddRouting(options => {
 });
 
 AmiqGroupAutoMapper.Initialize();
+
+builder.Services.AddHostedService<RabbitMQListener>();
 
 var app = builder.Build();
 

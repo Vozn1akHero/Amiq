@@ -1,5 +1,4 @@
-﻿using Amiq.Business.Friend;
-using Amiq.Contracts;
+﻿using Amiq.BusinessLayer.Friend;
 using Amiq.Contracts.Auth;
 using Amiq.Contracts.Friendship;
 using Amiq.Contracts.Utils;

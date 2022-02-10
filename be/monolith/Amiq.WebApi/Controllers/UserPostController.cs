@@ -1,5 +1,5 @@
-﻿using Amiq.Business.Post;
-using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Post;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;

@@ -3,7 +3,7 @@ using Amiq.DataAccessLayer.Models.Models;
 using AutoMapper;
 using System;
 
-namespace Amiq.Mapping
+namespace Amiq.Mapping.Chat
 {
     public class ChatProfile : Profile
     {

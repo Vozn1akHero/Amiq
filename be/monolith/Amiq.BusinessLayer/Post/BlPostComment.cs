@@ -1,6 +1,5 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Common.Enums;
-using Amiq.Contracts;
 using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Post;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Post
+namespace Amiq.BusinessLayer.Post
 {
     public class BlPostComment : BusinessLayerBase
     {
@@ -19,7 +18,7 @@ namespace Amiq.Business.Post
 
         public async Task<DtoListResponseOf<DtoPostComment>> GetUserPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
         {
-             return await daPostComment.GetUserPostCommentAsync(postId, dto);
+            return await daPostComment.GetUserPostCommentAsync(postId, dto);
         }
 
         public async Task<DtoListResponseOf<DtoGroupPostComment>> GetGroupPostCommentsAsync(Guid postId, DtoPaginatedRequest dto)
@@ -44,7 +43,7 @@ namespace Amiq.Business.Post
 
         public async Task<DtoPostComment> EditAsync(Guid postCommentId, string text)
         {
-             return await daPostComment.EditAsync(postCommentId, text);
+            return await daPostComment.EditAsync(postCommentId, text);
         }
 
     }

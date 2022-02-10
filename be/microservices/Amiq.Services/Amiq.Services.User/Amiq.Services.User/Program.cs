@@ -2,7 +2,7 @@ using Amiq.Services.User.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//builder.WebHost.UseIISIntegration();
 
 builder.Services.AddControllers();
 builder.Services.AddRouting(opts=>opts.LowercaseUrls = true);

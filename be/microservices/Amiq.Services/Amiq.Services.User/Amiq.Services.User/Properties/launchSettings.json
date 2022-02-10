@@ -4,11 +4,19 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5011",
+      "applicationUrl": "http://localhost/Amiq_User",
       "sslPort": 0
     }
   },
   "profiles": {
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost/Amiq_User",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "Amiq.Services.User": {
       "commandName": "Project",
       "launchBrowser": true,

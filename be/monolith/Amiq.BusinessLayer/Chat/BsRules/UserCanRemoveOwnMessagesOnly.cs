@@ -1,10 +1,10 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Chat;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Chat.BsRules
+namespace Amiq.BusinessLayer.Chat.BsRules
 {
     public class UserCanRemoveOwnMessagesOnlyAsync : IBsRuleAsync
     {

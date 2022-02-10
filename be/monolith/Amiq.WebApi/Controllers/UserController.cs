@@ -1,4 +1,4 @@
-﻿using Amiq.Business.User;
+﻿using Amiq.BusinessLayer.User;
 using Amiq.WebApi.Base;
 using Amiq.WebApi.Core.Files;
 using Microsoft.AspNetCore.Authorization;

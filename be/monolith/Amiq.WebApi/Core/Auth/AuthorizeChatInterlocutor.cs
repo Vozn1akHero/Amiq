@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Chat;
+﻿using Amiq.BusinessLayer.Chat;
 using Amiq.Contracts.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

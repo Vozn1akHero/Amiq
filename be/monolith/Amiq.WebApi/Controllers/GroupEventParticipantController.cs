@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Group;
+﻿using Amiq.BusinessLayer.GroupEvent;
 using Amiq.WebApi.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;

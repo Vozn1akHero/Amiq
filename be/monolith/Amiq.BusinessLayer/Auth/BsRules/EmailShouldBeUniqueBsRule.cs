@@ -1,7 +1,7 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Auth;
 
-namespace Amiq.Business.Auth.Rules
+namespace Amiq.BusinessLayer.Auth.BsRules
 {
     public class EmailShouldBeUniqueBsRule : IBsRule
     {

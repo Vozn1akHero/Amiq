@@ -1,4 +1,4 @@
-﻿using Amiq.Business;
+﻿using Amiq.BusinessLayer.Group;
 using Amiq.Contracts.Group;
 using Amiq.WebApi.Base;
 using Amiq.WebApi.Core.Auth;

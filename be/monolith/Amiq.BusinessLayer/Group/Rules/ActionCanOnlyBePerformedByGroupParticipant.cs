@@ -1,7 +1,7 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Group;
 
-namespace Amiq.Business.Group.Rules
+namespace Amiq.BusinessLayer.Group.Rules
 {
     public class ActionCanOnlyBePerformedByGroupParticipant : IBsRule
     {

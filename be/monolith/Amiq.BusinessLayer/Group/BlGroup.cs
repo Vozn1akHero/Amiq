@@ -1,7 +1,7 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
-using Amiq.Contracts;
 using Amiq.Contracts.Group;
+using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Group;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business
+namespace Amiq.BusinessLayer.Group
 {
     public class BlGroup : BusinessLayerBase
     {

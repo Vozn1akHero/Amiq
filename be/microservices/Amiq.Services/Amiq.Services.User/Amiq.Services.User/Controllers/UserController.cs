@@ -51,7 +51,7 @@ namespace Amiq.Services.User.Controllers
             {
                 return new StatusCodeResult(499);
             }
-            var res = await _bsUser.SearchAsync(JwtStoredUserId, text, paginatedRequest);
+            var res = await _bsUser.SearchAsync(JwtStoredUserId.Value, text, paginatedRequest);
             return Ok(res);
         }
      }

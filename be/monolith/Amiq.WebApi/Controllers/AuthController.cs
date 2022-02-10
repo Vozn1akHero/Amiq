@@ -1,18 +1,17 @@
 ﻿using Amiq.WebApi.Base;
-using Amiq.Contracts;
 using Amiq.Contracts.Auth;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amiq.Business.Auth;
 using Microsoft.AspNetCore.Http;
-using Amiq.Core.Auth;
 using Amiq.Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Amiq.Contracts.User;
+using Amiq.BusinessLayer.Auth;
+using Amiq.WebApi.Core.Auth;
 
 namespace Amiq.WebApi.Controllers
 {

@@ -1,10 +1,10 @@
 ﻿using Amiq.Business.Friend.BsRules;
 using Amiq.Business.User.BsRule;
-using Amiq.Business.Utils;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
 using Amiq.Common.Enums;
-using Amiq.Contracts;
 using Amiq.Contracts.Friendship;
+using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Friendship;
 using Amiq.DataAccessLayer.User;
 using System;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Friend
+namespace Amiq.BusinessLayer.Friend
 {
     public class BlFriendRequest : BusinessLayerBase
     {

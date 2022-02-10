@@ -5,15 +5,24 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification", "Amiq.Services.Notification\Amiq.Services.Notification.csproj", "{AB304748-00F8-4D43-9BAB-A2C4F9A7A08E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification.DataAccessLayer.Models", "Amiq.Services.Notification.DataAccessLayer.Models\Amiq.Services.Notification.DataAccessLayer.Models.csproj", "{A674D492-23D1-412B-9C3E-CDB8C1DC5317}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification.DataAccessLayer.Models", "Amiq.Services.Notification.DataAccessLayer.Models\Amiq.Services.Notification.DataAccessLayer.Models.csproj", "{A674D492-23D1-412B-9C3E-CDB8C1DC5317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification.DataAccessLayer", "Amiq.Services.Notification.DataAccessLayer\Amiq.Services.Notification.DataAccessLayer.csproj", "{6D2DB9B3-46AA-4B7E-B265-E0B5357D3C7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification.DataAccessLayer", "Amiq.Services.Notification.DataAccessLayer\Amiq.Services.Notification.DataAccessLayer.csproj", "{6D2DB9B3-46AA-4B7E-B265-E0B5357D3C7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification.BusinessLayer", "Amiq.Services.Notification.BusinessLayer\Amiq.Services.Notification.BusinessLayer.csproj", "{4B518051-D1F4-4D95-9A16-43FD0C087253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification.BusinessLayer", "Amiq.Services.Notification.BusinessLayer\Amiq.Services.Notification.BusinessLayer.csproj", "{4B518051-D1F4-4D95-9A16-43FD0C087253}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification.Common", "Amiq.Services.Notification.Common\Amiq.Services.Notification.Common.csproj", "{36F1BF94-2D5F-4B47-9306-31E05298F4AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification.Common", "Amiq.Services.Notification.Common\Amiq.Services.Notification.Common.csproj", "{36F1BF94-2D5F-4B47-9306-31E05298F4AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Notification.Contracts", "Amiq.Services.Notification.Contracts\Amiq.Services.Notification.Contracts.csproj", "{94808065-EDDD-47E3-BACA-0B7B7300DFB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification.Contracts", "Amiq.Services.Notification.Contracts\Amiq.Services.Notification.Contracts.csproj", "{94808065-EDDD-47E3-BACA-0B7B7300DFB7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB49A12C-24CC-44C6-B0C2-C7A2A8B1CE97}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{B02992AA-18CE-4FE1-9BFD-CDD4BB04B518}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Workers.Notification", "Amiq.Workers.Notification\Amiq.Workers.Notification.csproj", "{EBD265D2-8A48-4F00-9BF7-2D80D785C925}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +54,16 @@ Global
 		{94808065-EDDD-47E3-BACA-0B7B7300DFB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94808065-EDDD-47E3-BACA-0B7B7300DFB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94808065-EDDD-47E3-BACA-0B7B7300DFB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD265D2-8A48-4F00-9BF7-2D80D785C925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD265D2-8A48-4F00-9BF7-2D80D785C925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD265D2-8A48-4F00-9BF7-2D80D785C925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD265D2-8A48-4F00-9BF7-2D80D785C925}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EBD265D2-8A48-4F00-9BF7-2D80D785C925} = {B02992AA-18CE-4FE1-9BFD-CDD4BB04B518}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {871E4AFD-2BE0-428C-ABBE-8C74EDACF97B}

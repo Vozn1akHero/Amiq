@@ -1,8 +1,8 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Chat;
 using System;
 
-namespace Amiq.Business.Chat.BsRules
+namespace Amiq.BusinessLayer.Chat.BsRules
 {
     public class ChatShouldBeAvailableForInterlocutor : IBsRule
     {

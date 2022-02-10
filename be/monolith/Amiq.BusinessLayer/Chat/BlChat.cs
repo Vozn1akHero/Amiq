@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Chat;
 using Amiq.DataAccessLayer.Chat;
 using Amiq.DataAccessLayer.Models.Models;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Chat
+namespace Amiq.BusinessLayer.Chat
 {
     public class BlChat : BusinessLayerBase
     {

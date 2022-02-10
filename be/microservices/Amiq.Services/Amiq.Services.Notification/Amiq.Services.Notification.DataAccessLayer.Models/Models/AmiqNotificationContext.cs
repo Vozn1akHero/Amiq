@@ -16,10 +16,10 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
         {
         }
 
+        public virtual DbSet<Friendship> Friendships { get; set; } = null!;
+        public virtual DbSet<GroupParticipant> GroupParticipants { get; set; } = null!;
         public virtual DbSet<GroupVisitation> GroupVisitations { get; set; } = null!;
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
-        public virtual DbSet<NotificationQueue> NotificationQueues { get; set; } = null!;
-        public virtual DbSet<NotificationRequest> NotificationRequests { get; set; } = null!;
         public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -34,6 +34,34 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Friendship>(entity =>
+            {
+                entity.ToTable("Friendship", "Friendship");
+
+                entity.Property(e => e.FriendshipId).HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.FirstUser)
+                    .WithMany(p => p.FriendshipFirstUsers)
+                    .HasForeignKey(d => d.FirstUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_FirstUser");
+
+                entity.HasOne(d => d.SecondUser)
+                    .WithMany(p => p.FriendshipSecondUsers)
+                    .HasForeignKey(d => d.SecondUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Friendship_SecondUser");
+            });
+
+            modelBuilder.Entity<GroupParticipant>(entity =>
+            {
+                entity.ToTable("GroupParticipant", "Group");
+
+                entity.Property(e => e.GroupParticipantId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Joined).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<GroupVisitation>(entity =>
             {
                 entity.ToTable("GroupVisitation", "Activity");
@@ -60,35 +88,6 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Notification_User");
-            });
-
-            modelBuilder.Entity<NotificationQueue>(entity =>
-            {
-                entity.ToTable("NotificationQueue", "Notification");
-
-                entity.Property(e => e.NotificationQueueId).ValueGeneratedNever();
-
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.NotificationQueues)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_NotificationQueue_User");
-            });
-
-            modelBuilder.Entity<NotificationRequest>(entity =>
-            {
-                entity.ToTable("NotificationRequest", "Notification");
-
-                entity.Property(e => e.NotificationRequestId).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.VisitedAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.NotificationRequests)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_NotificationRequest_User");
             });
 
             modelBuilder.Entity<ProfileVisitation>(entity =>

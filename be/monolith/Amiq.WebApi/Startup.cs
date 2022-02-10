@@ -1,6 +1,6 @@
-using Amiq.Core.Auth;
 using Amiq.Mapping;
 using Amiq.WebApi.Core;
+using Amiq.WebApi.Core.Auth;
 using Amiq.WebApi.Middlewares;
 using Amiq.WebApi.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

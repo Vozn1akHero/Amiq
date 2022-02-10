@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Group;
+﻿using Amiq.BusinessLayer.GroupEvent;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;

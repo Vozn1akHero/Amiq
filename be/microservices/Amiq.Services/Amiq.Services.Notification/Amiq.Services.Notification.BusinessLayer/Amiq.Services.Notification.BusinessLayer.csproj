@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Amiq.Services.Notification.DataAccessLayer\Amiq.Services.Notification.DataAccessLayer.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,5 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
-using Amiq.Contracts;
 using Amiq.Contracts.Notification;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Notification;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Notification
+namespace Amiq.BusinessLayer.Notification
 {
     public class BlNotification : BusinessLayerBase
     {

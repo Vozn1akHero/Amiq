@@ -7,8 +7,8 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
     {
         public User()
         {
-            NotificationQueues = new HashSet<NotificationQueue>();
-            NotificationRequests = new HashSet<NotificationRequest>();
+            FriendshipFirstUsers = new HashSet<Friendship>();
+            FriendshipSecondUsers = new HashSet<Friendship>();
             Notifications = new HashSet<Notification>();
         }
 
@@ -17,8 +17,8 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
         public string Surname { get; set; } = null!;
         public string AvatarPath { get; set; } = null!;
 
-        public virtual ICollection<NotificationQueue> NotificationQueues { get; set; }
-        public virtual ICollection<NotificationRequest> NotificationRequests { get; set; }
+        public virtual ICollection<Friendship> FriendshipFirstUsers { get; set; }
+        public virtual ICollection<Friendship> FriendshipSecondUsers { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

@@ -8,13 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Amqp\" />
+    <ProjectReference Include="..\Amiq.Services.Notification.BusinessLayer\Amiq.Services.Notification.BusinessLayer.csproj" />
+    <ProjectReference Include="..\Amiq.Services.Notification.Contracts\Amiq.Services.Notification.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="HostedServices\" />
   </ItemGroup>
 
 </Project>

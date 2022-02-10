@@ -1,4 +1,4 @@
-﻿namespace Amiq.Contracts
+﻿namespace Amiq.Contracts.Auth
 {
     public class DtoUserAuthentication
     {

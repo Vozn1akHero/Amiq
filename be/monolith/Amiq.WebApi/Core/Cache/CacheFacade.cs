@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Amiq.Core.Cache
+namespace Amiq.WebApi.Core.Cache
 {
     public abstract class CacheFacade
     {
-        public static Dictionary<string, SynchronizedCache> Caches 
+        public static Dictionary<string, SynchronizedCache> Caches
             = new Dictionary<string, SynchronizedCache>();
 
         public static SynchronizedCache GetCacheByKey(string key)

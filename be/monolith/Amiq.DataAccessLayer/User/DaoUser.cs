@@ -1,5 +1,4 @@
-﻿using Amiq.Contracts;
-using Amiq.Contracts.User;
+﻿using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Models.Models;
 using Amiq.Mapping;

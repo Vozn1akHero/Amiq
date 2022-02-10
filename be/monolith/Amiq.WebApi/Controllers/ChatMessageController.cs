@@ -1,6 +1,5 @@
-﻿using Amiq.Business.Chat;
-using Amiq.Business.Utils;
-using Amiq.Contracts;
+﻿using Amiq.BusinessLayer.Chat;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;
 using Amiq.WebApi.Base;

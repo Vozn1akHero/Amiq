@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
-namespace Amiq.Services.User.Base
+namespace Amiq.Services.Post.Base
 {
     [ApiController]
     [Route("api/[controller]")]

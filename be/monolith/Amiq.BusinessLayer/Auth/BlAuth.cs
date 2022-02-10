@@ -1,14 +1,13 @@
 ﻿using Amiq.Business.Auth.Rules;
-using Amiq.Business.Utils;
 using Amiq.BusinessLayer.Auth.BsRules;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
-using Amiq.Contracts;
 using Amiq.Contracts.Auth;
 using Amiq.DataAccessLayer.Auth;
 using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Amiq.Business.Auth
+namespace Amiq.BusinessLayer.Auth
 {
     public class BlAuth : BusinessLayerBase
     {
@@ -86,21 +85,24 @@ namespace Amiq.Business.Auth
             return output;
         }
 
-        public DtoUserAuthenticationResult Authenticate(DtoUserAuthentication rsUserAuthentication) {
+        public DtoUserAuthenticationResult Authenticate(DtoUserAuthentication rsUserAuthentication)
+        {
             string rawPassword = rsUserAuthentication.Password;
             var user = _daAuth.GetUserByLogin(rsUserAuthentication.Login);
             bool userExists = user != null;
             if (!userExists) return new DtoUserAuthenticationResult { Success = false };
             string password = _daAuth.GetUserHashedPasswordByLogin(rsUserAuthentication.Login);
             bool passwordCorrect = BCrypt.Net.BCrypt.Verify(rawPassword, password);
-            if(passwordCorrect) return new DtoUserAuthenticationResult { 
-                Success = true, 
-                JwtBase = new DtoJwtBase { 
+            if (passwordCorrect) return new DtoUserAuthenticationResult
+            {
+                Success = true,
+                JwtBase = new DtoJwtBase
+                {
                     UserId = user.UserId,
                     UserEmail = user.Email,
                     UserName = user.Name,
                     UserSurname = user.Surname
-                } 
+                }
             };
             else return new DtoUserAuthenticationResult { Success = false };
         }

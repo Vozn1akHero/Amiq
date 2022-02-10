@@ -1,5 +1,5 @@
 ﻿using Amiq.Contracts.Auth;
-using Amiq.Core.Auth;
+using Amiq.WebApi.Core.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;

@@ -1,10 +1,10 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Group;
 using Amiq.DataAccessLayer.Group;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Group
+namespace Amiq.BusinessLayer.Group
 {
     public class BlBlockedGroupUser : BusinessLayerBase
     {

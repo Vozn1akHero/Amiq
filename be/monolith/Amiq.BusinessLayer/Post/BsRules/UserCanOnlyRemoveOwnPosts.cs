@@ -1,10 +1,10 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Models.Models;
 using Amiq.DataAccessLayer.Post;
 using System;
 using System.Linq;
 
-namespace Amiq.Business.Post.BsRules
+namespace Amiq.BusinessLayer.Post.BsRules
 {
     public class UserCanOnlyRemoveOwnPosts : IBsRule
     {
@@ -17,7 +17,7 @@ namespace Amiq.Business.Post.BsRules
         public UserCanOnlyRemoveOwnPosts(AmiqContext amiqContext, int userId, Guid postId)
         {
             _amiqContext = amiqContext;
-            _userId = userId;   
+            _userId = userId;
             _postId = postId;
         }
 

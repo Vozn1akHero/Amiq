@@ -1,5 +1,5 @@
-﻿using Amiq.Contracts;
-using Amiq.Contracts.Post;
+﻿using Amiq.Contracts.Post;
+using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Post;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Post
+namespace Amiq.BusinessLayer.Post
 {
     public class BlPost
     {
@@ -18,6 +18,6 @@ namespace Amiq.Business.Post
             return await _daPost.DeleteByPostIdAsync(postId);
         }
 
-        
+
     }
 }

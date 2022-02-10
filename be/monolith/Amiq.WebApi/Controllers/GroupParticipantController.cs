@@ -1,5 +1,4 @@
-﻿using Amiq.Business;
-using Amiq.Contracts;
+﻿using Amiq.BusinessLayer.Group;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Group.Enums;
 using Amiq.Contracts.Utils;

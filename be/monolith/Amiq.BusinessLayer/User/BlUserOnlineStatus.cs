@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.User
+namespace Amiq.BusinessLayer.User
 {
     public class BlUserSession
     {

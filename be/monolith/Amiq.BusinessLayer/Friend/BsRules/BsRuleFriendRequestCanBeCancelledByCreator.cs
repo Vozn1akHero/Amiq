@@ -1,8 +1,8 @@
-﻿using Amiq.Business.Utils;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.DataAccessLayer.Friendship;
 using System;
 
-namespace Amiq.Business.Friend.BsRules
+namespace Amiq.BusinessLayer.Friend.BsRules
 {
     public class BsRuleFriendRequestCanBeCancelledByCreator : IBsRule
     {

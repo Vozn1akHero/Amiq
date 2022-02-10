@@ -1,3 +1,6 @@
+using Amiq.Services.Post.Mapping;
+using Amiq.Services.Post.Messaging;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+AmiqPostAutoMapper.Initialize();
+
+builder.Services.AddHostedService<RabbitMQListener>();
 
 var app = builder.Build();
 

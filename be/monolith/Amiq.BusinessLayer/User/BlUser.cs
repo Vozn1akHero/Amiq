@@ -1,5 +1,4 @@
-﻿using Amiq.Business.Utils;
-using Amiq.Contracts;
+﻿using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.User;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.User;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.User
+namespace Amiq.BusinessLayer.User
 {
     public class BlUser : BusinessLayerBase
     {

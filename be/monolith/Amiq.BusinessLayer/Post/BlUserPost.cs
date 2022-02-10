@@ -1,5 +1,4 @@
-﻿using Amiq.Contracts;
-using Amiq.Contracts.Post;
+﻿using Amiq.Contracts.Post;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Models.Models;
 using Amiq.DataAccessLayer.Post;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amiq.Business.Post
+namespace Amiq.BusinessLayer.Post
 {
     public class BlUserPost
     {
