@@ -3,6 +3,8 @@ using Amiq.Services.Post.BusinessLayer.Post;
 using Amiq.Services.Post.BusinessLayer.Utils;
 using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.Contracts.Utils;
+using Amiq.Services.Post.Messaging;
+using Amiq.Services.Post.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +36,11 @@ namespace Amiq.Services.Post.Controllers
             try
             {
                 var data = await bsUserPost.CreateAsync(JwtStoredUserId, dtoPost);
+
+                var userPostModificationEvent = new UserPostModificationEvent(data.UserPostId, data.PostId, data.TextContent,
+                    data.EditedBy, data.EditedAt, data.CreatedAt, data.Author.UserId, "C");
+                RabbitMQPublisher.Publish<UserPostModificationEvent>(userPostModificationEvent);
+
                 return CreatedAtAction(nameof(CreateAsync), data);
             }
             catch (BsRuleIsBrokenException ex)

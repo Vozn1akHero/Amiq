@@ -73,13 +73,15 @@ export const Navigation = (props: Props) => {
             setIsAuthenticated(isAuthenticated);
 
             if(isAuthenticated){
-                notificationService.anyNotReadExist().then(res => {
+
+                // TODO
+                /*notificationService.anyNotReadExist().then(res => {
                     if(res.status === StatusCodes.OK){
                         const data: any = res.data;
                         const exist: boolean = data.result;
                         setIsNewNotificationsIconVisible(exist);
                     }
-                })
+                })*/
             }
         });
     }, [])

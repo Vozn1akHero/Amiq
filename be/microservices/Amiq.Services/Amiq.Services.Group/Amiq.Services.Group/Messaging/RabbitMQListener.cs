@@ -83,7 +83,7 @@ namespace Amiq.Services.Friendship.Amqp
                             break;
                         }
                 }
-                
+                _amiqGroupContext.SaveChanges();
             };
 
             consumer.Shutdown += OnConsumerShutdown;

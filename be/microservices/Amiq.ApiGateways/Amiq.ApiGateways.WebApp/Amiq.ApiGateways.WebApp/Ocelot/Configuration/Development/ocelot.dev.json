@@ -18,7 +18,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 14542
+          "Port": 4000
         }
       ],
       "UpstreamPathTemplate": "/chat/{everything}",

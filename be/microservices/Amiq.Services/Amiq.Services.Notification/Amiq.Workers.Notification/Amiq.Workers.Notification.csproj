@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Amiq.Services.Notification.Common\Amiq.Services.Notification.Common.csproj" />
     <ProjectReference Include="..\Amiq.Services.Notification.DataAccessLayer.Models\Amiq.Services.Notification.DataAccessLayer.Models.csproj" />
   </ItemGroup>
 </Project>

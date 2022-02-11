@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace Amiq.Services.User.Amqp
+namespace Amiq.Services.User.Messaging
 {
     public static class RabbitMQConnectionFactory
     {

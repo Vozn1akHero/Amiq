@@ -1,19 +1,13 @@
-﻿using Amiq.Common.Enums;
-using Amiq.DataAccessLayer.Models.Models;
+﻿using Amiq.Services.Notification.Common.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Workers.Notification
 {
     public class GroupPostNotificationCreation : NotificationCreationStrategy
     {
-        public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
+        public override IEnumerable<Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
-            List<DataAccessLayer.Models.Models.Notification> notifications = new();
+            List<Services.Notification.DataAccessLayer.Models.Models.Notification> notifications = new();
 
             foreach(var user in users)
             {
@@ -33,18 +27,18 @@ namespace Amiq.Workers.Notification
 
                     var groupPosts = DbContext.GroupPosts
                         .AsNoTracking()
-                        .Where(e => e.Post.CreatedAt > mostVisitedGroup.LastVisited
+                        .Where(e => e.CreatedAt > mostVisitedGroup.LastVisited
                             && e.GroupId == mostVisitedGroup.GroupId)
-                        .Include(e=>e.Post)
                         .ToList();
 
                     if(groupPosts.Count > 0 && groupPosts.Count <= 2)
                     {
                         foreach(var post in groupPosts)
-                            notifications.Add(new DataAccessLayer.Models.Models.Notification {
+                            notifications.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
+                            {
                                 ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                                 NotificationGroupId = notificationGroupId,
-                                Text = $"W grupie {mostVisitedGroup.Group.Name} pojawił się wpis: {new string(post.Post.TextContent.Take(30).ToArray())}...",
+                                Text = $"W grupie {mostVisitedGroup.Group.Name} pojawił się wpis: {new string(post.TextContent.Take(30).ToArray())}...",
                                 NotificationType = EnNotificationType.GP.ToString(),
                                 Link = $"/group/{mostVisitedGroup.GroupId}",
                                 CreatedAt = DateTime.Now,
@@ -53,7 +47,7 @@ namespace Amiq.Workers.Notification
                     }
                     else if(groupPosts.Count > 2)
                     {
-                        notifications.Add(new DataAccessLayer.Models.Models.Notification
+                        notifications.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
                         {
                             ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                             NotificationGroupId = notificationGroupId,

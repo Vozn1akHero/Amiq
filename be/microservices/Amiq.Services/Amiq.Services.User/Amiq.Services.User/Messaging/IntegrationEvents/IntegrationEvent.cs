@@ -1,4 +1,4 @@
-﻿namespace Amiq.Services.User.Amqp.IntegrationEvents
+﻿namespace Amiq.Services.User.Messaging.IntegrationEvents
 {
     public class IntegrationEvent
     {

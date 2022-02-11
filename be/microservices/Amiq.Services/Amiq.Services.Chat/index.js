@@ -3,7 +3,8 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
-import initializeRabbitMQListener from "./amqp/RabbitMQListener";
+import initializeRabbitMQListener from "./messaging/RabbitMQListener";
+import SocketConfiguration from "./SocketConfiguration";
 
 const app = express();
 const PORT = process.env.PORT || "4000";
@@ -46,6 +47,8 @@ mongoose
 initializeRabbitMQListener();
 
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+SocketConfiguration.init(server, PORT+1);
 
 export default server;
 

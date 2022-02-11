@@ -1,21 +1,16 @@
-﻿using Amiq.DataAccessLayer.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Notification.DataAccessLayer.Models.Models;
 
 namespace Amiq.Workers.Notification
 {
     public abstract class NotificationCreationStrategy
     {
-        public AmiqContext DbContext { get; private set; }
+        public AmiqNotificationContext DbContext { get; private set; }
 
         public NotificationCreationStrategy()
         {
-            DbContext = new AmiqContext();
+            DbContext = new AmiqNotificationContext();
         }
 
-        public abstract IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users);
+        public abstract IEnumerable<Amiq.Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users);
     }
 }

@@ -24,12 +24,12 @@ namespace Amiq.Services.Friendship.BusinessLayer
             return await daoFriendRequest.CreateFriendRequestAsync(creatorId, createFriendRequest);
         }
 
-        public async Task<DbOperationResult> AcceptFriendRequestAsync(int userId, Guid friendRequestId)
+        public async Task<DtoCreateEntityResponse> AcceptFriendRequestAsync(int userId, Guid friendRequestId)
         {
             return await daoFriendRequest.AcceptFriendRequestAsync(friendRequestId);
         }
 
-        public async Task<DbOperationResult> AcceptFriendRequestAsync(int userId, int destUserId)
+        public async Task<DtoCreateEntityResponse> AcceptFriendRequestAsync(int userId, int destUserId)
         {
             var friendRequest = daoFriendRequest.GetFriendRequestByUserIds(userId, destUserId);
             return await daoFriendRequest.AcceptFriendRequestAsync(friendRequest.FriendRequestId);

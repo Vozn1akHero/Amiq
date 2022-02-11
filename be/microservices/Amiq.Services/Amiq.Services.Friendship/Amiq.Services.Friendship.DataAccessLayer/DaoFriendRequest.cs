@@ -26,9 +26,7 @@ namespace Amiq.Services.Friendship.DataAccessLayer
                 whereBody = e => e.IssuerId == userId;
             else if (friendRequestType == FriendRequestType.Receiver)
                 whereBody = e => e.ReceiverId == userId;
-            /*IQueryable query = _amiqContext.FriendRequests.Where(whereBody);
-            var result = await AmiqFriendshipAutoMapper.Instance.ProjectTo<DtoFriendRequest>(query).ToListAsync();
-            return result;*/
+
             return await _amiqContext.FriendRequests.Where(whereBody).Select(e => new DtoFriendRequest
             {
                 FriendRequestId = e.FriendRequestId,
@@ -37,46 +35,34 @@ namespace Amiq.Services.Friendship.DataAccessLayer
             }).ToListAsync();
         }
 
-        public async Task<DbOperationResult> AcceptFriendRequestAsync(Guid friendRequestId)
+        public async Task<DtoCreateEntityResponse> AcceptFriendRequestAsync(Guid friendRequestId)
         {
-            DbOperationResult dbOperationResult = new();
+            var createEntityResponse = new DtoCreateEntityResponse();
             using var t = await _amiqContext.Database.BeginTransactionAsync();
             var frEntity = _amiqContext.FriendRequests.Single(e => e.FriendRequestId == friendRequestId);
             try
             {
                 _amiqContext.FriendRequests.Remove(frEntity);
-                _amiqContext.Friendships.Add(new Models.Models.Friendship
-                {
-                    FirstUserId = frEntity.ReceiverId,
-                    SecondUserId = frEntity.IssuerId
-                });
-
-                // TODO (broker)
-                /*var chatEntity = new Models.Models.Chat
+                var friendship = new Models.Models.Friendship
                 {
                     FirstUserId = frEntity.ReceiverId,
                     SecondUserId = frEntity.IssuerId
                 };
-                _amiqContext.Chats.Add(chatEntity);
-                await _amiqContext.SaveChangesAsync();
-                _amiqContext.Messages.Add(new Message
-                {
-                    ChatId = chatEntity.ChatId,
-                    AuthorId = frEntity.IssuerId,
-                    TextContent = "Cześć"
-                });*/
+                _amiqContext.Friendships.Add(friendship);
                 
                 await _amiqContext.SaveChangesAsync();
 
                 await t.CommitAsync();
+
+                createEntityResponse.Entity = friendship;
             }
             catch (Exception ex)
             {
-                dbOperationResult.Message = ex.Message;
+                createEntityResponse.Message = ex.Message;
                 await t.RollbackAsync();
             }
-            dbOperationResult.Success = true;
-            return dbOperationResult;
+            createEntityResponse.Result = true;
+            return createEntityResponse;
         }
 
         public async Task<DbOperationResult> RejectFriendRequestAsync(Guid friendRequestId)

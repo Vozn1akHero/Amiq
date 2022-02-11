@@ -87,5 +87,11 @@ namespace Amiq.Services.Friendship.DataAccessLayer
 
             return result;
         }
+
+        public Models.Models.Friendship? GetFriendship(int fUserId, int sUserId)
+        {
+            return _amiqContext.Friendships.SingleOrDefault(e=>(e.FirstUserId == fUserId && e.SecondUserId == sUserId)
+            || (e.FirstUserId == sUserId && e.SecondUserId == fUserId));
+        }
     }
 }

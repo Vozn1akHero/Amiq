@@ -1,10 +1,9 @@
-﻿using Amiq.Services.User.Amqp.IntegrationEvents;
-using Amiq.Services.User.Base;
+﻿using Amiq.Services.User.Base;
 using Amiq.Services.User.BusinessLayer;
-using Amiq.Services.User.Common.Enums;
 using Amiq.Services.User.Contracts.Auth;
+using Amiq.Services.User.Core.Auth;
 using Amiq.Services.User.Messaging;
-using Microsoft.AspNetCore.Authorization;
+using Amiq.Services.User.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.User.Controllers
@@ -35,7 +34,7 @@ namespace Amiq.Services.User.Controllers
             try
             {
                 DtoUserAuthenticationResult result = _bsAuth.Authenticate(dtoUserAuthentication);
-                /*if (result.Success)
+                if (result.Success)
                 {
                     var jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase);
                     Response.Cookies.Append("token", jwt.Token, new CookieOptions
@@ -45,7 +44,7 @@ namespace Amiq.Services.User.Controllers
                         //SameSite = SameSiteMode.None,
                         //Secure = true,
                     });
-                }*/
+                }
                 return result.Success ? Ok(result) : new ForbidResult();
             }
             catch (Exception)

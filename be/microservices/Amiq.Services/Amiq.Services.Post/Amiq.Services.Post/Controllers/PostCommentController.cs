@@ -1,5 +1,6 @@
 ﻿using Amiq.Services.Post.Base;
 using Amiq.Services.Post.BusinessLayer.Post;
+using Amiq.Services.Post.Common.Enums;
 using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.Contracts.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -52,15 +53,15 @@ namespace Amiq.Services.Post.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> CreatePostComment([FromBody] DtoCreatePostComment dtoCreatePostComment)
         {
-            var data = await bsPostComment.CreateAsync(JwtStoredUserInfo.UserId, dtoCreatePostComment);
+            var data = await bsPostComment.CreateAsync(JwtStoredUserId, dtoCreatePostComment);
             return CreatedAtAction(nameof(CreatePostComment), data);
         }
 
         [HttpPost("group-post-comment")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> CreateGroupPostComment([FromBody] DtoCreateGroupPostComment dtoCreateGroupPostComment)
         {
             try
@@ -74,7 +75,7 @@ namespace Amiq.Services.Post.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var data = await bsPostComment.CreateGroupPostCommentAsync(JwtStoredUserInfo.UserId, dtoCreateGroupPostComment);
+            var data = await bsPostComment.CreateGroupPostCommentAsync(JwtStoredUserId, dtoCreateGroupPostComment);
             return CreatedAtAction(nameof(CreateGroupPostComment), data);
         }
     }

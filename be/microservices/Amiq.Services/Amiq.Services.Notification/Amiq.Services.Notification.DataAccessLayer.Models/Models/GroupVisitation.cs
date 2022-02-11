@@ -10,5 +10,7 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
         public int GroupId { get; set; }
         public DateTime LastVisited { get; set; }
         public long VisitationTotalTime { get; set; }
+
+        public virtual Group Group { get; set; } = null!;
     }
 }

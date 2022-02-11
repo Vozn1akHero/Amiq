@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Amiq.Services.Notification.DataAccessLayer.Models.Models; 
+using Amiq.Services.Notification.DataAccessLayer.Models.Models;
+using Amiq.Services.Notification.Common.Enums;
 
 namespace Amiq.Workers.Notification
 {
@@ -7,13 +8,10 @@ namespace Amiq.Workers.Notification
     {
         /// <summary>
         /// Metoda zwracająca nowe wpisy użytkowników
-        /// 
-        /// Reguły biznesowe:
-        /// 1. Uwzględnienie aktywnych znajomości
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        public override IEnumerable<Services.Notification.Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
+        public override IEnumerable<Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
             List<Services.Notification.DataAccessLayer.Models.Models.Notification> result = new();
 
@@ -52,10 +50,9 @@ namespace Amiq.Workers.Notification
                 {
                     userPostsInBulk.AddRange(DbContext.UserPosts.AsNoTracking()
                         .Where(e => filteredVisitation.VisitedUserId == e.UserId
-                            && e.Post.CreatedAt > filteredVisitation.LastVisited)
+                            && e.CreatedAt > filteredVisitation.LastVisited)
                         .OrderBy(e => e.UserId)
-                        .ThenByDescending(e => e.Post.CreatedAt)
-                        .Include(e => e.Post)
+                        .ThenByDescending(e => e.CreatedAt)
                         .Include(e=>e.User)
                         .ToList());
                 }

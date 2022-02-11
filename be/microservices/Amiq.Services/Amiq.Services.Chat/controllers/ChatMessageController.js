@@ -6,6 +6,7 @@ import express from 'express';
 import Message from "../models/MessageModel";
 import Chat from "../models/ChatModel";
 import User from "../models/UserModel";
+import SocketConfiguration from "../SocketConfiguration";
 
 const router  = express.Router();
 
@@ -24,7 +25,7 @@ router.post("", async (req, res) => {
 
 	const author = createdMessage.author;
 
-	return res.status(201).json({
+	const resultMsgBody = {
 		messageId: createdMessage._id,
 		chatId,
 		textContent,
@@ -36,7 +37,11 @@ router.post("", async (req, res) => {
 			avatarPath: author.avatarPath
 		},
 		//receiver:
-	})
+	};
+
+	//SocketConfiguration.io.to(chatId.toString()).emit(JSON.stringify(resultMsgBody));
+
+	return res.status(201).json(resultMsgBody)
 });
 
 router.delete("/:messageId", async (req, res) => {

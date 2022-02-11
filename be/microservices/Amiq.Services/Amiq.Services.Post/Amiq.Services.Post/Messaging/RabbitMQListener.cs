@@ -1,10 +1,10 @@
-﻿using Amiq.Services.Friendship.Contracts.User;
-using Amiq.Services.Friendship.DataAccessLayer;
-using Amiq.Services.Post.Messaging.IntegrationEvents;
-using RabbitMQ.Client;
+﻿using Amiq.Services.Post.Messaging.IntegrationEvents;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
+using RabbitMQ.Client;
+using Amiq.Services.Post.DataAccessLayer.Models.Models;
+using Amiq.Services.Post.Contracts.User;
 
 namespace Amiq.Services.Post.Messaging
 {
@@ -13,8 +13,7 @@ namespace Amiq.Services.Post.Messaging
         private IConnection _connection;
         private IModel _channel;
         private string _queueName;
-
-        private readonly DaoUser _daoUser;
+        private AmiqPostContext _amiqPostContext;
 
         public RabbitMQListener()
         {
@@ -29,7 +28,7 @@ namespace Amiq.Services.Post.Messaging
 
             _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
 
-            _daoUser = new DaoUser();
+            _amiqPostContext = new AmiqPostContext();
         }
 
         private void RabbitMQ_ConnectionShutdown(object? sender, ShutdownEventArgs e)
@@ -54,18 +53,37 @@ namespace Amiq.Services.Post.Messaging
                 switch (integrationEvent.EventName)
                 {
                     case nameof(UserModificationEvent):
-                        UserModificationEvent @event = JsonSerializer.Deserialize<UserModificationEvent>(message);
-                        DtoBasicUserInfo basicUserInfo = new DtoBasicUserInfo
                         {
-                            UserId = @event.UserId,
-                            Name = @event.Name,
-                            Surname = @event.Surname,
-                            AvatarPath = @event.AvatarPath
-                        };
-                        _daoUser.AddOrUpdate(basicUserInfo);
-                        break;
-                }
+                            var @event = JsonSerializer.Deserialize<UserModificationEvent>(message);
+                            var dtoBasicUserInfo = new DtoBasicUserInfo
+                            {
+                                UserId = @event.UserId,
+                                Name = @event.Name,
+                                Surname = @event.Surname,
+                                AvatarPath = @event.AvatarPath
+                            };
+                            var user = _amiqPostContext.Users.Find(dtoBasicUserInfo.UserId);
+                            if (user == null)
+                            {
+                                _amiqPostContext.Users.Add(new User
+                                {
+                                    UserId = dtoBasicUserInfo.UserId,
+                                    Name = dtoBasicUserInfo.Name,
+                                    Surname = dtoBasicUserInfo.Surname,
+                                    AvatarPath = dtoBasicUserInfo.AvatarPath
+                                });
+                            }
+                            else
+                            {
+                                user.Name = dtoBasicUserInfo.Name;
+                                user.Surname = dtoBasicUserInfo.Surname;
+                                user.AvatarPath = dtoBasicUserInfo.AvatarPath;
+                            }
 
+                            break;
+                        }
+                }
+                _amiqPostContext.SaveChanges();
             };
 
             consumer.Shutdown += OnConsumerShutdown;

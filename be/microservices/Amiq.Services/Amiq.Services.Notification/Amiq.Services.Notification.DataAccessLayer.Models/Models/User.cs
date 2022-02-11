@@ -7,9 +7,10 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
     {
         public User()
         {
-            FriendshipFirstUsers = new HashSet<Friendship>();
-            FriendshipSecondUsers = new HashSet<Friendship>();
+            GroupPostAuthors = new HashSet<GroupPost>();
+            GroupPostEditedByNavigations = new HashSet<GroupPost>();
             Notifications = new HashSet<Notification>();
+            UserPosts = new HashSet<UserPost>();
         }
 
         public int UserId { get; set; }
@@ -17,8 +18,9 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
         public string Surname { get; set; } = null!;
         public string AvatarPath { get; set; } = null!;
 
-        public virtual ICollection<Friendship> FriendshipFirstUsers { get; set; }
-        public virtual ICollection<Friendship> FriendshipSecondUsers { get; set; }
+        public virtual ICollection<GroupPost> GroupPostAuthors { get; set; }
+        public virtual ICollection<GroupPost> GroupPostEditedByNavigations { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<UserPost> UserPosts { get; set; }
     }
 }

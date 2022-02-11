@@ -10,5 +10,7 @@ namespace Amiq.Services.Notification.DataAccessLayer.Models.Models
         public int VisitedUserId { get; set; }
         public DateTime LastVisited { get; set; }
         public long VisitationTotalTime { get; set; }
+
+        public virtual User VisitedUser { get; set; } = null!;
     }
 }

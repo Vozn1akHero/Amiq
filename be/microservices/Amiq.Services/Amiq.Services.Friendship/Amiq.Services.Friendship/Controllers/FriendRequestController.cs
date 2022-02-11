@@ -1,11 +1,13 @@
-﻿using Amiq.Services.Friendship.Amqp.IntegrationEvents;
-using Amiq.Services.Friendship.Base;
+﻿using Amiq.Services.Friendship.Base;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Common.Enums;
 using Amiq.Services.Friendship.Contracts.Friendship;
+using Amiq.Services.Friendship.Contracts.Utils;
 using Amiq.Services.Friendship.DataAccessLayer;
 using Amiq.Services.Friendship.HttpClients;
 using Amiq.Services.Friendship.Messaging;
+using Amiq.Services.Friendship.Messaging.IntegrationEvents;
+using Amiq.Services.Notification.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,6 +17,7 @@ namespace Amiq.Services.Friendship.Controllers
     {
         private BlFriendRequest _bsFriendRequest = new BlFriendRequest();
         private DaoFriendRequest _daoFriendRequest = new DaoFriendRequest();
+        private DaoFriendship _daoFriendship = new DaoFriendship();
 
         private UserService _userService;
 
@@ -62,15 +65,18 @@ namespace Amiq.Services.Friendship.Controllers
         [HttpPost("accept-friend-request/{friendRequestId}")]
         public async Task<IActionResult> AcceptFriendRequest([FromRoute] Guid friendRequestId)
         {
-            var result = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserId, friendRequestId);
+            DtoCreateEntityResponse createEntityResponse = await _bsFriendRequest.AcceptFriendRequestAsync(JwtStoredUserId, friendRequestId);
 
-            if (result.Success)
+            if (createEntityResponse.Result)
             {
-                var createdEntity = await _daoFriendRequest.GetFriendRequestByIdAsync(friendRequestId);
-                RabbitMQPublisher.Publish(new FriendshipRequestAccepted(createdEntity.IssuerId, createdEntity.ReceiverId));
+                var friendRequest = await _daoFriendRequest.GetFriendRequestByIdAsync(friendRequestId);
+                RabbitMQPublisher.Publish(new FriendshipRequestAccepted(friendRequest.FriendRequestId, friendRequest.IssuerId, friendRequest.ReceiverId));
+
+                var obj = (DataAccessLayer.Models.Models.Friendship)createEntityResponse.Entity;
+                RabbitMQPublisher.Publish(new FriendshipModificationEvent(obj.FriendshipId, obj.FirstUserId, obj.SecondUserId, "C"));
             }
 
-            return Ok(result);
+            return Ok(createEntityResponse);
         }
 
         [HttpPost("accept-friend-request-by-dest-user/{destUserId}")]

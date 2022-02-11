@@ -162,6 +162,58 @@ namespace Amiq.Services.Notification.Messaging
 
                             break;
                         }
+                    case nameof(GroupPostModificationEvent):
+                        {
+                            var @event = JsonSerializer.Deserialize<GroupPostModificationEvent>(message);
+                            var eventAction = EnumExtensions.GetValueByAlt<EnIntegrationEventAction>(@event.Action);
+
+                            switch (eventAction)
+                            {
+                                case EnIntegrationEventAction.Created:
+                                    {
+                                        _amiqNotificationContext.GroupPosts.Add(new GroupPost { 
+                                            GroupPostId = @event.GroupPostId,
+                                            PostId = @event.PostId,
+                                            TextContent = @event.TextContent,
+                                            EditedBy = @event.EditedBy,
+                                            EditedAt = @event.EditedAt,
+                                            CreatedAt = @event.CreatedAt,
+                                            GroupId = @event.GroupId,
+                                            AuthorId = @event.AuthorId,
+                                            VisibleAsCreatedByAdmin = @event.VisibleAsCreatedByAdmin
+                                        });
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+                    case nameof(UserPostModificationEvent):
+                        {
+
+                            var @event = JsonSerializer.Deserialize<UserPostModificationEvent>(message);
+                            var eventAction = EnumExtensions.GetValueByAlt<EnIntegrationEventAction>(@event.Action);
+
+                            switch (eventAction)
+                            {
+                                case EnIntegrationEventAction.Created:
+                                    {
+                                        _amiqNotificationContext.UserPosts.Add(new UserPost
+                                        {
+                                            UserPostId = @event.UserPostId,
+                                            PostId = @event.PostId,
+                                            TextContent = @event.TextContent,
+                                            EditedBy = @event.EditedBy,
+                                            EditedAt = @event.EditedAt,
+                                            CreatedAt = @event.CreatedAt,
+                                            UserId = @event.UserId
+                                        });
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
                 }
 
                 _amiqNotificationContext.SaveChanges();
