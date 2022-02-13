@@ -1,7 +1,7 @@
-﻿using Amiq.Services.User.Base;
+﻿using Amiq.Services.Base.Auth;
+using Amiq.Services.Base.Controllers;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.Auth;
-using Amiq.Services.User.Core.Auth;
 using Amiq.Services.User.Messaging;
 using Amiq.Services.User.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace Amiq.Services.User.Controllers
         //[Authorize]
         public IActionResult ChangePassword([FromBody] DtoChangeUserPassword dtoChangeUserPassword)
         {
-            var result = _bsAuth.ChangePassword(JwtStoredUserId.Value, dtoChangeUserPassword);
+            var result = _bsAuth.ChangePassword(JwtStoredUserId, dtoChangeUserPassword);
             return Ok(result);
         }
 
@@ -24,7 +24,7 @@ namespace Amiq.Services.User.Controllers
         //[Authorize]
         public IActionResult ChangeEmail([FromBody] string email)
         {
-            var result = _bsAuth.ChangeEmail(JwtStoredUserId.Value, email);
+            var result = _bsAuth.ChangeEmail(JwtStoredUserId, email);
             return Ok(result);
         }
 
@@ -89,10 +89,10 @@ namespace Amiq.Services.User.Controllers
         }
 
         [HttpGet("validate-credentials")]
-        //[Authorize]
+        [Services.Base.Auth.AmiqAuthorize]
         public IActionResult ValidateCredentials()
         {
-            var user = User.Claims;
+            //var user = User.Claims;
             return Ok(JwtStoredUserInfo);
         }
     }

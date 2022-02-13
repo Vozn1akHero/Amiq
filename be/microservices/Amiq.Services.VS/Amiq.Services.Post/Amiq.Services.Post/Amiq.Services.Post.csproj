@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Amiq.Services.Base\Amiq.Services.Base.csproj" />
     <ProjectReference Include="..\..\Amiq.Services.Common\Amiq.Services.Common.csproj" />
   </ItemGroup>
 

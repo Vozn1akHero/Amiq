@@ -1,9 +1,9 @@
-﻿using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class TestController : AmiqGroupBaseController
+    public class TestController : AmiqBaseController
     {
         [HttpGet]
         public IActionResult Get()

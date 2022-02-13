@@ -1,5 +1,5 @@
-﻿using Amiq.Services.Common.Contracts;
-using Amiq.Services.User.Base;
+﻿using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.User;
 using Amiq.Services.User.HttpClients;
@@ -21,14 +21,16 @@ namespace Amiq.Services.User.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserByIdAsync(int userId)
         {
-            string requestCreatorId = HttpContext.Request.Headers["Amiq-UserId"];
-            var user = await _bsUser.GetUserByIdAsync(int.Parse(requestCreatorId), userId);
+            var user = await _bsUser.GetUserByIdAsync(JwtStoredUserId, userId);
             if (user == null) return NotFound();
 
-            var friendshipStatus = _friendshipService.GetFriendshipStatusBetweenUsers(requestCreatorId, userId);
-            user.IsIssuerFriend = friendshipStatus.IsIssuerFriend;
-            user.IssuerReceivedFriendRequest = friendshipStatus.IssuerReceivedFriendRequest;
-            user.IssuerSentFriendRequest = friendshipStatus.IssuerSentFriendRequest;
+            if (JwtStoredUserId != userId)
+            {
+                var friendshipStatus = _friendshipService.GetFriendshipStatusBetweenUsers(JwtStoredUserId.ToString(), userId);
+                user.IsIssuerFriend = friendshipStatus.IsIssuerFriend;
+                user.IssuerReceivedFriendRequest = friendshipStatus.IssuerReceivedFriendRequest;
+                user.IssuerSentFriendRequest = friendshipStatus.IssuerSentFriendRequest;
+            }
 
             return Ok(user);
         }
@@ -51,7 +53,7 @@ namespace Amiq.Services.User.Controllers
             {
                 return new StatusCodeResult(499);
             }
-            var res = await _bsUser.SearchAsync(JwtStoredUserId.Value, text, paginatedRequest);
+            var res = await _bsUser.SearchAsync(JwtStoredUserId, text, paginatedRequest);
             return Ok(res);
         }
      }

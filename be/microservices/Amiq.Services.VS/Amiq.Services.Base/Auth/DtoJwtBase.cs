@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Amiq.Services.User.Contracts.Auth
+﻿namespace Amiq.Services.Base.Auth
 {
-    public class DtoJwtBase2
+    public class DtoJwtBase
     {
         public int UserId { get; set; }
         public string UserEmail { get; set; }

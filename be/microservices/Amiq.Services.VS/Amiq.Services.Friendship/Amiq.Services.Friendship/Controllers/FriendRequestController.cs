@@ -1,14 +1,12 @@
-﻿using Amiq.Services.Common.Contracts;
+﻿using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Common.Enums;
-using Amiq.Services.Friendship.Base;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.DataAccessLayer;
-using Amiq.Services.Friendship.HttpClients;
 using Amiq.Services.Friendship.Messaging;
 using Amiq.Services.Friendship.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Amiq.Services.Friendship.Controllers
 {

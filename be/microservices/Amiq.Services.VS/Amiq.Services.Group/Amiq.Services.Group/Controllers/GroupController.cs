@@ -1,11 +1,11 @@
-﻿using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Controllers;
 using Amiq.Services.Group.BusinessLayer;
 using Amiq.Services.Group.Contracts.Group;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class GroupController : AmiqGroupBaseController
+    public class GroupController : AmiqBaseController
     {
         private BlGroup _blGroup = new BlGroup();
 
@@ -34,7 +34,7 @@ namespace Amiq.Services.Group.Controllers
         {
             if (cancellationToken.IsCancellationRequested)
             {
-                return new StatusCodeResult(499);
+                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
             }
             var data = await _blGroup.GetGroupById(groupId);
             if(data == null) return NotFound();

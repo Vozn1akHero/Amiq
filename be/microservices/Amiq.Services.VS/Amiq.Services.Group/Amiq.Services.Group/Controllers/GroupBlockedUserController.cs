@@ -1,10 +1,10 @@
-﻿using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Controllers;
 using Amiq.Services.Group.BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class GroupBlockedUserController : AmiqGroupBaseController
+    public class GroupBlockedUserController : AmiqBaseController
     {
         private BlBlockedGroupUser _blBlockedGroupUser = new BlBlockedGroupUser();
 

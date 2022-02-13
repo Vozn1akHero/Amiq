@@ -1,5 +1,5 @@
-﻿using Amiq.Services.Common.Contracts;
-using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Group.BusinessLayer;
 using Amiq.Services.Group.Contracts.Group;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Amiq.Services.Group.Controllers
 {
     //[Authorize]
-    public class GroupEventController: AmiqGroupBaseController
+    public class GroupEventController: AmiqBaseController
     {
         private BlGroupEvent bsGroupEvent = new BlGroupEvent();
 

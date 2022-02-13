@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Amiq.Services.User.Core.Auth
+namespace Amiq.Services.Base.Auth
 {
-    public class AccessToken2
+    public class AccessToken
     {
         public string Token { get; set; }
         public DateTime ExpiresAt { get; set; }

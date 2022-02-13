@@ -1,10 +1,10 @@
-﻿using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Controllers;
 using Amiq.Services.Group.BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    public class GroupEventParticipantController : AmiqGroupBaseController
+    public class GroupEventParticipantController : AmiqBaseController
     {
         private BlGroupEventParticipant _blGroupEventParticipant = new BlGroupEventParticipant();
 

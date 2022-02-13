@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{A9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.ApiGateways.WebApp", "Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp.csproj", "{73EC028D-A9E4-42DE-8EA2-B238BA052606}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Base", "Amiq.Services.Base\Amiq.Services.Base.csproj", "{EC256038-934A-49E5-A2D2-E47483066406}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC256038-934A-49E5-A2D2-E47483066406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC256038-934A-49E5-A2D2-E47483066406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC256038-934A-49E5-A2D2-E47483066406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC256038-934A-49E5-A2D2-E47483066406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{62497D82-D366-463D-837A-50C295DCFD4F} = {ED91DD18-88B9-42F8-9442-FE801128C4EC}
 		{1B041F2A-3382-4721-A507-D1300EBDC2B2} = {EBE5BFE4-2AAC-439C-BF21-B54BB5A76271}
 		{73EC028D-A9E4-42DE-8EA2-B238BA052606} = {A988EE6F-149C-4D50-AAD1-28762B725798}
+		{EC256038-934A-49E5-A2D2-E47483066406} = {ED91DD18-88B9-42F8-9442-FE801128C4EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14DEA217-A9A7-4628-BBD0-2775F30AEE2A}

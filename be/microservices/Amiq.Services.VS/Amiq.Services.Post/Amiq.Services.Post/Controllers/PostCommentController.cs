@@ -1,6 +1,6 @@
-﻿using Amiq.Services.Common.Contracts;
+﻿using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Common.Enums;
-using Amiq.Services.Post.Base;
 using Amiq.Services.Post.BusinessLayer.Post;
 using Amiq.Services.Post.Contracts.Post;
 using Microsoft.AspNetCore.Mvc;

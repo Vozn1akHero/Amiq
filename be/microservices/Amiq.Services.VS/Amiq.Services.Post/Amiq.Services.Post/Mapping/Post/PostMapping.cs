@@ -1,4 +1,5 @@
 ﻿using Amiq.Services.Post.Contracts.Post;
+using Amiq.Services.Post.Contracts.User;
 using Amiq.Services.Post.DataAccessLayer.Models;
 using AutoMapper;
 
@@ -8,6 +9,8 @@ namespace Amiq.Services.Post.Mapping.Post
     {
         public PostMapping()
         {
+            CreateMap<User, DtoBasicUserInfo>();
+
             CreateMap<UserPost, DtoUserPost>()
                 .ForMember(e => e.Author, dest => dest.MapFrom(i => i.User))
                 //.ForMember(e => e.Name, dest => dest.MapFrom(i => i.User.Name))

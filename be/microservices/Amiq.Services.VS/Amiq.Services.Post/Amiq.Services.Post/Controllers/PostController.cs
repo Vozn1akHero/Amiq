@@ -1,4 +1,4 @@
-﻿using Amiq.Services.Post.Base;
+﻿using Amiq.Services.Base.Controllers;
 using Amiq.Services.Post.BusinessLayer.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

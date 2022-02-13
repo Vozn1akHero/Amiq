@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Amiq.Services.Base.Auth;
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Amiq.Services.Friendship.Base
+namespace Amiq.Services.Base.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -35,6 +31,30 @@ namespace Amiq.Services.Friendship.Base
 
         //protected DtoJwtStoredUserInfo JwtStoredUserInfo => (DtoJwtStoredUserInfo)HttpContext.Items["user"];
 
-        protected int JwtStoredUserId => int.Parse(HttpContext.Request.Headers["Amiq-UserId"]);
+        protected int JwtStoredUserId
+        {
+            get
+            {
+                if (JwtStoredUserInfo != null)
+                {
+                    return JwtStoredUserInfo.UserId;
+                }
+                else throw new Exception($"{nameof(JwtStoredUserId)} is null");
+            }
+        }
+
+        protected DtoJwtStoredUserInfo? JwtStoredUserInfo
+        {
+            get
+            {
+                string? token = Request.Cookies["token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    return JwtExtensions.GetJwtStoredUserInfo(token);
+                }
+                return null;
+                //return (DtoJwtStoredUserInfo?)HttpContext.Items["user"];
+            }
+        }
     }
 }

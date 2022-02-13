@@ -12,18 +12,19 @@ export class BaseService {
         this.httpClient = new HttpClient();
     }
 
-    protected buildApiPath(method: string = null): string{
+    protected buildApiPath(method: string = ""): string{
         if(devConfig.useMicroservices){
             //if(!this.service) throw new ArgumentNullException("service");
             console.log(this.service + "/" + this.apiModule + (method && "/" + method))
             return this.service + "/" + this.apiModule + (method && "/" + method);
         }
         else {
-            if (method) {
+            /*if (method) {
                 return this.apiModule.concat("/api/", method);
             } else {
                 return this.apiModule.concat("/api/");
-            }
+            }*/
+            return this.apiModule.concat("/api/", method);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Amiq.Services.User.Contracts.Auth
 {
-    public class DtoJwtStoredUserInfo
+    public class DtoJwtStoredUserInfo2
     {
         public int UserId { get; set; }
         public string UserName {  get; set; }

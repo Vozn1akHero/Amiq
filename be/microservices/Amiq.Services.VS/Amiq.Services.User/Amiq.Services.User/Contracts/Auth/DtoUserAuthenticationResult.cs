@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Base.Auth;
 
 namespace Amiq.Services.User.Contracts.Auth
 {

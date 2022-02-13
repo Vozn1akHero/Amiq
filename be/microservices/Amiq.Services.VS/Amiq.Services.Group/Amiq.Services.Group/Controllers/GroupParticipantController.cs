@@ -1,5 +1,6 @@
-﻿using Amiq.Services.Common.Contracts;
-using Amiq.Services.Group.Base;
+﻿using Amiq.Services.Base.Auth;
+using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Group.BusinessLayer;
 using Amiq.Services.Group.Contracts.Enums;
 using Amiq.Services.Group.Contracts.Group;
@@ -7,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Group.Controllers
 {
-    //[Authorize]
-    public class GroupParticipantController : AmiqGroupBaseController
+    [AmiqAuthorize]
+    public class GroupParticipantController : AmiqBaseController
     {
         private BlGroupParticipant _bsGroupParticipant = new BlGroupParticipant();
 
@@ -19,7 +20,7 @@ namespace Amiq.Services.Group.Controllers
         {
             if (cancellationToken.IsCancellationRequested)
             {
-                return new StatusCodeResult(499);
+                return new StatusCodeResult(CLIENT_CLOSED_REQUEST_STATUS_CODE);
             }
 
             var groups = await _bsGroupParticipant.GetUserGroupsByUserIdAsync(JwtStoredUserId, dtoPaginatedRequest, filterType);

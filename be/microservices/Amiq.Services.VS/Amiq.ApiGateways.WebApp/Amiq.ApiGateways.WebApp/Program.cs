@@ -17,7 +17,10 @@ using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Polly;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Amiq.ApiGateways.WebApp
@@ -43,6 +46,8 @@ namespace Amiq.ApiGateways.WebApp
                         var ocelotConfigurationPath = Path.Combine(hostingContext.HostingEnvironment.ContentRootPath,
                             "Ocelot", "Configuration");
                         ocelotConfigurationPath = Path.Combine(ocelotConfigurationPath, hostingContext.HostingEnvironment.EnvironmentName);
+
+                        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
                         config.AddOcelot(ocelotConfigurationPath, hostingContext.HostingEnvironment);
 
@@ -70,10 +75,12 @@ namespace Amiq.ApiGateways.WebApp
                         services.AddControllers(opts =>
                         {
                             opts.SuppressAsyncSuffixInActionNames = false;
+                            opts.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
                         });
-                        
-                        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                            .AddJwtBearer(options =>
+
+
+                        /*services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                            .AddJwtBearer("ApiSecurity", options =>
                             {
                                 options.RequireHttpsMetadata = false;
                                 options.SaveToken = true;
@@ -84,9 +91,21 @@ namespace Amiq.ApiGateways.WebApp
                                     {
                                         context.Token = context.Request.Cookies["token"];
                                         return Task.CompletedTask;
-                                    }
+                                    },
+                                    *//*OnTokenValidated = context => 
+                                    {
+                                        var claims = new List<Claim>
+                                        {
+                                            new Claim("ConfidentialAccess", "true")
+                                        };
+                                        var appIdentity = new ClaimsIdentity(claims);
+
+                                        context.Principal.AddIdentity(appIdentity);
+
+                                        return Task.CompletedTask;
+                                    }*//*
                                 };
-                            });
+                            });*/
                         services.Configure<JsonOptions>(opts => {
                             opts.SerializerOptions.IgnoreNullValues = true;
                             opts.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
@@ -94,10 +113,6 @@ namespace Amiq.ApiGateways.WebApp
 
                         services.AddRouting(options => {
                             options.LowercaseUrls = true;
-                        });
-                        services.AddControllers(options =>
-                        {
-                            options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
                         });
 
                         services.AddOcelot()
@@ -120,10 +135,10 @@ namespace Amiq.ApiGateways.WebApp
                             .SetIsOriginAllowed(origin => true)
                             .AllowCredentials());
 
-                        app.UseAuthentication();
-                        app.UseAuthorization();
+                        //app.UseAuthentication();
+                        //app.UseAuthorization();
 
-                        app.UseMiddleware<UserRequestContextMiddleware>();
+                        //app.UseMiddleware<UserRequestContextMiddleware>();
                         //app.UseMiddleware<RequestCancellationMiddleware>();
 
                         app.UseEndpoints(endpoints =>

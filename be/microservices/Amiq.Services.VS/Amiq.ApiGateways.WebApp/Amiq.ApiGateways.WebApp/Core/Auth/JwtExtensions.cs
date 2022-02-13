@@ -17,9 +17,10 @@ namespace Amiq.ApiGateways.WebApp.Core.Auth
     {
         public const string UserName = "userName";
         public const string UserSurname = "userSurname";
+        public const string UserId = "userId";
     }
 
-    public class JwtExtensions
+    public class JwtExtensions2
     {
         public static TokenValidationParameters JwtValidationParameters
         { 
@@ -30,16 +31,16 @@ namespace Amiq.ApiGateways.WebApp.Core.Auth
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = StaticContextConfigurationProvider.GetAppSetting("Jwt:Issuer"),
                 ValidAudience = StaticContextConfigurationProvider.GetAppSetting("Jwt:Issuer"),
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key")))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:PrivateKey")))
             };
         }
 
-        public static AccessToken GenerateJSONWebToken(DtoJwtBase jwtBase)
+        public static AccessToken2 GenerateJSONWebToken(DtoJwtBase jwtBase)
         {
-            AccessToken accessToken = new();
+            AccessToken2 accessToken = new();
             accessToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:Key"));
+            var key = Encoding.UTF8.GetBytes(StaticContextConfigurationProvider.GetAppSetting("Jwt:PrivateKey"));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -49,6 +50,8 @@ namespace Amiq.ApiGateways.WebApp.Core.Auth
                     new Claim(JwtRegisteredClaimNames.Email, jwtBase.UserEmail),
                     new Claim(JwtRegisteredClaimNamesEx.UserName, jwtBase.UserName.ToString()),
                     new Claim(JwtRegisteredClaimNamesEx.UserSurname, jwtBase.UserSurname.ToString()),
+                    // Ocelot sub claim translation problem fix
+                    //new Claim(JwtRegisteredClaimNamesEx.UserId, jwtBase.UserId.ToString())
                 }),
                 Expires = accessToken.ExpiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)

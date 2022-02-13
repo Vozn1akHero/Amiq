@@ -19,8 +19,9 @@ namespace Amiq.Services.User.HttpClients
         {
             DtoFriendshipStatus friendshipStatus = null;
 
-            _httpClient.DefaultRequestHeaders.Add("Amiq-UserId", requestCreatorId);
-            var responseTask = _httpClient.GetAsync($"{_configuration.GetValue<string>("Services:FriendshipService")}/api/friendship/pb-friendship-status/{sUserId}");
+            //_httpClient.DefaultRequestHeaders.Add("Amiq-UserId", requestCreatorId);
+            string url = $"{_configuration.GetValue<string>("Services:FriendshipService")}/api/friendship/friendship-status/{sUserId}";
+            var responseTask = _httpClient.GetAsync(url);
             responseTask.Wait();
 
             var result = responseTask.Result;

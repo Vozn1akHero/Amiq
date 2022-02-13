@@ -57,7 +57,7 @@ namespace Amiq.Services.Group.DataAccessLayer
             DtoPaginatedRequest dtoPaginatedRequest)
         {
             DtoListResponseOf<DtoGroupCard> result = new();
-            var query = (from g in _amiqGroupContext.Groups.AsNoTracking()
+            /*var query = (from g in _amiqGroupContext.Groups.AsNoTracking()
                          join gp in _amiqGroupContext.GroupParticipants.AsNoTracking()
                          on g.GroupId equals gp.GroupId
                          join u in _amiqGroupContext.Users.AsNoTracking()
@@ -72,7 +72,19 @@ namespace Amiq.Services.Group.DataAccessLayer
                              ParticipantsCount = g.GroupParticipants.Count,
                              IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
                              IsRequestCreatorParticipant = gp.UserId == userId,
-                         });
+                         });*/
+            var query = _amiqGroupContext.Groups.AsNoTracking()
+                .Where(e => e.GroupParticipants.Any(gp => gp.UserId == userId && gp.IsAdmin))
+                .Select(g => new DtoGroupCard
+                {
+                    GroupId = g.GroupId,
+                    Name = g.Name,
+                    AvatarSrc = g.AvatarSrc,
+                    Description = g.Description,
+                    ParticipantsCount = g.GroupParticipants.Count,
+                    IsHidden = g.HiddenGroups.Any(hg => hg.UserId == userId && hg.GroupId == g.GroupId),
+                    IsRequestCreatorParticipant = true
+                });
             result.Entities = await query
                                    .Skip((dtoPaginatedRequest.Page - 1) * dtoPaginatedRequest.Count)
                                    .Take(dtoPaginatedRequest.Count)

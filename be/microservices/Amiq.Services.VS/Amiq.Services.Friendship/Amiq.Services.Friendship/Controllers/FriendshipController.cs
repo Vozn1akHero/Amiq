@@ -1,5 +1,5 @@
-﻿using Amiq.Services.Common.Contracts;
-using Amiq.Services.Friendship.Base;
+﻿using Amiq.Services.Base.Controllers;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.HttpClients;

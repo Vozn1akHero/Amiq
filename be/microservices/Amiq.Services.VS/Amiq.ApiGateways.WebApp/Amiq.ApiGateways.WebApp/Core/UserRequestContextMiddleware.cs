@@ -1,4 +1,5 @@
 ﻿using Amiq.ApiGateways.WebApp.Core.Auth;
+using Amiq.Services.Base.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
