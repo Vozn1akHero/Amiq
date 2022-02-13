@@ -3,7 +3,7 @@ import moment from "moment";
 
 export class Utils {
     static getImageSrc(imageSrc: string) {
-        return devConfig.monolithUrl + "/" + imageSrc;
+        return devConfig.staticContentUrl + "/" + imageSrc;
     }
 
     static getDifferenceBetweenDates = (t1: Date, t2: Date) : number => {

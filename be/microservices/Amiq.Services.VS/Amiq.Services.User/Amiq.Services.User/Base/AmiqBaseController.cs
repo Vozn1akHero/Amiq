@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Amiq.Services.User.Contracts.Auth;
+using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.Core.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -39,6 +42,20 @@ namespace Amiq.Services.User.Base
                     return int.Parse(val);
                 else 
                     return null;
+            }
+        }
+
+        protected DtoJwtStoredUserInfo? JwtStoredUserInfo
+        {
+            get
+            {
+                /*string? token = Request.Cookies["token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    return JwtExtensions.GetJwtStoredUserInfo(token);
+                }
+                return null;*/
+                return (DtoJwtStoredUserInfo?)HttpContext.Items["user"];
             }
         }
     }

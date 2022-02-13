@@ -51,7 +51,7 @@ class App extends Component<any, State> {
     }
 
     storeActivity(){
-        const source = timer(5000);
+        /*const source = timer(5000);
         //const source = timer(1000);
         this.activityTimerSub = source.subscribe(() => {
             const pageVisitationActivityStr = sessionStorage.getItem("act");
@@ -64,7 +64,7 @@ class App extends Component<any, State> {
                     }
                 })
             }
-        });
+        });*/
     }
 
     componentWillUnmount() {

@@ -1,7 +1,7 @@
-﻿using Amiq.Services.User.Base;
+﻿using Amiq.Services.Common.Contracts;
+using Amiq.Services.User.Base;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.User;
-using Amiq.Services.User.Contracts.Utils;
 using Amiq.Services.User.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 

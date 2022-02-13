@@ -1,6 +1,5 @@
 ﻿using Amiq.Services.Group.Contracts.Group;
 using Amiq.Services.Group.DataAccessLayer.Models;
-using Amiq.Services.Group.DataAccessLayer.Models.Models;
 using Amiq.Services.Group.Mapping;
 using AutoMapper.QueryableExtensions;
 

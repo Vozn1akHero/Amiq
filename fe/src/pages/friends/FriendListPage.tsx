@@ -14,6 +14,7 @@ import {
 import {connect} from "react-redux";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CardList from "../../common/components/CardList/CardList";
 
 type Props = {
     userFriendsLoaded: boolean;
@@ -55,6 +56,7 @@ class FriendListPage extends Component<Props, State> {
 
     componentDidMount() {
         this.props.getReceivedFriendRequests();
+        console.log(AuthStore.identity.userId)
         this.props.getUserFriends(AuthStore.identity.userId, 1, this.USER_FRIENDS_LENGTH);
     }
 
@@ -112,36 +114,48 @@ class FriendListPage extends Component<Props, State> {
                             {
                                 this.state.selectedFriendRequestType === FriendRequestType.Receiver ?
                                     (
-                                        this.props.receivedFriendRequestsLoaded && this.props.receivedFriendRequests.map((value, i) => {
-                                                return <div key={i} className="uk-margin-top">
-                                                    <FoundUserCard userId={value.creator.userId}
-                                                                   name={value.creator.name}
-                                                                   surname={value.creator.surname}
-                                                                   avatarPath={value.creator.avatarPath}
-                                                                   friendRequestId={value.friendRequestId}
-                                                                   issuerReceivedFriendRequest={true}
-                                                                   onRejectFriendRequest={this.props.rejectFriendRequest}
-                                                                   onAcceptFriendRequest={this.props.acceptFriendRequest}
-                                                                   key={i}/>
-                                                </div>
+                                        <CardList>
+                                            {
+                                                this.props.receivedFriendRequestsLoaded
+                                                && this.props.receivedFriendRequests.length > 0
+                                                && this.props.receivedFriendRequests.map((value, i) => {
+                                                        return <div key={i} className="uk-margin-top">
+                                                            <FoundUserCard userId={value.creator.userId}
+                                                                           name={value.creator.name}
+                                                                           surname={value.creator.surname}
+                                                                           avatarPath={value.creator.avatarPath}
+                                                                           friendRequestId={value.friendRequestId}
+                                                                           issuerReceivedFriendRequest={true}
+                                                                           onRejectFriendRequest={this.props.rejectFriendRequest}
+                                                                           onAcceptFriendRequest={this.props.acceptFriendRequest}
+                                                                           key={i}/>
+                                                        </div>
+                                                    }
+                                                )
                                             }
-                                        )
+                                        </CardList>
                                     )
                                     :
                                     (
-                                        this.props.sentFriendRequestsLoaded && this.props.sentFriendRequests.map((value, i) => {
-                                                return <div key={i} className="uk-margin-top">
-                                                    <FoundUserCard userId={value.receiver.userId}
-                                                                   name={value.receiver.name}
-                                                                   surname={value.receiver.surname}
-                                                                   avatarPath={value.receiver.avatarPath}
-                                                                   friendRequestId={value.friendRequestId}
-                                                                   issuerSentFriendRequest={true}
-                                                                   onCancelFriendRequest={this.props.cancelFriendRequest}
-                                                                   key={i}/>
-                                                </div>
+                                        <CardList>
+                                            {
+                                                this.props.sentFriendRequestsLoaded
+                                                && this.props.sentFriendRequests.length > 0
+                                                && this.props.sentFriendRequests.map((value, i) => {
+                                                        return <div key={i} className="uk-margin-top">
+                                                            <FoundUserCard userId={value.receiver.userId}
+                                                                           name={value.receiver.name}
+                                                                           surname={value.receiver.surname}
+                                                                           avatarPath={value.receiver.avatarPath}
+                                                                           friendRequestId={value.friendRequestId}
+                                                                           issuerSentFriendRequest={true}
+                                                                           onCancelFriendRequest={this.props.cancelFriendRequest}
+                                                                           key={i}/>
+                                                        </div>
+                                                    }
+                                                )
                                             }
-                                        )
+                                        </CardList>
                                     )
                             }
                         </div>

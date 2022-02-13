@@ -18,12 +18,6 @@ namespace Amiq.Services.Friendship.Controllers
         private DaoFriendRequest _daoFriendRequest = new DaoFriendRequest();
         private DaoFriendship _daoFriendship = new DaoFriendship();
 
-        private UserService _userService;
-
-        public FriendRequestController(UserService userService)
-        {
-            _userService = userService;
-        }
 
         [HttpGet("friend-requests")]
         public async Task<IActionResult> GetFriendRequestList([FromQuery] string friendRequestType)
@@ -32,7 +26,7 @@ namespace Amiq.Services.Friendship.Controllers
 
             var friendRequests = await _bsFriendRequest.GetFriendRequestsAsync(JwtStoredUserId, enFriendRequestType);
 
-            foreach (var friendRequest in friendRequests)
+            /*foreach (var friendRequest in friendRequests)
             {
                 var receiver = await _userService.GetUserByIdAsync(friendRequest.ReceiverId);
                 var creator = await _userService.GetUserByIdAsync(friendRequest.IssuerId);
@@ -49,7 +43,7 @@ namespace Amiq.Services.Friendship.Controllers
                 friendRequest.Creator.Name = creator.Name;
                 friendRequest.Creator.Surname = creator.Surname;
                 friendRequest.Creator.AvatarPath = creator.AvatarPath;
-            }
+            }*/
 
             return Ok(friendRequests);
         }

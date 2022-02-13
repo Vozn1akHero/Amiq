@@ -4,6 +4,7 @@ using Amiq.Services.Common.Enums;
 using Amiq.Services.Friendship.Contracts.Friendship;
 using Amiq.Services.Friendship.Contracts.User;
 using Amiq.Services.Friendship.DataAccessLayer.Models;
+using Amiq.Services.Friendship.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -30,9 +31,27 @@ namespace Amiq.Services.Friendship.DataAccessLayer
             return await _amiqContext.FriendRequests.Where(whereBody).Select(e => new DtoFriendRequest
             {
                 FriendRequestId = e.FriendRequestId,
+                Creator = new DtoBasicUserInfo
+                { 
+                    UserId = e.Issuer.UserId,
+                    Name = e.Issuer.Name,
+                    Surname = e.Issuer.Surname,
+                    AvatarPath = e.Issuer.AvatarPath
+                },
+                Receiver = new DtoBasicUserInfo
+                {
+                    UserId = e.Receiver.UserId,
+                    Name = e.Receiver.Name,
+                    Surname = e.Receiver.Surname,
+                    AvatarPath = e.Receiver.AvatarPath
+                },
                 IssuerId = e.IssuerId,
                 ReceiverId = e.ReceiverId
             }).ToListAsync();
+            /*return await AmiqFriendshipAutoMapper
+                .Instance
+                .ProjectTo<DtoFriendRequest>(_amiqContext.FriendRequests.Where(whereBody))
+                .ToListAsync();*/
         }
 
         public async Task<DtoCreateEntityResponse> AcceptFriendRequestAsync(Guid friendRequestId)

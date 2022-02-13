@@ -1,4 +1,5 @@
-﻿using Amiq.Services.Common.Contracts;
+﻿using Amiq.Services.Common;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Group.Contracts.Group;
 using Amiq.Services.Group.DataAccessLayer.Models;
 using Amiq.Services.Group.Mapping;

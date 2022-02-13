@@ -92,7 +92,8 @@ namespace Amiq.Services.User.Controllers
         //[Authorize]
         public IActionResult ValidateCredentials()
         {
-            return Ok(JwtStoredUserId);
+            var user = User.Claims;
+            return Ok(JwtStoredUserInfo);
         }
     }
 }

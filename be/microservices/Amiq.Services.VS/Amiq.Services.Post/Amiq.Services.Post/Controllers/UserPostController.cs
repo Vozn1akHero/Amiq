@@ -1,8 +1,8 @@
-﻿using Amiq.Services.Post.Base;
+﻿using Amiq.Services.Common.Contracts;
+using Amiq.Services.Post.Base;
 using Amiq.Services.Post.BusinessLayer.Post;
 using Amiq.Services.Post.BusinessLayer.Utils;
 using Amiq.Services.Post.Contracts.Post;
-using Amiq.Services.Post.Contracts.Utils;
 using Amiq.Services.Post.Messaging;
 using Amiq.Services.Post.Messaging.IntegrationEvents;
 using Microsoft.AspNetCore.Authorization;

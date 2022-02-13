@@ -14,8 +14,8 @@ export class BaseService {
 
     protected buildApiPath(method: string = null): string{
         if(devConfig.useMicroservices){
-            if(!this.service) throw new ArgumentNullException("service");
-
+            //if(!this.service) throw new ArgumentNullException("service");
+            console.log(this.service + "/" + this.apiModule + (method && "/" + method))
             return this.service + "/" + this.apiModule + (method && "/" + method);
         }
         else {

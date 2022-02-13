@@ -1,11 +1,10 @@
-﻿using Amiq.Services.Post.Messaging.IntegrationEvents;
+﻿using Amiq.Services.Post.Contracts.User;
+using Amiq.Services.Post.DataAccessLayer.Models;
+using Amiq.Services.Post.Messaging.IntegrationEvents;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
-using RabbitMQ.Client;
-using Amiq.Services.Post.DataAccessLayer.Models.Models;
-using Amiq.Services.Post.Contracts.User;
-using Amiq.Services.Post.DataAccessLayer.Models;
 
 namespace Amiq.Services.Post.Messaging
 {

@@ -1,8 +1,7 @@
-﻿using Amiq.Services.Post.Common;
+﻿using Amiq.Services.Common;
+using Amiq.Services.Common.Contracts;
 using Amiq.Services.Post.Contracts.Post;
-using Amiq.Services.Post.Contracts.Utils;
 using Amiq.Services.Post.DataAccessLayer.Models;
-using Amiq.Services.Post.DataAccessLayer.Models.Models;
 using Amiq.Services.Post.Mapping;
 using Microsoft.EntityFrameworkCore;
 

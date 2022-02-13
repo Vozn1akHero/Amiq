@@ -1,9 +1,4 @@
-﻿using Amiq.Services.Post.Contracts.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Common.Contracts;
 
 namespace Amiq.Services.Post.Contracts.Post
 {

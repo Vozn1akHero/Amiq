@@ -1,11 +1,11 @@
-using Amiq.Services.Notification.DataAccessLayer.Models.Models;
+using Amiq.Workers.Notification.Models;
 
 namespace Amiq.Workers.Notification
 {
     public class NotificationWorker : IHostedService, IDisposable //BackgroundService
     {
         private readonly ILogger<NotificationWorker> _logger;
-        private readonly AmiqNotificationContext _amiqContext;
+        private readonly AmiqNotificationWorkerContext _amiqContext;
         private readonly UserPostNotificationCreation _userPostNotificationCreation;
         private readonly GroupPostNotificationCreation _groupPostNotificationCreation;
         private const int TIMEOUT_BETWEEN_BULKS = 5000;
@@ -16,7 +16,7 @@ namespace Amiq.Workers.Notification
         public NotificationWorker(ILogger<NotificationWorker> logger)
         {
             _logger = logger;
-            _amiqContext = new AmiqNotificationContext();
+            _amiqContext = new AmiqNotificationWorkerContext();
             _userPostNotificationCreation = new UserPostNotificationCreation();
             _groupPostNotificationCreation = new GroupPostNotificationCreation();
         }

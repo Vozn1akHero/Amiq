@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "Server=host.docker.internal,1423;Database=Amiq_User;User Id=sa;Password=123Dimon!!!;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --project Amiq.Services.User.DataAccessLayer.Models.csproj --context AmiqUserContext

@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Amiq.Services.Notification.DataAccessLayer.Models.Models;
-using Amiq.Services.Notification.Common.Enums;
+﻿using Amiq.Services.Common.Enums;
+using Amiq.Workers.Notification.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Amiq.Workers.Notification
 {
@@ -11,9 +11,9 @@ namespace Amiq.Workers.Notification
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        public override IEnumerable<Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
+        public override IEnumerable<Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
-            List<Services.Notification.DataAccessLayer.Models.Models.Notification> result = new();
+            List<Models.Notification> result = new();
 
             List<int> userIds = users.Select(e=>e.UserId).ToList();
             var mostVisitedProfilesInBulk = DbContext.ProfileVisitations.AsNoTracking().Where(e => userIds.Contains(e.UserId)).OrderBy(e=>e.UserId).ToList();
@@ -64,7 +64,7 @@ namespace Amiq.Workers.Notification
                 foreach(KeyValuePair<User, List<UserPost>> userPosts in userPostsGrouped){
                     if(userPosts.Value.Count > 0 && userPosts.Value.Count <= 2)
                     {
-                        result.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
+                        result.Add(new Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             NotificationGroupId = notificationGroupId,
@@ -77,7 +77,7 @@ namespace Amiq.Workers.Notification
                     }
                     else if(userPosts.Value.Count > 2)
                     {
-                        result.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
+                        result.Add(new Models.Notification
                         {
                             ImageSrc = userPosts.Key.AvatarPath,
                             NotificationGroupId = notificationGroupId,

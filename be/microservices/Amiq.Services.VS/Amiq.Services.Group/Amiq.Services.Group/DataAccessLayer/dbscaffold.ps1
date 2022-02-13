@@ -5,6 +5,7 @@ $workingDir = $PSScriptRoot;
 Write-Host "Project dir= $workingDir";
 Write-Host "Creating temp project to run scaffold on";
 cd ..
+cd .
 mkdir temp
 cd temp
 mkdir Amiq.Services.Group.DataAccessLayer.Models

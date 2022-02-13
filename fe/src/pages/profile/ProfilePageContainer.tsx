@@ -113,6 +113,7 @@ const ProfilePageContainer: React.FC = (props: any) => {
             AuthStore.identity$
                 .pipe(first((e: IdentityModel) => e.userId != null && e.userId != undefined))
                 .subscribe((value:IdentityModel) => {
+                    console.log(value.userId)
                     setActualProfileId(value.userId)
                 })
 

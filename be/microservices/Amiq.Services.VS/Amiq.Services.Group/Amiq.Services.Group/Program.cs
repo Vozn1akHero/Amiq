@@ -1,6 +1,8 @@
 using Amiq.Services.Group.Mapping;
 using Amiq.Services.Group.Messaging;
+using Amiq.Services.Group.Utils;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 AmiqGroupAutoMapper.Initialize();
 
@@ -18,6 +20,7 @@ builder.Services.AddCors();
 builder.Services.AddControllers(opts =>
 {
     opts.SuppressAsyncSuffixInActionNames = false;
+    opts.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 
 builder.Services.AddEndpointsApiExplorer();

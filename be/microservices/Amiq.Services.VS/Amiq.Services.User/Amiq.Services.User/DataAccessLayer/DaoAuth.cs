@@ -12,7 +12,7 @@ namespace Amiq.Services.User.DataAccessLayer
         public DtoUserRegistartionResult Register(DtoUserRegistration dtoUserRegistration)
         {
             var rsUserRegistartionResult = new DtoUserRegistartionResult();
-            var user = new Models.Models.User
+            var user = new Models.User
             {
                 Name = dtoUserRegistration.Name,
                 Surname = dtoUserRegistration.Surname,

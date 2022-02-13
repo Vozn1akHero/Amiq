@@ -1,11 +1,6 @@
-﻿using Amiq.Services.User.BusinessLayer.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Amiq.Services.Common.Contracts;
+using Amiq.Services.User.BusinessLayer.Utils;
 using Amiq.Services.User.Contracts.User;
-using Amiq.Services.User.Contracts.Utils;
 using Amiq.Services.User.DataAccessLayer;
 
 namespace Amiq.Services.User.BusinessLayer

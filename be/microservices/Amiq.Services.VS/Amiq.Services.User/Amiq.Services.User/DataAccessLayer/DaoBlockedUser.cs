@@ -1,6 +1,5 @@
 ﻿using Amiq.Services.User.Contracts.User;
 using Amiq.Services.User.DataAccessLayer.Models;
-using Amiq.Services.User.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Amiq.Services.User.DataAccessLayer

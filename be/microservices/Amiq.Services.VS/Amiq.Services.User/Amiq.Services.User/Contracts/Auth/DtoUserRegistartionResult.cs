@@ -1,4 +1,4 @@
-﻿using Amiq.Services.User.Common.DbOperation;
+﻿using Amiq.Services.Common.DbOperation;
 using Amiq.Services.User.Contracts.User;
 
 namespace Amiq.Services.User.Contracts.Auth

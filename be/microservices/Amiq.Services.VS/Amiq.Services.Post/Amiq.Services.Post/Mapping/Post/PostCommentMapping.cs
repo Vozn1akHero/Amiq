@@ -1,6 +1,5 @@
 ﻿using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.DataAccessLayer.Models;
-using Amiq.Services.Post.DataAccessLayer.Models.Models;
 using AutoMapper;
 
 namespace Amiq.Services.Post.Mapping.Post

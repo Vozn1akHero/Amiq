@@ -1,13 +1,13 @@
-﻿using Amiq.Services.Notification.Common.Enums;
+﻿using Amiq.Services.Common.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Amiq.Workers.Notification
 {
     public class GroupPostNotificationCreation : NotificationCreationStrategy
     {
-        public override IEnumerable<Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
+        public override IEnumerable<Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
-            List<Services.Notification.DataAccessLayer.Models.Models.Notification> notifications = new();
+            List<Models.Notification> notifications = new();
 
             foreach(var user in users)
             {
@@ -34,7 +34,7 @@ namespace Amiq.Workers.Notification
                     if(groupPosts.Count > 0 && groupPosts.Count <= 2)
                     {
                         foreach(var post in groupPosts)
-                            notifications.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
+                            notifications.Add(new Models.Notification
                             {
                                 ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                                 NotificationGroupId = notificationGroupId,
@@ -47,7 +47,7 @@ namespace Amiq.Workers.Notification
                     }
                     else if(groupPosts.Count > 2)
                     {
-                        notifications.Add(new Services.Notification.DataAccessLayer.Models.Models.Notification
+                        notifications.Add(new Models.Notification
                         {
                             ImageSrc = mostVisitedGroup.Group.AvatarSrc,
                             NotificationGroupId = notificationGroupId,

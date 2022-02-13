@@ -6,6 +6,7 @@ import devConfig from "../../../../dev-config.json"
 import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import IDropdownOption from "../../../../common/components/SimpleDropdown/IDropdownOption";
 import {GroupService} from "../../services/group-service";
+import {Utils} from "../../../../core/utils";
 
 type GroupCardProps = {
     groupCard: IGroupCard;
@@ -18,10 +19,9 @@ const GroupCard = (props: GroupCardProps) => {
     const groupService : GroupService = new GroupService();
     const [userParamsLoaded, setUserParamsLoaded] = useState(false);
     const [dropdownOptions, setDropdownOptions] = useState<Array<IDropdownOption>>([]);
-    const avatarSrc = devConfig.monolithUrl + "/" + props.groupCard.avatarSrc;
 
     const avatarBgStyles : any = {
-        backgroundImage: "url(" + avatarSrc + ")"
+        backgroundImage: "url(" + Utils.getImageSrc(props.groupCard.avatarSrc) + ")"
     }
 
     const handleShowMoreOptionsClick = (option: IDropdownOption) => {
@@ -67,7 +67,7 @@ const GroupCard = (props: GroupCardProps) => {
             <div className="avatar-wrap">
                 <img
                     className="avatar-img"
-                    src={avatarSrc}
+                    src={Utils.getImageSrc(props.groupCard.avatarSrc)}
                     sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
             </div>
 

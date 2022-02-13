@@ -1,6 +1,5 @@
 ﻿using Amiq.Services.Post.BusinessLayer.Utils;
 using Amiq.Services.Post.DataAccessLayer.Models;
-using Amiq.Services.Post.DataAccessLayer.Models.Models;
 
 namespace Amiq.Services.Post.BusinessLayer.Post.BsRules
 {

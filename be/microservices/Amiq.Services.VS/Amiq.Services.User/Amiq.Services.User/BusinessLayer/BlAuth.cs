@@ -1,6 +1,6 @@
-﻿using Amiq.Services.User.BusinessLayer.BsRule;
+﻿using Amiq.Services.Common.DbOperation;
+using Amiq.Services.User.BusinessLayer.BsRule;
 using Amiq.Services.User.BusinessLayer.Utils;
-using Amiq.Services.User.Common.DbOperation;
 using Amiq.Services.User.Contracts.Auth;
 using Amiq.Services.User.DataAccessLayer;
 

@@ -16,18 +16,18 @@ namespace Amiq.Services.Friendship.DataAccessLayer
             result.Length = await _amiqContext.Friendships.AsNoTracking()
                 .Where(fr => fr.FirstUserId == request.IssuerId || fr.SecondUserId == request.IssuerId)
                 .CountAsync();
-            result.Entities = await (from fr in _amiqContext.Friendships.AsNoTracking()/*
+            result.Entities = await (from fr in _amiqContext.Friendships.AsNoTracking()
                                      join u1 in _amiqContext.Users.AsNoTracking()
                                      on fr.FirstUserId equals u1.UserId
                                      join u2 in _amiqContext.Users.AsNoTracking()
-                                     on fr.SecondUserId equals u2.UserId*/
+                                     on fr.SecondUserId equals u2.UserId
                                      where fr.FirstUserId == request.IssuerId || fr.SecondUserId == request.IssuerId
                                      select new DtoFriend
                                      {
                                          UserId = fr.FirstUserId != request.IssuerId ? fr.FirstUserId : fr.SecondUserId,
-                                         /*Name = u1.UserId == request.IssuerId ? u2.Name : u1.Name,
+                                         Name = u1.UserId == request.IssuerId ? u2.Name : u1.Name,
                                          Surname = u1.UserId == request.IssuerId ? u2.Surname : u1.Surname,
-                                         AvatarPath = u1.UserId == request.IssuerId ? u2.AvatarPath : u1.AvatarPath*/
+                                         AvatarPath = u1.UserId == request.IssuerId ? u2.AvatarPath : u1.AvatarPath
                                      })
                           .Skip((request.Page - 1) * request.Count)
                           .Take(request.Count)

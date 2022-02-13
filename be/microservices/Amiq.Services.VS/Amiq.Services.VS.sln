@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.VS", "Amiq.Se
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{ED91DD18-88B9-42F8-9442-FE801128C4EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Services.Common", "Amiq.Services.Common\Amiq.Services.Common.csproj", "{62497D82-D366-463D-837A-50C295DCFD4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Common", "Amiq.Services.Common\Amiq.Services.Common.csproj", "{62497D82-D366-463D-837A-50C295DCFD4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Friendship", "Amiq.Services.Friendship\Amiq.Services.Friendship\Amiq.Services.Friendship.csproj", "{297BD999-4FD5-4529-AE2F-10164BC708CF}"
 EndProject
@@ -17,11 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Notification"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{EBE5BFE4-2AAC-439C-BF21-B54BB5A76271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amiq.Workers.Notification", "Amiq.Workers.Notification\Amiq.Workers.Notification.csproj", "{1B041F2A-3382-4721-A507-D1300EBDC2B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Workers.Notification", "Amiq.Workers.Notification\Amiq.Workers.Notification.csproj", "{1B041F2A-3382-4721-A507-D1300EBDC2B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.Post", "Amiq.Services.Post\Amiq.Services.Post\Amiq.Services.Post.csproj", "{BA0E7839-6F8F-45C4-AE62-0D1ADB75C569}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.Services.User", "Amiq.Services.User\Amiq.Services.User\Amiq.Services.User.csproj", "{3BE67B54-9C90-40E0-843F-5C7453CD0C92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{A988EE6F-149C-4D50-AAD1-28762B725798}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amiq.ApiGateways.WebApp", "Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp.csproj", "{73EC028D-A9E4-42DE-8EA2-B238BA052606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,10 @@ Global
 		{3BE67B54-9C90-40E0-843F-5C7453CD0C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE67B54-9C90-40E0-843F-5C7453CD0C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BE67B54-9C90-40E0-843F-5C7453CD0C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EC028D-A9E4-42DE-8EA2-B238BA052606}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{62497D82-D366-463D-837A-50C295DCFD4F} = {ED91DD18-88B9-42F8-9442-FE801128C4EC}
 		{1B041F2A-3382-4721-A507-D1300EBDC2B2} = {EBE5BFE4-2AAC-439C-BF21-B54BB5A76271}
+		{73EC028D-A9E4-42DE-8EA2-B238BA052606} = {A988EE6F-149C-4D50-AAD1-28762B725798}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14DEA217-A9A7-4628-BBD0-2775F30AEE2A}

@@ -1,5 +1,5 @@
-﻿using Amiq.Services.Post.Contracts.Post;
-using Amiq.Services.Post.Contracts.Utils;
+﻿using Amiq.Services.Common.Contracts;
+using Amiq.Services.Post.Contracts.Post;
 using Amiq.Services.Post.DataAccessLayer.Post;
 
 namespace Amiq.Services.Post.BusinessLayer.Post

@@ -9,7 +9,7 @@ export default class UserService extends BaseService{
     getById(userId: number){
         let params = new HttpParams()
             .append("userId", userId);
-        return this.httpClient.get(this.apiModule, params)
+        return this.httpClient.get(this.buildApiPath(), params)
     }
 
     changeAvatar(file){

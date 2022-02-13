@@ -1,16 +1,16 @@
-﻿using Amiq.Services.Notification.DataAccessLayer.Models.Models;
+﻿using Amiq.Workers.Notification.Models;
 
 namespace Amiq.Workers.Notification
 {
     public abstract class NotificationCreationStrategy
     {
-        public AmiqNotificationContext DbContext { get; private set; }
+        public AmiqNotificationWorkerContext DbContext { get; private set; }
 
         public NotificationCreationStrategy()
         {
-            DbContext = new AmiqNotificationContext();
+            DbContext = new AmiqNotificationWorkerContext();
         }
 
-        public abstract IEnumerable<Amiq.Services.Notification.DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users);
+        public abstract IEnumerable<Models.Notification> Create(IEnumerable<UserNotificationsQueue> users);
     }
 }
