@@ -6,7 +6,10 @@ import User from "../models/UserModel";
 const router = express.Router();
 
 router.get("/previews", async (req, res, next) => {
-    const userId = +req.query.userId;
+    let userId;
+    if(req.query.userId)
+        userId = +req.query.userId;
+    else userId = 6;
 
     /*const entities = await Chat
         /!*.find({"$or": [

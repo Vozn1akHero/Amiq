@@ -1,24 +1,11 @@
 ﻿using Amiq.Common.Enums;
 using Amiq.DataAccessLayer.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Amiq.Workers.Notification
 {
     public class UserPostNotificationCreation : NotificationCreationStrategy
     {
-        /// <summary>
-        /// Metoda zwracająca nowe wpisy użytkowników
-        /// 
-        /// Reguły biznesowe:
-        /// 1. Uwzględnienie aktywnych znajomości
-        /// </summary>
-        /// <param name="userIds"></param>
-        /// <returns></returns>
         public override IEnumerable<DataAccessLayer.Models.Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
             List<DataAccessLayer.Models.Models.Notification> result = new();
@@ -37,7 +24,6 @@ namespace Amiq.Workers.Notification
                 Guid notificationGroupId = users.Single(e => e.UserId == userId).NotificationGroupId;
                 var mostVisitedProfileUserIds = userProfileVisitations.Value.Select(e => e.VisitedUserId).ToHashSet();
 
-                // uwzlędnienie tylko aktywnych znajomości
                 var activeFriendships = DbContext.Friendships.AsNoTracking().Where(e => e.FirstUserId == userId || e.SecondUserId == userId)
                     .Where(e => e.FirstUserId == userId ? mostVisitedProfileUserIds.Contains(e.SecondUserId) : mostVisitedProfileUserIds.Contains(e.FirstUserId))
                     .Select(e => new { e.FirstUserId, e.SecondUserId })
@@ -45,7 +31,8 @@ namespace Amiq.Workers.Notification
                 var filteredVisitations = new List<ProfileVisitation>();
                 foreach (var activeFriendship in activeFriendships)
                 {
-                    var mostVisitedProfileEntity = userProfileVisitations.Value.Where(e => (e.UserId == activeFriendship.FirstUserId && e.VisitedUserId == activeFriendship.SecondUserId)
+                    var mostVisitedProfileEntity = userProfileVisitations.Value.Where(e => (e.UserId == activeFriendship.FirstUserId 
+                        && e.VisitedUserId == activeFriendship.SecondUserId)
                         || (e.UserId == activeFriendship.SecondUserId && e.VisitedUserId == activeFriendship.FirstUserId)).SingleOrDefault();
                     if (mostVisitedProfileEntity != null)
                         filteredVisitations.Add(mostVisitedProfileEntity);

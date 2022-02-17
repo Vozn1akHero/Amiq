@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.WebSockets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -141,12 +142,14 @@ namespace Amiq.ApiGateways.WebApp
                         //app.UseMiddleware<UserRequestContextMiddleware>();
                         //app.UseMiddleware<RequestCancellationMiddleware>();
 
+                        app.UseWebSockets();
+
+                        app.UseOcelot().Wait();
+
                         app.UseEndpoints(endpoints =>
                         {
                             endpoints.MapControllers();
                         });
-
-                        app.UseOcelot().Wait();
                     })
                     //.UseIIS()
                     //.UseIISIntegration()

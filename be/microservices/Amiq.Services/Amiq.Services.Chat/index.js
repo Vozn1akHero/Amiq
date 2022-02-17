@@ -5,8 +5,16 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import initializeRabbitMQListener from "./messaging/RabbitMQListener";
 import SocketConfiguration from "./SocketConfiguration";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 const app = express();
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    // ...
+});
+
 const PORT = process.env.PORT || "4000";
 const db = `mongodb://host.docker.internal:27017`;
 let options = {
@@ -46,9 +54,29 @@ mongoose
 
 initializeRabbitMQListener();
 
-const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+io.on("connection", function (socket) {
+    console.log("Socket connection");
 
-SocketConfiguration.init(server, PORT+1);
+    socket.on("JoinGroupAsync", chatId => {
+        socket.join(chatId)
+    })
+    socket.on("RemoveFromGroupAsync", chatId => {
+        socket.leave(chatId)
+    })
+});
 
-export default server;
+global.io = io;
+
+httpServer.listen( PORT, function() {
+    console.log("listening on *:" + PORT );
+});
+
+///SocketConfiguration.init(server, PORT+1);
+
+//global.io = io;
+
+
+
+//export default server;
 

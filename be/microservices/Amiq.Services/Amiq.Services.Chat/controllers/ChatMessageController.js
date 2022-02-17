@@ -2,13 +2,17 @@
 const { sanitizeBody } = require("express-validator");
 const apiResponse = require("../helpers/apiResponse");*/
 
-import express from 'express';
+import express, {Router} from 'express';
 import Message from "../models/MessageModel";
 import Chat from "../models/ChatModel";
 import User from "../models/UserModel";
 import SocketConfiguration from "../SocketConfiguration";
 
 const router  = express.Router();
+
+router.get("test-ws", (req,res) => {
+	io.emit("HELLO WORLD");
+})
 
 router.post("", async (req, res) => {
 	const { chatId, textContent, authorId } = req.body;
@@ -39,6 +43,7 @@ router.post("", async (req, res) => {
 		//receiver:
 	};
 
+	io.to(chatId.toString()).emit("PushMessage", JSON.stringify(resultMsgBody));
 	//SocketConfiguration.io.to(chatId.toString()).emit(JSON.stringify(resultMsgBody));
 
 	return res.status(201).json(resultMsgBody)

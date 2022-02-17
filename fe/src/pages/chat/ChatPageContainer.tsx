@@ -17,7 +17,8 @@ import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import devConfig from "../../dev-config.json";
 import {AuthStore} from "../../store/custom/auth/auth-store";
 import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
-
+import io, {Socket} from "socket.io-client";
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
 const ChatPageContainer = () => {
     const chatPreviews: Array<IChatPreview> = useSelector(
@@ -45,9 +46,16 @@ const ChatPageContainer = () => {
     const [signalRChatHubConnection, setSignalRChatHubConnection] = useState<HubConnection>(null);
     const [activeSearch, setActiveSearch] = useState(false);
 
+    let socketIOConnection;
+
     useEffect(() => {
         //console.log(new URLSearchParams(history.location.search).get('to'))
-        setupSignalRConnection();
+        if(devConfig.useMicroservices) {
+            setupSocketIOConnection();
+        }
+        else {
+            setupSignalRConnection();
+        }
 
         if (!chatPreviewsLoaded) {
             dispatch(getChatPreviews());
@@ -81,20 +89,42 @@ const ChatPageContainer = () => {
             });
     }
 
+    const setupSocketIOConnection = () => {
+        //socketIOConnection = socketIOClient(devConfig.microservicesUrl + "/chat");
+        socketIOConnection = io("http://localhost:14039/chat-ws/", {
+            transports: ['websocket'], upgrade: false
+        });
+
+        socketIOConnection.on("PushMessage", data => {
+            console.log(data)
+        });
+        socketIOConnection.on("DeleteMessage", data => {
+
+        });
+    }
+
     const onCreateMessage = (message: IChatMessageCreation) => {
         dispatch(createMessage(message));
     }
 
     const selectChat = (chatId: string) => {
-        if (selectedChatId)
-            signalRChatHubConnection.invoke("RemoveFromGroupAsync", selectedChatId)
+        if(devConfig.useMicroservices){
+            if(selectedChatId){
+                socketIOConnection.emit("RemoveFromGroupAsync", selectedChatId)
+            }
+            socketIOConnection.emit("JoinGroupAsync", chatId)
+        }
+        else {
+            if (selectedChatId)
+                signalRChatHubConnection.invoke("RemoveFromGroupAsync", selectedChatId)
+                    .catch(ex => {
+                        alert(ex);
+                    });
+            signalRChatHubConnection.invoke("JoinGroupAsync", chatId)
                 .catch(ex => {
                     alert(ex);
                 });
-        signalRChatHubConnection.invoke("JoinGroupAsync", chatId)
-            .catch(ex => {
-                alert(ex);
-            });
+        }
 
         setSelectedChatId(chatId);
         const index = chatPreviews.findIndex(value => value.chatId === chatId);
