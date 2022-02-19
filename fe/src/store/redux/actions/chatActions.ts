@@ -41,6 +41,7 @@ export const getChatMessages = (chatId:string, page: number)  => (dispatch) => {
     }
     chatMessageService.getMessagesByChatId(chatId, page).then((res:AxiosResponse) => {
         const messages = res.data as IResponseListOf<IMessage>;
+
         dispatch({
             type: SET_CHAT_MESSAGES,
             payload: messages

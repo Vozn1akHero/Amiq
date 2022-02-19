@@ -1,13 +1,29 @@
 using Amiq.ApiGateways.WebApp.Utils;
+using Amiq.Services.Base.Auth;
 using Amiq.Services.Friendship.Cache.Redis;
 using Amiq.Services.Friendship.HttpClients;
 using Amiq.Services.Friendship.Mapping;
 using Amiq.Services.Friendship.Messaging;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.Primitives;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//builder.Services.AddAuthHeaderPropagation();
+
+builder.Services.AddHeaderPropagation(options =>
+{
+    options.Headers.Add("Cookie", context =>
+    {
+        string? accessToken = context.HttpContext.Request.Cookies["token"];
+        return accessToken != null ? new StringValues($"token={accessToken}") : new StringValues();
+    });
+});
+
+builder.Services.AddHttpClient<UserService>().AddHeaderPropagation(options =>
+{
+    options.Headers.Add("Cookie");
+});
 
 builder.Services.AddControllers(opts =>
 {
@@ -18,7 +34,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //builder.Services.AddSingleton<UserCacheService>();
-builder.Services.AddHttpClient<UserService>();
 
 builder.Services.AddHostedService<RabbitMQListener>();
 
@@ -32,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHeaderPropagation();
 
 app.UseCors(x => x
     .AllowAnyMethod()

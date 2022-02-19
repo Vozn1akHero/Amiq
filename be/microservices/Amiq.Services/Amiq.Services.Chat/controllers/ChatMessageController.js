@@ -6,12 +6,34 @@ import express, {Router} from 'express';
 import Message from "../models/MessageModel";
 import Chat from "../models/ChatModel";
 import User from "../models/UserModel";
-import SocketConfiguration from "../SocketConfiguration";
+import {broadcast} from "../SocketConfiguration";
+import mongoose from "mongoose"
 
 const router  = express.Router();
 
-router.get("test-ws", (req,res) => {
-	io.emit("HELLO WORLD");
+router.get("/test-ws", (req,res) => {
+	//wss.emit("HELLO WORLD");
+
+	/*wss.emit("pushMessage", JSON.stringify({
+		room: "1",
+		body: {
+			text: "testdsad",
+			chatId: 1
+		},
+		event: "PushMessage"
+	}))
+	*/
+
+	broadcast(JSON.stringify({
+		room: "1",
+		body: {
+			text: "testdsad",
+			chatId: 1
+		},
+		event: "PushMessage"
+	}));
+
+	return res.status(200);
 })
 
 router.post("", async (req, res) => {
@@ -21,13 +43,14 @@ router.post("", async (req, res) => {
 	let createdMessage = await Message.create(message);
 	createdMessage = await Message.populate(createdMessage, 'author');
 
-	Chat.findOneAndUpdate(
-		{ _id: chatId },
-		{ $push: { messages: createdMessage._id } }
+	const chat = await Chat.findOneAndUpdate(
+		{ _id: new mongoose.Types.ObjectId(chatId) },
+		{ $push: { messages: createdMessage._id } },
+		{ upsert: false, populate: { path: 'users', model: 'User' } }
 	);
-	//const createdMessage = await Message.create(message);
 
 	const author = createdMessage.author;
+	const receiver = chat.users.find(x=>x._id !== author._id);
 
 	const resultMsgBody = {
 		messageId: createdMessage._id,
@@ -40,11 +63,22 @@ router.post("", async (req, res) => {
 			surname: author.surname,
 			avatarPath: author.avatarPath
 		},
-		//receiver:
+		receiver: {
+			userId: receiver._id,
+			name: receiver.name,
+			surname: receiver.surname,
+			avatarPath: receiver.avatarPath
+		},
+		files: []
 	};
 
-	io.to(chatId.toString()).emit("PushMessage", JSON.stringify(resultMsgBody));
-	//SocketConfiguration.io.to(chatId.toString()).emit(JSON.stringify(resultMsgBody));
+	//io.to(chatId.toString()).emit("PushMessage", JSON.stringify(resultMsgBody));
+
+	broadcast( JSON.stringify({
+		room: chatId.toString(),
+		body: resultMsgBody,
+		event: "PushMessage"
+	}));
 
 	return res.status(201).json(resultMsgBody)
 });
@@ -66,14 +100,43 @@ router.get("/list-by-chat",  async (req, res) => {
 	const {messages} = await Chat.findOne({_id: chatId}, 'messages');
 	const length = messages.length;
 
-	let entities = await Chat.find({_id: chatId})
-		.populate({path: 'messages', model: 'Message'})
-		//.populate({path: 'firstUser', model: 'User'})
+	let result = await Chat.findOne({_id: chatId})
+		.populate({path: 'messages', model: 'Message', options: { sort: { 'createdAt': -1 } }})
+		.populate({path: 'users', model: 'User'})
 		//.populate({path: 'secondUser', model: 'User'})
-		.skip((page-1)*count).limit(+count);
+		.skip((page-1)*count)
+		.limit(+count);
+
+	let mappedEntitiesToDto = [];
+
+	const fUser =  {
+		userId: result.users[0]._id,
+		name: result.users[0].name,
+		surname: result.users[0].surname,
+		avatarPath: result.users[0].avatarPath
+	}
+
+	const sUser =  {
+		userId: result.users[1]._id,
+		name: result.users[1].name,
+		surname: result.users[1].surname,
+		avatarPath: result.users[1].avatarPath
+	}
+
+	for(const message of result.messages){
+		const ent = {
+			messageId: message._id,
+			chatId,
+			textContent: message.textContent,
+			createdAt: message.createdAt,
+			author: fUser.userId === message.author ? fUser: sUser,
+			receiver: fUser.userId !== message.author ? fUser: sUser,
+		};
+		mappedEntitiesToDto.push(ent);
+	}
 
 	return res.status(200).json({
-		entities,
+		entities: mappedEntitiesToDto,
 		length
 	});
 });

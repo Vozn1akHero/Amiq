@@ -25,7 +25,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamPathTemplate": "/",
       "ReRouteIsCaseSensitive": false,
       "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
@@ -34,8 +34,7 @@
           "Port": 4000
         }
       ],
-      "UpstreamPathTemplate": "/chat-ws/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+      "UpstreamPathTemplate": "/chat-ws"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",

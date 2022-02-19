@@ -26,4 +26,8 @@
     position: absolute;
     right: 0;
   }
+
+  &--selected{
+    background: rgba(#1e87f0, 0.1)
+  }
 }

@@ -34,7 +34,6 @@ class ChatPage extends Component<Props, State> {
     }
 
     shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
-        console.log(nextProps)
         return true;
     }
 

@@ -56,13 +56,9 @@ class ChatMessage extends Component<Props, State> {
         return (
             <div onMouseOver={this.onMessageMouseOver}
                  onMouseLeave={this.onMessageMouseOut}
-                 className={`chat-message 
-                    ${this.props.message.author.userId === AuthStore.identity.userId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`}
-                    ${this.state.isSelected ? `uk-card-default` : ``}
-                    `}>
-                {
+                 className={`chat-message ${this.props.message.author.userId === AuthStore.identity.userId ? `chat-message--created-by-viewer` : `chat-message--received-by-viewer`} ${this.state.isSelected ? `chat-message--selected` : ""}`}>                {
                     this.props.isAuthorDataVisible &&
-                    <Link to={`/user/${this.props.message.author.userId}`} className="uk-float-left">
+                    <Link to={`/profile/${this.props.message.author.userId}`} className="uk-float-left">
                         <img className="chat-message__avatar border-radius-50"
                              src={Utils.getImageSrc(this.props.message.author.avatarPath)}
                              width="80"

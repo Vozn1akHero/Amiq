@@ -154,20 +154,20 @@ class Chat extends Component<Props, State> {
                 <hr className="max-width"/>
                 <div id="chat-messages" className="chat__messages">
                     {
-                        this.state.selectedMessageIds.length > 0 &&
+                        /*this.state.selectedMessageIds.length > 0 &&
                         <div className="chat__controls uk-box-shadow-small uk-padding-small">
                             <button onClick={this.deleteSelectedMessages}
                                     uk-tooltip="Usuń wybrane"
                                     className="chat__remove-selected-messages-btn uk-icon-button uk-margin-small-right"
                                     uk-icon="trash"/>
-                        </div>
+                        </div>*/
                     }
                     {
                         this.props.messages.loaded && <InfiniteScroll next={this.props.getMoreMessages}
                                                                       style={{overflow: 'hidden'}}
                                                                       scrollableTarget={"chat-messages"}
                                                                       hasMore={this.props.messages.entities.length < this.props.messages.length}
-                                                                      loader={<h3>Loading...</h3>}
+                                                                      loader={<h3>...</h3>}
                                                                       dataLength={this.props.messages.length}>
                             {this.renderChat(this.props.messages.entities)}
                         </InfiniteScroll>

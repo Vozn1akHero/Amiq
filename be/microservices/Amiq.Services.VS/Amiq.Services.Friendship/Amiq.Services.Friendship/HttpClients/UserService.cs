@@ -38,7 +38,7 @@ namespace Amiq.Services.Friendship.HttpClients
 
         public async Task<IEnumerable<DtoUserSearchResult>?> SearchAsync(int issuerId, string text, DtoPaginatedRequest paginatedRequest)
         {
-            _httpClient.DefaultRequestHeaders.Add("Amiq-UserId", issuerId.ToString());
+            //_httpClient.DefaultRequestHeaders.Add("Amiq-UserId", issuerId.ToString());
 
             var uri = QueryHelpers.AddQueryString($"{_configuration.GetValue<string>("Services:UserService")}/api/user/search", new Dictionary<string, string?>()
             {

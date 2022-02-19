@@ -20,6 +20,7 @@ import {IPaginatedStoreData} from "../../store/redux/base/paginated-store-data";
 import io, {Socket} from "socket.io-client";
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 
+
 const ChatPageContainer = () => {
     const chatPreviews: Array<IChatPreview> = useSelector(
         (state: any) => {
@@ -46,12 +47,18 @@ const ChatPageContainer = () => {
     const [signalRChatHubConnection, setSignalRChatHubConnection] = useState<HubConnection>(null);
     const [activeSearch, setActiveSearch] = useState(false);
 
-    let socketIOConnection;
+    //let socketIOConnection;
+    const [wsConnection, setWSConnection] = useState(null);// = new WebSocket("ws://localhost:14039/chat-ws");
+
+    useEffect(() => {
+        if(wsConnection)
+            wsConnection.onmessage = listenToNodeWSEvents
+    }, [wsConnection])
 
     useEffect(() => {
         //console.log(new URLSearchParams(history.location.search).get('to'))
         if(devConfig.useMicroservices) {
-            setupSocketIOConnection();
+            setWSConnection(new WebSocket("ws://localhost:14039/chat-ws"));
         }
         else {
             setupSignalRConnection();
@@ -91,7 +98,7 @@ const ChatPageContainer = () => {
 
     const setupSocketIOConnection = () => {
         //socketIOConnection = socketIOClient(devConfig.microservicesUrl + "/chat");
-        socketIOConnection = io("http://localhost:14039/chat-ws/", {
+        /*socketIOConnection = io("http://localhost:14039/chat-ws/", {
             transports: ['websocket'], upgrade: false
         });
 
@@ -100,7 +107,32 @@ const ChatPageContainer = () => {
         });
         socketIOConnection.on("DeleteMessage", data => {
 
-        });
+        });*/
+
+        //let ws = new WebSocket("ws://localhost:14039/chat-ws");
+
+        //setWSConnection(new WebSocket("ws://localhost:14039/chat-ws"));
+    }
+
+    const listenToNodeWSEvents = e => {
+        const {data} = e;
+        const parsedData = JSON.parse(data);
+        const event = parsedData.event;
+        const message = parsedData.body;
+
+        switch(event){
+            case "PushMessage": {
+                dispatch(updateOrAddChatPreview(message));
+                if (message.author.userId !== AuthStore.identity.userId) {
+                    dispatch(addMessageToStore(message));
+                }
+                break;
+            }
+            case "DeleteMessage": {
+                dispatch(removeMessageFromStore(message.messageId));
+                break;
+            }
+        }
     }
 
     const onCreateMessage = (message: IChatMessageCreation) => {
@@ -110,9 +142,15 @@ const ChatPageContainer = () => {
     const selectChat = (chatId: string) => {
         if(devConfig.useMicroservices){
             if(selectedChatId){
-                socketIOConnection.emit("RemoveFromGroupAsync", selectedChatId)
+                wsConnection.send(JSON.stringify({
+                    event: "RemoveFromGroupAsync",
+                    chatId: selectedChatId
+                }))
             }
-            socketIOConnection.emit("JoinGroupAsync", chatId)
+            wsConnection.send(JSON.stringify({
+                event: "JoinGroupAsync",
+                chatId
+            }))
         }
         else {
             if (selectedChatId)

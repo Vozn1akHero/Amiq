@@ -37,11 +37,11 @@ namespace Amiq.Services.Friendship.DataAccessLayer
 
         public async Task<IEnumerable<DtoFriend>> SearchForUserFriendsAsync(int issuerId, DtoPaginatedRequest request, string searchText)
         {
-            /*return await (from fr in _amiqContext.Friendships.AsNoTracking()
-                          *//*join u1 in _amiqContext.Users.AsNoTracking()
+            return await (from fr in _amiqContext.Friendships.AsNoTracking()
+                          join u1 in _amiqContext.Users.AsNoTracking()
                           on fr.FirstUserId equals u1.UserId
                           join u2 in _amiqContext.Users.AsNoTracking()
-                          on fr.SecondUserId equals u2.UserId*//*
+                          on fr.SecondUserId equals u2.UserId
                           where (fr.FirstUserId == issuerId || fr.SecondUserId == issuerId)
                             && (u1.UserId == issuerId ? (u2.Name + " " + u2.Surname).ToUpper().StartsWith(searchText.ToUpper())
                             : (u1.Name + " " + u1.Surname).ToUpper().StartsWith(searchText.ToUpper()))
@@ -54,8 +54,8 @@ namespace Amiq.Services.Friendship.DataAccessLayer
                           })
                           .Skip((request.Page - 1) * request.Count)
                           .Take(request.Count)
-                          .ToListAsync();*/
-            return null;
+                          .ToListAsync();
+           //return null;
         }
 
         public DbOperationResult RemoveFriend(int userId, int friendId)

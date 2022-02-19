@@ -52,7 +52,8 @@ router.get("/previews", async (req, res, next) => {
                 populate: {
                     path: 'author',
                     model: 'User'
-                }
+                },
+                options: { sort: { 'createdAt': -1 } }
             }
         )
 

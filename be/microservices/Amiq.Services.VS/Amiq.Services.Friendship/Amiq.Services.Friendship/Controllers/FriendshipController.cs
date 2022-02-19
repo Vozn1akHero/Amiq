@@ -1,7 +1,9 @@
-﻿using Amiq.Services.Base.Controllers;
+﻿using Amiq.Services.Base.Auth;
+using Amiq.Services.Base.Controllers;
 using Amiq.Services.Common.Contracts;
 using Amiq.Services.Friendship.BusinessLayer;
 using Amiq.Services.Friendship.Contracts.Friendship;
+using Amiq.Services.Friendship.Contracts.User;
 using Amiq.Services.Friendship.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -53,6 +55,7 @@ namespace Amiq.Services.Friendship.Controllers
         }
 
         [HttpGet("search")]
+        [AmiqAuthorize]
         public async Task<IActionResult> SearchAmongFriendsAsync([FromQuery] string text,
             [FromQuery] DtoPaginatedRequest paginatedRequest,
             CancellationToken cancellationToken = default)
@@ -66,7 +69,15 @@ namespace Amiq.Services.Friendship.Controllers
 
             if(searchResult.FoundFriends.Count() < paginatedRequest.Count)
             {
-                searchResult.FoundUsers = await _userService.SearchAsync(JwtStoredUserId, text, paginatedRequest);
+                var res = await _userService.SearchAsync(JwtStoredUserId, text, paginatedRequest);
+                if (res.Any())
+                {
+                    searchResult.FoundUsers = res;
+                }
+                else
+                {
+                    searchResult.FoundUsers = new List<DtoUserSearchResult>();
+                }
             }
 
             return Ok(searchResult);

@@ -1,4 +1,5 @@
-﻿using Amiq.Services.Base.Controllers;
+﻿using Amiq.Services.Base.Auth;
+using Amiq.Services.Base.Controllers;
 using Amiq.Services.Common.Contracts;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.User;
@@ -45,6 +46,7 @@ namespace Amiq.Services.User.Controllers
         }
 
         [HttpGet("search")]
+        [AmiqAuthorize]
         public async Task<IActionResult> SearchAsync([FromQuery] string text,
             [FromQuery] DtoPaginatedRequest paginatedRequest,
             CancellationToken cancellationToken = default)

@@ -4,16 +4,20 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import initializeRabbitMQListener from "./messaging/RabbitMQListener";
-import SocketConfiguration from "./SocketConfiguration";
+import {init} from "./SocketConfiguration";
 import { createServer } from "http";
 import { Server } from "socket.io";
-
+import WebSocket, { WebSocketServer } from 'ws';
 const app = express();
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
+/*const io = new Server(httpServer, {
     // ...
-});
+});*/
+
+/*const wss = new WebSocketServer({
+    server: httpServer
+});*/
 
 const PORT = process.env.PORT || "4000";
 const db = `mongodb://host.docker.internal:27017`;
@@ -38,7 +42,7 @@ app.use(cors(corsOptions));
 
 //const chatMessageRoute = require('./controllers/ChatMessageController');
 import chatMessageRoute from './controllers/ChatMessageController';
-app.use('/message', chatMessageRoute);
+app.use('/chat-message', chatMessageRoute);
 
 //const chatRoute = require('./controllers/ChatController');
 import chatRoute from './controllers/ChatController'
@@ -55,7 +59,7 @@ mongoose
 initializeRabbitMQListener();
 
 //const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-io.on("connection", function (socket) {
+/*io.on("connection", function (socket) {
     console.log("Socket connection");
 
     socket.on("JoinGroupAsync", chatId => {
@@ -64,9 +68,13 @@ io.on("connection", function (socket) {
     socket.on("RemoveFromGroupAsync", chatId => {
         socket.leave(chatId)
     })
-});
+});*/
 
-global.io = io;
+//global.io = io;
+
+//global.wss = wss;
+
+init(httpServer);
 
 httpServer.listen( PORT, function() {
     console.log("listening on *:" + PORT );
