@@ -8,16 +8,13 @@ import {init} from "./SocketConfiguration";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import WebSocket, { WebSocketServer } from 'ws';
+import authMiddleware from "./auth/auth-middleware"
+
+require('dotenv').config()
+
 const app = express();
 
 const httpServer = createServer(app);
-/*const io = new Server(httpServer, {
-    // ...
-});*/
-
-/*const wss = new WebSocketServer({
-    server: httpServer
-});*/
 
 const PORT = process.env.PORT || "4000";
 const db = `mongodb://host.docker.internal:27017`;
@@ -42,11 +39,11 @@ app.use(cors(corsOptions));
 
 //const chatMessageRoute = require('./controllers/ChatMessageController');
 import chatMessageRoute from './controllers/ChatMessageController';
-app.use('/chat-message', chatMessageRoute);
+app.use('/chat-message', authMiddleware, chatMessageRoute);
 
 //const chatRoute = require('./controllers/ChatController');
 import chatRoute from './controllers/ChatController'
-app.use('/chat', chatRoute);
+app.use('/chat', authMiddleware, chatRoute);
 
 mongoose
     .connect(

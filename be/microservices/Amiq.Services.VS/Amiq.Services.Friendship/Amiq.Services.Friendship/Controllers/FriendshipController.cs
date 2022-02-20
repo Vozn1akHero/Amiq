@@ -11,7 +11,8 @@ using System.Net;
 namespace Amiq.Services.Friendship.Controllers
 {
     //[Authorize]
-    [Route("api/friendship")]
+    [AmiqAuthorize]
+    //[Route("api/friendship")]
     public class FriendshipController : AmiqBaseController
     {
         private BlFriendship _bsFriend = new BlFriendship();
@@ -55,7 +56,7 @@ namespace Amiq.Services.Friendship.Controllers
         }
 
         [HttpGet("search")]
-        [AmiqAuthorize]
+       
         public async Task<IActionResult> SearchAmongFriendsAsync([FromQuery] string text,
             [FromQuery] DtoPaginatedRequest paginatedRequest,
             CancellationToken cancellationToken = default)
@@ -90,7 +91,7 @@ namespace Amiq.Services.Friendship.Controllers
             return Ok(result);
         }
 
-        [HttpGet("friendship-status/{userId}")]
+        [HttpGet("friendship-status")]
         [Produces(typeof(DtoFriendshipStatus))]
         public IActionResult GetFriendshipStatus(int userId)
         {

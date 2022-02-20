@@ -19,6 +19,9 @@ namespace Amiq.DataAccessLayer.Chat
             return res;
         }
 
-        
+        public async Task<bool> IssuerBelongsToChat(int userId, Guid chatId)
+        {
+            return await _amiqContext.Chats.AsNoTracking().AnyAsync(e=>(e.FirstUserId == userId || e.SecondUserId == userId) && e.ChatId == chatId);
+        }
     }
 }

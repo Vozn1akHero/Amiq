@@ -3,16 +3,18 @@ using Amiq.Services.Base.Controllers;
 using Amiq.Services.Common.Contracts;
 using Amiq.Services.User.BusinessLayer;
 using Amiq.Services.User.Contracts.User;
+using Amiq.Services.User.DataAccessLayer;
 using Amiq.Services.User.HttpClients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.User.Controllers
 {
-    [Route("api/user")]
+    //[Route("api/user")]
     public class UserController : AmiqBaseController
     {
         private FriendshipService _friendshipService;
         private BlUser _bsUser = new BlUser();
+        private DaoUser _daoUser = new DaoUser();
 
         public UserController(FriendshipService friendshipService)
         {
@@ -57,6 +59,14 @@ namespace Amiq.Services.User.Controllers
             }
             var res = await _bsUser.SearchAsync(JwtStoredUserId, text, paginatedRequest);
             return Ok(res);
+        }
+
+        [HttpGet("is-blocked")]
+        //[AmiqAuthorize]
+        public async Task<IActionResult> IsBlockedAsync(int userId)
+        {
+            bool result = await _daoUser.IsBlockedAsync(JwtStoredUserId, userId);
+            return Ok(result);
         }
      }
 }

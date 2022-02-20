@@ -2,15 +2,13 @@ import express from 'express';
 import Message from "../models/MessageModel";
 import Chat from "../models/ChatModel";
 import User from "../models/UserModel";
+import {verifyTokenAndReturnUserId} from "../auth/jwt-extensions"
+import {parseCookie} from "../utils.js"
+import {StatusCodes} from "http-status-codes";
 
 const router = express.Router();
 
 router.get("/previews", async (req, res, next) => {
-    let userId;
-    if(req.query.userId)
-        userId = +req.query.userId;
-    else userId = 6;
-
     /*const entities = await Chat
         /!*.find({"$or": [
             {"firstUser": DBRef("User", ObjectId(userId))},
@@ -37,7 +35,7 @@ router.get("/previews", async (req, res, next) => {
                 perDocumentLimit: 1
             }})*/
 
-    const entities = await Chat.find({'users': {"$in": [userId]}})
+    const entities = await Chat.find({'users': {"$in": [req.userId]}})
         .populate(
             {
                 path: 'users',
@@ -61,7 +59,7 @@ router.get("/previews", async (req, res, next) => {
 
     for(const chat of entities){
         const message = chat.messages[0];
-        const interlocutor = chat.users.filter(e=>e._id !== userId)[0];
+        const interlocutor = chat.users.filter(e=>e._id !== req.userId)[0];
 
         result.push({
             chatId: chat._id,
@@ -80,11 +78,11 @@ router.get("/previews", async (req, res, next) => {
                 avatarPath: interlocutor.avatarPath,
             },
             date: message.createdAt,
-            writtenByIssuer: message.author._id === userId
+            writtenByIssuer: message.author._id === req.userId
         })
     }
 
-    return res.status(200).json(result)
+    return res.status(StatusCodes.OK).json(result)
 });
 
 router.get("/search", async (req, res) => {
@@ -119,7 +117,7 @@ router.get("/search", async (req, res) => {
         }
     }
 
-    return res.status(200).json(result)
+    return res.status(StatusCodes.OK).json(result)
 });
 
 module.exports = router;

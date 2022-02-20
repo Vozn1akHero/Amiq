@@ -1,5 +1,5 @@
-﻿using Amiq.Business.Friend.BsRules;
-using Amiq.Business.User;
+﻿using Amiq.BusinessLayer.Friend.BsRules;
+using Amiq.BusinessLayer.User;
 using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
 using Amiq.Contracts.Friendship;

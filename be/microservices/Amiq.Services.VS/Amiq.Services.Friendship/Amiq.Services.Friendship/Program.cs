@@ -27,6 +27,7 @@ builder.Services.AddHttpClient<UserService>().AddHeaderPropagation(options =>
 
 builder.Services.AddControllers(opts =>
 {
+    opts.SuppressAsyncSuffixInActionNames = false;
     opts.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

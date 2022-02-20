@@ -9,7 +9,7 @@ namespace Amiq.Mapping.Chat
     {
         public ChatProfile()
         {
-            CreateMap<Chat, DtoChatPreview>();
+            CreateMap<Amiq.DataAccessLayer.Models.Models.Chat, DtoChatPreview>();
             CreateMap<Message, DtoChatMessage>();
             CreateMap<DtoChatMessage, Message>();
             CreateMap<Message, DtoChatPreview>();

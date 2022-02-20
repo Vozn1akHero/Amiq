@@ -60,8 +60,8 @@ const IdentityWrapperPageContainer = () => {
                     }
                 }
                 else {
-                    alert("AUTH SERVICE IS NOT AVAILABLE");
-                    document.location.reload();
+                    /*alert("AUTH SERVICE IS NOT AVAILABLE");
+                    document.location.reload();*/
                 }
             }
         }).finally(() => {

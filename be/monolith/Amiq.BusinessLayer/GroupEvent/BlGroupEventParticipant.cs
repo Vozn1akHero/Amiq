@@ -1,4 +1,4 @@
-﻿using Amiq.Business.Group.Rules;
+﻿using Amiq.BusinessLayer.Group.Rules;
 using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
 using Amiq.Contracts.Group;

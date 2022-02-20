@@ -1,5 +1,5 @@
-﻿using Amiq.Business.Chat.BsRules;
-using Amiq.Business.User.BsRule;
+﻿using Amiq.BusinessLayer.Chat.BsRules;
+using Amiq.BusinessLayer.User.BsRule;
 using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Chat;
 using Amiq.Contracts.Utils;

@@ -19,12 +19,15 @@ export class BaseService {
             return this.service + "/" + this.apiModule + (method && "/" + method);
         }
         else {
+            const base = "api";
+
             /*if (method) {
-                return this.apiModule.concat("/api/", method);
+                return base.concat(this.apiModule.concat(method));
             } else {
                 return this.apiModule.concat("/api/");
             }*/
-            return this.apiModule.concat("/api/", method);
+
+            return `/${base}/${this.apiModule}${method ? "/" + method : ""}`
         }
     }
 }

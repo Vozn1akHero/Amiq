@@ -57,6 +57,11 @@ namespace Amiq.Services.User.DataAccessLayer
             return result;
         }
 
+        public async Task<bool> IsBlockedAsync(int fUserId, int sUserId)
+        {
+            return await _amiqContext.BlockedUsers.AnyAsync(e=>(e.IssuerId == fUserId && e.DestUserId == sUserId) || (e.DestUserId == fUserId && e.IssuerId == sUserId));
+        }
+
         public async Task<DtoBasicUserInfo> GetBasicUserDataByIdAsync(int userId)
         {
             return await _amiqContext.Users

@@ -1,11 +1,9 @@
-﻿using Amiq.Business.Auth.Rules;
-using Amiq.BusinessLayer.Auth.BsRules;
+﻿using Amiq.BusinessLayer.Auth.BsRules;
 using Amiq.BusinessLayer.Utils;
 using Amiq.Common.DbOperation;
 using Amiq.Contracts.Auth;
 using Amiq.DataAccessLayer.Auth;
 using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Amiq.BusinessLayer.Auth
 {

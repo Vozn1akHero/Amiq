@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Amiq.Services.User.BusinessLayer.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.User.Controllers
 {
@@ -9,7 +10,7 @@ namespace Amiq.Services.User.Controllers
         [HttpGet]
         public IActionResult GetTest()
         {
-            return Ok(1);
+            return Ok(122);
         }
     }
 }
