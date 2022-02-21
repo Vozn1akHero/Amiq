@@ -13,7 +13,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -22,19 +22,22 @@
         }
       ],
       "UpstreamPathTemplate": "/chat/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AddHeadersToRequest": {
+        "UserId": "Claims[sub] > value[0] > |"
+      }
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/",
+      "ReRouteIsCaseSensitive": false,
+      "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         {
           "Host": "chat-clusterip-srv",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/chat-ws/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamPathTemplate": "/chat-ws"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",

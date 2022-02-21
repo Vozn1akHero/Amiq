@@ -1,6 +1,8 @@
 {
   "monolithUrl": "http://localhost:10709",
-  "microservicesUrl": "http://localhost:14039",
+  "microservicesUrl": "http://localhost:32060",
+  "wsMicroservicesUrl": "ws://localhost:32060",
+  "microservicesDevUrl": "http://localhost:14039",
   "useMicroservices": true,
   "staticContentUrl": "http://localhost:56557"
 }

@@ -58,7 +58,7 @@ const ChatPageContainer = () => {
     useEffect(() => {
         //console.log(new URLSearchParams(history.location.search).get('to'))
         if(devConfig.useMicroservices) {
-            setWSConnection(new WebSocket("ws://localhost:14039/chat-ws"));
+            setWSConnection(new WebSocket(devConfig.wsMicroservicesUrl + "/chat-ws"));
         }
         else {
             setupSignalRConnection();

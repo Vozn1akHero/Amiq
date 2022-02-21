@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: group-deployment
+  name: notification-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: groupservice
+      app: notificationservice
   template:
     metadata:
       labels:
-        app: groupservice
+        app: notificationservice
     spec:
       containers:
-        - name: groupservice
-          image: groupservice
+        - name: notificationservice
+          image: notificationservice
           imagePullPolicy: Never
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: group-clusterip-srv
+  name: notification-clusterip-srv
 spec:
   type: ClusterIP
   selector:
-    app: groupservice
+    app: notificationservice
   ports:
-    - name: groupservice
+    - name: notificationservice
       protocol: TCP
       port: 80
       targetPort: 80
