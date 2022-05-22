@@ -8,7 +8,7 @@ namespace Amiq.Services.Base.Auth
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            string token = context.HttpContext.Request.Cookies["token"];
+            string? token = context.HttpContext.Request.Cookies["token"];
             if (string.IsNullOrEmpty(token) || !JwtExtensions.ValidateToken(token))
             {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
@@ -16,3 +16,4 @@ namespace Amiq.Services.Base.Auth
         }
     }
 }
+

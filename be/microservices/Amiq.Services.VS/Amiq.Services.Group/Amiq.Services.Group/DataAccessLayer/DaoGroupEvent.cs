@@ -29,6 +29,7 @@ namespace Amiq.Services.Group.DataAccessLayer
         {
             return _amiqGroupContext
                 .Groups
+                .AsNoTracking()
                 .Where(e => e.GroupEvents.Any(d => d.GroupEventId == groupEventId))
                 .ProjectTo<DtoGroup>(AmiqGroupAutoMapper.Instance.ConfigurationProvider)
                 .Single();

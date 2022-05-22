@@ -39,12 +39,13 @@ const GroupParticipantsSubpage = () => {
                 {
                     groupParticipants.loaded &&
                     <InfiniteScroll
+                        initialScrollY={0}
                         dataLength={groupParticipants.length}
                         next={() => {
                             dispatch(getGroupParticipants(groupId, groupParticipants.currentPage))
                         }}
                         hasMore={groupParticipants.length > groupParticipants.entities.length}
-                        loader={<UiKitDefaultSpinner/>}
+                        loader={false}
                     >
                         <div className="group-participants-subpage__list uk-margin-medium-top" >
                             {

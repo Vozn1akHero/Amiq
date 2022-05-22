@@ -91,7 +91,7 @@ namespace Amiq.Services.Friendship.Controllers
             return Ok(result);
         }
 
-        [HttpGet("friendship-status")]
+        [HttpGet("friendship-status/{userId}")]
         [Produces(typeof(DtoFriendshipStatus))]
         public IActionResult GetFriendshipStatus(int userId)
         {

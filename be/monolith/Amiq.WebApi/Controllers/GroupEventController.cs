@@ -39,14 +39,14 @@ namespace Amiq.WebApi.Controllers
         [HttpPut("cancel")]
         public async Task<IActionResult> CancelEventAsync([FromQuery] int groupId, [FromQuery] Guid groupEventId)
         {
-            var result = await bsGroupEvent.CancelEventAsync(groupId, groupEventId);
+            var result = await bsGroupEvent.CancelEventAsync(JwtStoredUserInfo.UserId, groupId, groupEventId);
             return Ok(result);
         }
 
         [HttpPut("reopen")]
         public async Task<IActionResult> ReopenEventAsync([FromQuery] int groupId, [FromQuery] Guid groupEventId)
         {
-            var result = await bsGroupEvent.ReopenEventAsync(groupId, groupEventId);
+            var result = await bsGroupEvent.ReopenEventAsync(JwtStoredUserInfo.UserId, groupId, groupEventId);
             return Ok(result);
         }
 
@@ -54,7 +54,7 @@ namespace Amiq.WebApi.Controllers
         public async Task<IActionResult> SetEventVisibilityAsync([FromQuery] int groupId, [FromQuery] Guid groupEventId, [FromQuery] int isVisible)
         {
             bool isVisibleBl = isVisible == 1 ? true : false;
-            var result = await bsGroupEvent.SetEventVisibilityAsync(groupId, groupEventId, isVisibleBl);
+            var result = await bsGroupEvent.SetEventVisibilityAsync(JwtStoredUserInfo.UserId, groupId, groupEventId, isVisibleBl);
             return Ok(result);
         }
     }

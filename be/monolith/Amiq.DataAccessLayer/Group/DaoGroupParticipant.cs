@@ -22,6 +22,11 @@ namespace Amiq.DataAccessLayer.Group
         private AmiqContextWithDebugLogging _amiqContextWithDebug = new AmiqContextWithDebugLogging();
         private DaGroupViewer _daGroupViewer = new DaGroupViewer();
 
+        public async Task<bool> IsAdminAsync(int userId, int groupId)
+        {
+            return await _amiqContext.GroupParticipants.AsNoTracking().AnyAsync(e => e.UserId == userId && e.IsAdmin && e.GroupId == groupId);
+        }
+
         public async Task<DtoGroupUserParams> GetGroupUserParamsAsync(int userId, int groupId)
         {
             DtoGroupUserParams result = new();

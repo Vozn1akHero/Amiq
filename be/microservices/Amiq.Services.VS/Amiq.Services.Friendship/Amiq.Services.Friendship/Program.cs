@@ -30,9 +30,6 @@ builder.Services.AddControllers(opts =>
     opts.SuppressAsyncSuffixInActionNames = false;
     opts.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 //builder.Services.AddSingleton<UserCacheService>();
 
@@ -42,14 +39,11 @@ AmiqFriendshipAutoMapper.Initialize();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 
 app.UseHeaderPropagation();
+
+app.UseRouting();
 
 app.UseCors(x => x
     .AllowAnyMethod()
@@ -59,6 +53,10 @@ app.UseCors(x => x
 
 app.UseAuthorization();
 
-app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

@@ -33,8 +33,6 @@ builder.Services.AddRouting(options => {
     options.LowercaseUrls = true;
 });
 
-AmiqGroupAutoMapper.Initialize();
-
 builder.Services.AddHostedService<RabbitMQListener>();
 
 var app = builder.Build();

@@ -23,7 +23,6 @@ namespace Amiq.DataAccessLayer.Models.Models
             Groups = new HashSet<Group>();
             HiddenGroups = new HashSet<HiddenGroup>();
             Messages = new HashSet<Message>();
-            NotificationQueues = new HashSet<NotificationQueue>();
             Notifications = new HashSet<Notification>();
             Posts = new HashSet<Post>();
             Sessions = new HashSet<Session>();
@@ -58,7 +57,6 @@ namespace Amiq.DataAccessLayer.Models.Models
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<HiddenGroup> HiddenGroups { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
-        public virtual ICollection<NotificationQueue> NotificationQueues { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Session> Sessions { get; set; }

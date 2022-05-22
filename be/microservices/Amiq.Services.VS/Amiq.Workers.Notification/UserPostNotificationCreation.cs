@@ -6,17 +6,13 @@ namespace Amiq.Workers.Notification
 {
     public class UserPostNotificationCreation : NotificationCreationStrategy
     {
-        /// <summary>
-        /// Metoda zwracająca nowe wpisy użytkowników
-        /// </summary>
-        /// <param name="userIds"></param>
-        /// <returns></returns>
         public override IEnumerable<Models.Notification> Create(IEnumerable<UserNotificationsQueue> users)
         {
             List<Models.Notification> result = new();
 
             List<int> userIds = users.Select(e=>e.UserId).ToList();
-            var mostVisitedProfilesInBulk = DbContext.ProfileVisitations.AsNoTracking().Where(e => userIds.Contains(e.UserId)).OrderBy(e=>e.UserId).ToList();
+            var mostVisitedProfilesInBulk = DbContext.ProfileVisitations.AsNoTracking()
+                .Where(e => userIds.Contains(e.UserId)).OrderBy(e=>e.UserId).ToList();
             Dictionary<int, List<ProfileVisitation>> mostVisitedProfilesGrouped = mostVisitedProfilesInBulk
                 .Select((x) => new { Index = x.UserId, Value = x })
                 .GroupBy(e => e.Index)
@@ -29,16 +25,18 @@ namespace Amiq.Workers.Notification
                 Guid notificationGroupId = users.Single(e => e.UserId == userId).NotificationGroupId;
                 var mostVisitedProfileUserIds = userProfileVisitations.Value.Select(e => e.VisitedUserId).ToHashSet();
 
-                // uwzlędnienie tylko aktywnych znajomości
                 var activeFriendships = DbContext.Friendships.AsNoTracking().Where(e => e.FirstUserId == userId || e.SecondUserId == userId)
-                    .Where(e => e.FirstUserId == userId ? mostVisitedProfileUserIds.Contains(e.SecondUserId) : mostVisitedProfileUserIds.Contains(e.FirstUserId))
+                    .Where(e => e.FirstUserId == userId 
+                        ? mostVisitedProfileUserIds.Contains(e.SecondUserId) : mostVisitedProfileUserIds.Contains(e.FirstUserId))
                     .Select(e => new { e.FirstUserId, e.SecondUserId })
                     .ToList();
                 var filteredVisitations = new List<ProfileVisitation>();
                 foreach (var activeFriendship in activeFriendships)
                 {
-                    var mostVisitedProfileEntity = userProfileVisitations.Value.Where(e => (e.UserId == activeFriendship.FirstUserId && e.VisitedUserId == activeFriendship.SecondUserId)
-                        || (e.UserId == activeFriendship.SecondUserId && e.VisitedUserId == activeFriendship.FirstUserId)).SingleOrDefault();
+                    var mostVisitedProfileEntity = userProfileVisitations.Value
+                        .Where(e => (e.UserId == activeFriendship.FirstUserId && e.VisitedUserId == activeFriendship.SecondUserId)
+                            || (e.UserId == activeFriendship.SecondUserId && e.VisitedUserId == activeFriendship.FirstUserId))
+                        .SingleOrDefault();
                     if (mostVisitedProfileEntity != null)
                         filteredVisitations.Add(mostVisitedProfileEntity);
                 }

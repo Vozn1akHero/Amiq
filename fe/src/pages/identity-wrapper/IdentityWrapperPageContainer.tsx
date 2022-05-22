@@ -45,7 +45,7 @@ const IdentityWrapperPageContainer = () => {
             } else {
                 if(pathname === Routes.getRouterLink(Routes.authPageRoutes)
                     || pathname === Routes.getRouterLink(Routes.registrationPageRoutes)){
-                    history.push(Routes.getRouterLink(Routes.profilePageRoutes));
+                    history.push(Routes.getBaseLink(Routes.profilePageRoutes));
                 }
             }
         }).catch((error) => {

@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Amiq.Services.Base.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Amiq.Services.Friendship.Controllers
 {
-    [ApiController]
-    [Route("api/test")]
-    public class TestController : ControllerBase
+    public class TestController : AmiqBaseController
     {
         [HttpGet]
         public IActionResult GetTest()

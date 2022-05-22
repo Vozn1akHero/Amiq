@@ -33,7 +33,6 @@ namespace Amiq.DataAccessLayer.Models.Models
         public virtual DbSet<HiddenGroup> HiddenGroups { get; set; } = null!;
         public virtual DbSet<Message> Messages { get; set; } = null!;
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
-        public virtual DbSet<NotificationQueue> NotificationQueues { get; set; } = null!;
         public virtual DbSet<Post> Posts { get; set; } = null!;
         public virtual DbSet<ProfileVisitation> ProfileVisitations { get; set; } = null!;
         public virtual DbSet<Session> Sessions { get; set; } = null!;
@@ -455,20 +454,6 @@ namespace Amiq.DataAccessLayer.Models.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Notification_User");
-            });
-
-            modelBuilder.Entity<NotificationQueue>(entity =>
-            {
-                entity.ToTable("NotificationQueue", "Notification");
-
-                entity.Property(e => e.NotificationQueueId).ValueGeneratedNever();
-
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.NotificationQueues)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_NotificationQueue_User");
             });
 
             modelBuilder.Entity<Post>(entity =>

@@ -22,10 +22,7 @@
         }
       ],
       "UpstreamPathTemplate": "/chat/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "AddHeadersToRequest": {
-        "UserId": "Claims[sub] > value[0] > |"
-      }
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/",

@@ -1,7 +1,7 @@
 import CenteredPopup from 'common/components/CenteredPopup/CenteredPopup';
 import React, {useEffect, useState} from 'react';
-import PageAvatar from "../../../../common/components/PageAvatar/PageAvatar";
-import {Utils} from "../../../../core/utils";
+import PageAvatar from "common/components/PageAvatar/PageAvatar";
+import {Utils} from "core/utils";
 
 type Props = {
     avatarSrc: string;

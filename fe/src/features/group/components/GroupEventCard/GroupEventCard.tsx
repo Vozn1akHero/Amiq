@@ -5,6 +5,7 @@ import IDropdownOption from "common/components/SimpleDropdown/IDropdownOption";
 import SimpleDropdown from "common/components/SimpleDropdown/SimpleDropdown";
 import "./group-event-card.scss"
 import { Link } from 'react-router-dom';
+import {Utils} from "../../../../core/utils";
 
 type Props = {
     groupEventData: IGroupEvent;
@@ -17,10 +18,8 @@ type Props = {
 }
 
 const GroupEventCard = (props:Props) => {
-    const avatarSrc = devConfig.monolithUrl + "/" + props.groupEventData.avatarSrc;
-
     const avatarBgStyles : any = {
-        backgroundImage: "url(" + avatarSrc + ")"
+        backgroundImage: "url(" + Utils.getImageSrc(props.groupEventData.avatarSrc) + ")"
     }
 
     const handleShowMoreOptionsClick = (option: IDropdownOption) => {
@@ -63,7 +62,7 @@ const GroupEventCard = (props:Props) => {
             <div className="avatar-wrap uk-padding-small">
                 <img
                     className="avatar-img"
-                    src={avatarSrc}
+                    src={Utils.getImageSrc(props.groupEventData.avatarSrc)}
                     sizes="(min-width: 120px) 120px, 100vw" width="120" height="120" alt="" />
             </div>
 

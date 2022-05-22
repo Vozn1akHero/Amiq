@@ -1,4 +1,5 @@
-﻿using Amiq.BusinessLayer.Utils;
+﻿using Amiq.BusinessLayer.Group.Rules;
+using Amiq.BusinessLayer.Utils;
 using Amiq.Contracts.Group;
 using Amiq.Contracts.Utils;
 using Amiq.DataAccessLayer.Group;
@@ -12,7 +13,8 @@ namespace Amiq.BusinessLayer.GroupEvent
 {
     public class BlGroupEvent : BusinessLayerBase
     {
-        private DaoGroupEvent _daGroupEvent = new DaoGroupEvent();
+        private readonly DaoGroupEvent _daGroupEvent = new DaoGroupEvent();
+        private readonly DaoGroupParticipant _daoGroupParticipant = new DaoGroupParticipant();
 
         public async Task<DtoListResponseOf<DtoGroupEvent>> GetAllGroupEventsAsync(int groupId, DtoPaginatedRequest dtoPaginatedRequest)
         {
@@ -26,23 +28,23 @@ namespace Amiq.BusinessLayer.GroupEvent
             return groupEvent;
         }
 
-        public async Task<DtoEditEntityResponse> CancelEventAsync(int groupId, Guid groupEventId)
+        public async Task<DtoEditEntityResponse> CancelEventAsync(int userId, int groupId, Guid groupEventId)
         {
-            //CheckBsRule(new );
+            await CheckBsRuleAsync(new MustBeAdminRule(_daoGroupParticipant, userId, groupId));
             var entity = _daGroupEvent.GetEventById(groupEventId);
             return await _daGroupEvent.CancelEventAsync(entity);
         }
 
-        public async Task<DtoEditEntityResponse> ReopenEventAsync(int groupId, Guid groupEventId)
+        public async Task<DtoEditEntityResponse> ReopenEventAsync(int userId, int groupId, Guid groupEventId)
         {
-            //CheckBsRule(new );
+            await CheckBsRuleAsync(new MustBeAdminRule(_daoGroupParticipant, userId, groupId));
             var entity = _daGroupEvent.GetEventById(groupEventId);
             return await _daGroupEvent.ReopenEventAsync(entity);
         }
 
-        public async Task<DtoEditEntityResponse> SetEventVisibilityAsync(int groupId, Guid groupEventId, bool isVisible)
+        public async Task<DtoEditEntityResponse> SetEventVisibilityAsync(int userId, int groupId, Guid groupEventId, bool isVisible)
         {
-            //CheckBsRule(new );
+            await CheckBsRuleAsync(new MustBeAdminRule(_daoGroupParticipant, userId, groupId));
             var entity = _daGroupEvent.GetEventById(groupEventId);
             return await _daGroupEvent.SetEventVisibilityAsync(entity, isVisible);
         }

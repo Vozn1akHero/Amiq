@@ -63,7 +63,7 @@ const GroupEventsSubpage = () => {
                             dispatch(getGroupEvents(groupId, getCurrentGroupEvents().currentPage, 10))
                         }}
                         hasMore={getCurrentGroupEvents().length > getCurrentGroupEvents().entities.length}
-                        loader={<UiKitDefaultSpinner/>}
+                        loader={false}
                     >
                         <div className="group-events-subpage__events-list uk-margin-medium-top">
                             {

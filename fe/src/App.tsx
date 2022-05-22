@@ -68,9 +68,9 @@ class App extends Component<any, State> {
     }
 
     componentWillUnmount() {
-        this.isOpenSub.unsubscribe();
-        this.modalComponentSub.unsubscribe();
-        this.activityTimerSub.unsubscribe();
+        this.isOpenSub?.unsubscribe();
+        this.modalComponentSub?.unsubscribe();
+        this.activityTimerSub?.unsubscribe();
     }
 
     render() {

@@ -17,6 +17,6 @@ export class UserPostService extends BaseService {
     }
 
     create(post: Partial<IUserPost>) {
-        return this.httpClient.post(this.apiModule, post);
+        return this.httpClient.post(this.buildApiPath(), post);
     }
 }

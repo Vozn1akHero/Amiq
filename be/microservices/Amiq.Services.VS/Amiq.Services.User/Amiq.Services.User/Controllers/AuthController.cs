@@ -39,7 +39,7 @@ namespace Amiq.Services.User.Controllers
                     var jwt = JwtExtensions.GenerateJSONWebToken(result.JwtBase);
                     Response.Cookies.Append("token", jwt.Token, new CookieOptions
                     {
-                        HttpOnly = true,
+                        HttpOnly = false,
                         //IsEssential = true,
                         //SameSite = SameSiteMode.None,
                         //Secure = true,

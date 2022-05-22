@@ -7,7 +7,7 @@
 #docker rmi amiqservicesuser
 #docker rmi amiqservicesfriendship
 
-kubectl delete deployment friendship-deployment
+
 
 kubectl delete deployment user-deployment
 kubectl delete deployment group-deployment
@@ -15,12 +15,15 @@ kubectl delete deployment ocelot-deployment
 kubectl delete deployment friendship-deployment
 kubectl delete deployment notification-deployment
 kubectl delete deployment chat-deployment
+kubectl delete deployment post-deployment
 
 docker build -t amiqservicesuser -f .\Amiq.Services.VS\Amiq.Services.User\Amiq.Services.User\Dockerfile .\Amiq.Services.VS\Amiq.Services.User\Amiq.Services.User
 docker build -t amiqservicesgroup -f .\Amiq.Services.VS\Amiq.Services.Group\Amiq.Services.Group\Dockerfile .\Amiq.Services.VS\Amiq.Services.Group\Amiq.Services.Group
 docker build -t amiqservicesfriendship -f .\Amiq.Services.VS\Amiq.Services.Friendship\Amiq.Services.Friendship\Dockerfile .\Amiq.Services.VS\Amiq.Services.Friendship\Amiq.Services.Friendship
 docker build -t amiq-ocelot-gateway -f .\Amiq.Services.VS\Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp\Dockerfile .\Amiq.Services.VS\Amiq.ApiGateways.WebApp\Amiq.ApiGateways.WebApp
 docker build -t amiqservicesnotification -f .\Amiq.Services.VS\Amiq.Services.Notification\Amiq.Services.Notification\Dockerfile .\Amiq.Services.VS\Amiq.Services.Notification\Amiq.Services.Notification
+docker build -t amiqservicespost -f .\Amiq.Services.VS\Amiq.Services.Post\Amiq.Services.Post\Dockerfile .\Amiq.Services.VS\Amiq.Services.Post\Amiq.Services.Post
+
 docker build -t amiqserviceschat -f .\Amiq.Services\Amiq.Services.Chat\Dockerfile .\Amiq.Services\Amiq.Services.Chat
 
 kubectl apply -f .\scripts\k8s\user-depl.yaml
@@ -29,9 +32,9 @@ kubectl apply -f .\scripts\k8s\ocelot-depl.yaml
 kubectl apply -f .\scripts\k8s\friendship-depl.yaml
 kubectl apply -f .\scripts\k8s\notification-depl.yaml
 kubectl apply -f .\scripts\k8s\chat-depl.yaml
+kubectl apply -f .\scripts\k8s\post-depl.yaml
 
-
-kubectl apply -f .\k8s\ocelot-np-srv.yaml
+kubectl apply -f .\scripts\k8s\ocelot-np-srv.yaml
 
 kubectl apply -f .\k8s\amiq-ingress-srv.yaml
 
