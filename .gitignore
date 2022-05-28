@@ -108,4 +108,6 @@ dist
 
 # TernJS port file
 .tern-port
+
 cqrsbe
+/be/microservices/scripts/queues/RabbitMQ/.docker
